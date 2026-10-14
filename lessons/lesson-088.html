@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>多轮对话与上下文管理实战 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-088">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 4 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>小试牛刀，做一个简单的翻译器</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 089</span></div>
+<h1 class="lesson-title">多轮对话与上下文管理实战</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>15 页原文</span><span>约 25 分钟阅读</span><span class="module-name">小试牛刀，做一个简单的翻译器</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-088.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-088.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前两节完成了API调用的基础入门。本节进入实战——多轮对话、上下文管理策略、response解析，最终做一个实用的智能翻译器。</p></aside>
+<h2 id="section-1" data-source-page="1">6.1 大模型API的独特之处：用自然语言&quot;设置参数&quot;<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">从上面的例子可以看到，message其实是在&quot;设置参数&quot;，但与传统API有本质区别。</p>
+<p data-source-page="1">传统API的方式：必须传入精确的、预定义的参数值。</p>
+<p data-source-page="1">精确的、预定义的参数值</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 例如：调用天气API
+response = requests.get(
+ &quot;https://api.weather.com/forecast&quot;,
+ params={
+     &quot;city&quot;: &quot;shanghai&quot;,          # 必须是准确的城市代码
+     &quot;units&quot;: &quot;metric&quot;,           # 只能是 &quot;metric&quot; 或 &quot;imperial&quot;
+     &quot;format&quot;: &quot;json&quot;             # 只能是 &quot;json&quot; 或 &quot;xml&quot;
+ }
+)
+# 如果你写 &quot;units&quot;: &quot;摄氏度&quot;，API会直接报错</code></pre></div>
+<p data-source-page="2">大模型 API参数：可以用自然语言模糊地表达。</p>
+<p data-source-page="2">自然语言模糊地表达</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 同样是设置&quot;参数&quot;，但用的是自然语言
+messages = [
+ {
+     &quot;role&quot;: &quot;system&quot;,
+     &quot;content&quot;: &quot;你是专业的Python导师，擅长用简单的语言解释复杂概念。回答时要分步骤，配合代
+码示例。&quot;
+     # 这些都是模糊的描述，没有固定格式，但AI能理解
+ }
+]
+# 你也可以写成：&quot;你是一个Python老师，请用通俗易懂的方式讲解，最好有代码例子&quot;
+# AI依然能理解并执行，虽然表达方式不同</code></pre></div>
+<p data-source-page="2">这是AI API的革命性之处：你不需要记忆复杂的参数名和枚举值，只需要用日常语言说清楚你的需求。AI会自动理解并适应你的要求。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">自然语言开发一定是未来的趋势。</p>
+<h2 id="section-11" data-source-page="3">6.2 多轮对话示例<a class="heading-link" href="#section-11" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">你可能只看概念还不能很好的理解三种角色的作用，没关系，来看一个实例。</p>
+<p data-source-page="3">完整示例：质数主题的多轮对话</p>
+<p data-source-page="3">第一步:第一次问答</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 构造第1轮的messages
+messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是数学老师,讲解要通俗易懂,必要时给出代码示例。&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;什么是质数?&quot;}
+]
+
+# 调用API
+response = client.chat.completions.create(
+    model=&quot;qwen3.6-plus&quot;,
+    messages=messages
+)
+
+# 获取AI的回复
+ai_response_1 = response.choices[0].message.content
+print(&quot;AI:&quot;, ai_response_1)
+# 输出示例: &quot;质数是只能被1和自身整除的大于1的自然数。例如2、3、5、7都是质数。&quot;</code></pre></div>
+<p data-source-page="3">第二步:第二次问答</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 将上一轮的AI回复加入messages,继续追问
+messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是数学老师,讲解要通俗易懂,必要时给出代码示例。&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;什么是质数?&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: ai_response_1},  # 上一轮的AI回复，AI的回复角色应该标
+注为：assistant
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;10以内有哪些质数?&quot;} # 这是第二次提问的问题
+]
+
+# 调用API
+response = client.chat.completions.create(
+    model=&quot;qwen3.6-plus&quot;,
+    messages=messages
+)
+
+# 获取AI的回复
+ai_response_2 = response.choices[0].message.content
+print(&quot;AI:&quot;, ai_response_2)
+# 输出示例: &quot;10以内的质数有:2、3、5、7,一共4个。&quot;</code></pre></div>
+<p data-source-page="4">第三步:第三次问答</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 继续追问,携带完整的对话历史
+messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是数学老师,讲解要通俗易懂,必要时给出代码示例。&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;什么是质数?&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: ai_response_1},  # 第1轮AI回复
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;10以内有哪些质数?&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: ai_response_2},  # 第2轮AI回复
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;请给出一个判断质数的Python函数,并说明时间复杂度。&quot;} #第3轮
+问题
+]
+
+# 调用API
+response = client.chat.completions.create(
+    model=&quot;qwen3.6-plus&quot;,
+    messages=messages
+)
+
+# 获取AI的回复
+ai_response_3 = response.choices[0].message.content
+print(&quot;AI:&quot;, ai_response_3)
+# 输出示例: AI会给出完整的质数判断函数和复杂度分析</code></pre></div>
+<aside class="callout" data-source-page="5"><b>补充说明</b><p>每一轮都要携带完整的对话历史(user 和 assistant 消息) system 消息保持不变，只设置一次，作为稳定的角色设定 messages 数组随着对话推进越来越长</p></aside>
+<p data-source-page="5">三种角色的使用频率总结：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">角色</th><th scope="col">使用频率</th><th scope="col">典型用法</th><th scope="col">备注</th></tr></thead><tbody><tr><td>system</td><td>每次调用0-1条（开头）</td><td>设定角色、规则、输出格式</td><td>可选但推荐</td></tr><tr><td>user</td><td>至少1条，可多条</td><td>用户的真实输入</td><td>必需</td></tr><tr><td>assistant</td><td>0或多条</td><td>记录AI的历史回复</td><td>多轮对话必需</td></tr></tbody></table></div>
+<h2 id="section-23" data-source-page="5">6.3 上下文管理策略<a class="heading-link" href="#section-23" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">问题：对话越来越长，怎么办？</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">想象一个场景：和AI聊了30轮，从质数聊到算法，从排序聊到数据结构。如果每次都把完整的30轮对话历史塞进messages，会发生什么？</p>
+<p class="list-item" data-source-page="6">长度限制：模型有上下文窗口上限（如128K tokens），超出会被截断或直接报错</p>
+<p class="list-item" data-source-page="6">成本飙升：token数量直接影响费用，30轮对话可能消耗数万tokens</p>
+<p data-source-page="6">成本飙升</p>
+<p class="list-item" data-source-page="6">响应变慢：上下文越长，模型处理时间越长，延迟明显增加</p>
+<p data-source-page="6">响应变慢</p>
+<aside class="callout" data-source-page="6"><p>核心矛盾是大模型需要历史才能理解上下文，但历史太长又会带来成本和性能问题。</p></aside>
+<h3 id="section-32" data-source-page="6">3种实用策略<a class="heading-link" href="#section-32" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">策略1 近期优先</p>
+<p data-source-page="6">保留最近3-5轮的完整对话，删除更早的轮次。</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 只保留最近3轮（伪代码）
+recent_messages = messages[-6:]  # 每轮有user+assistant，所以最近3轮是取最后的6条
+messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是Python导师...&quot;},
+    recent_messages
+]</code></pre></div>
+<p data-source-page="6">策略2 历史摘要</p>
+<p data-source-page="6">将早期对话压缩为要点，用一条assistant或system消息概括。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 假设原本有5轮对话历史：
+# 第1轮：user: &quot;什么是递归？&quot; -&gt; assistant: &quot;递归是函数调用自身的编程技巧...（200字）&quot;
+# 第2轮：user: &quot;递归的终止条件是什么？&quot; -&gt; assistant: &quot;终止条件是递归必须设置的...（150字）&quot;
+# 第3轮：user: &quot;什么是调用栈？&quot; -&gt; assistant: &quot;调用栈是程序执行时...（180字）&quot;
+# 如果全部保留，这3轮就占用了530字，token消耗大
+
+# 压缩后的messages（将前3轮压缩为1条摘要）：
+messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是Python导师，讲解要通俗易懂。&quot;},
+    # 早期3轮对话压缩为1条摘要（530字 -&gt; 30字）
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;前面我们讨论了递归的基本概念、调用栈原理和终止条件设
+计。&quot;},
+    # 保留最近2轮完整对话
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;递归的时间复杂度如何分析？&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;可以通过递推关系式建立方程，常见的有主定理、递归树等
+方法。&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;能用斐波那契数列举个例子吗？&quot;}
+]</code></pre></div>
+<p data-source-page="7">策略3 规则前置</p>
+<p data-source-page="7">将稳定不变的规则（身份、输出格式、禁止项）固定在system中，避免每轮在user消息中重复强调。</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 不好的做法：每轮重复
+messages = [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;你是Python导师，用通俗语言解释什么是递归？&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;...&quot;},
+   # 重复了身份设定、风格等固定的要求
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;你是Python导师，用通俗语言解释递归的时间复杂度？&quot;}
+]
+
+# 好的做法：规则前置到system
+messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是Python导师，讲解要通俗易懂，配合代码示例。&quot;}, # 
+将&quot;通俗易懂&quot;放在system里，不用每次重复
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;什么是递归？&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;...&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;递归的时间复杂度如何分析？&quot;}  # 简洁，只包含纯粹的提问
+]</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-42" data-source-page="8">6.4 上下文管理策略实战<a class="heading-link" href="#section-42" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="8"><b>阅读提示</b><p>为了节省篇幅，也避免大家看完整代码看得头疼，我们只给出核心思路和关键代码。 完整源码参考：samples/chapter4/context_manager.py</p></aside>
+<p data-source-page="8">用AI压缩历史对话：</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 假设有5轮历史对话，只保留最近2轮，前3轮需要压缩
+full_history = [
+    (&quot;什么是递归？&quot;, &quot;递归是函数调用自身的编程技巧，必须设置终止条件避免无限循环。...&quot;),  # 
+约150字
+    (&quot;递归的终止条件是什么？&quot;, &quot;终止条件是递归必须设置的基准情形，当满足条件时直接返回结果不
+再递归。例如计...&quot;),  # 约120字
+    (&quot;什么是调用栈？&quot;, &quot;调用度限制是1000层...&quot;),  # 约130字
+    (&quot;递归的时间复杂度如何分析？&quot;, &quot;可以通过递推关系式建立方程，常见的有主定理...&quot;),
+    (&quot;能用斐波那契数列举个例子吗？&quot;, &quot;斐波那契数列的递归实现：fib(n) = fib(n-1) + fib(n-
+2)...&quot;)
+]
+
+# 步骤1：提取需要压缩的早期对话
+early_history = full_history[:3]  # 前3轮
+
+# 步骤2：让AI生成摘要（核心压缩逻辑）
+compress_messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是对话摘要助手，将多轮对话压缩为一句话总结。&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: f&quot;请将以下对话压缩为一句话摘要：\n\n{early_history}&quot;}
+]
+
+summary = call_ai(compress_messages)
+print(f&quot;AI生成的摘要：{summary}&quot;)
+# 输出示例：&quot;前面我们讨论了递归的基本概念、调用栈原理和终止条件设计。&quot;（约30字）
+
+# 步骤3：重组messages（摘要 + 最近2轮 + 当前问题）
+recent_history = full_history[-2:]  # 最近2轮
+
+optimized_messages = [
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是Python导师，讲解要通俗易懂。&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: summary},  # 早期3轮压缩为1条摘要
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: recent_history[0][0]},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: recent_history[0][1]},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: recent_history[1][0]},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: recent_history[1][1]},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;斐波那契的时间复杂度是多少？&quot;}  # 当前问题
+]
+
+# 压缩效果对比：
+# 优化前：10条消息，约520字
+# 优化后：7条消息，约170字
+# 节省：350字（约67%）</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<p data-source-page="10">上述代码的思路很简单，压缩早期对话这个活儿，也让AI来干。这可能比我们自己来压缩要更好。</p>
+<aside class="callout" data-source-page="10"><b>阅读提示</b><p>经验法则 短对话（&lt;5轮）：全部保留 中等对话（5-10轮）：保留最近5轮 + 早期摘要 长对话（&gt;10轮）：保留最近3轮 + 精简摘要 + 相关性过滤 当然实际情况会更复杂，我们要灵活根据当前的情况来做出决策</p></aside>
+<h2 id="section-48" data-source-page="10">6.5 返回结果response<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">实际上，LLM API的返回结果response对象包含的信息远不止文本。让我们打印完整结果：</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">print(response)
+
+1</code></pre></div>
+<p data-source-page="10">输出（简化版）：</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">ChatCompletion(
+    id=&#x27;chatcmpl-0c540cdb&#x27;,  # 请求ID，用于追踪
+    model=&#x27;qwen3.6-plus&#x27;,  # 使用的模型
+    created=1763467746,  # 创建时间戳
+
+    choices=[
+        Choice(
+            index=0,  # 候选序号
+            message=ChatCompletionMessage(
+                role=&#x27;assistant&#x27;,  # AI的角色
+                content=&#x27;你好！我是Qwen，是阿里巴巴集团旗下的通义实验室自主研发的超大规模语
+言模型...&#x27;  # AI的回复文本
+            ),
+            finish_reason=&#x27;stop&#x27;  # 结束原因：stop表示正常结束
+        )
+    ],
+
+    usage=CompletionUsage(
+        prompt_tokens=12,  # 输入消耗的Token数
+        completion_tokens=91,  # 输出消耗的Token数
+        total_tokens=103  # 总Token数
+    )
+)</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<p data-source-page="11">关键信息：</p>
+<p class="list-item" data-source-page="11">choices[0].message.content：AI的回复文本</p>
+<p class="list-item" data-source-page="11">usage.total_tokens：消耗的Token数（用于计算费用）</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">usage.total_tokens</code></pre></div>
+<p class="list-item" data-source-page="11">finish_reason：模型停止生成的原因（重要！帮助判断回复是否完整） stop：正常结束 - 模型认为回答已完成，这是最理想的状态 length：达到长度限制 - 回复被强制截断，内容可能不完整。此时需要： 增大max_tokens参数（如果允许） 或者提示用户&quot;回答过长，请分段提问&quot; content_filter：内容被过滤 - 触发了安全审核机制（敏感词、违规内容） 模型拒绝回答或返回空内容 需要调整问题或检查输入内容</p>
+<p data-source-page="11">实用技巧</p>
+<p data-source-page="11">在正式项目中，务必检查finish_reason，避免将不完整的回复展示给用户。</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">if response.choices[0].finish_reason == &#x27;length&#x27;:
+    print(&quot;回复被截断，请尝试缩短问题或增加max_tokens参数&quot;)
+elif response.choices[0].finish_reason == &#x27;content_filter&#x27;:
+    print(&quot;内容触发安全过滤，请调整问题&quot;)</code></pre></div>
+<h2 id="section-61" data-source-page="11">6.6 从&quot;Hello AI&quot;到实用工具<a class="heading-link" href="#section-61" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">一次简单的问候已经成功了，但这还不够实用。让我们做一个稍微有用的工具：智能翻译器。</p>
+<p data-source-page="11">需求分析</p>
+<p data-source-page="11">我们希望实现：输入一段文本，指定目标语言，AI返回翻译结果。</p>
+<p data-source-page="11">代码实现</p>
+<aside class="callout" data-source-page="11"><b>阅读提示</b><p>完整源码参考：samples/chapter4/translator.py</p></aside>
+<p data-source-page="11">创建文件translator.py：</p>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<div class="code-block" data-source-page="12"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from openai import OpenAI
+
+# 先从环境变量获取API密钥，如果没有则使用硬编码值
+api_key = os.getenv(&quot;DASHSCOPE_API_KEY&quot;) or &quot;sk-xxxxxxxxxxxx&quot;
+
+client = OpenAI(
+    api_key=api_key,
+    base_url=&quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;
+)
+
+def translate(text, target_language=&quot;英文&quot;):
+    &quot;&quot;&quot;智能翻译函数&quot;&quot;&quot;
+
+    # 调用API
+    response = client.chat.completions.create(
+        model=&quot;qwen3.6-plus&quot;,
+        messages=[
+            {
+                &quot;role&quot;: &quot;user&quot;,
+                &quot;content&quot;: f&quot;请将以下文本翻译成{target_language}：\n\n{text}&quot;
+            }
+        ]
+    )
+
+    # 返回翻译结果
+    return response.choices[0].message.content
+
+# 测试
+if __name__ == &quot;__main__&quot;:
+    # 交互式输入
+    print(&quot;=== 智能翻译器 ===&quot;)
+    text = input(&quot;请输入要翻译的文本: &quot;)
+
+    # 翻译成三种语言
+    print(&quot;\n正在翻译...\n&quot;)
+
+    english = translate(text, &quot;英文&quot;)
+    print(f&quot;英文: {english}&quot;)
+
+    french = translate(text, &quot;法语&quot;)
+    print(f&quot;法语: {french}&quot;)
+    spanish = translate(text, &quot;西班牙语&quot;)
+    print(f&quot;西班牙语: {spanish}&quot;)</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<p data-source-page="13">运行结果：</p>
+<div class="code-block" data-source-page="13"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">=== 智能翻译器 ===
+请输入要翻译的文本: 小舟从此逝,江海寄余生
+
+正在翻译...
+
+英文: From now on, I&#x27;ll drift away in my little boat,
+Entrusting the rest of my life to rivers and seas.
+
+法语: La petite barque s&#x27;en va désormais,
+Je confierai le reste de ma vie aux fleuves et aux mers.
+
+西班牙语: La pequeña barca se aleja ya para siempre;
+en ríos y mares pasaré el resto de mi vida.</code></pre></div>
+<aside class="callout" data-source-page="13"><b>重要</b><p>关于API密钥的安全管理 在示例代码中，会看到这样的代码： API_key =os.getenv(&quot;DASHSCOPE_API_KEY&quot;) or &quot;sk-xxxxxxxxxxxx&quot; 1 代码块 这行代码的意思是： 先尝试从系统环境变量 DASHSCOPE_API_KEY 读取API密钥 如果环境变量不存在，则使用硬编码的占位符值 这样既保证了安全性，又方便快速测试 如何设置环境变量（Windows系统）： 打开&quot;系统属性&quot; → “高级” → “环境变量” 在&quot;用户变量&quot;中点击&quot;新建&quot; 变量名：DASHSCOPE_API_KEY 变量值：粘贴你的真实API密钥 点击&quot;确定&quot;保存，重启终端后生效 强烈建议：其实没必要这么麻烦。让Qoder帮忙设置环境变量，会根据操作系统（Mac/Windows/Linux）自动处理，避免手动配置的麻烦。 在真实项目里，绝对不要将API_KEY硬编码在代码里，而应该使用环境变量。</p></aside>
+<h3 id="section-72" data-source-page="13">进阶 使用system角色优化<a class="heading-link" href="#section-72" aria-label="链接至本节">#</a></h3>
+<p data-source-page="13">上面的代码可以工作，但还不够专业。我们可以用system角色来定义AI的行为，让同一句话翻译出不同的风格。</p>
+<aside class="callout" data-source-page="13"><b>阅读提示</b><p>完整源码参考：samples/chapter4/translator_pro.py</p></aside>
+<p data-source-page="13">改进版代码：</p>
+<span class="source-page-anchor" id="pdf-page-14"></span>
+<div class="code-block" data-source-page="14"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from openai import OpenAI
+
+api_key = os.getenv(&quot;DASHSCOPE_API_KEY&quot;) or &quot;sk-xxxxxxxxxxxx&quot; # 替换成你的API密钥
+client = OpenAI(
+    api_key=api_key,
+    base_url=&quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;
+)
+
+def translate_pro(text, style=&quot;日常&quot;):
+    &quot;&quot;&quot;专业翻译函数 - 支持风格控制&quot;&quot;&quot;
+
+    # 使用system角色定义AI的行为
+    messages = [
+        {
+            &quot;role&quot;: &quot;system&quot;,
+            &quot;content&quot;: f&quot;&quot;&quot;你是专业翻译，负责将中文翻译成英文。
+
+翻译要求：
+- 风格：{style}
+- 保持原文的语气和情感
+- 符合目标语言的表达习惯
+- 只返回翻译结果，不要添加任何解释&quot;&quot;&quot;
+        },
+        {
+            &quot;role&quot;: &quot;user&quot;,
+            &quot;content&quot;: text
+        }
+    ]
+
+    response = client.chat.completions.create(
+        model=&quot;qwen3.6-plus&quot;,
+        messages=messages
+    )
+
+    return response.choices[0].message.content
+
+# 测试不同风格
+text = &quot;小舟从此逝,江海寄余生&quot;
+
+print(&quot;文学风格：&quot;)
+print(translate_pro(text, &quot;文学风格，充满诗意&quot;))
+# 输出：From now on, I&#x27;ll drift away in my little boat,
+#       Entrusting the rest of my life to rivers and seas.
+print(&quot;\n 口语风格：&quot;)
+print(translate_pro(text, &quot;口语化，简洁通俗&quot;))
+# 输出：I&#x27;ll sail away now and spend the rest of my days wandering.</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-15"></span>
+<div class="code-block" data-source-page="15"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">文学风格：
+The little boat departs, never to return—
+upon rivers and seas I&#x27;ll spend my remaining years.
+
+口语风格：
+I&#x27;ll drift away on this little boat, spending the rest of my life on rivers and seas.</code></pre></div>
+<p data-source-page="15">这个示例展示了system角色的用处：同一句中文，通过调整system中的风格描述，可以得到完全不同的译文——文学风格保留了诗意和韵律，口语风格更加简洁直白</p>
+<h2 id="section-79" data-source-page="15">6.7 下一节预告<a class="heading-link" href="#section-79" aria-label="链接至本节">#</a></h2>
+<p data-source-page="15">现在你已经掌握了API调用的基本方法。但在实际开发中，可能会遇到这样的问题：</p>
+<aside class="callout" data-source-page="15"><p>翻译长文章时等待时间太长？如何控制输出长度？如何让翻译更直译或更意译？</p></aside>
+<p data-source-page="15">下一节，我们将深入 API参数——通过stream、max_tokens、temperature等参数，精确控制AI的输出行为。</p>
+<h2 id="section-83" data-source-page="15">6.8 ■ 学点英语<a class="heading-link" href="#section-83" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="15"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>多轮对话</td><td>Multi-turn Dialogue</td><td>/ˈmʌlti tɜːrn ˈdaɪəlɑːɡ/</td><td>用户与AI之间连续多轮交互的对话形式</td></tr><tr><td>上下文管理</td><td>Context Management</td><td>/ˈkɑːntekst ˈmænɪdʒmənt/</td><td>控制对话历史长度和内容的策略</td></tr><tr><td>历史摘要</td><td>History Summarization</td><td>/ˈhɪstəri sʌməraɪˈzeɪʃn/ ˌ</td><td>将早期对话压缩为简洁摘要的上下文管理策略</td></tr><tr><td>规则前置</td><td>Rule Pre-positioning</td><td>/ruːl priːpəˈzɪʃənɪŋ/ ˌ</td><td>将不变规则固定在system角色中避免重复</td></tr><tr><td>结束原因</td><td>Finish Reason</td><td>/ˈfɪnɪʃ ˈriːzn/</td><td>指示模型停止生成原因的状态字段</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-087.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>第一次API调用与核心参数</strong><small>小试牛刀，做一个简单的翻译器</small></a><a class="chapter-neighbor next" href="lesson-089.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>流式输出与长度控制</strong><small>小试牛刀，做一个简单的翻译器</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5269#mid=104907" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">6.1 大模型API的独特之处：用自然语言&quot;设置参数&quot;</a><a href="#section-11" class="toc-level-2">6.2 多轮对话示例</a><a href="#section-23" class="toc-level-2">6.3 上下文管理策略</a><a href="#section-32" class="toc-level-3">3种实用策略</a><a href="#section-42" class="toc-level-2">6.4 上下文管理策略实战</a><a href="#section-48" class="toc-level-2">6.5 返回结果response</a><a href="#section-61" class="toc-level-2">6.6 从&quot;Hello AI&quot;到实用工具</a><a href="#section-72" class="toc-level-3">进阶 使用system角色优化</a><a href="#section-79" class="toc-level-2">6.7 下一节预告</a><a href="#section-83" class="toc-level-2">6.8 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-088", "title": "多轮对话与上下文管理实战", "stage": 2, "week": 4, "module": "小试牛刀，做一个简单的翻译器", "minutes": 25, "pages": 15, "type": "article"}</script>
+</body></html>

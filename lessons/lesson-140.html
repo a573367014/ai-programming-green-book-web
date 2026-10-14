@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Skill 的实战心法：让指令真正生效 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-140">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-5">能力封装</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 10 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>frontend-design实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 141</span></div>
+<h1 class="lesson-title">Skill 的实战心法：让指令真正生效</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>6 页原文</span><span>约 13 分钟阅读</span><span class="module-name">frontend-design实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-140.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-140.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面六节我们走完了 Skill 的完整旅程：概念、生态、核心机制、扩展能力、创建方法、实战案例。该学的都学了。 但有一件事书上没明说，只有真正开始用 Skill 的人才会发现：有时候你在 SKILL.md 里写得很清楚，大模型就是不理你。不是偶尔不理你，是经常不理你。 这一节不教你怎么写 Skill，而是从根源上分析为什么会这样。你会发现这不是大模型「不听话」，而是Skill 的工作机制决定了某些写法天生容易被忽略。我们会引入渐进加载、路由优化、上下文管理等核心概念，帮你把 Skill 从一个「撞大运」的功能变成一个可预期的工具。</p></aside>
+<h2 id="section-1" data-source-page="1">先理解触发机制<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">先搞清楚一个最基本的问题：大模型什么情况下会读到 Skill 的内容？</p>
+<p data-source-page="1">每次新对话启动时，大模型只预读两个信息：每个已安装 Skill 的 name 和 description。就这两个字段，通常不到 100 个 token。完整的 SKILL.md 不会进入上下文。</p>
+<p data-source-page="1">只有当大模型判断当前任务和某个 Skill 的 description 匹配时，它才会主动去读那个 Skill 的SKILL.md。读完以后，这一轮对话里 Skill 的指令生效。但下一轮新对话，一切清零，又得重新触发一遍。</p>
+<p data-source-page="1">这就是渐进加载的核心思想。Anthropic 的官方规范把它分成三个层次：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="2"><table><thead><tr><th scope="col">层级</th><th scope="col">内容</th><th scope="col">加载时机</th><th scope="col">大致体积</th></tr></thead><tbody><tr><td>第一层</td><td>name + description</td><td>对话启动时全部加载</td><td>约 100 token</td></tr><tr><td>第二层</td><td>SKILL.md 正文</td><td>触发后加载</td><td>建议 &lt; 5000 token</td></tr><tr><td>第三层</td><td>references/ scripts/ assets/</td><td>按需读取</td><td>不限</td></tr></tbody></table></div>
+<p data-source-page="2">这套架构保证了即使装了几十个 Skill，也不会把对话启动时的上下文撑爆。但代价也很明显：description 是第一层，是第一道也是唯一一道关卡。如果 description 写得不准，后两层根本没有出场的机会。</p>
+<p data-source-page="2">这就是「写了但不生效」的第一个、也是最重要的根源。</p>
+<h2 id="section-9" data-source-page="2">description 是路由钥匙<a class="heading-link" href="#section-9" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">description 承担了 Skill 的全部路由职责。这句话怎么强调都不过分，因为它是渐进加载架构中唯一被大模型预先扫描的信息。</p>
+<p data-source-page="2">很多人写 description 的习惯是往宽了写：「用于代码相关的任务」。这句话说了等于没说，因为大模型绝大部分任务都跟代码有关。面对这样一个描述，大模型有两种可能：要么在所有任务上都触发这个Skill（等于没有路由），要么在所有任务上都不触发（大模型不确定它是否真的是最佳匹配）。</p>
+<p data-source-page="2">正确的做法是往窄了写，同时照顾两个方向：什么时候该用，什么时候不该用。</p>
+<p data-source-page="2">什么时候该用，什么时候不该用</p>
+<p data-source-page="2">对比两个 description：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">不推荐：用于审查 SQL。
+
+推荐：审查 PostgreSQL 数据库迁移脚本，检查前后向兼容性和回滚安全。
+  仅当用户明确提到数据库迁移、Schema 变更或回滚计划时使用。
+  不用于普通的 SQL 查询优化。</code></pre></div>
+<p data-source-page="2">第二个描述里，大模型不仅能判断「这个任务匹配」，还能判断「这个任务不匹配」。「不匹配」的判断和前者的「匹配」一样重要，它防止了 Skill 在错误的任务上被错误触发。</p>
+<p data-source-page="2">官方规范里还提到一个常见的误区：</p>
+<p data-source-page="2">把 description 写成了功能介绍。例如「这个 Skill 提供了……它可以用来……」，这种第三人称的外围描述对大模型做路由决策帮助不大。更好的写法是直接以命令式口吻告诉大模型什么时候该用它，类似「Use this skill when……」或者「在处理迁移脚本时触发」。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-19" data-source-page="3">描述不是写一次就完了<a class="heading-link" href="#section-19" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">没有一个 description 第一次就完美。</p>
+<p data-source-page="3">有一个系统的测试方法：为 Skill 准备大约 20 条查询，其中大约一半应该触发这个 Skill，另一半不应该触发。然后逐条运行，观察大模型是否做了正确的路由决策。</p>
+<p data-source-page="3">如果一条本该触发的查询没有触发，说明 description 的描述过于狭窄，漏掉了这个场景。如果一条不该触发的查询反而触发了，说明描述不够精确，范围划得太宽。</p>
+<p data-source-page="3">每轮修改后对着这 20 条查询重跑一遍，观察触发率的变化。随着迭代，description 会越来越准。这不是可有可无的步骤，而是渐进加载架构下的必然要求：因为路由的准确度从一开始就不是大模型的事，而是你来控制的。</p>
+<h2 id="section-24" data-source-page="3">SKILL.md 的膨胀问题<a class="heading-link" href="#section-24" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">假设 description 写得足够好，大模型正确触发了 Skill，读完了完整的 SKILL.md。现在问题来到了第二层：大模型读了，但它能抓到重点吗？</p>
+<p data-source-page="3">如果 SKILL.md 只有 30 行，核心指令一目了然。但如果 SKILL.md 达到了 200 行、300 行，大模型确实读完了，但能不能从几百行指令中准确识别出当前情景下最关键的那几行，就完全取决于大模型当时的注意力分配了。信息密度越高，核心指令被稀释的概率就越大。</p>
+<p data-source-page="3">渐进加载解决这个问题的思路是：不要试图把 SKILL.md 变薄，而是把不重要的东西移出去。</p>
+<p data-source-page="3">官方规范给出了一个明确的分层策略。SKILL.md 只放核心指令，也就是大模型触发后必须知道的信息。如果有一批参考知识或示例代码需要附带，放到 references/ 目录下，在 SKILL.md 里通过一句引用链接过去。大模型遇到相关情况时会主动去读，读不到也不影响核心流程的执行。</p>
+<p data-source-page="3">以 Anthropic 官方给出的 PDF Skill 为例。这个 Skill 需要处理 PDF 读取和表单填写两类场景，但表单填写很复杂，不是每次都需要。它的做法是在 SKILL.md 里只写 PDF 读取的核心流程，把表单填写指令单独放到 forms.md 里，在 SKILL.md 中用一句「如果需要填写表单，参见 forms.md」来引用。大模型读取 PDF 时不会额外消耗 token 去读表单指令，只有在真正遇到表单时才会主动打开 forms.md。</p>
+<p data-source-page="3">这种分层方式还有一层更深的含义：放在 references/ 里的内容几乎不受体积限制，因为大模型不会主动预读它们。渐进加载的本质不是限制内容总量，而是把内容按使用频率分层，高频的放 SKILL.md，低频的放 reference，需要执行的代码放 scripts/。</p>
+<p data-source-page="3">一个合理的 SKILL.md 应该控制在 200 行以内。超过这个长度，就应该考虑拆分了。拆分的信号包括：出现了「如果……就……」的条件分支（拆分到不同 reference 文件）、出现了大量示例代码（拆分到scripts/）、出现了长篇的背景知识或概念解释（拆分到 references/）。</p>
+<p data-source-page="3">拆分后的大致结构是这样：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">my-skill/                      ← Skill 目录
+│
+├── SKILL.md                   ← 触发后立即加载（~200 行核心指令）
+│   ├── 核心流程说明
+│   ├── 关键规则和约束
+│   └── → 参见 references/custom-api.md
+│       → 需要时执行 scripts/generate.sh
+│
+├── references/                ← 按需读取，不占启动上下文
+│   ├── custom-api.md          API 接口规范和常见参数
+│   ├── error-handling.md      错误码对照表和处理建议
+│   └── design-principles.md   设计原则和最佳实践
+│
+└── scripts/                   ← 按需执行，Agent 在需要时调用
+    ├── validate.sh            环境校验脚本
+    └── generate.sh            代码生成脚本</code></pre></div>
+<p data-source-page="4">第一层是触发后立即装入的核心指令，控制在 200 行以内。第二层是 references/，大模型不会主动去读，但遇到具体问题（比如「这个 API 的参数是什么」）时会主动查阅。第三层是 scripts/，Agent 在确定需要执行时才调用。</p>
+<h2 id="section-35" data-source-page="4">装太多 Skill 也在稀释上下文<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">SKILL.md 内部的膨胀是一个问题，外部还有一个更隐蔽的问题：你装了多少个 Skill。</p>
+<p data-source-page="4">每次对话启动时，大模型会预读所有 Skill 的 name 和 description。每个 description 平均按 50-100个 token 算，20 个 Skill 就是 1000-2000 个 token。这还不算大模型在「从这些描述中精准匹配当前任务」这个过程中消耗的注意力。</p>
+<p data-source-page="4">当 description 的列表越来越长，问题不只是在 context 中占用空间，更在于相似 description 之间的干扰。两个 Skill 的描述里都出现了「代码」「项目」「审查」这样的关键词，大模型选择错误的概率就会上升，或者在两个之间犹豫不决。</p>
+<p data-source-page="4">行业里的建议是把日常活跃的 Skill 控制在 8 个以内。那些偶尔才用到的 Skill，可以移出安装目录，放在一个独立的备份文件夹里。需要时再装回来，用完再移走。Skill 就只是一个文件夹，装和卸都是几秒钟的事。</p>
+<p data-source-page="4">控制数量不只是为了节省空间，更是为了让每个 Skill 的 description 在列表中足够显眼。描述之间的间距越大，路由就越清晰。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-41" data-source-page="5">区分常驻规则和按需技能<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">渐进加载还有一个容易被忽视的推论：不是所有规则都适合放在 Skill 里。</p>
+<p data-source-page="5">不是所有规则都适合放在 Skill 里</p>
+<p data-source-page="5">Skill 是按需加载的，只有被触发时才生效。这意味着，如果有一些规则希望在每次对话中都起作用，比如「项目的代码风格是什么」「测试命令怎么运行」「commit message 用什么格式」，把这些规则放在 Skill 里，它只在触发后的那一轮生效，下一轮又得重新触发。</p>
+<p data-source-page="5">大多数编码助手都支持一个始终在线的上下文文件：Claude Code 的 CLAUDE.md、GitHub Copilot的 .github/copilot-instructions.md、Cursor 的规则文件、Qoder 的 AGENTS.md。这个文件里的内容在每次对话开始时都会自动进入上下文，不需要触发，也不担心被遗忘。</p>
+<p data-source-page="5">我见过很多人把本应放在那个文件里的全局规则写进 SKILL.md，然后奇怪为什么有时候生效有时候不生效。通病在于没有区分「始终在线」和「按需加载」。全局规则放在全局配置里，专业技能放在 Skill里，各管各的，这是第一道防线。</p>
+<h2 id="section-47" data-source-page="5">一个 Skill 只做一件事<a class="heading-link" href="#section-47" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">这是一个在设计层面反复被验证的经验。</p>
+<p data-source-page="5">Skill 之间天然可以协作。一个项目里可以有「代码审查 Skill」和「测试生成 Skill」各自管好自己的领域，互不干扰。但很多人写 Skill 的习惯是越写越多，一个 Skill 里既管代码审查又管提交规范还管代码生成，希望一个搞定所有事情。</p>
+<p data-source-page="5">Anthropic 官方把 Skill 分为四种类型，可以对照着看自己的 Skill 属于哪一类：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">类型</th><th scope="col">职责</th><th scope="col">典型场景</th></tr></thead><tbody><tr><td>知识型</td><td>纠正大模型的默认知识</td><td>内部库的用法、反模式、团队约定</td></tr><tr><td>执行型</td><td>编排工具和脚本，形成工作流</td><td>代码生成、部署、迁移</td></tr><tr><td>验证型</td><td>检查结果是否正确</td><td>测试验证、UI 断言、安全检查</td></tr><tr><td>自动化型</td><td>处理周期性重复事务</td><td>周报生成、票据创建、依赖审计</td></tr></tbody></table></div>
+<p data-source-page="5">如果一次处理的任务，比如审查代码、生成报告、部署上线，同时出现在同一个 SKILL.md 的条件分支里，那它至少跨了执行型和验证型两个类型，甚至有可能是四个类型的大杂烩。判断标准很简单：如果SKILL.md 里出现了「如果用户需要 A，执行 B；如果用户需要 C，执行 D」这样的结构，就意味着它至少应该拆成两个独立的 Skill。各自有单独的 description，各自在合适的场景下被触发，互不污染对方的路由信号。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">这不是对内容量的硬性限制，而是一个路由原则：每个 Skill 只拥有一个精确的、聚焦的描述空间。 描述越聚焦，触发越精准。当一个 Skill 试图覆盖多个场景时，它的 description 必然变得模糊，最终哪个场景都触发不好。</p>
+<h2 id="section-54" data-source-page="6">核心原则<a class="heading-link" href="#section-54" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">以上五个方向最终可以抽象成一句话：Skill 的质量取决于触发，触发取决于路由，路由取决于description 的精准度。 写 SKILL.md 是锦上添花，写 description 才是雪中送炭。</p>
+<p data-source-page="6">如果正在用 Skill 并且遇到了「不生效」的问题，不妨先检查 description 而不是 SKILL.md。先把路由讲清楚，再优化内容。渐进加载的全部智慧都建立在一条假设上：大模型能正确触发。如果description 让它在第一步就错了，后面的一切都没有意义。</p>
+<h2 id="section-57" data-source-page="6">■ 学点英语<a class="heading-link" href="#section-57" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>触发率</td><td>Trigger Rate</td><td>/ˈtrɪɡər reɪt/</td><td>衡量Skill被大模型正确触发的概率，描述精准度是核心影响因素</td></tr><tr><td>评估查询</td><td>Evaluation Queries</td><td>/ɪ væljuˈeɪʃn ˌ ˈkwɪəriz/</td><td>用于验证description路由准确性的测试查询集，包含应触发和不应触发两类用例</td></tr><tr><td>路由决策</td><td>Routing Decision</td><td>/ˈruːtɪŋ dɪˈsɪʒn/</td><td>大模型根据description和当前任务判断是否加载某个Skill的过程</td></tr><tr><td>上下文稀释</td><td>Context Dilution</td><td>/ˈkɒntekst daɪ ˈluːʃn/</td><td>过多Skill的description在启动时抢占上下文，降低路由精度的现象</td></tr><tr><td>分裂信号</td><td>Split Signal</td><td>/splɪt ˈsɪɡnəl/</td><td>提示SKILL.md需要拆分的标志，如条件分支、大量示例代码或背景知识</td></tr><tr><td>技能分类</td><td>Skill Taxonomy</td><td>/skɪl tæk ˈsɒnəmi/</td><td>将Skill按职责分为知识型、执行型、验证型和自动化型的分类体系</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-139.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>个人技能可视化：frontend-design实战</strong><small>frontend-design实战</small></a><a class="chapter-neighbor next" href="lesson-141.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>什么是真正的Agent</strong><small>什么是真正的Agent</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5288#mid=105145" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">先理解触发机制</a><a href="#section-9" class="toc-level-2">description 是路由钥匙</a><a href="#section-19" class="toc-level-2">描述不是写一次就完了</a><a href="#section-24" class="toc-level-2">SKILL.md 的膨胀问题</a><a href="#section-35" class="toc-level-2">装太多 Skill 也在稀释上下文</a><a href="#section-41" class="toc-level-2">区分常驻规则和按需技能</a><a href="#section-47" class="toc-level-2">一个 Skill 只做一件事</a><a href="#section-54" class="toc-level-2">核心原则</a><a href="#section-57" class="toc-level-2">■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-140", "title": "Skill 的实战心法：让指令真正生效", "stage": 5, "week": 10, "module": "frontend-design实战", "minutes": 13, "pages": 6, "type": "article"}</script>
+</body></html>

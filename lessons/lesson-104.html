@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>LlamaIndex（一）-核心概念与查询机制 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-104">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 5 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>LlamaIndex</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 105</span></div>
+<h1 class="lesson-title">LlamaIndex（一）-核心概念与查询机制</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>12 页原文</span><span>约 17 分钟阅读</span><span class="module-name">LlamaIndex</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-104.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-104.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>在前面9节中，我们已经掌握了RAG的核心技术，但你有没有发现一个问题？ 每次构建RAG应用，我们都要重复做这些事： 手动切分文档 自己写检索代码 手动拼接上下文 自己处理各种边界情况 就像在手工作坊里，每个零件都要自己打磨、组装。 有没有一个&quot;自动化工厂&quot;，把这些重复的工作都封装好，专注于业务逻辑？ LlamaIndex，就是为此而生的。</p></aside>
+<h2 id="section-1" data-source-page="1">11.1 LlamaIndex是什么<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">LlamaIndex（原名GPT Index）是一个开源项目，最初是为了解决&quot;如何让LLM访问私有数据&quot;这个问题而产生的。项目迅速获得开发者社区的认可，目前已经发展成为最流行的RAG开发框架之一。它的定位也很清晰——RAG应用的数据框架。</p>
+<p data-source-page="1">官方定义</p>
+<aside class="callout" data-source-page="1"><p>LlamaIndex is a data framework for LLM applications to ingest, structure, and access private or domain-specific data.</p></aside>
+<p data-source-page="1">翻译过来：LlamaIndex是一个数据框架，帮助LLM应用获取、组织和访问私有或领域数据。</p>
+<p data-source-page="1">它把RAG开发中的重复性工作都封装好了，只需几行代码就能实现原本需要几百行代码的功能。</p>
+<p data-source-page="1">LlamaIndex vs 手写RAG如果不使用任何框架，即使最简单的RAG系统，也颇为繁琐。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">但使用LlamaIndex：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
+
+# 1. 加载文档
+documents = SimpleDirectoryReader(&#x27;docs&#x27;).load_data()
+
+# 2. 构建索引（自动完成分块、向量化、存储）
+index = VectorStoreIndex.from_documents(documents)
+
+# 3. 查询
+query_engine = index.as_query_engine()
+response = query_engine.query(&quot;技术文档的问题&quot;)
+
+print(response)</code></pre></div>
+<p data-source-page="2">一切变得非常简洁，因为LlamaIndex做了大量的封装。</p>
+<p data-source-page="2">LlamaIndex自动完成了：</p>
+<p class="list-item" data-source-page="2">文档分块（默认1024字符，可调整）</p>
+<p class="list-item" data-source-page="2">Embedding向量化（默认OpenAI，可切换）</p>
+<p class="list-item" data-source-page="2">向量存储（默认内存，可切换数据库）</p>
+<p class="list-item" data-source-page="2">检索优化（自动Top-K、相似度过滤）</p>
+<p class="list-item" data-source-page="2">上下文拼接（自动组织）</p>
+<p class="list-item" data-source-page="2">LLM调用（自动生成答案）</p>
+<h2 id="section-18" data-source-page="2">11.2 核心组件架构<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="2"><p>为了不浪费篇幅，本节只讲LlamaIndex的核心概念和思想。具体API用法和参数请查阅LlamaIndex官方文档。</p></aside>
+<p data-source-page="2">LlamaIndex的架构很清晰，核心就是把RAG流程分解成4个组件：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Document Loaders → Index Structures → Query Engines → Response Synthesizers
+   (加载数据)         (构建索引)          (查询接口)        (生成答案)
+
+1
+2</code></pre></div>
+<p data-source-page="3">LlamaIndex核心模块关系图</p>
+<p data-source-page="3">架构说明</p>
+<p class="list-item" data-source-page="3">Settings（配置层）：全局配置中心，统一管理LLM和Embedding模型</p>
+<p class="list-item" data-source-page="3">Document Loaders（数据加载层）：支持PDF、Word、网页、数据库等多种数据源</p>
+<p class="list-item" data-source-page="3">Index Structures（索引构建层）：将文档组织成可检索的结构（向量索引、关键词索引等）</p>
+<p class="list-item" data-source-page="3">Query Engines（查询层）：封装检索逻辑，提供统一查询接口</p>
+<p class="list-item" data-source-page="3">Response Synthesizers（生成层）：将检索结果组织成Prompt，调用LLM生成答案</p>
+<p data-source-page="3">接下来，我们逐一深入讲解每个组件。</p>
+<h2 id="section-30" data-source-page="3">11.3 核心组件详解<a class="heading-link" href="#section-30" aria-label="链接至本节">#</a></h2>
+<h3 id="section-31" data-source-page="3">Settings 统一配置管理<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">Settings 是全局配置中心，统一设置RAG流程中的两个核心模型：</p>
+<p class="list-item" data-source-page="3">向量编码模型：用于文档向量化和问题向量化</p>
+<p class="list-item" data-source-page="3">大模型：用于生成最终答案</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from llama_index.core.settings import Settings
+from llama_index.llms.dashscope import DashScope
+from llama_index.embeddings.dashscope import DashScopeEmbedding
+
+# 全局LLM：对应RAG的「生成阶段」
+Settings.llm = DashScope(
+    model_name=&quot;qwen3-max&quot;,
+    api_key=API_KEY,
+    temperature=0.3
+)
+
+# 全局Embedding：对应RAG的「离线阶段」和「检索阶段」
+Settings.embed_model = DashScopeEmbedding(
+    model_name=&quot;text-embedding-v3&quot;,
+    api_key=API_KEY,
+    embed_batch_size=10
+)</code></pre></div>
+<p data-source-page="4">有了Settings，如果不想用Qwen，想换别的模型也很方便，替换这些参数即可。</p>
+<h3 id="section-37" data-source-page="4">Document Loaders 数据加载<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">作用 将各种格式的文档加载成LlamaIndex能处理的Document对象。</p>
+<p data-source-page="4">作用</p>
+<p data-source-page="4">支持的格式</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from llama_index.core import SimpleDirectoryReader
+# 1. 本地文件夹（自动识别格式）
+documents = SimpleDirectoryReader(&#x27;./data/docs&#x27;).load_data()
+# 支持：txt, pdf, docx, md, csv, pptx 等
+
+# 2. 单个文件
+documents = SimpleDirectoryReader(input_files=[&#x27;./data/manual.pdf&#x27;]).load_data()
+
+# 3. 网页
+from llama_index.readers.web import SimpleWebPageReader
+
+# 爬虫也给你省了~~
+documents = SimpleWebPageReader(html_to_text=True).load_data(
+    [&quot;https://example.com/article&quot;]
+)
+
+# 4. 数据库
+from llama_index.readers.database import DatabaseReader
+
+reader = DatabaseReader(
+    connection_string=&quot;mysql://user:pass@localhost/dbname&quot;
+)
+documents = reader.load_data(query=&quot;SELECT * FROM articles&quot;)</code></pre></div>
+<p data-source-page="5">不管数据在哪里，LlamaIndex都能将其加载进来。</p>
+<h3 id="section-43" data-source-page="5">Index Structures 索引结构<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">作用 把文档组织成高效的检索结构。</p>
+<p data-source-page="5">索引的作用</p>
+<p data-source-page="5">想象有一本1000页的技术手册，用户问了一个问题。如果没有索引，只能从第1页开始一页一页翻，直到找到相关内容——这太慢了！</p>
+<p data-source-page="5">索引就像书籍的目录和索引页，它提前把文档按照某种规则组织好，实现快速定位到相关内容。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<h2 id="section-48" data-source-page="6">LlamaIndex最常用的是VectorStoreIndex（向量索引），就是我们前面讲的向量检索。它封装了RAG离线阶段的所有工作：文档切块、向量化、存储。<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h2>
+<h2 id="section-49" data-source-page="6">11.4 VectorStoreIndex深入解析<a class="heading-link" href="#section-49" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">VectorStoreIndex是LlamaIndex最核心的索引类型，本节深入讲解它的分块策略、持久化以及其他索引类型。</p>
+<p data-source-page="6">分块的重要性</p>
+<p data-source-page="6">索引的核心是将文档组织成可检索的单元。但整篇文档太大，直接向量化会导致信息损失、检索不精准、上下文窗口溢出。所以，构建索引的第一步就是分块：把大文档切成小块，每个小块单独向量化并索引。这样检索时才能精准定位到相关的小块，而不是整篇文档。</p>
+<h3 id="section-53" data-source-page="6">默认分块策略<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">LlamaIndex默认使用SentenceSplitter进行分块，直接调用from_documents()就会自动切分：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from llama_index.core import VectorStoreIndex
+
+# 一行代码完成整个离线阶段
+index = VectorStoreIndex.from_documents(documents)</code></pre></div>
+<p data-source-page="6">内部流程</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Step 1: 文档切块
+        默认1024字符切一块，相邻块重叠20字符
+Step 2: 向量化
+        调用Settings.embed_model，批量转换为向量
+Step 3: 存储
+        存入向量库（默认内存，可切换Chroma/Milvus）</code></pre></div>
+<p data-source-page="6">适用场景 通用文本文档，快速上手。</p>
+<p data-source-page="6">适用场景</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h3 id="section-60" data-source-page="7">内置Node Parser策略<a class="heading-link" href="#section-60" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">默认1024字符的分块虽然通用，但并不适合所有场景。比如代码文档应该按函数切分，法律文书应该按段落切分。LlamaIndex提供了多种内置Node Parser，可以根据文档特点灵活选择分块策略，通过transformations参数指定：</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from llama_index.core.node_parser import (
+    SentenceSplitter,      # 按句子切分（默认）
+    SemanticSplitterNodeParser,  # 按语义相似度切分
+    TokenTextSplitter,     # 按token数切分
+    CodeSplitter,          # 按代码结构切分
+)
+
+# 示例1：代码文档，按函数/类切分
+node_parser = CodeSplitter(
+    language=&quot;python&quot;,
+    chunk_lines=40,  # 每块最多40行
+)
+index = VectorStoreIndex.from_documents(
+    code_documents,
+    transformations=[node_parser]
+)
+
+# 示例2：长文档，按语义自动切分
+node_parser = SemanticSplitterNodeParser(
+    buffer_size=1,
+    breakpoint_percentile_threshold=95  # 语义相似度阈值
+)
+index = VectorStoreIndex.from_documents(
+    long_documents,
+    transformations=[node_parser]
+)</code></pre></div>
+<p data-source-page="7">常用Parser</p>
+<p class="list-item" data-source-page="7">SentenceSplitter：按句子边界切分，可调整chunk_size</p>
+<p class="list-item" data-source-page="7">SemanticSplitterNodeParser：根据语义相似度自动找分割点</p>
+<p class="list-item" data-source-page="7">TokenTextSplitter：按token数精确控制</p>
+<p class="list-item" data-source-page="7">CodeSplitter：按代码结构（函数、类）切分</p>
+<p data-source-page="7">完全自定义分块策略如果需要按特定业务逻辑切分（比如Java规范按条目切分），可以自己分好块再交给LlamaIndex：</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from llama_index.core import Document, VectorStoreIndex
+
+# 第8节的结构化分块逻辑（按条目切分）
+def structured_chunk(text):
+    chunks = []
+    for item in extract_items(text):  # 提取条目
+        chunks.append(item)
+    return chunks
+
+# 自己分好块，然后交给LlamaIndex
+raw_text = load_pdf(&quot;Java开发手册.pdf&quot;)
+chunks = structured_chunk(raw_text)
+
+# 把每个chunk包装成Document对象
+documents = [Document(text=chunk) for chunk in chunks]
+
+# 构建索引（不再自动切分）
+index = VectorStoreIndex.from_documents(documents)</code></pre></div>
+<p data-source-page="8">注意，VectorStoreIndex.from_documents()接收的是Document对象列表。如果已经把文档切好块，每个块包装成一个Document，LlamaIndex就不会再次切分，直接对这些块向量化。</p>
+<p data-source-page="8">所以，LlamaIndex既可以快速上手（用默认），也可以精细控制（用内置或自定义）。</p>
+<p data-source-page="8">持久化存储</p>
+<p data-source-page="8">无论你用哪种分块策略，构建好的索引都可以保存到磁盘，避免每次运行都重新向量化：</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 首次运行：构建并保存
+index.storage_context.persist(persist_dir=&quot;kb/&quot;)
+
+# 之后运行：直接加载，不用再次向量化
+from llama_index.core import load_index_from_storage, StorageContext
+storage_context = StorageContext.from_defaults(persist_dir=&quot;kb/&quot;)
+index = load_index_from_storage(storage_context)</code></pre></div>
+<p data-source-page="8">除了VectorStoreIndex，LlamaIndex还提供了其他几种索引，它们引出了一个核心要点：RAG ≠ 一定要用向量检索。</p>
+<p data-source-page="8">RAG的全称是&quot;检索增强生成&quot;（Retrieval-Augmented Generation），关键词是&quot;检索&quot;，而不是&quot;向量检索&quot;。只要能找到相关信息，用什么方式都行：</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<p class="list-item" data-source-page="9">向量检索（Vector Search） ← 最常用 把文本编码成向量，通过余弦相似度查找 优点：语义理解好，能找到&quot;意思相近&quot;的内容 缺点：需要Embedding成本 对应索引 VectorStoreIndex</p>
+<p class="list-item" data-source-page="9">关键词检索（Keyword Search） ← 传统方式 基于BM25、TF-IDF等算法，不需要向量化 优点：快速、精确匹配（比如搜索专业术语） 缺点：不理解语义，&quot;购买&quot;和&quot;采购&quot;会被认为不同词 对应索引KeywordTableIndex</p>
+<p class="list-item" data-source-page="9">全文遍历（List Search） ← 最简单 不做相似度筛选，按顺序把所有chunk都喂给大模型 优点：信息完整，适合文档量小的总结性任务 缺点：慢、成本高，文档多了会超过上下文窗口 对应索引ListIndex</p>
+<p class="list-item" data-source-page="9">层次检索（Tree Search） 构建文档摘要树，从根节点向下查找 用LLM判断相关性，逐层筛选 对应索引 TreeIndex</p>
+<p data-source-page="9">大部分场景用VectorStoreIndex就够了。</p>
+<h2 id="section-82" data-source-page="9">11.5 Query Engine与Response Synthesizer<a class="heading-link" href="#section-82" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">索引构建好之后，就进入查询阶段。LlamaIndex提供了Query Engines和Response Synthesizers两个组件来封装检索和生成逻辑。</p>
+<h3 id="section-84" data-source-page="9">Query Engines 查询接口<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">作用 提供统一的查询接口，封装检索和生成逻辑。对应我们之前RAG流程里的问题相关向量查询这一步。</p>
+<p data-source-page="9">基础用法</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 创建查询引擎
+query_engine = index.as_query_engine()
+
+# 查询
+response = query_engine.query(&quot;你的问题&quot;)
+print(response)</code></pre></div>
+<p data-source-page="9">高级配置</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">query_engine = index.as_query_engine(
+    similarity_top_k=3,          # Top-K=3，最相关的3条
+    response_mode=&quot;compact&quot;,      # 压缩模式：将多个chunk压缩后一次生成答案
+    verbose=True                  # 显示中间过程：输出检索到的chunk和LLM调用详情
+)</code></pre></div>
+<h3 id="section-90" data-source-page="10">Response Synthesizers 答案合成<a class="heading-link" href="#section-90" aria-label="链接至本节">#</a></h3>
+<p data-source-page="10">作用 决定如何用检索到的chunk调用大模型生成最终答案。</p>
+<p data-source-page="10">内置策略</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from llama_index.core.response_synthesizers import get_response_synthesizer
+
+# 1. Refine模式（逐步精炼）
+synthesizer = get_response_synthesizer(response_mode=&quot;refine&quot;)
+# 第1个chunk生成初版答案
+# 第2个chunk优化答案
+# 第3个chunk再优化...
+
+# 2. Tree Summarize（树形摘要）
+synthesizer = get_response_synthesizer(response_mode=&quot;tree_summarize&quot;)
+# 把多个chunk分组摘要，再合并
+
+# 3. Compact（压缩拼接）
+synthesizer = get_response_synthesizer(response_mode=&quot;compact&quot;)
+# 把所有chunk压缩后一次生成</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<h2 id="section-94" data-source-page="11">11.6 ■ 学点英语<a class="heading-link" href="#section-94" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="11"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>数据框架</td><td>Data Framework</td><td>/ˈdeɪtə ˈfreɪmwɜːrk/</td><td>封装数据处理流程的软件框架，如 LlamaIndex</td></tr><tr><td>索引构建</td><td>Indexing</td><td>/ˈɪndeksɪŋ/</td><td>将文档解析、分块、向量化后构建可检索索引的过程</td></tr><tr><td>检索器</td><td>Retriever</td><td>/rɪˈtriːvər/</td><td>负责从索引中查询相关文档的组件</td></tr><tr><td>响应合成器</td><td>Response Synthesizer</td><td>/rɪˈspɑːns sɪnθəsaɪzər/</td><td>将检索结果组装为Prompt并调用LLM生成答案的组件</td></tr><tr><td>句子窗口检索</td><td>Sentence Window Retrieval</td><td>/ˈsentəns ˈwɪndoʊ rɪ ˈtriːvl/</td><td>用小窗口检索 + 大窗口生成的精匹配检索策略</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<h2 id="section-96" data-source-page="12">图片<a class="heading-link" href="#section-96" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="12"><button class="figure-open" aria-label="放大查看第 12 页图示"><img src="../assets/figures/1241e2068d4218f4b6521882de15b900.png" width="1742" height="1650" loading="lazy" alt="LlamaIndex（一）-核心概念与查询机制 · 原 PDF 第 12 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-103.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>RAG检索优化：让答案更准确</strong><small>第一个RAG应用：游戏知识问答系统</small></a><a class="chapter-neighbor next" href="lesson-105.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>LlamaIndex（二）-实战：Java规范问答系统</strong><small>LlamaIndex</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5274#mid=104923" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">11.1 LlamaIndex是什么</a><a href="#section-18" class="toc-level-2">11.2 核心组件架构</a><a href="#section-30" class="toc-level-2">11.3 核心组件详解</a><a href="#section-31" class="toc-level-3">Settings 统一配置管理</a><a href="#section-37" class="toc-level-3">Document Loaders 数据加载</a><a href="#section-43" class="toc-level-3">Index Structures 索引结构</a><a href="#section-48" class="toc-level-2">LlamaIndex最常用的是VectorStoreIndex（向量索引），就是我们前面讲的向量检索。它封装了RAG离线阶段的所有工作：文档切块、向量化、存储。</a><a href="#section-49" class="toc-level-2">11.4 VectorStoreIndex深入解析</a><a href="#section-53" class="toc-level-3">默认分块策略</a><a href="#section-60" class="toc-level-3">内置Node Parser策略</a><a href="#section-82" class="toc-level-2">11.5 Query Engine与Response Synthesizer</a><a href="#section-84" class="toc-level-3">Query Engines 查询接口</a><a href="#section-90" class="toc-level-3">Response Synthesizers 答案合成</a><a href="#section-94" class="toc-level-2">11.6 ■ 学点英语</a><a href="#section-96" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-104", "title": "LlamaIndex（一）-核心概念与查询机制", "stage": 2, "week": 5, "module": "LlamaIndex", "minutes": 17, "pages": 12, "type": "article"}</script>
+</body></html>

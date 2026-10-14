@@ -1,0 +1,296 @@
+{
+  "id": "lesson-123",
+  "title": "集成与发布 MCP",
+  "code": "1-6",
+  "stage": 3,
+  "week": 7,
+  "week_title": "MCP：模型上下文协议",
+  "module": "MCP通信协议与实战",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/002-第7周 MCP：模型上下文协议/007-MCP通信协议与实战/123-图文-1-6-集成与发布 MCP.pdf",
+  "sha256": "23218ff9ae7fe11dd8e49e5dae1c890f21eda22e36cb02ba16122dae0ac6e718",
+  "pdf": "sources/pdf/lesson-123.pdf",
+  "pages": 3,
+  "source_url": "https://class.imooc.com/lesson/5281#mid=104942",
+  "minutes": 5,
+  "excerpt": "上一节学会了在 Qoder 中使用现成的 MCP Server。本节讲解如何在自己的应用中通过代码集成 MCP Server，以及如何将自己开发的 MCP Server 发布出去。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节学会了在 Qoder 中使用现成的 MCP Server。本节讲解如何在自己的应用中通过代码集成 MCP Server，以及如何将自己开发的 MCP Server 发布出去。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "13.1 在自己的应用中集成 MCP",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Qoder 和 Claude Desktop 都提供了可视化的 MCP 使用方式，非常适合日常使用。但如果你正在开发自己的应用程序，就需要在代码中集成 MCP Server。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter7/ai_data_analyzer/，详细讲解请参考该目录下的README.md。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "项目目录结构",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "samples/chapter7/ai_data_analyzer/\n├── ai_data_analyzer.py   # 核心示例代码：在 Python 中集成 MCP 并调用图表工具\n└── README.md             # 源码讲解小册：运行步骤、集成流程与常见问题",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "看下运行效果",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "============================================================\nMCP 集成示例 - 图表生成\n============================================================\n\n● 用户需求: 帮我对比这几款游戏的评分\n● 数据: [{\"category\": \"原神\", \"value\": 95}, {\"category\": \"崩坏3\", \"value\": 92}, \n{\"category\": \"明日方舟\", \"value\": 88}]\n\n▸ 调用 MCP Server 生成图表...\n[MCP-Server-Chart] 2025-12-03T15:45:08.014Z ℹ️  setting up tool handlers...\ngenerate_bar_chart {\n  data: [\n    { category: '原神', value: 95 },\n    { category: '崩坏3', value: 92 },\n    { category: '明日方舟', value: 88 }\n  ],\n  title: '游戏评分对比'\n}\n[MCP-Server-Chart] 2025-12-03T15:45:08.029Z ℹ️  Calling tool: generate_bar_chart\n[MCP-Server-Chart] 2025-12-03T15:45:08.259Z ℹ️  Generated chart URL: \nhttps://mdn.alipayobjects.com/one_clip/.../...\n● 图表生成成功!\n\n● 图表配置:\nhttps://mdn.alipayobjects.com/one_clip/.../...",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们可以看到每一步都清晰的打印了出来，包括MCP Server的启动流程。关于具体的集成流程和代码实现细节，请参考 README.md 中的详细讲解。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "13.2 如何发布自己的 MCP Server",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "学会了使用别人的 MCP Server，你可能也想把自己开发的工具发布出去，让更多人受益。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "其实，如果你用TypeScript开发MCP Server，它其实就是一个npm包，前端会nodejs的同学应该非常熟悉。所以，发布MCP Server并没有啥特别之处，完全就和你发布一个npm包一样。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里就不再过多的赘述了，毕竟我们主要是讲解LLM的相关知识，而非Web的知识。如果你感兴趣，你可以把我们上个小节写的MCP Server（装备属性计算）发布到npm试试。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "13.3 全书章节回顾",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "到这里，我们已经完整掌握了 MCP 协议——从理解核心概念，到自己动手开发 MCP Server，再到使用现成的 Server 快速扩展 AI 能力。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "但你可能已经注意到，无论是使用 MCP、调用 API，还是构建 RAG 系统，我们每次都在重复写很多\"胶水代码\"——管理对话历史、处理工具调用、串联多个步骤。有没有一种方式，能把这些重复性工作标准化，让我们像搭积木一样快速构建 AI 应用？",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是下一章要探讨的内容：LangChain——一个将 AI 应用开发组件化的框架。我们会看到，它如何把\"乐高积木\"的理念应用到 AI 开发中，让复杂的工作流变得简洁优雅。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "13.4 ■ 学点英语",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n代码集成 | Code Integration | /koʊd ɪntɪˈɡreɪʃn/ ˌ | 通过MCP SDK编程方式在应用中连接和调用MCP Server\nnpm 发布 | npm Publishing | /en piː em ˈpʌblɪʃɪŋ/ | 将TypeScript开发的MCP Server以npm包形式发布共享\n包管理器 | Package Manager | /ˈpækɪdʒ ˈmænɪdʒər/ | 管理MCP Server依赖和分发的工具，如npm、 PyPI\nStdio传输 | Stdio Transport | /ˈstændərd aɪ oʊ ˈtrænspɔːrt/ | 通过子进程标准输入输出建立MCP通信的传输方式",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "代码集成",
+          "Code Integration",
+          "/koʊd ɪntɪˈɡreɪʃn/ ˌ",
+          "通过MCP SDK编程方式在应用中连接和调用MCP Server"
+        ],
+        [
+          "npm 发布",
+          "npm Publishing",
+          "/en piː em ˈpʌblɪʃɪŋ/",
+          "将TypeScript开发的MCP Server以npm包形式发布共享"
+        ],
+        [
+          "包管理器",
+          "Package Manager",
+          "/ˈpækɪdʒ ˈmænɪdʒər/",
+          "管理MCP Server依赖和分发的工具，如npm、 PyPI"
+        ],
+        [
+          "Stdio传输",
+          "Stdio Transport",
+          "/ˈstændərd aɪ oʊ ˈtrænspɔːrt/",
+          "通过子进程标准输入输出建立MCP通信的传输方式"
+        ]
+      ],
+      "page": 3
+    }
+  ],
+  "accounting": {
+    "source_chars": 2309,
+    "represented_chars": 2135,
+    "removed_chars": 174,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 143,
+      "repeated_title": 31
+    }
+  },
+  "videos": [],
+  "order": 124,
+  "headings": [
+    {
+      "title": "13.1 在自己的应用中集成 MCP",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "看下运行效果",
+      "id": "section-6",
+      "level": 3
+    },
+    {
+      "title": "13.2 如何发布自己的 MCP Server",
+      "id": "section-9",
+      "level": 2
+    },
+    {
+      "title": "13.3 全书章节回顾",
+      "id": "section-13",
+      "level": 2
+    },
+    {
+      "title": "13.4 ■ 学点英语",
+      "id": "section-17",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节学会了在 Qoder 中使用现成的 MCP Server。本节讲解如何在自己的应用中通过代码集成 MCP Server，以及如何将自己开发的 MCP Server 发布出去。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "13.1 在自己的应用中集成 MCP"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Qoder 和 Claude Desktop 都提供了可视化的 MCP 使用方式，非常适合日常使用。但如果你正在开发自己的应用程序，就需要在代码中集成 MCP Server。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "完整源码参考：samples/chapter7/ai_data_analyzer/，详细讲解请参考该目录下的README.md。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "项目目录结构"
+    },
+    {
+      "anchor": "section-1",
+      "text": "samples/chapter7/ai_data_analyzer/\n├── ai_data_analyzer.py   # 核心示例代码：在 Python 中集成 MCP 并调用图表工具\n└── README.md             # 源码讲解小册：运行步骤、集成流程与常见问题"
+    },
+    {
+      "anchor": "section-6",
+      "text": "看下运行效果"
+    },
+    {
+      "anchor": "section-6",
+      "text": "============================================================\nMCP 集成示例 - 图表生成\n============================================================\n\n● 用户需求: 帮我对比这几款游戏的评分\n● 数据: [{\"category\": \"原神\", \"value\": 95}, {\"category\": \"崩坏3\", \"value\": 92}, \n{\"category\": \"明日方舟\", \"value\": 88}]\n\n▸ 调用 MCP Server 生成图表...\n[MCP-Server-Chart] 2025-12-03T15:45:08.014Z ℹ️  setting up tool handlers...\ngenerate_bar_chart {\n  data: [\n    { category: '原神', value: 95 },\n    { category: '崩坏3', value: 92 },\n    { category: '明日方舟', value: 88 }\n  ],\n  title: '游戏评分对比'\n}\n[MCP-Server-Chart] 2025-12-03T15:45:08.029Z ℹ️  Calling tool: generate_bar_chart\n[MCP-Server-Chart] 2025-12-03T15:45:08.259Z ℹ️  Generated chart URL: \nhttps://mdn.alipayobjects.com/one_clip/.../...\n● 图表生成成功!\n\n● 图表配置:\nhttps://mdn.alipayobjects.com/one_clip/.../..."
+    },
+    {
+      "anchor": "section-6",
+      "text": "我们可以看到每一步都清晰的打印了出来，包括MCP Server的启动流程。关于具体的集成流程和代码实现细节，请参考 README.md 中的详细讲解。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "13.2 如何发布自己的 MCP Server"
+    },
+    {
+      "anchor": "section-9",
+      "text": "学会了使用别人的 MCP Server，你可能也想把自己开发的工具发布出去，让更多人受益。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "其实，如果你用TypeScript开发MCP Server，它其实就是一个npm包，前端会nodejs的同学应该非常熟悉。所以，发布MCP Server并没有啥特别之处，完全就和你发布一个npm包一样。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "这里就不再过多的赘述了，毕竟我们主要是讲解LLM的相关知识，而非Web的知识。如果你感兴趣，你可以把我们上个小节写的MCP Server（装备属性计算）发布到npm试试。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "13.3 全书章节回顾"
+    },
+    {
+      "anchor": "section-13",
+      "text": "到这里，我们已经完整掌握了 MCP 协议——从理解核心概念，到自己动手开发 MCP Server，再到使用现成的 Server 快速扩展 AI 能力。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "但你可能已经注意到，无论是使用 MCP、调用 API，还是构建 RAG 系统，我们每次都在重复写很多\"胶水代码\"——管理对话历史、处理工具调用、串联多个步骤。有没有一种方式，能把这些重复性工作标准化，让我们像搭积木一样快速构建 AI 应用？"
+    },
+    {
+      "anchor": "section-13",
+      "text": "这就是下一章要探讨的内容：LangChain——一个将 AI 应用开发组件化的框架。我们会看到，它如何把\"乐高积木\"的理念应用到 AI 开发中，让复杂的工作流变得简洁优雅。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "13.4 ■ 学点英语"
+    },
+    {
+      "anchor": "section-17",
+      "text": "中文 | English | 音标 | 说明\n代码集成 | Code Integration | /koʊd ɪntɪˈɡreɪʃn/ ˌ | 通过MCP SDK编程方式在应用中连接和调用MCP Server\nnpm 发布 | npm Publishing | /en piː em ˈpʌblɪʃɪŋ/ | 将TypeScript开发的MCP Server以npm包形式发布共享\n包管理器 | Package Manager | /ˈpækɪdʒ ˈmænɪdʒər/ | 管理MCP Server依赖和分发的工具，如npm、 PyPI\nStdio传输 | Stdio Transport | /ˈstændərd aɪ oʊ ˈtrænspɔːrt/ | 通过子进程标准输入输出建立MCP通信的传输方式"
+    }
+  ]
+}

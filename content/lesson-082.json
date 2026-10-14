@@ -1,0 +1,225 @@
+{
+  "id": "lesson-082",
+  "title": "幻觉-一本正经胡说八道",
+  "code": "1-1",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "幻觉",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/012-幻觉/082-图文-1-1-幻觉-一本正经胡说八道.pdf",
+  "sha256": "df61b1045e7954645ec346c2940b94344cc610df16d044619f72a223b60a111f",
+  "pdf": "sources/pdf/lesson-082.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5266#mid=104901",
+  "minutes": 1,
+  "excerpt": "/rɪˈtriːvl ɔːɡˈmentɪd ˌdʒenəˈreɪʃn/",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "幻觉",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "音标",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "说明",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/həˌluːsɪˈneɪʃn/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型生成看似合理但与事实不符或无法验证的内容的现象",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ɪnˈtrɪnsɪk həˌluːsɪˈneɪʃn/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "输出内容与所给源文本直接矛盾的幻觉类型",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ekˈstrɪnsɪk həˌluːsɪˈneɪʃn/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "输出内容无法从源文本验证，需借助外部知识才能判定的幻觉类型",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˌfæktʃuˈæləti/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "输出内容与客观事实的符合程度",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/rɪˈtriːvl ɔːɡˈmentɪd ˌdʒenəˈreɪʃn/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "通过引入外部检索结果来约束模型生成的技术架构",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈsnəʊbɔːl ɪˈfekt/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "自回归生成中一个编造引发后续更多编造的累积现象",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ʌnˈfeɪθfl/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "生成结果不符合所提供的源文本的性质",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈfæbrɪkeɪtɪd saɪˈteɪʃn/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型编造不存在的论文、案例或引用文献的典型现象",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 476,
+    "represented_chars": 352,
+    "removed_chars": 124,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 124
+    }
+  },
+  "videos": [],
+  "order": 83,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "幻觉"
+    },
+    {
+      "anchor": "article-start",
+      "text": "音标"
+    },
+    {
+      "anchor": "article-start",
+      "text": "说明"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/həˌluːsɪˈneɪʃn/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "模型生成看似合理但与事实不符或无法验证的内容的现象"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ɪnˈtrɪnsɪk həˌluːsɪˈneɪʃn/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "输出内容与所给源文本直接矛盾的幻觉类型"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ekˈstrɪnsɪk həˌluːsɪˈneɪʃn/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "输出内容无法从源文本验证，需借助外部知识才能判定的幻觉类型"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˌfæktʃuˈæləti/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "输出内容与客观事实的符合程度"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/rɪˈtriːvl ɔːɡˈmentɪd ˌdʒenəˈreɪʃn/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "通过引入外部检索结果来约束模型生成的技术架构"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈsnəʊbɔːl ɪˈfekt/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "自回归生成中一个编造引发后续更多编造的累积现象"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ʌnˈfeɪθfl/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "生成结果不符合所提供的源文本的性质"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈfæbrɪkeɪtɪd saɪˈteɪʃn/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "模型编造不存在的论文、案例或引用文献的典型现象"
+    }
+  ]
+}

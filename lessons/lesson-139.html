@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>个人技能可视化：frontend-design实战 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-139">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-5">能力封装</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 10 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>frontend-design实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 140</span></div>
+<h1 class="lesson-title">个人技能可视化：frontend-design实战</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>5 页原文</span><span>约 6 分钟阅读</span><span class="module-name">frontend-design实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-139.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-139.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面几节我们一直在自己写 Skill。但社区里还有很多别人写好的 Skill，装完就能用。这一节的目的不是教你写 Skill，而是推荐一个非常有用的 Skill——frontend-design。frontend-design 是一个前端设计 Skill，它的核心能力是帮非专业设计的程序员做出有品质的网页 UI。为了让你直观感受它能做到什么程度，我们拿「个人技能展示页」作为演示案例：准备一份假数据的 JS 文件，写一段 Prompt 调用 frontend-design，让它自动生成一个完整的展示页面。 本节你将完成： 了解 frontend-design 这个 Skill 能做什么 准备一份 19 个技能的假数据（JS 模块） 看一段 Prompt 如何引用 frontend-design 来设计页面</p></aside>
+<h2 id="section-1" data-source-page="1">推荐一个优秀的 Skill：frontend-design<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">写网页是 AI 最能快速出效果的场景之一。你给它一段描述，它就能生成 HTML。但这里有一个明显的问题——质量不稳定。</p>
+<p data-source-page="1">直接让 AI 写网页，大概率得到的是这种风格：白底、居中排版、圆角卡片、紫色渐变按钮。它不是不能用，但每个页面都长一个样，一看就知道是 AI 生成的。</p>
+<p data-source-page="1">社区里有一个专门解决这个问题的 Skill——frontend-design。</p>
+<p data-source-page="1">frontend-design 不是一个「教 AI 怎么写 HTML」的工具。它的核心是一套经过验证的设计规范和审美标准。当 AI 遵循它的指引生成页面时，会自动避开那些 AI 廉价审美的坑：不会出现莫名其妙的紫色渐变、不会滥用圆角卡片、不会用无聊的居中布局。从字体搭配到配色选择，从动画微交互相到页面构图，它都有明确的主张。</p>
+<p data-source-page="1">简单说：你不需要自己会设计，你只需要装一个 frontend-design，然后告诉 AI「按它的标准来做」。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-7" data-source-page="2">演示案例：个人技能展示页<a class="heading-link" href="#section-7" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">为了直观感受 frontend-design 的能力，我们准备了一个简单的演示场景。</p>
+<h3 id="section-9" data-source-page="2">数据准备<a class="heading-link" href="#section-9" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">我们准备了 19 个技能的假数据，放在一个 JS 文件里。每个技能包含 id、name、displayName、category、description、fullDescription、tags、stats、installCmd 等字段。</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">{
+  id: &#x27;frontend-design&#x27;,
+  name: &#x27;frontend-design&#x27;,
+  displayName: &#x27;前端设计引擎&#x27;,
+  category: &#x27;设计创作&#x27;,
+  description: &#x27;创建有品质的前端界面...&#x27;,
+  fullDescription: &#x27;一个注重设计品质的前端生成技能...&#x27;,
+  tags: [&#x27;UI&#x27;, &#x27;设计&#x27;, &#x27;前端&#x27;, &#x27;CSS&#x27;, &#x27;HTML&#x27;],
+  stats: { stars: 934, used: 6200, updated: &#x27;2025-04&#x27; },
+  installCmd: &#x27;qoder install frontend-design&#x27;,
+  icon: &#x27;pencil-ruler&#x27;,
+  version: &#x27;2.7.0&#x27;,
+  author: &#x27;Anthropic&#x27;
+}</code></pre></div>
+<p data-source-page="2">完整的数据文件在 samples/chapter10/skill-portfolio/assets/skills-data.js。</p>
+<p data-source-page="2">数据准备好了。怎么让 AI 把这些数据变成一个漂亮的网页？答案是一段 Prompt：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">使用 **frontend-design** 技能生成一个高质量的个人技能可视化网页。
+
+## 数据
+- 数据文件：assets/skills-data.js
+- 导出了 skills（技能列表）和 categories（分类列表）
+
+## 页面
+- 首页：卡片网格展示所有技能
+- 详情页：点击卡片后切换，展示完整信息</code></pre></div>
+<p data-source-page="2">这段 Prompt 比你想象中短得多。没有设计规范、没有样式说明——不是因为不需要，而是因为那些已经写在 frontend-design 的 SKILL.md 里了。你只需要告诉 AI「使用 frontend-design」，它会自己去加载 frontend-design 的设计指引。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">完整的 Prompt 文件在 samples/chapter10/skill-portfolio/SKILL.md。</p>
+<h3 id="section-17" data-source-page="3">运行<a class="heading-link" href="#section-17" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">把数据和 Prompt 一起交给 AI：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">这里有一份技能数据（assets/skills-data.js），
+请按这段 Prompt（SKILL.md）的要求，
+用 frontend-design 生成一个个人技能展示页。</code></pre></div>
+<p data-source-page="3">AI 收到后，先读取你的 Prompt 了解页面结构，再加载 frontend-design 的设计规范，然后从 skills-data.js 读取数据，开始生成 HTML。</p>
+<p data-source-page="3">生成的结果有几个值得注意的特点：</p>
+<p class="list-item" data-source-page="3">完全自主手写样式，不依赖 Bootstrap、Tailwind 等外部 CSS 框架</p>
+<p class="list-item" data-source-page="3">零 emoji，所有图标用内联 SVG 实现（个人经验，想要好看的UI，必须禁止使用Emoji这种AI超喜欢的东西）</p>
+<p class="list-item" data-source-page="3">深色主题 + 强调色，没有紫青渐变（AI一般默认会选用紫色，他认为紫色具有赛博朋克的科技感）、没有无聊的居中布局</p>
+<p class="list-item" data-source-page="3">两视图切换：首页卡片网格带分类筛选，点击后平滑过渡到详情页</p>
+<p data-source-page="3">两视图切换</p>
+<p data-source-page="3">19 个技能、5 个分类、一份 JS 数据文件、一段不到 10 行的 Prompt——剩下的 HTML、CSS、交互逻辑全部由 frontend-design 指挥 AI 自动完成。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-28" data-source-page="4">■ 学点英语<a class="heading-link" href="#section-28" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>前端设计技能</td><td>frontend- design</td><td>/frʌnt end dɪ ˈzaɪn/</td><td>社区推荐的高质量前端设计Skill，提供经过验证的设计规范和审美标准</td></tr><tr><td>可缩放矢量图形</td><td>SVG</td><td>/es viː dʒiː/</td><td>用XML描述2D图形的格式，frontend-design用它替代 emoji实现高质量图标</td></tr><tr><td>主题</td><td>Theme</td><td>/θiːm/</td><td>页面的视觉风格，frontend-design采用深色主题+强调色的方案</td></tr><tr><td>CSS框架</td><td>CSS Framework</td><td>/siː es es ˈfreɪmwɜːrk/</td><td>外部样式库（如Bootstrap、Tailwind），frontend-design 不使用任何外部框架</td></tr></tbody></table></div>
+<h2 id="section-30" data-source-page="4">图片<a class="heading-link" href="#section-30" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="4"><button class="figure-open" aria-label="放大查看第 4 页图示"><img src="../assets/figures/a7cc93dfa6e107b696369b3db036cf06.png" width="2754" height="1784" loading="lazy" alt="个人技能可视化：frontend-design实战 · 原 PDF 第 4 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<figure data-source-page="5"><button class="figure-open" aria-label="放大查看第 5 页图示"><img src="../assets/figures/36277af13f10aa6ff7d2d3e2c9e4c2f6.png" width="2072" height="1694" loading="lazy" alt="个人技能可视化：frontend-design实战 · 原 PDF 第 5 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-138.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>让 AI 帮你创建 Skill</strong><small>frontend-design实战</small></a><a class="chapter-neighbor next" href="lesson-140.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Skill 的实战心法：让指令真正生效</strong><small>frontend-design实战</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5288#mid=105143" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">推荐一个优秀的 Skill：frontend-design</a><a href="#section-7" class="toc-level-2">演示案例：个人技能展示页</a><a href="#section-9" class="toc-level-3">数据准备</a><a href="#section-17" class="toc-level-3">运行</a><a href="#section-28" class="toc-level-2">■ 学点英语</a><a href="#section-30" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-139", "title": "个人技能可视化：frontend-design实战", "stage": 5, "week": 10, "module": "frontend-design实战", "minutes": 6, "pages": 5, "type": "article"}</script>
+</body></html>

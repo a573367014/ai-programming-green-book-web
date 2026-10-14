@@ -1,0 +1,784 @@
+{
+  "id": "lesson-114",
+  "title": "Resources 实战",
+  "code": "1-2",
+  "stage": 3,
+  "week": 7,
+  "week_title": "MCP：模型上下文协议",
+  "module": "Resources概念与实战",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/002-第7周 MCP：模型上下文协议/005-Resources概念与实战/114-图文-1-2-Resources 实战.pdf",
+  "sha256": "6ff194f0757cea9a269c61a73d80dca1d6b794e76e9a035b30ee0cc90ec17c64",
+  "pdf": "sources/pdf/lesson-114.pdf",
+  "pages": 8,
+  "source_url": "https://class.imooc.com/lesson/5279#mid=104933",
+  "minutes": 12,
+  "excerpt": "上一节讲解了 Resources 的核心概念和工作原理。本节通过完整的实战示例，展示 Resources 的两种实现方式，以及如何编写高效的 description。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节讲解了 Resources 的核心概念和工作原理。本节通过完整的实战示例，展示 Resources 的两种实现方式，以及如何编写高效的 description。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "4.1 Resources 的实战示例",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Resources 有两种生成方式：固定写死和动态生成，各有适用场景。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "方式 | 适用场景 | 优点 | 缺点\n固定写死 | 资源不常变化（如项目文档） | 简单直接，易于理解 | 资源变化需修改代码\n动态生成 | 资源动态变化，如数据库表、API | 自动同步，无需手动维护 | 需要额外查询逻辑",
+      "rows": [
+        [
+          "方式",
+          "适用场景",
+          "优点",
+          "缺点"
+        ],
+        [
+          "固定写死",
+          "资源不常变化（如项目文档）",
+          "简单直接，易于理解",
+          "资源变化需修改代码"
+        ],
+        [
+          "动态生成",
+          "资源动态变化，如数据库表、API",
+          "自动同步，无需手动维护",
+          "需要额外查询逻辑"
+        ]
+      ],
+      "page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面通过两个示例来看具体实现。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "API 文档 Server",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为项目的 API 文档创建一个 MCP Server，让 AI 能够查询接口使用说明。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实现思路",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# ═══════════════════════════════════\n#  API文档 MCP Server（伪代码示意）\n# ═══════════════════════════════════\n\nclass APIDocServer:\n    def list_resources(self):\n        # ▸ 返回所有可用的 Resources\n        return [\n            {\n                \"uri\": \"file://docs/authentication.md\",\n                \"name\": \"用户认证API文档\",\n                \"description\": \"用户认证相关API：登录、注册、登出、Token刷新\",\n                \"mimeType\": \"text/markdown\"\n            },\n            {\n                \"uri\": \"file://docs/user_profile.md\",\n                \"name\": \"用户资料API文档\",\n                \"description\": \"用户资料管理API：获取信息、修改头像、更新昵称\",\n                \"mimeType\": \"text/markdown\"\n            },\n            {\n                \"uri\": \"file://docs/payment.md\",\n                \"name\": \"支付API文档\",\n                \"description\": \"支付相关API：创建订单、查询状态、退款处理\",\n                \"mimeType\": \"text/markdown\"\n            },\n            # ... 更多资源\n        ]\n\n    def read_resource(self, uri):\n        # ▸ 读取指定 Resource 的内容\n        file_path = uri.replace(\"file://\", \"\")\n        with open(file_path, 'r', encoding='utf-8') as f:\n            content = f.read()\n\n        return {\n            \"contents\": [{\n                \"uri\": uri,\n                \"mimeType\": \"text/markdown\",\n                \"text\": content\n            }]\n        }",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "工作流程",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户: \"如何实现用户登录功能?\"\n  ↓\n1. AI 应用调用 list_resources()\n  获取: [用户认证API文档， 用户资料API文档， ...]\n  ↓\n2. 传给 LLM (附带所有 descriptions)\n  ↓\n3. LLM 判断: \"用户认证API文档\" 最相关\n  ↓\n4. AI 应用把请求转给 MCP Server，由 Server 调用 \nread_resource(\"file://docs/authentication.md\")\n  ↓\n5. 返回文档内容给 LLM\n  ↓\n6. LLM 阅读内容，回答用户",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "数据库 Schema Server",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "quote",
+      "text": "重点：Resources 可以动态生成！ 上一个示例（API文档 Server）中，Resources 是固定写死的： 文档文件名固定：authentication.md、user_profile.md Resources 列表不变，除非手动修改代码 但很多场景下，资源是动态变化的： 数据库表可能随时增加 API 端点可能按版本变化 用户文件可能动态上传 这时候，动态生成 Resources 列表是更好的选择！",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "让 AI 能够查询数据库的表结构、索引等元信息。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Resources 设计",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 注意：以下为伪代码示意，不可直接运行\n\nclass DatabaseSchemaServer:\n    def list_resources(self):\n        # ▸ 动态生成 Resources（关键！）\n        resources = []\n        tables = self.get_all_tables()\n        for table in tables:\n            resources.extend([\n                {\"uri\": f\"postgres://{table}/schema\", \"name\": f\"{table}表结构\", \n\"description\": \"...\"},\n                {\"uri\": f\"postgres://{table}/indexes\", \"name\": f\"{table}表索引\", \n\"description\": \"...\"},\n                {\"uri\": f\"postgres://{table}/sample\", \"name\": f\"{table}示例数据\", \n\"description\": \"...\"}\n            ])\n        return resources\n        # 假设数据库有 users、orders 两个表\n        # 就会动态生成 6 个 Resources：\n        # - postgres://users/schema\n        # - postgres://users/indexes\n        # - postgres://users/sample\n        # - postgres://orders/schema\n        # - postgres://orders/indexes\n        # - postgres://orders/sample\n\n    def read_resource(self, uri):\n        # ▸ 解析 URI,执行相应查询\n        parts = uri.split('/')\n        table = parts[1]\n        resource_type = parts[2]\n\n        if resource_type == \"schema\":\n            # 查询表结构\n            result = self.get_table_schema(table)\n        elif resource_type == \"indexes\":\n            # 查询索引信息\n            result = self.get_table_indexes(table)\n        # ...\n\n        return {\"contents\": [{\"text\": result}]}",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "使用场景",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户: \"users表有哪些索引?\"\n  ↓\nLLM 选择: postgres://users/indexes\n  ↓\nServer 执行: SELECT * FROM pg_indexes WHERE tablename='users'\n  ↓\n返回索引信息",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "4.2 编写优秀的 description",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "description 是 Resources 的灵魂!写得好不好直接影响 LLM 能否找对资源。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "好的 description 的特征",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "清晰描述内容",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "× 不好:\n\"description\": \"认证文档\"\n\n✓ 好:\n\"description\": \"API认证方式说明，包括JWT Token的获取、刷新和验证流程\"",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "包含关键词",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "× 不好:\n\"description\": \"关于系统的一些配置\"\n\n✓ 好:\n\"description\": \"系统配置文件，包括数据库连接、Redis缓存、日志级别等环境变量设置\"",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "区分度高",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "假设有两个文档:\n\n× 区分度低:",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• \"用户管理文档\"",
+      "page": 6,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• \"用户相关功能\"\n\n✓ 区分度高:",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• \"用户管理:创建、修改、删除用户的API接口\"",
+      "page": 6,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• \"用户权限:角色分配、权限检查的实现逻辑\"",
+      "page": 6,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "常见 description 模板",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "文档类 Resource",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "格式: <主题> - <核心内容>,<关键细节>\n\n示例:\n\"API认证 - JWT Token实现，包括token生成、验证和刷新流程\"\n\"数据库设计 - 表结构定义，涵盖users、orders等核心表及其关系\"\n\"部署指南 - Docker容器化部署，包括镜像构建、环境配置和启动命令\"",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "数据类 Resource",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "格式: <数据类型>的<属性/操作>,<范围/条件>\n\n示例:\n\"users表的列定义和约束条件\"\n\"订单数据的前100条示例记录，按时间倒序\"\n\"2024年1月的销售统计报表\"",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "API 类 Resource",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "格式: <操作> <对象> - <功能说明>\n\n示例:\n\"POST /users - 创建新用户，需要username、email、password参数\"\n\"GET /users/{id} - 获取指定用户的详细信息\"\n\"PUT /users/{id}/password - 修改用户密码，需要旧密码验证\"",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "4.3 Resources 也有够不着的地方",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "资源数量太多",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "问题:\n如果有 10000 个文档，生成 10000 个 Resource description\n→ description 列表本身就太长，LLM 看不完\n\n解决方案:",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• 分层设计: 先选择分类，再检索具体文档",
+      "page": 7,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• 或者用 RAG",
+      "page": 7,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "资源边界模糊",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "问题:\n如果文档内容互相重叠，description 很难写清楚\n\n示例:",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• \"用户管理。md\" - 包含用户CRUD和权限",
+      "page": 7,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• \"权限系统。md\" - 也包含用户权限相关内容\n\n→ 用户问\"如何给用户分配权限?\"\n→ 两个文档都相关，LLM 难以选择\n\n解决方案:",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• 重构文档，让边界清晰",
+      "page": 7,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• 或者允许返回多个 Resources",
+      "page": 7,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "需要模糊搜索",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "问题:\n用户问: \"有没有关于性能优化的内容?\"\n\nResources 需要:",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• description 中包含\"性能优化\"关键词",
+      "page": 8,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• 否则 LLM 找不到\n\n向量检索:",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• 可以找到语义相关的内容",
+      "page": 8,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "• 即使没有\"性能优化\"这个词\n\n结论: 模糊搜索还是 RAG 更强",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "4.4 下一节预告",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "到这里，Resources 的实战技巧已经讲清楚了：从固定写死的 API 文档 Server 到动态生成的数据库Schema Server，再到精心编写 description 提升匹配精度。下一节将把视角从「查资料」扩展到「做事情」——系统讲解 MCP 中的 Tools，如何让 AI 不仅读取数据，还能安全地调用工具、执行操作。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "4.5 ■ 学点英语",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n固定写死 | Hardcoded Resources | /ˈhɑːrdˈkoʊdɪd rɪ ˈsɔːrsɪz/ | 在代码中预定义Resources，适用于资源不常变化的场景\n动态生成 | Dynamic Generation | /daɪˈnæmɪk dʒenə ˌ ˈreɪʃn/ | 实时查询外部系统自动生成Resources列表的方式\nDescription 编写 | Description Authoring | /dɪˈskrɪpʃn ˈɔːθərɪŋ/ | 编写Resource描述以帮助LLM精准匹配资源的技术\n轮询刷新 | Polling Refresh | /ˈpoʊlɪŋ riːˈfreʃ/ | 定时扫描外部系统以更新Resources列表的机制",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "固定写死",
+          "Hardcoded Resources",
+          "/ˈhɑːrdˈkoʊdɪd rɪ ˈsɔːrsɪz/",
+          "在代码中预定义Resources，适用于资源不常变化的场景"
+        ],
+        [
+          "动态生成",
+          "Dynamic Generation",
+          "/daɪˈnæmɪk dʒenə ˌ ˈreɪʃn/",
+          "实时查询外部系统自动生成Resources列表的方式"
+        ],
+        [
+          "Description 编写",
+          "Description Authoring",
+          "/dɪˈskrɪpʃn ˈɔːθərɪŋ/",
+          "编写Resource描述以帮助LLM精准匹配资源的技术"
+        ],
+        [
+          "轮询刷新",
+          "Polling Refresh",
+          "/ˈpoʊlɪŋ riːˈfreʃ/",
+          "定时扫描外部系统以更新Resources列表的机制"
+        ]
+      ],
+      "page": 8
+    }
+  ],
+  "accounting": {
+    "source_chars": 5349,
+    "represented_chars": 5161,
+    "removed_chars": 188,
+    "tables": 2,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 152,
+      "repeated_title": 36
+    }
+  },
+  "videos": [],
+  "order": 115,
+  "headings": [
+    {
+      "title": "4.1 Resources 的实战示例",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "API 文档 Server",
+      "id": "section-5",
+      "level": 3
+    },
+    {
+      "title": "数据库 Schema Server",
+      "id": "section-11",
+      "level": 3
+    },
+    {
+      "title": "4.2 编写优秀的 description",
+      "id": "section-18",
+      "level": 2
+    },
+    {
+      "title": "好的 description 的特征",
+      "id": "section-20",
+      "level": 3
+    },
+    {
+      "title": "常见 description 模板",
+      "id": "section-31",
+      "level": 3
+    },
+    {
+      "title": "4.3 Resources 也有够不着的地方",
+      "id": "section-38",
+      "level": 2
+    },
+    {
+      "title": "资源数量太多",
+      "id": "section-39",
+      "level": 3
+    },
+    {
+      "title": "资源边界模糊",
+      "id": "section-43",
+      "level": 3
+    },
+    {
+      "title": "需要模糊搜索",
+      "id": "section-49",
+      "level": 3
+    },
+    {
+      "title": "4.4 下一节预告",
+      "id": "section-55",
+      "level": 2
+    },
+    {
+      "title": "4.5 ■ 学点英语",
+      "id": "section-57",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节讲解了 Resources 的核心概念和工作原理。本节通过完整的实战示例，展示 Resources 的两种实现方式，以及如何编写高效的 description。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "4.1 Resources 的实战示例"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Resources 有两种生成方式：固定写死和动态生成，各有适用场景。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "方式 | 适用场景 | 优点 | 缺点\n固定写死 | 资源不常变化（如项目文档） | 简单直接，易于理解 | 资源变化需修改代码\n动态生成 | 资源动态变化，如数据库表、API | 自动同步，无需手动维护 | 需要额外查询逻辑"
+    },
+    {
+      "anchor": "section-1",
+      "text": "下面通过两个示例来看具体实现。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "API 文档 Server"
+    },
+    {
+      "anchor": "section-5",
+      "text": "为项目的 API 文档创建一个 MCP Server，让 AI 能够查询接口使用说明。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "实现思路"
+    },
+    {
+      "anchor": "section-5",
+      "text": "# ═══════════════════════════════════\n#  API文档 MCP Server（伪代码示意）\n# ═══════════════════════════════════\n\nclass APIDocServer:\n    def list_resources(self):\n        # ▸ 返回所有可用的 Resources\n        return [\n            {\n                \"uri\": \"file://docs/authentication.md\",\n                \"name\": \"用户认证API文档\",\n                \"description\": \"用户认证相关API：登录、注册、登出、Token刷新\",\n                \"mimeType\": \"text/markdown\"\n            },\n            {\n                \"uri\": \"file://docs/user_profile.md\",\n                \"name\": \"用户资料API文档\",\n                \"description\": \"用户资料管理API：获取信息、修改头像、更新昵称\",\n                \"mimeType\": \"text/markdown\"\n            },\n            {\n                \"uri\": \"file://docs/payment.md\",\n                \"name\": \"支付API文档\",\n                \"description\": \"支付相关API：创建订单、查询状态、退款处理\",\n                \"mimeType\": \"text/markdown\"\n            },\n            # ... 更多资源\n        ]\n\n    def read_resource(self, uri):\n        # ▸ 读取指定 Resource 的内容\n        file_path = uri.replace(\"file://\", \"\")\n        with open(file_path, 'r', encoding='utf-8') as f:\n            content = f.read()\n\n        return {\n            \"contents\": [{\n                \"uri\": uri,\n                \"mimeType\": \"text/markdown\",\n                \"text\": content\n            }]\n        }"
+    },
+    {
+      "anchor": "section-5",
+      "text": "工作流程"
+    },
+    {
+      "anchor": "section-5",
+      "text": "用户: \"如何实现用户登录功能?\"\n  ↓\n1. AI 应用调用 list_resources()\n  获取: [用户认证API文档， 用户资料API文档， ...]\n  ↓\n2. 传给 LLM (附带所有 descriptions)\n  ↓\n3. LLM 判断: \"用户认证API文档\" 最相关\n  ↓\n4. AI 应用把请求转给 MCP Server，由 Server 调用 \nread_resource(\"file://docs/authentication.md\")\n  ↓\n5. 返回文档内容给 LLM\n  ↓\n6. LLM 阅读内容，回答用户"
+    },
+    {
+      "anchor": "section-11",
+      "text": "数据库 Schema Server"
+    },
+    {
+      "anchor": "section-11",
+      "text": "重点：Resources 可以动态生成！ 上一个示例（API文档 Server）中，Resources 是固定写死的： 文档文件名固定：authentication.md、user_profile.md Resources 列表不变，除非手动修改代码 但很多场景下，资源是动态变化的： 数据库表可能随时增加 API 端点可能按版本变化 用户文件可能动态上传 这时候，动态生成 Resources 列表是更好的选择！"
+    },
+    {
+      "anchor": "section-11",
+      "text": "让 AI 能够查询数据库的表结构、索引等元信息。"
+    },
+    {
+      "anchor": "section-11",
+      "text": "Resources 设计"
+    },
+    {
+      "anchor": "section-11",
+      "text": "# 注意：以下为伪代码示意，不可直接运行\n\nclass DatabaseSchemaServer:\n    def list_resources(self):\n        # ▸ 动态生成 Resources（关键！）\n        resources = []\n        tables = self.get_all_tables()\n        for table in tables:\n            resources.extend([\n                {\"uri\": f\"postgres://{table}/schema\", \"name\": f\"{table}表结构\", \n\"description\": \"...\"},\n                {\"uri\": f\"postgres://{table}/indexes\", \"name\": f\"{table}表索引\", \n\"description\": \"...\"},\n                {\"uri\": f\"postgres://{table}/sample\", \"name\": f\"{table}示例数据\", \n\"description\": \"...\"}\n            ])\n        return resources\n        # 假设数据库有 users、orders 两个表\n        # 就会动态生成 6 个 Resources：\n        # - postgres://users/schema\n        # - postgres://users/indexes\n        # - postgres://users/sample\n        # - postgres://orders/schema\n        # - postgres://orders/indexes\n        # - postgres://orders/sample\n\n    def read_resource(self, uri):\n        # ▸ 解析 URI,执行相应查询\n        parts = uri.split('/')\n        table = parts[1]\n        resource_type = parts[2]\n\n        if resource_type == \"schema\":\n            # 查询表结构\n            result = self.get_table_schema(table)\n        elif resource_type == \"indexes\":\n            # 查询索引信息\n            result = self.get_table_indexes(table)\n        # ...\n\n        return {\"contents\": [{\"text\": result}]}"
+    },
+    {
+      "anchor": "section-11",
+      "text": "使用场景"
+    },
+    {
+      "anchor": "section-11",
+      "text": "用户: \"users表有哪些索引?\"\n  ↓\nLLM 选择: postgres://users/indexes\n  ↓\nServer 执行: SELECT * FROM pg_indexes WHERE tablename='users'\n  ↓\n返回索引信息"
+    },
+    {
+      "anchor": "section-18",
+      "text": "4.2 编写优秀的 description"
+    },
+    {
+      "anchor": "section-18",
+      "text": "description 是 Resources 的灵魂!写得好不好直接影响 LLM 能否找对资源。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "好的 description 的特征"
+    },
+    {
+      "anchor": "section-20",
+      "text": "清晰描述内容"
+    },
+    {
+      "anchor": "section-20",
+      "text": "× 不好:\n\"description\": \"认证文档\"\n\n✓ 好:\n\"description\": \"API认证方式说明，包括JWT Token的获取、刷新和验证流程\""
+    },
+    {
+      "anchor": "section-20",
+      "text": "包含关键词"
+    },
+    {
+      "anchor": "section-20",
+      "text": "× 不好:\n\"description\": \"关于系统的一些配置\"\n\n✓ 好:\n\"description\": \"系统配置文件，包括数据库连接、Redis缓存、日志级别等环境变量设置\""
+    },
+    {
+      "anchor": "section-20",
+      "text": "区分度高"
+    },
+    {
+      "anchor": "section-20",
+      "text": "假设有两个文档:\n\n× 区分度低:"
+    },
+    {
+      "anchor": "section-20",
+      "text": "• \"用户管理文档\""
+    },
+    {
+      "anchor": "section-20",
+      "text": "• \"用户相关功能\"\n\n✓ 区分度高:"
+    },
+    {
+      "anchor": "section-20",
+      "text": "• \"用户管理:创建、修改、删除用户的API接口\""
+    },
+    {
+      "anchor": "section-20",
+      "text": "• \"用户权限:角色分配、权限检查的实现逻辑\""
+    },
+    {
+      "anchor": "section-31",
+      "text": "常见 description 模板"
+    },
+    {
+      "anchor": "section-31",
+      "text": "文档类 Resource"
+    },
+    {
+      "anchor": "section-31",
+      "text": "格式: <主题> - <核心内容>,<关键细节>\n\n示例:\n\"API认证 - JWT Token实现，包括token生成、验证和刷新流程\"\n\"数据库设计 - 表结构定义，涵盖users、orders等核心表及其关系\"\n\"部署指南 - Docker容器化部署，包括镜像构建、环境配置和启动命令\""
+    },
+    {
+      "anchor": "section-31",
+      "text": "数据类 Resource"
+    },
+    {
+      "anchor": "section-31",
+      "text": "格式: <数据类型>的<属性/操作>,<范围/条件>\n\n示例:\n\"users表的列定义和约束条件\"\n\"订单数据的前100条示例记录，按时间倒序\"\n\"2024年1月的销售统计报表\""
+    },
+    {
+      "anchor": "section-31",
+      "text": "API 类 Resource"
+    },
+    {
+      "anchor": "section-31",
+      "text": "格式: <操作> <对象> - <功能说明>\n\n示例:\n\"POST /users - 创建新用户，需要username、email、password参数\"\n\"GET /users/{id} - 获取指定用户的详细信息\"\n\"PUT /users/{id}/password - 修改用户密码，需要旧密码验证\""
+    },
+    {
+      "anchor": "section-38",
+      "text": "4.3 Resources 也有够不着的地方"
+    },
+    {
+      "anchor": "section-39",
+      "text": "资源数量太多"
+    },
+    {
+      "anchor": "section-39",
+      "text": "问题:\n如果有 10000 个文档，生成 10000 个 Resource description\n→ description 列表本身就太长，LLM 看不完\n\n解决方案:"
+    },
+    {
+      "anchor": "section-39",
+      "text": "• 分层设计: 先选择分类，再检索具体文档"
+    },
+    {
+      "anchor": "section-39",
+      "text": "• 或者用 RAG"
+    },
+    {
+      "anchor": "section-43",
+      "text": "资源边界模糊"
+    },
+    {
+      "anchor": "section-43",
+      "text": "问题:\n如果文档内容互相重叠，description 很难写清楚\n\n示例:"
+    },
+    {
+      "anchor": "section-43",
+      "text": "• \"用户管理。md\" - 包含用户CRUD和权限"
+    },
+    {
+      "anchor": "section-43",
+      "text": "• \"权限系统。md\" - 也包含用户权限相关内容\n\n→ 用户问\"如何给用户分配权限?\"\n→ 两个文档都相关，LLM 难以选择\n\n解决方案:"
+    },
+    {
+      "anchor": "section-43",
+      "text": "• 重构文档，让边界清晰"
+    },
+    {
+      "anchor": "section-43",
+      "text": "• 或者允许返回多个 Resources"
+    },
+    {
+      "anchor": "section-49",
+      "text": "需要模糊搜索"
+    },
+    {
+      "anchor": "section-49",
+      "text": "问题:\n用户问: \"有没有关于性能优化的内容?\"\n\nResources 需要:"
+    },
+    {
+      "anchor": "section-49",
+      "text": "• description 中包含\"性能优化\"关键词"
+    },
+    {
+      "anchor": "section-49",
+      "text": "• 否则 LLM 找不到\n\n向量检索:"
+    },
+    {
+      "anchor": "section-49",
+      "text": "• 可以找到语义相关的内容"
+    },
+    {
+      "anchor": "section-49",
+      "text": "• 即使没有\"性能优化\"这个词\n\n结论: 模糊搜索还是 RAG 更强"
+    },
+    {
+      "anchor": "section-55",
+      "text": "4.4 下一节预告"
+    },
+    {
+      "anchor": "section-55",
+      "text": "到这里，Resources 的实战技巧已经讲清楚了：从固定写死的 API 文档 Server 到动态生成的数据库Schema Server，再到精心编写 description 提升匹配精度。下一节将把视角从「查资料」扩展到「做事情」——系统讲解 MCP 中的 Tools，如何让 AI 不仅读取数据，还能安全地调用工具、执行操作。"
+    },
+    {
+      "anchor": "section-57",
+      "text": "4.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-57",
+      "text": "中文 | English | 音标 | 说明\n固定写死 | Hardcoded Resources | /ˈhɑːrdˈkoʊdɪd rɪ ˈsɔːrsɪz/ | 在代码中预定义Resources，适用于资源不常变化的场景\n动态生成 | Dynamic Generation | /daɪˈnæmɪk dʒenə ˌ ˈreɪʃn/ | 实时查询外部系统自动生成Resources列表的方式\nDescription 编写 | Description Authoring | /dɪˈskrɪpʃn ˈɔːθərɪŋ/ | 编写Resource描述以帮助LLM精准匹配资源的技术\n轮询刷新 | Polling Refresh | /ˈpoʊlɪŋ riːˈfreʃ/ | 定时扫描外部系统以更新Resources列表的机制"
+    }
+  ]
+}

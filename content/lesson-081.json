@@ -1,0 +1,66 @@
+{
+  "id": "lesson-081",
+  "title": "选择练习 · 1-8",
+  "code": "1-8",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "Temperature-控制创造力的旋钮",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/011-Temperature-控制创造力的旋钮/081-练习-1-8-选择练习.pdf",
+  "sha256": "6395e33fdb8ae2edf15256e4e564e292b7cc939548493f3c63f20b3647555107",
+  "pdf": "sources/pdf/lesson-081.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5263#mid=104990",
+  "minutes": 1,
+  "excerpt": "A. 随机性能让模型忘记历史对话，降低隐私风险 B. 模型给出的概率排序并不完美，随机性让\"非第一但优秀\"的候选答案也有机会浮现 C. 随机性能直接减小模型体积，降低部署成本 D. 随机性可以完全替代RLHF，让模型不再需要对齐训练",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面哪一项最能说明\"AI需要随机性\"的核心理由？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 随机性能让模型忘记历史对话，降低隐私风险 B. 模型给出的概率排序并不完美，随机性让\"非第一但优秀\"的候选答案也有机会浮现 C. 随机性能直接减小模型体积，降低部署成本 D. 随机性可以完全替代RLHF，让模型不再需要对齐训练",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 314,
+    "represented_chars": 149,
+    "removed_chars": 165,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 165
+    }
+  },
+  "videos": [],
+  "order": 82,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "下面哪一项最能说明\"AI需要随机性\"的核心理由？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 随机性能让模型忘记历史对话，降低隐私风险 B. 模型给出的概率排序并不完美，随机性让\"非第一但优秀\"的候选答案也有机会浮现 C. 随机性能直接减小模型体积，降低部署成本 D. 随机性可以完全替代RLHF，让模型不再需要对齐训练"
+    }
+  ]
+}

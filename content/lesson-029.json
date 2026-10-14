@@ -1,0 +1,67 @@
+{
+  "id": "lesson-029",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "Embedding",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/005-Embedding/029-练习-1-2-选择练习.pdf",
+  "sha256": "fdfb057f89d8926acb0e8976fff1678d5a1b4712b9c09f66958f27985dd6f787",
+  "pdf": "sources/pdf/lesson-029.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5257#mid=104956",
+  "minutes": 1,
+  "excerpt": "One-Hot编码将每个词表示为一个向量，其中只有一个位置是1，其余都是0。这种编码方式的主要问题是什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "One-Hot编码将每个词表示为一个向量，其中只有一个位置是1，其余都是0。这种编码方式的主要问题是什么？ (复习题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 向量维度太低，无法表达复杂的词义 B. 所有词之间的相似度都为0，丢失了语义信息 C. 计算效率太低，无法并行处理 D. 词和数字的映射关系不唯一",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 321,
+    "represented_chars": 138,
+    "removed_chars": 183,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 183
+    }
+  },
+  "videos": [],
+  "order": 30,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "One-Hot编码将每个词表示为一个向量，其中只有一个位置是1，其余都是0。这种编码方式的主要问题是什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 向量维度太低，无法表达复杂的词义 B. 所有词之间的相似度都为0，丢失了语义信息 C. 计算效率太低，无法并行处理 D. 词和数字的映射关系不唯一"
+    }
+  ]
+}

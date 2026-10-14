@@ -1,0 +1,422 @@
+{
+  "id": "lesson-127",
+  "title": "工具调用：让AI操作外部世界",
+  "code": "1-2",
+  "stage": 4,
+  "week": 8,
+  "week_title": "LangChain框架入门",
+  "module": "RAG集成：打造智能知识库",
+  "type": "article",
+  "repo_path": "004-阶段四 【框架应用】高效AI开发/001-第8周 LangChain框架入门/002-RAG集成：打造智能知识库/127-图文-1-2-工具调用：让AI操作外部世界.pdf",
+  "sha256": "d2a644c8a46ee5617ebc36c3ef902baa6cd769c0d54c2d86927dccea3c030854",
+  "pdf": "sources/pdf/lesson-127.pdf",
+  "pages": 4,
+  "source_url": "https://class.imooc.com/lesson/5283#mid=105032",
+  "minutes": 6,
+  "excerpt": "在前几节中，AI 只能\"动嘴说\"。从本节开始，我们将教它\"动手做\"。 你会学到如何用 @tool 给 AI 添加工具能力，并用 create_agent 让 AI 自动决定何时调用这些工具。 最后还会讨论 Agent 的使用边界——并非所有场景都需要 Agent，以及什么时候该用更强大的LangGr",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 在前几节中，AI 只能\"动嘴说\"。从本节开始，我们将教它\"动手做\"。 你会学到如何用 @tool 给 AI 添加工具能力，并用 create_agent 让 AI 自动决定何时调用这些工具。 最后还会讨论 Agent 的使用边界——并非所有场景都需要 Agent，以及什么时候该用更强大的LangGraph（第 7 章）。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "从工具调用到 Agent",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第 4 章中我们见过 Function Calling——AI 可以输出\"调用某函数\"的指令，但解析和执行的步骤需要手动完成。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent（智能体）",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第一步：定义工具",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用 @tool 装饰器把一个普通 Python 函数标记为 AI 可调用的工具：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain_core.tools import tool\n\n@tool\ndef get_weather(city: str) -> str:\n    \"\"\"查询指定城市的天气。\"\"\"\n    weather_data = {\"上海\": \"多云, 20°C\", \"杭州\": \"晴, 25°C\"}\n    return weather_data.get(city, f\"暂无{city}的天气数据\")",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "@tool 会自动分析函数名、参数类型和文档字符串，生成一份\"说明书\"发给 AI。AI 据此就知道get_weather 是干什么的、需要什么参数。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "第二步：创建 Agent",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain.agents import create_agent\nfrom langchain_openai import ChatOpenAI\n\nllm = ChatOpenAI(model=\"qwen3.6-plus\")\nagent = create_agent(llm, [get_weather])",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "第三步：调用",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "result = agent.invoke({\"messages\": [(\"user\", \"上海天气怎么样？\")]})\nprint(result[\"messages\"][-1].content)\n\n1\n2",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter8/tool_calling/01_weather_agent.py",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent 的工作循环（推理→行动→观察→决策）在第 4 章已详细解释过，此处不再重复。需要理解的核心是：Agent 可以自主决定何时调用工具、用什么参数，并把结果整合成自然语言回答。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "从单工具到多工具",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当面对多个工具和逻辑依赖时，Agent 的价值更明显。例如提问\"我明天去上海出差，穿什么合适？\"——这个简单问题背后隐藏着两步逻辑：先查上海气温，再根据气温给出穿衣建议。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "code",
+      "text": "@tool\ndef get_weather(city: str) -> str:\n    \"\"\"查询城市天气。\"\"\"\n    weather_data = {\"上海\": \"多云, 20°C\"}\n    return weather_data.get(city, f\"暂无{city}天气数据\")\n\n@tool\ndef clothing_advice(temperature: int) -> str:\n    \"\"\"根据气温提供穿衣建议。\"\"\"\n    return \"穿短袖\" if temperature > 18 else \"穿外套\"\n\n# 创建 Agent 时传入多个工具\nagent = create_agent(\n    llm,\n    [get_weather, clothing_advice],\n    system_prompt=\"你是一个旅行助手。\"\n)\n\nresult = agent.invoke({\"messages\": [(\"user\", \"明天去上海出差，穿什么合适？\")]})",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent 内部的表现：先调用 get_weather 获取气温（20°C），再调用 clothing_advice(20) 得到\"穿短袖\"，最后综合回答。这就是多步推理——上一步的结果直接影响下一步的执行。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter8/multi_tools/01_multi_tools.py",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "Agent 不是银弹",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "create_agent 虽然方便，但用多了你会发现 Agent 的思考循环（Loop）伴随成本：每次\"推理→行动→观察\"都是一次完整的 LLM 调用，token 消耗和延迟都会成倍增加。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "工程上有一条简单原则：能用 Chain（线性流水线）解决的问题，就不要用 Agent。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "场景 | Chain（线性） | Agent（智能体）\n路径 | 预先定义，固定不变 | 动态规划，边走边看\n适用 | 步骤固定的重复劳动 | 结果不确定的复杂推理\n成本 | 低（Token 少，速度快） | 高（多次推理，有延迟）",
+      "rows": [
+        [
+          "场景",
+          "Chain（线性）",
+          "Agent（智能体）"
+        ],
+        [
+          "路径",
+          "预先定义，固定不变",
+          "动态规划，边走边看"
+        ],
+        [
+          "适用",
+          "步骤固定的重复劳动",
+          "结果不确定的复杂推理"
+        ],
+        [
+          "成本",
+          "低（Token 少，速度快）",
+          "高（多次推理，有延迟）"
+        ]
+      ],
+      "page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果流程可以用第 2 节的 |（管道符）画出来，就不要用 Agent。只有当流程图里出现复杂的条件分支、需要 AI 动态判断时，Agent 才是合适的选择。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "即便如此，create_agent 提供的只是一个\"黑盒\"的 Agent 循环。如果你想精确控制每一步的执行逻辑——比如某个步骤失败后自动重试、走降级策略、或等待人工审批——LangChain 内置的 Agent 就捉襟见肘了。这正是第 7 章 LangGraph 要解决的问题。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n工具装饰器 | @tool Decorator | /tuːl ˈdekəreɪtər/ | 将普通函数标记为 AI 可调用工具的装饰器\n输入模式 | Input Schema | /ˈɪnpʊt ˈskiːmə/ | AI 描述工具参数结构和类型的说明书\n多步推理 | Multi-step Reasoning | /ˈmʌlti step ˈriːzənɪŋ/ | 上一步结果直接影响下一步执行的推理链路\n黑盒 | Black Box | /blæk bɑːks/ | 外部无法观察内部执行细节的封装体",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "工具装饰器",
+          "@tool Decorator",
+          "/tuːl ˈdekəreɪtər/",
+          "将普通函数标记为 AI 可调用工具的装饰器"
+        ],
+        [
+          "输入模式",
+          "Input Schema",
+          "/ˈɪnpʊt ˈskiːmə/",
+          "AI 描述工具参数结构和类型的说明书"
+        ],
+        [
+          "多步推理",
+          "Multi-step Reasoning",
+          "/ˈmʌlti step ˈriːzənɪŋ/",
+          "上一步结果直接影响下一步执行的推理链路"
+        ],
+        [
+          "黑盒",
+          "Black Box",
+          "/blæk bɑːks/",
+          "外部无法观察内部执行细节的封装体"
+        ]
+      ],
+      "page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "掌握了 Agent 工具调用后，AI 已经能够\"动手做事\"。但要让 AI 访问海量的私有文档——游戏攻略、技术手册、产品文档——还需要集成 RAG。下一节会看到如何用 LangChain 的 RAG 组件快速构建知识库问答系统。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    }
+  ],
+  "accounting": {
+    "source_chars": 2690,
+    "represented_chars": 2511,
+    "removed_chars": 179,
+    "tables": 2,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 147,
+      "repeated_title": 32
+    }
+  },
+  "videos": [],
+  "order": 128,
+  "headings": [
+    {
+      "title": "从工具调用到 Agent",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "从单工具到多工具",
+      "id": "section-14",
+      "level": 2
+    },
+    {
+      "title": "Agent 不是银弹",
+      "id": "section-19",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-25",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-27",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "在前几节中，AI 只能\"动嘴说\"。从本节开始，我们将教它\"动手做\"。 你会学到如何用 @tool 给 AI 添加工具能力，并用 create_agent 让 AI 自动决定何时调用这些工具。 最后还会讨论 Agent 的使用边界——并非所有场景都需要 Agent，以及什么时候该用更强大的LangGraph（第 7 章）。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "从工具调用到 Agent"
+    },
+    {
+      "anchor": "section-1",
+      "text": "第 4 章中我们见过 Function Calling——AI 可以输出\"调用某函数\"的指令，但解析和执行的步骤需要手动完成。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Agent（智能体）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "第一步：定义工具"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用 @tool 装饰器把一个普通 Python 函数标记为 AI 可调用的工具："
+    },
+    {
+      "anchor": "section-1",
+      "text": "from langchain_core.tools import tool\n\n@tool\ndef get_weather(city: str) -> str:\n    \"\"\"查询指定城市的天气。\"\"\"\n    weather_data = {\"上海\": \"多云, 20°C\", \"杭州\": \"晴, 25°C\"}\n    return weather_data.get(city, f\"暂无{city}的天气数据\")"
+    },
+    {
+      "anchor": "section-1",
+      "text": "@tool 会自动分析函数名、参数类型和文档字符串，生成一份\"说明书\"发给 AI。AI 据此就知道get_weather 是干什么的、需要什么参数。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "第二步：创建 Agent"
+    },
+    {
+      "anchor": "section-1",
+      "text": "from langchain.agents import create_agent\nfrom langchain_openai import ChatOpenAI\n\nllm = ChatOpenAI(model=\"qwen3.6-plus\")\nagent = create_agent(llm, [get_weather])"
+    },
+    {
+      "anchor": "section-1",
+      "text": "第三步：调用"
+    },
+    {
+      "anchor": "section-1",
+      "text": "result = agent.invoke({\"messages\": [(\"user\", \"上海天气怎么样？\")]})\nprint(result[\"messages\"][-1].content)\n\n1\n2"
+    },
+    {
+      "anchor": "section-1",
+      "text": "完整源码参考：samples/chapter8/tool_calling/01_weather_agent.py"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Agent 的工作循环（推理→行动→观察→决策）在第 4 章已详细解释过，此处不再重复。需要理解的核心是：Agent 可以自主决定何时调用工具、用什么参数，并把结果整合成自然语言回答。"
+    },
+    {
+      "anchor": "section-14",
+      "text": "从单工具到多工具"
+    },
+    {
+      "anchor": "section-14",
+      "text": "当面对多个工具和逻辑依赖时，Agent 的价值更明显。例如提问\"我明天去上海出差，穿什么合适？\"——这个简单问题背后隐藏着两步逻辑：先查上海气温，再根据气温给出穿衣建议。"
+    },
+    {
+      "anchor": "section-14",
+      "text": "@tool\ndef get_weather(city: str) -> str:\n    \"\"\"查询城市天气。\"\"\"\n    weather_data = {\"上海\": \"多云, 20°C\"}\n    return weather_data.get(city, f\"暂无{city}天气数据\")\n\n@tool\ndef clothing_advice(temperature: int) -> str:\n    \"\"\"根据气温提供穿衣建议。\"\"\"\n    return \"穿短袖\" if temperature > 18 else \"穿外套\"\n\n# 创建 Agent 时传入多个工具\nagent = create_agent(\n    llm,\n    [get_weather, clothing_advice],\n    system_prompt=\"你是一个旅行助手。\"\n)\n\nresult = agent.invoke({\"messages\": [(\"user\", \"明天去上海出差，穿什么合适？\")]})"
+    },
+    {
+      "anchor": "section-14",
+      "text": "Agent 内部的表现：先调用 get_weather 获取气温（20°C），再调用 clothing_advice(20) 得到\"穿短袖\"，最后综合回答。这就是多步推理——上一步的结果直接影响下一步的执行。"
+    },
+    {
+      "anchor": "section-14",
+      "text": "完整源码参考：samples/chapter8/multi_tools/01_multi_tools.py"
+    },
+    {
+      "anchor": "section-19",
+      "text": "Agent 不是银弹"
+    },
+    {
+      "anchor": "section-19",
+      "text": "create_agent 虽然方便，但用多了你会发现 Agent 的思考循环（Loop）伴随成本：每次\"推理→行动→观察\"都是一次完整的 LLM 调用，token 消耗和延迟都会成倍增加。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "工程上有一条简单原则：能用 Chain（线性流水线）解决的问题，就不要用 Agent。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "场景 | Chain（线性） | Agent（智能体）\n路径 | 预先定义，固定不变 | 动态规划，边走边看\n适用 | 步骤固定的重复劳动 | 结果不确定的复杂推理\n成本 | 低（Token 少，速度快） | 高（多次推理，有延迟）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "如果流程可以用第 2 节的 |（管道符）画出来，就不要用 Agent。只有当流程图里出现复杂的条件分支、需要 AI 动态判断时，Agent 才是合适的选择。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "即便如此，create_agent 提供的只是一个\"黑盒\"的 Agent 循环。如果你想精确控制每一步的执行逻辑——比如某个步骤失败后自动重试、走降级策略、或等待人工审批——LangChain 内置的 Agent 就捉襟见肘了。这正是第 7 章 LangGraph 要解决的问题。"
+    },
+    {
+      "anchor": "section-25",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-25",
+      "text": "中文 | English | 音标 | 说明\n工具装饰器 | @tool Decorator | /tuːl ˈdekəreɪtər/ | 将普通函数标记为 AI 可调用工具的装饰器\n输入模式 | Input Schema | /ˈɪnpʊt ˈskiːmə/ | AI 描述工具参数结构和类型的说明书\n多步推理 | Multi-step Reasoning | /ˈmʌlti step ˈriːzənɪŋ/ | 上一步结果直接影响下一步执行的推理链路\n黑盒 | Black Box | /blæk bɑːks/ | 外部无法观察内部执行细节的封装体"
+    },
+    {
+      "anchor": "section-27",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-27",
+      "text": "掌握了 Agent 工具调用后，AI 已经能够\"动手做事\"。但要让 AI 访问海量的私有文档——游戏攻略、技术手册、产品文档——还需要集成 RAG。下一节会看到如何用 LangChain 的 RAG 组件快速构建知识库问答系统。"
+    }
+  ]
+}

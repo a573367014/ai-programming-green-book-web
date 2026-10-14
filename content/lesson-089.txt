@@ -1,0 +1,146 @@
+--- PDF 第 1 页 ---
+第4章 第7节 流式输出与长度控制
+来源: https://class.imooc.com/lesson/5269#mid=104908
+阶段: 阶段二: 【实战入门】大模型开发与知识接入
+周: 第4周 理解大模型开发
+模块: 小试牛刀，做一个简单的翻译器
+课节: 图文 1-3 流式输出与长度控制
+1-3 流式输出与长度控制
+第4章 第7节 流式输出与长度控制
+[!TIP] 阅读指南 上一节我们完成了多轮对话与上下文管理。现在开始深入API参数——先学习流式
+输出（stream）和长度控制（max_tokens），这是改善用户体验和控制成本的基础。
+7.1 从简单翻译到专业工具
+回顾第6节的基础翻译器，它存在几个问题：
+等待时间长：长文本翻译时，只能干等，看不到进度
+长度不可控：无法限制翻译结果的长度
+风格固定：无法调整创意性（直译 vs 意译）
+成本不透明：不知道消耗了多少Token
+错误不友好：翻译被截断时没有提示
+本节先解决前两个问题
+我们将通过2个核心参数来解决：
+stream - 流式输出，解决等待问题
+max_tokens - 控制长度，避免截断
+其余参数（temperature、top_p等）将在下一节讨论。
+
+
+--- PDF 第 2 页 ---
+7.2 流式输出
+先理解一个大模型开发里常用的方案：流式输出（Streaming）。它常用于改善用户体验。
+流式输出的原理
+非流式：AI生成完整个翻译结果后，一次性返回
+非流式
+流式：AI每生成一小段内容，就立即返回，可以边生成边看到结果
+非流式输出：
+用户输入 → [等待10秒…] → 完整翻译结果一次性显示
+流式输出：
+用户输入 → The → weather → is → really → nice → today → … ↑ 立即开始 ↑ 逐字输出 ↑ 像打
+字机一样
+流式输出不会让AI生成更快，但会让感知更快。这就是为什么几乎所有现代AI对话产品都使用流式输
+出。
+下面看如何在代码中实现它。
+7.3 stream参数实战
+[!TIP] 示例代码位置 本节参考的实际代码位于： /samples/chapter4/translator_pro_plus.py 你
+可以在项目根目录下找到这个文件，里面包含了完整的流式输出实现。
+翻译一篇1000字的文章，需要等待10秒才能看到结果，体验很差。
+非流式输出（一次性返回）：
+
+
+--- PDF 第 3 页 ---
+response = client.chat.completions.create(
+    model="qwen3.6-plus",
+    messages=[{"role": "user", "content": "翻译这段文本..."}],
+    stream=False  # 默认值
+)
+print(response.choices[0].message.content)  # 等待10秒后一次性显示
+流式（逐字返回）:
+response = client.chat.completions.create(
+    model="qwen3.6-plus",
+    messages=[{"role": "user", "content": "翻译这段文本..."}],
+    stream=True  # 启用流式输出
+)
+# 不仅要开启stream=True，还需要使用for逐字打印出来
+for chunk in response:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)
+实际运行效果
+非流式：
+[等待10秒...]
+The weather is really nice today, let's go for a walk in the park.
+流式：
+The wea[0.1s]ther is [0.1s]really ni[0.1s]ce today[0.1s], let's go[0.1s] for a 
+walk[0.1s]...
+max_tokens：长度控制
+在第3节中，我们学习了API响应中的finish_reason字段，它会告诉我们生成结束的原因。当
+finish_reason='length'时，说明是因为达到了Token限制而被截断。下面看如何通过max_tokens参数
+来控制这个长度。
+参数说明
+max_tokens：限制生成的最大Token数（不包括输入）
+生成的最大Token数
+
+
+--- PDF 第 4 页 ---
+默认值：无限制（由模型自行决定何时停止）
+最大值：受模型上下文窗口限制（例如：如果模型上下文窗口是128K，输入用了1K，那么输出最多
+127K）
+Token估算参考 中文：1个汉字 ≈ 1个Token 英文：平均每个单词 ≈ 1.3-1.5个Token（短单词如
+“the” 是1个，长单词可能被拆分为多个）
+使用示例
+# 限制翻译结果不超过100个Token
+response = client.chat.completions.create(
+    model="qwen3.6-plus",
+    messages=[{"role": "user", "content": "翻译：今天天气真好..."}],
+    max_tokens=100  # 最多生成100个Token
+)
+# 检查是否被截断
+if response.choices[0].finish_reason == 'length':
+    print("翻译结果被截断，请增加max_tokens或缩短输入")
+else:
+    print(response.choices[0].message.content)
+实战建议
+短文本翻译：max_tokens=200 足够
+max_tokens=200
+长文章翻译：根据原文长度估算，原文Token数 × 1.5 倍
+摘要翻译：限制在 max_tokens=50-100，强制精简
+max_tokens=50-100
+Token数估算技巧
+
+
+--- PDF 第 5 页 ---
+# 粗略估算（中文）
+input_chars = len("今天天气真好，我们去公园散步吧。")  # 16个字
+estimated_tokens = input_chars * 1  # 约16个Token（1中文字≈1Token）
+max_tokens = int(estimated_tokens * 1.5)  # 翻译结果预留1.5倍空间
+print(f"输入约{estimated_tokens}个Token，建议max_tokens={max_tokens}")
+# 输出：输入约16个Token，建议max_tokens=24
+7.4 下一节预告
+掌握了流式输出和长度控制后，接下来学习如何控制翻译的创意性——通过temperature、top_p等参
+数，让翻译在直译和意译之间自由切换。
+7.5 ■ 学点英语
+中文
+English
+音标
+说明
+流式输出
+Streaming Output
+/ˈstriːmɪŋ ˈaʊtpʊt/
+AI边生成边返回结果，提升用户体验的技术
+最大令牌
+数
+Max Tokens
+/mæks ˈtoʊkənz/
+限制模型生成内容的最大Token数量
+逐块输出
+Chunk-by-chunk
+Output
+/tʃʌŋk baɪ tʃʌŋk
+ˈaʊtpʊt/
+流式模式下内容逐步返回的呈现方式
+感知速度
+Perceived Speed
+/pərˈsiːvd spiːd/
+用户感受上的响应速度，不等于实际生成速
+度
+截断检测
+Truncation Detection
+/trʌŋˈkeɪʃn dɪˈtekʃn/
+通过finish_reason判断回复是否被截断

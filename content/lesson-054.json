@@ -1,0 +1,122 @@
+{
+  "id": "lesson-054",
+  "title": "选择练习 · 1-5",
+  "code": "1-5",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "RLHF",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/008-RLHF/054-练习-1-5-选择练习.pdf",
+  "sha256": "bbdfc468f8d16dd434e426a13f7ac2a28004d2a199fec64430d74e5b877ad700",
+  "pdf": "sources/pdf/lesson-054.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5260#mid=104973",
+  "minutes": 1,
+  "excerpt": "人类在相对比较上判断稳定，而在给绝对分数时容易受心情、参照系漂移等影响",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "排序只需要标注员点点鼠标，比打分更省事",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "B",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "打分会占用更大的存储空间",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "C",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "人类在相对比较上判断稳定，而在给绝对分数时容易受心情、参照系漂移等影响",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "D",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "排序数据在数学上更容易进行反向传播",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 205,
+    "represented_chars": 86,
+    "removed_chars": 119,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 118,
+      "repeated_title": 1
+    }
+  },
+  "videos": [],
+  "order": 55,
+  "headings": [
+    {
+      "title": "B",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "C",
+      "id": "section-3",
+      "level": 2
+    },
+    {
+      "title": "D",
+      "id": "section-5",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "排序只需要标注员点点鼠标，比打分更省事"
+    },
+    {
+      "anchor": "section-1",
+      "text": "B"
+    },
+    {
+      "anchor": "section-1",
+      "text": "打分会占用更大的存储空间"
+    },
+    {
+      "anchor": "section-3",
+      "text": "C"
+    },
+    {
+      "anchor": "section-3",
+      "text": "人类在相对比较上判断稳定，而在给绝对分数时容易受心情、参照系漂移等影响"
+    },
+    {
+      "anchor": "section-5",
+      "text": "D"
+    },
+    {
+      "anchor": "section-5",
+      "text": "排序数据在数学上更容易进行反向传播"
+    }
+  ]
+}

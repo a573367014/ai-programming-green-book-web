@@ -1,0 +1,134 @@
+{
+  "id": "lesson-008",
+  "title": "选择练习 · 1-4",
+  "code": "1-4",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "ChatGPT的本质",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/002-ChatGPT的本质/008-练习-1-4-选择练习.pdf",
+  "sha256": "489cda25430f98bb6662236cd0d4610232c718861b96903cc51eead4ead6cf0a",
+  "pdf": "sources/pdf/lesson-008.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5253#mid=105024",
+  "minutes": 2,
+  "excerpt": "A linear model would only be able to process sentences shorter than 10 words",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "A linear model would only be able to process sentences shorter than 10 words",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Language requires nonlinearity because word meanings change with context. Which of the following best illustrates why a purely linear model would fail at understanding language? (延展题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "B",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A linear model could not capture the fact that the same word can have different meanings in different contexts",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "C",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A linear model would require 175 billion separate linear equations, one per parameter",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "D",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A linear model would only work for mathematical functions, not text",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 648,
+    "represented_chars": 522,
+    "removed_chars": 126,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 123,
+      "repeated_title": 3
+    }
+  },
+  "videos": [],
+  "order": 9,
+  "headings": [
+    {
+      "title": "B",
+      "id": "section-2",
+      "level": 2
+    },
+    {
+      "title": "C",
+      "id": "section-4",
+      "level": 2
+    },
+    {
+      "title": "D",
+      "id": "section-6",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "A linear model would only be able to process sentences shorter than 10 words"
+    },
+    {
+      "anchor": "article-start",
+      "text": "Language requires nonlinearity because word meanings change with context. Which of the following best illustrates why a purely linear model would fail at understanding language? (延展题)"
+    },
+    {
+      "anchor": "section-2",
+      "text": "B"
+    },
+    {
+      "anchor": "section-2",
+      "text": "A linear model could not capture the fact that the same word can have different meanings in different contexts"
+    },
+    {
+      "anchor": "section-4",
+      "text": "C"
+    },
+    {
+      "anchor": "section-4",
+      "text": "A linear model would require 175 billion separate linear equations, one per parameter"
+    },
+    {
+      "anchor": "section-6",
+      "text": "D"
+    },
+    {
+      "anchor": "section-6",
+      "text": "A linear model would only work for mathematical functions, not text"
+    }
+  ]
+}

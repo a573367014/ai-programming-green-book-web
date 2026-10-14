@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>RAG检索优化：让答案更准确 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-103">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 5 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第一个RAG应用：游戏知识问答系统</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 104</span></div>
+<h1 class="lesson-title">RAG检索优化：让答案更准确</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>9 页原文</span><span>约 14 分钟阅读</span><span class="module-name">第一个RAG应用：游戏知识问答系统</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-103.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-103.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>在前面几节，我们已经走完了RAG的大部分流程： 用户提问 → 向量检索 → 【上下文拼接】 → 大模型生成 → 返回答案 1 代码块 上下文优化，就发生在&quot;向量检索&quot;和&quot;大模型生成&quot;之间这个关键环节。 你可能会问：检索不是已经完成了吗？我们已经拿到了最相关的3-5个chunk，接下来直接丢给大模型生成答案不就行了？ 没错，理论上是这样。但实际上，这个&quot;拼接上下文&quot;的环节，藏着巨大的优化空间： 给AI多少chunk？ 3个还是10个？ 每个chunk要完整给吗？ 还是可以压缩？ 怎么组织这些chunk？ 直接拼接还是加点结构？ 如何控制成本？ 每次对话都传几千字，钱包受得了吗？ RAG的上下文管理，本质上就是在回答一个问题： 给AI多少资料才够？太少了答不准，太多了成本飙升、效果还会变差。 这节课，我就来聊聊这门&quot;给多少、怎么给&quot;的艺术。</p></aside>
+<h2 id="section-1" data-source-page="1">10.1 上下文的困境：多了不行，少了也不行<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">一个例子</p>
+<p data-source-page="1">某电商公司做了个AI客服，把商品FAQ全塞进上下文：</p>
+<p class="list-item" data-source-page="1">知识库：500个常见问题，总计15万字</p>
+<p class="list-item" data-source-page="1">用户问：“这款手机支持5G吗？”</p>
+<p class="list-item" data-source-page="1">系统检索：返回Top-10相关FAQ，共1.2万字</p>
+<p data-source-page="1">他们的想法是：“既然能检索到10个相关FAQ，那就都给AI吧，信息越多越好！”</p>
+<p data-source-page="1">运行一周后，问题来了：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p class="list-item" data-source-page="2">成本失控</p>
+<p class="list-item" data-source-page="2">每次对话输入：1.2万字（问题100字 + 上下文1.2万字）</p>
+<p class="list-item" data-source-page="2">按通义千问价格：输入0.0008元/千tokens，每次对话成本约0.12元</p>
+<p class="list-item" data-source-page="2">日均1000次咨询，月成本：3600元</p>
+<p class="list-item" data-source-page="2">而正确的上下文只需要3个FAQ（3000字），成本可降至900元/月</p>
+<p class="list-item" data-source-page="2">答案质量下降</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户：&quot;这款手机支持5G吗？&quot;
+
+AI回答：&quot;根据资料，这款手机的网络支持情况如下：
+1. 支持2G/3G/4G网络
+2. 支持Wi-Fi 6
+3. 支持蓝牙5.2
+4. 关于5G，部分型号支持，部分型号不支持
+5. 具体请查看产品型号说明...&quot;</code></pre></div>
+<p data-source-page="2">那这有什么问题呢？上下文包含了太多不同型号的信息，AI被10个FAQ搞晕了，不知道用户问的是哪个型号。原本一句话能回答的问题，变成了模棱两可的长篇大论</p>
+<p class="list-item" data-source-page="2">响应速度变慢</p>
+<p data-source-page="2">原本1秒返回答案，现在需要更久（模型要处理更多token）。</p>
+<p data-source-page="2">这个案例让我们明白：上下文不是越多越好。</p>
+<p data-source-page="2">另一个极端：吝啬的上下文。</p>
+<p data-source-page="2">还是这家电商公司，吸取教训后，走向了另一个极端：只返回Top-1最相关的FAQ，每次上下文只有300字，成本降到了最低。</p>
+<p data-source-page="2">结果又出问题了：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户：&quot;这款手机拍照怎么样？&quot;
+
+检索到的Top-1：
+&quot;该手机采用6400万像素主摄，支持OIS光学防抖。&quot;
+
+AI回答：&quot;该手机采用6400万像素主摄，支持OIS光学防抖。&quot;</code></pre></div>
+<p data-source-page="2">用户追问：&quot;夜景模式呢？&quot;检索到的Top-1（换了）： “夜景模式支持AI降噪，最长曝光8秒。”</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">AI回答：“夜景模式支持AI降噪，最长曝光8秒。”</p>
+<p data-source-page="3">那这有什么问题呢？每个答案都是正确的，但都太片面，像个复读机，用户得问好几次才能了解全貌。</p>
+<p data-source-page="3">这个案例也告诉我们：上下文也不能太少。</p>
+<p data-source-page="3">上下文的黄金平衡点</p>
+<p data-source-page="3">那到底多少才合适？</p>
+<p data-source-page="3">没有标准答案。但有判断标准：</p>
+<p class="list-item" data-source-page="3">能回答问题的最小信息集</p>
+<p data-source-page="3">不是越多越好，而是刚好够用——就像给AI一张简明扼要的&quot;小抄&quot;。</p>
+<p class="list-item" data-source-page="3">具体数字参考</p>
+<p class="list-item" data-source-page="3">简单问答：1-2个chunk（500-1000字）</p>
+<p class="list-item" data-source-page="3">中等问题：3-5个chunk（1500-3000字）</p>
+<p class="list-item" data-source-page="3">复杂问题：5-10个chunk（3000-6000字）</p>
+<p class="list-item" data-source-page="3">动态调整</p>
+<p data-source-page="3">根据问题复杂度、检索相似度和实际效果动态调整上下文数量。</p>
+<h2 id="section-39" data-source-page="3">10.2 上下文优化的三个方面<a class="heading-link" href="#section-39" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">角度1：Top-K参数调优</p>
+<p data-source-page="3">Top-K 就是从向量库中检索出&quot;最相关的K个chunk&quot;。</p>
+<p data-source-page="3">常见误区：很多人觉得K越大越好，“宁可多给，不能少给”。</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 检索Top-K
+results = collection.query(
+    query_texts=[&quot;这款手机支持5G吗&quot;],
+    n_results=10  # K=10，真的需要这么多吗？
+)</code></pre></div>
+<p data-source-page="3">实测对比（均为预估），同一个问题，不同K值的效果：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">K值</th><th scope="col">平均相似度</th><th scope="col">答案准确率</th><th scope="col">预估平均成本</th><th scope="col">预估响应时间</th></tr></thead><tbody><tr><td>1</td><td>0.92</td><td>65%</td><td>¥0.07</td><td>0.8秒</td></tr><tr><td>3</td><td>0.85</td><td>92%</td><td>¥0.22</td><td>1.2秒</td></tr><tr><td>5</td><td>0.78</td><td>89%</td><td>¥0.36</td><td>1.8秒</td></tr><tr><td>10</td><td>0.65</td><td>75%</td><td>¥0.86</td><td>3.2秒</td></tr></tbody></table></div>
+<p data-source-page="4">从表中可以看出，K=3时效果最好（准确率92%），而K=10反而下降到75%，因为引入了噪音。</p>
+<aside class="callout" data-source-page="4"><b>阅读提示</b><p>上述测试数据数值，只代表特定问题在特定数据下的测试数据。虽然数值是特例，但其趋势符合预期。这里给出只是为了方便读者理解不是越多越好，也不是越少越好，也并不是每次都是取3条效果最佳。 如果你不追求极致的效果，经验性来说，一般取Top-3。</p></aside>
+<p data-source-page="4">角度2：相似度阈值过滤</p>
+<p data-source-page="4">问题场景：用户问：“这款手机防水吗？”</p>
+<p data-source-page="4">检索结果：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Top-1: 相似度 0.85 - &quot;该手机支持IP68级防水&quot;
+Top-2: 相似度 0.52 - &quot;该手机支持无线充电&quot;
+Top-3: 相似度 0.48 - &quot;该手机电池容量5000mAh&quot;</code></pre></div>
+<p data-source-page="4">但Top-2和Top-3相似度太低（&lt;0.6），它们和&quot;防水&quot;关系不大，放进上下文只会干扰AI。</p>
+<p data-source-page="4">解决方案：设置相似度阈值</p>
+<p data-source-page="4">在检索时设置一个相似度阈值（比如0.7），只保留相似度高于阈值的chunk。具体做法是：先检索10个chunk，然后将向量距离转换为相似度（相似度 = 1 - 距离），过滤掉低于阈值的结果。这样就能只保留Top-1，过滤掉Top-2和Top-3。</p>
+<p data-source-page="4">效果：成本降低（只传输真正相关的内容）的同时，质量也得到提升（减少噪音，答案更精准）。</p>
+<p data-source-page="4">角度3：上下文压缩技术</p>
+<p data-source-page="4">即使筛选后，上下文仍可能很长，有多种压缩技术可用。</p>
+<p data-source-page="4">技术1：摘要压缩</p>
+<p data-source-page="4">用大模型把长上下文压缩成摘要：</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 伪代码：核心逻辑
+def rag_with_summary(question):
+    # 检索上下文
+    long_context = retrieve_chunks(question)  # 3000字
+
+    # 压缩成摘要
+    summary = llm.summarize(long_context, max_length=200)
+
+    # 生成答案
+    answer = llm.generate(question, context=summary)
+
+    return answer</code></pre></div>
+<p data-source-page="5">效果：原始上下文3000字可以压缩到200字，成本节省93%，但摘要会丢失一些细节。这种方法适合背景介绍类内容，以及不需要逐字引用的场景。</p>
+<p data-source-page="5">技术2：关键句提取</p>
+<p data-source-page="5">不用摘要，而是提取最相关的几句话：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 伪代码：核心逻辑
+def extract_key_sentences(text, question, top_n=3):
+    # 分句
+    sentences = split_by_period(text)
+
+    # 计算相似度
+    scores = calculate_similarity(sentences, question)
+
+    # 排序取Top-N
+    top_sentences = get_top_n(scores, n=top_n)
+
+    return join(top_sentences)</code></pre></div>
+<p data-source-page="5">效果：这种方法保留了原文，但只传输最相关的句子，成本和精准度都能兼顾。</p>
+<p data-source-page="5">技术3：LlamaIndex框架</p>
+<p data-source-page="5">如果你用LlamaIndex框架，它内置了上下文压缩功能，可以自动识别并保留最相关的句子，压缩掉不相关的部分。</p>
+<p data-source-page="5">（具体使用方法我们后续详细讲解）</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<h2 id="section-69" data-source-page="6">10.3 避免重复查询：用智慧降低成本<a class="heading-link" href="#section-69" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">前面讲的是&quot;如何优化上下文质量&quot;（压缩、过滤、提取关键信息），现在我们换个角度：</p>
+<p data-source-page="6">如果同样的问题被问了100次，每次都重新检索、重新计算、重新调用API，这不是浪费吗？</p>
+<p data-source-page="6">这一节，我们就来看看如何用&quot;缓存&quot;和&quot;分层&quot;策略，避免这些无谓的重复查询。</p>
+<p data-source-page="6">分层检索：预先整理高频FAQ</p>
+<p data-source-page="6">每次都检索整个知识库，即使是简单问题也要扫描百万级向量。</p>
+<p data-source-page="6">解决思路：把知识库分为两层，预先整理出常见问题：</p>
+<p data-source-page="6">预先</p>
+<p data-source-page="6">第一层是高频FAQ（100-200条），提前人工整理最常被问的问题，先在这个小库里用向量检索快速查找。第二层是完整知识库（数万条），包含所有文档，只有FAQ没命中时才来这里检索。</p>
+<p data-source-page="6">这就像超市把热门商品放在入口，大部分人不用走到里面，直接在门口拿就走。</p>
+<p data-source-page="6">代码实现：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 伪代码：核心逻辑
+class LayeredRAG:
+    def __init__(self):
+        self.faq_db = load_faq_database()      # FAQ小库（100条）
+        self.full_db = load_full_database()    # 完整库（10000条）
+
+    def query(self, question):
+        # 先查FAQ
+        faq_result = self.faq_db.query(question, n_results=3)
+
+        # 判断第1条相似度
+        if get_top1_similarity(faq_result) &gt; 0.7:
+            # FAQ命中，说明结果是可取的
+            filtered = filter_by_similarity(faq_result, threshold=0.5)
+            return generate_answer(question, filtered)
+        else:
+            # FAQ未命中，查完整库
+            full_result = self.full_db.query(question, n_results=3)
+            return generate_answer(question, full_result)</code></pre></div>
+<p data-source-page="6">效果：80%的问题命中FAQ，只需检索100条数据，检索速度提升10倍，成本降低80%。</p>
+<p data-source-page="6">这里用了两个阈值：</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">阈值1：0.7（决定是否命中FAQ）</p>
+<p class="list-item" data-source-page="7">只看第1条相似度</p>
+<p class="list-item" data-source-page="7">如果 &gt; 0.7 → 说明FAQ有答案，进入FAQ分支</p>
+<p class="list-item" data-source-page="7">如果 ≤ 0.7 → FAQ没答案，去完整库查</p>
+<p data-source-page="7">阈值2：0.5（过滤低相似度结果）</p>
+<p class="list-item" data-source-page="7">FAQ命中后，取回的3条中，可能只有第1条 &gt; 0.7</p>
+<p class="list-item" data-source-page="7">第2、第3条可能只有0.6、0.3</p>
+<p class="list-item" data-source-page="7">过滤掉 &lt; 0.5 的结果，避免噪音</p>
+<p class="list-item" data-source-page="7">最终传给LLM的1-3条高相似度结果</p>
+<p data-source-page="7">缓存策略：动态记录已回答的问题</p>
+<p data-source-page="7">同样的问题被问了100次，每次都重新检索、重新生成。</p>
+<p data-source-page="7">解决思路：用一个字典动态存储&quot;问题-答案&quot;对：第一次问时正常检索+生成，然后自动存入缓存；第二次问时发现缓存里有，直接返回，不调用API；随着使用，缓存越来越多，命中率越来越高。</p>
+<p data-source-page="7">和上小节的区别是：上小节的FAQ是预先准备，这里是自动积累的。</p>
+<p data-source-page="7">上小节的FAQ是预先准备，这里是自动积累的</p>
+<p data-source-page="7">但缓存匹配不能用简单的字符串对比，因为：</p>
+<p class="list-item" data-source-page="7">用户问：“如何部署Embedding模型？”</p>
+<p class="list-item" data-source-page="7">用户问：“Embedding模型怎么部署？”</p>
+<p data-source-page="7">意思相同，但文本不同。如果用哈希值匹配，这两个问题会被认为是不同的，无法命中缓存。</p>
+<p data-source-page="7">解决方案：用向量相似度进行语义匹配：</p>
+<p class="list-item" data-source-page="7">将问题向量化（用Embedding模型）</p>
+<p class="list-item" data-source-page="7">在缓存向量库中查找相似问题</p>
+<p class="list-item" data-source-page="7">如果相似度 &gt; 0.95，认为是同一问题，返回缓存答案</p>
+<p class="list-item" data-source-page="7">否则正常检索+生成，并将新的问题-答案对存入缓存</p>
+<p data-source-page="7">这样就能识别语义相同但表达不同的问题。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 伪代码：核心逻辑
+class CachedRAG:
+    def __init__(self):
+        self.cache_db = create_vector_db()  # 缓存向量库
+        self.rag = RAGSystem()
+
+    def query(self, question):
+        # 将问题向量化，查缓存
+        cached = self.cache_db.query(question, n_results=1)
+
+        # 判断是否命中
+        if get_top1_similarity(cached) &gt; 0.95:  # 高相似度
+            # 缓存命中
+            return cached[&#x27;answer&#x27;]
+        else:
+            # 未命中，正常RAG
+            answer = self.rag.query(question)
+
+            # 存入缓存
+            self.cache_db.add(question, answer)
+
+            return answer</code></pre></div>
+<p data-source-page="8">效果：相同问题第二次查询耗时不到10ms，成本为0（不调用API），缓存命中率通常在30-50%之间（取决于业务场景）。</p>
+<h2 id="section-109" data-source-page="8">10.4 下一节预告<a class="heading-link" href="#section-109" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">到这里，我们已经掌握了从文档处理、向量检索到上下文优化的全流程。<strong>但你可能会发现：</strong>每次都要手写分块、建库、检索的代码，很繁琐。有没有现成的框架可以简化这些流程？</p>
+<p data-source-page="8"><strong>下一节《LlamaIndex实战：RAG开发框架》</strong>将带你认识一个强大的RAG框架，看看它如何用几行代码实现我们前面写了上百行才能完成的功能。</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h2 id="section-112" data-source-page="9">10.5 ■ 学点英语<a class="heading-link" href="#section-112" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="9"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>问题重写</td><td>Query Rewriting</td><td>/ˈkwɪri riːˈraɪtɪŋ/</td><td>用LLM将用户问题改写得更清晰以提升检索准确率</td></tr><tr><td>混合检索</td><td>Hybrid Search</td><td>/ˈhaɪbrɪd sɜːrtʃ/</td><td>组合向量检索、关键词检索、BM25等多种检索方式</td></tr><tr><td>重排序模型</td><td>Reranking Model</td><td>/riːˈræŋkɪŋ ˈmɑːdl/</td><td>对初筛结果进行更精确的相关性打分和重排</td></tr><tr><td>缓存策略</td><td>Cache Strategy</td><td>/kæʃ ˈstrætədʒi/</td><td>缓存相同或相似问题的答案，避免重复API调用</td></tr><tr><td>Token 预算</td><td>Token Budget</td><td>/ˈtoʊkən ˈbʌdʒɪt/</td><td>每次对话允许消耗的最大Token数量</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-102.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>文档分块实战：Java编程规范问答</strong><small>第一个RAG应用：游戏知识问答系统</small></a><a class="chapter-neighbor next" href="lesson-104.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>LlamaIndex（一）-核心概念与查询机制</strong><small>LlamaIndex</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5273#mid=104922" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">10.1 上下文的困境：多了不行，少了也不行</a><a href="#section-39" class="toc-level-2">10.2 上下文优化的三个方面</a><a href="#section-69" class="toc-level-2">10.3 避免重复查询：用智慧降低成本</a><a href="#section-109" class="toc-level-2">10.4 下一节预告</a><a href="#section-112" class="toc-level-2">10.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-103", "title": "RAG检索优化：让答案更准确", "stage": 2, "week": 5, "module": "第一个RAG应用：游戏知识问答系统", "minutes": 14, "pages": 9, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,66 @@
+{
+  "id": "lesson-037",
+  "title": "选择练习 · 1-4",
+  "code": "1-4",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "预训练",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/006-预训练/037-练习-1-4-选择练习.pdf",
+  "sha256": "b3155937ef288f3c258f2ba04ca89090f292521a36127cd70edc12525bf0def3",
+  "pdf": "sources/pdf/lesson-037.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5258#mid=104960",
+  "minutes": 1,
+  "excerpt": "GPT-3训练使用约10000块V100 GPU，持续运行约34天。这个代价说明了什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "GPT-3训练使用约10000块V100 GPU，持续运行约34天。这个代价说明了什么？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 大语言模型训练无需太多算力 B. 大语言模型训练是一场资源密集型的竞赛，只有少数科技巨头能参与 C. GPT-3是唯一需要如此多算力的模型 D. GPU数量越多，训练时间越短，成本越低",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 316,
+    "represented_chars": 148,
+    "removed_chars": 168,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 168
+    }
+  },
+  "videos": [],
+  "order": 38,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "GPT-3训练使用约10000块V100 GPU，持续运行约34天。这个代价说明了什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 大语言模型训练无需太多算力 B. 大语言模型训练是一场资源密集型的竞赛，只有少数科技巨头能参与 C. GPT-3是唯一需要如此多算力的模型 D. GPU数量越多，训练时间越短，成本越低"
+    }
+  ]
+}

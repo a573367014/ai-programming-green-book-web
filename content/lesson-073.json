@@ -1,0 +1,248 @@
+{
+  "id": "lesson-073",
+  "title": "扩展练习（2）",
+  "code": "1-6",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "Context Learning",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/010-Context Learning/073-图文-1-6-扩展练习（2）.pdf",
+  "sha256": "c0f6a180cea1818473dbe33c5010ff026c4d13ab29fad3d5516bbe8fb9348619",
+  "pdf": "sources/pdf/lesson-073.pdf",
+  "pages": 2,
+  "source_url": "https://class.imooc.com/lesson/5262#mid=104984",
+  "minutes": 3,
+  "excerpt": "题干: 思维链带来了 10 倍左右的 Token 消耗，但对于简单问题（如\"2+2 等于多少\"），开启思维链反而会过度复杂化、增加成本而无收益。 (延展题)",
+  "items": [
+    {
+      "kind": "h2",
+      "text": "1",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 判断题 难度: 中等",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: 思维链带来了 10 倍左右的 Token 消耗，但对于简单问题（如\"2+2 等于多少\"），开启思维链反而会过度复杂化、增加成本而无收益。 (延展题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确答案: 正确",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: 这是 CoT 的\"反向代价\"：它把每一个中间推理步都显式化，对复杂问题是救命稻草，对简单问题却是无谓开销。现代大模型（如带\"深度思考\"模式的 DeepSeek）通常会提供开关，让用户按任务选择——这与\"设计题永远只解决刚刚好那道题\"的工程美感是相通的。盲目开启 CoT 不仅费钱，还会让系统响应变慢，在交互式应用里是一种体验损耗。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 阅读理解题 难度: 困难",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: 阅读以下一段文字，并回答后续问题。 (思维题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "阅读材料:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "2022 年，Wei 等研究者发表了《Chain-of-Thought Prompting Elicits Reasoning in Large Language Models》。他们发现：当模型规模低于某个阈值（大约 10^22 FLOPs 的训练算力）时，CoT 与普通 Few-Shot 的表现没有明显差别，甚至更差；但一旦规模越过这个阈值，CoT 带来的准确率提升会突然变得显著。这让 CoT 本身也表现出了\"涌现\"特征——不是模型规模越大就一定能受益于 CoT，而是需要足够的底层推理能力被激活之后，CoT 才成为一把有用的\"放大器\"。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "题目1:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 简答题 难度: 困难",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: 为什么说\"CoT 本身也表现出涌现特征\"？请用自己的话解释。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "参考答案:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "● 小模型即使被要求\"一步步思考\"，也无法真正产出有意义的中间步骤——它生成的\"推理\"更像是对示例格式的机械模仿，并不能支撑后续推导 ● 大模型跨过某个规模阈值后，其内部推理能力足够强，分步提示才能真正\"放大\"这些能力，让输出的中间步骤成为对最终答案有用的线索 ● 这种\"有没有 CoT 的增益 依赖于 模型规模是否够大\"的非线性关系，与涌现能力的定义一致——跃迁式、规模依赖、突然出现",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "题目2:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 单选题",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: 以下哪种工程决策最符合上述研究结论？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "选项A: 在任何规模的模型上都默认启用 CoT 选项B: 在小模型上关闭 CoT，将预算集中在选择合适规模的模型上，规模上来后再引入 CoT 作为放大器 选项C: 完全放弃 CoT，直接微调 选项D: 让小模型做CoT，大模型反而不做 CoT",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确答案: B",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: 材料的核心结论是\"CoT 的收益对规模敏感\"。在小模型上强行用 CoT 不仅没有收益，还会增加Token 成本——选项A 无差别启用是浪费。选项C 抛弃 CoT 丢掉了大模型上\"近乎免费\"的推理放大器。选项D 与结论完全相反。选项B 才是符合工程理性的\"按模型规模分层策略\"——它也暗合了一个更一般的原则：提示工程的技巧要和模型的底层能力相匹配，脱离模型规模谈 Prompt 是无本之木。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    }
+  ],
+  "accounting": {
+    "source_chars": 1343,
+    "represented_chars": 1199,
+    "removed_chars": 144,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 133,
+      "repeated_title": 11
+    }
+  },
+  "videos": [],
+  "order": 74,
+  "headings": [
+    {
+      "title": "1",
+      "id": "section-0",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "section-0",
+      "text": "1"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 判断题 难度: 中等"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: 思维链带来了 10 倍左右的 Token 消耗，但对于简单问题（如\"2+2 等于多少\"），开启思维链反而会过度复杂化、增加成本而无收益。 (延展题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "正确答案: 正确"
+    },
+    {
+      "anchor": "section-0",
+      "text": "解析: 这是 CoT 的\"反向代价\"：它把每一个中间推理步都显式化，对复杂问题是救命稻草，对简单问题却是无谓开销。现代大模型（如带\"深度思考\"模式的 DeepSeek）通常会提供开关，让用户按任务选择——这与\"设计题永远只解决刚刚好那道题\"的工程美感是相通的。盲目开启 CoT 不仅费钱，还会让系统响应变慢，在交互式应用里是一种体验损耗。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 阅读理解题 难度: 困难"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: 阅读以下一段文字，并回答后续问题。 (思维题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "阅读材料:"
+    },
+    {
+      "anchor": "section-0",
+      "text": "2022 年，Wei 等研究者发表了《Chain-of-Thought Prompting Elicits Reasoning in Large Language Models》。他们发现：当模型规模低于某个阈值（大约 10^22 FLOPs 的训练算力）时，CoT 与普通 Few-Shot 的表现没有明显差别，甚至更差；但一旦规模越过这个阈值，CoT 带来的准确率提升会突然变得显著。这让 CoT 本身也表现出了\"涌现\"特征——不是模型规模越大就一定能受益于 CoT，而是需要足够的底层推理能力被激活之后，CoT 才成为一把有用的\"放大器\"。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题目1:"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 简答题 难度: 困难"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: 为什么说\"CoT 本身也表现出涌现特征\"？请用自己的话解释。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "参考答案:"
+    },
+    {
+      "anchor": "section-0",
+      "text": "● 小模型即使被要求\"一步步思考\"，也无法真正产出有意义的中间步骤——它生成的\"推理\"更像是对示例格式的机械模仿，并不能支撑后续推导 ● 大模型跨过某个规模阈值后，其内部推理能力足够强，分步提示才能真正\"放大\"这些能力，让输出的中间步骤成为对最终答案有用的线索 ● 这种\"有没有 CoT 的增益 依赖于 模型规模是否够大\"的非线性关系，与涌现能力的定义一致——跃迁式、规模依赖、突然出现"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题目2:"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 单选题"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: 以下哪种工程决策最符合上述研究结论？"
+    },
+    {
+      "anchor": "section-0",
+      "text": "选项A: 在任何规模的模型上都默认启用 CoT 选项B: 在小模型上关闭 CoT，将预算集中在选择合适规模的模型上，规模上来后再引入 CoT 作为放大器 选项C: 完全放弃 CoT，直接微调 选项D: 让小模型做CoT，大模型反而不做 CoT"
+    },
+    {
+      "anchor": "section-0",
+      "text": "正确答案: B"
+    },
+    {
+      "anchor": "section-0",
+      "text": "解析: 材料的核心结论是\"CoT 的收益对规模敏感\"。在小模型上强行用 CoT 不仅没有收益，还会增加Token 成本——选项A 无差别启用是浪费。选项C 抛弃 CoT 丢掉了大模型上\"近乎免费\"的推理放大器。选项D 与结论完全相反。选项B 才是符合工程理性的\"按模型规模分层策略\"——它也暗合了一个更一般的原则：提示工程的技巧要和模型的底层能力相匹配，脱离模型规模谈 Prompt 是无本之木。"
+    }
+  ]
+}

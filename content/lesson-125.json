@@ -1,0 +1,752 @@
+{
+  "id": "lesson-125",
+  "title": "LangChain核心概念",
+  "code": "1-2",
+  "stage": 4,
+  "week": 8,
+  "week_title": "LangChain框架入门",
+  "module": "LangChain核心概念与应用",
+  "type": "article",
+  "repo_path": "004-阶段四 【框架应用】高效AI开发/001-第8周 LangChain框架入门/001-LangChain核心概念与应用/125-图文-1-2-LangChain核心概念.pdf",
+  "sha256": "d4a0f1fe8e12c71e8a21829318199a33d2c1c43273ebcf8f4c576feb57d954f1",
+  "pdf": "sources/pdf/lesson-125.pdf",
+  "pages": 10,
+  "source_url": "https://class.imooc.com/lesson/5282#mid=105027",
+  "minutes": 9,
+  "excerpt": "上一节我们通过一个具体案例感受了 LangChain 能解决哪些痛点。本节会从“俯视图”的角度，拆解 LangChain 的核心组件，说明每一块分别负责什么、它们如何协同工作，以及在什么场景下该重点关注哪一块。建议你一边阅读，一边对照自己正在做或准备做的 AI 应用，思考：这些组件中，哪些是你最想马",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们通过一个具体案例感受了 LangChain 能解决哪些痛点。本节会从“俯视图”的角度，拆解 LangChain 的核心组件，说明每一块分别负责什么、它们如何协同工作，以及在什么场景下该重点关注哪一块。建议你一边阅读，一边对照自己正在做或准备做的 AI 应用，思考：这些组件中，哪些是你最想马上用起来的？",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "核心组件全景",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LangChain 提供了 6 大核心组件:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "1. Models - 大模型接口封装 2. Prompts - Prompt 模板管理 3. Chains - 串联多个步骤（简单线性流程；复杂编排见第7章 LangGraph） 4. Memory - 对话历史管理 5. Tools - 外部工具调用 6.Agents - 让 AI 自主决策",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "它们的关系就像做饭的工具:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Models = 灶台(提供火力)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Prompts = 菜谱(指导做什么)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Chains = 流程(先炒菜再调味，但只能一条路走到底；复杂路线见第7章)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Memory = 冰箱(记住之前做过什么)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Tools = 厨具(切菜、炒锅等)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Agents = 大厨(自己决定用什么工具)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LangChain 封装了各种大模型的 API,提供统一接口。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain.chat_models import ChatOpenAI\n\n# Chat 模型\nchat_model = ChatOpenAI(\n    model=\"qwen3.6-plus\",\n    temperature=0.7\n)\n\n# 调用\nresponse = chat_model.invoke(\"原神好玩吗?\")",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "好处:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "统一接口 - 换模型只需改一行代码",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "参数标准化 - temperature、max_tokens 等统一管理",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "支持多种模型 - OpenAI、QWen、本地模型等",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "Prompts - 模板管理",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不用每次手写 Prompt,用模板来管理。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain.prompts import PromptTemplate\n\n# 定义模板\ntemplate = \"\"\"你是一个游戏攻略专家。\n\n用户问题: {question}\n\n请提供详细的攻略建议。\n\"\"\"\n\nprompt = PromptTemplate(\n    template=template,\n    input_variables=[\"question\"]\n)\n\n# 使用\nfinal_prompt = prompt.format(\n    question=\"原神雷电将军怎么配队?\"\n)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "复用 - 同一个模板用在多个场景",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "维护简单 - Prompt 集中管理",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "动态插值 - 自动填充变量",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LangChain 提供了一种叫 LCEL 的管道语法，用 | 符号把多个处理步骤串联成一条流水线。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 用 | 把 Prompt 和 Model 连起来\nchain = prompt | chat_model\n\n# 启动\nresult = chain.invoke({\"question\": \"雷电将军怎么配队?\"})",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "| 左边步骤的输出会自动成为右边步骤的输入，省去了手动传递中间变量的麻烦。但需要注意，Chain本质是线性流水线——数据只能单向、顺序流动。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果要用到更复杂的控制——比如条件分支、循环重试、多步骤协作——Chain 的线性模型就力不从心了。这时需要更强大的编排工具：LangGraph（下一章我们来讨论这个神器）。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "Memory - 对话管理",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI 需要记住之前的对话，才能连贯交流。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain.memory import ConversationBufferMemory\nfrom langchain.chains import ConversationChain\n\n# 初始化 Memory\nmemory = ConversationBufferMemory()\n\n# 创建对话 Chain\nconversation = ConversationChain(\n    llm=chat_model,\n    memory=memory\n)\n\n# 多轮对话\nresponse1 = conversation.predict(\n    input=\"我在玩原神\"\n)\n# AI: \"原神是一款很受欢迎的开放世界游戏...\"\n\nresponse2 = conversation.predict(\n    input=\"它有什么好玩的角色?\"\n)\n# AI 知道\"它\"指的是原神,因为有 Memory",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Memory 类型:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "ConversationBufferMemory - 保存全部对话",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "ConversationSummaryMemory - 总结式记忆(节省 token)",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "ConversationBufferWindowMemory - 只保留最近 N 轮",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "Tools - 工具调用",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让 AI 能调用外部工具，比如查询 API、搜索等。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain.tools import Tool\n\n# 定义工具\ndef get_character_info(character_name):\n    # 调用游戏 API 获取角色信息\n    return {\n        \"name\": character_name,\n        \"element\": \"雷\",\n        \"weapon\": \"长柄武器\"\n    }\n\ncharacter_tool = Tool(\n    name=\"查询角色信息\",\n    func=get_character_info,\n    description=\"查询原神角色的基础信息,包括元素、武器类型等\"\n)\n\n# 使用(后面会讲如何让 AI 自动调用)\nresult = character_tool.run(\"雷电将军\")",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "Agents - 自主决策",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "前面我们已经认识了 Models、Prompts、Chains 和 Tools，这些都还可以看成是“普通函数”和“函数调用链”。从本节开始，会偶尔看到一个新名字：Agent（智能体）。在本章的这个位置，你不用立刻掌握它的所有细节，只需要先把它当成一个会自己决定用哪个工具的“总控函数”。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "换句话说：当 Models、Prompts、Chains、Tools 都准备好了之后，Agent 就站在它们的最上面，负责回答三个问题：",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "list",
+      "text": "现在需要调用哪些工具？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "这些工具按什么顺序使用？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "把工具的结果怎么组织成最终答案？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在现代 LangChain 中，我们使用 create_agent 来快速构建一个 Agent。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain.agents import create_agent\n\n# 准备工具列表\ntools = [character_tool, team_tool, build_tool]\n\n# 创建 Agent\nagent = create_agent(\n    llm=chat_model,\n    tools=tools,\n    system_prompt=\"你是一个资深游戏助手。\"\n)\n\n# 使用 invoke 触发，传入消息序列\nresponse = agent.invoke({\n    \"messages\": [(\"user\", \"帮我分析一下雷电将军的最佳配队\")]\n})\nprint(response[\"messages\"][-1].content)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent 的思考过程:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "思考: 用户想了解雷电将军的配队和圣遗物\n行动: 调用\"查询角色信息\"工具\n观察: 获得雷电将军的基础信息\n\n思考: 需要查询推荐配队\n行动: 调用\"推荐队伍\"工具\n观察: 获得配队建议\n\n思考: 需要查询圣遗物搭配\n行动: 调用\"圣遗物推荐\"工具\n观察: 获得圣遗物建议\n\n思考: 已有足够信息,可以回答\n最终答案: [综合分析结果]",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "组件关系图",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "h2",
+      "text": "从简单到复杂",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在实际项目里，你可以在不同层级使用 LangChain：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Level 1: 单次调用 (Model + Prompt)",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "chain = prompt | llm\nresult = chain.invoke({\"input\": \"问题\"})\n\n1\n2",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Level 2: 多步流程 (Chain 串联)",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "overall_chain = chain1 | chain2 | chain3\n\n1",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "需要工具调用或 Agent 功能时，LangChain 也提供了相应的组件，下一节我们会从完整应用的角度继续深入。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n链式表达式语言 | LCEL (LangChain Expression Language) | /læŋ tʃeɪn ɪkˈspreʃn ˈlæŋɡwɪdʒ/ | LangChain 的管道语法，用｜ 串联组件\n流水线 | Pipeline | /ˈpaɪplaɪn/ | 数据按顺序流经多个处理步骤的架构\n可运行接口 | Runnable Interface | /ˈrʌnəbl ˈɪntərfeɪs/ | LangChain 组件的统一调用接口标准\n智能体 | Agent | /ˈeɪdʒənt/ | 能自主决策调用哪些工具的总控层",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "链式表达式语言",
+          "LCEL (LangChain Expression Language)",
+          "/læŋ tʃeɪn ɪkˈspreʃn ˈlæŋɡwɪdʒ/",
+          "LangChain 的管道语法，用｜ 串联组件"
+        ],
+        [
+          "流水线",
+          "Pipeline",
+          "/ˈpaɪplaɪn/",
+          "数据按顺序流经多个处理步骤的架构"
+        ],
+        [
+          "可运行接口",
+          "Runnable Interface",
+          "/ˈrʌnəbl ˈɪntərfeɪs/",
+          "LangChain 组件的统一调用接口标准"
+        ],
+        [
+          "智能体",
+          "Agent",
+          "/ˈeɪdʒənt/",
+          "能自主决策调用哪些工具的总控层"
+        ]
+      ],
+      "page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "本节我们认识了 LangChain 的各种积木：Models、Prompts、Chains、Memory、Tools 和Agents，但它们的真正力量要放到一个完整应用里才能看清楚。接下来，我们会用这些组件搭建一个原神攻略助手，从一次简单调用逐步发展到带记忆的对话系统。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/35b9b84e807b3d0fc2ff2b5c3f930a1b.png",
+      "width": 852,
+      "height": 1630,
+      "page": 9
+    }
+  ],
+  "accounting": {
+    "source_chars": 3981,
+    "represented_chars": 3803,
+    "removed_chars": 178,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 2,
+    "removals": {
+      "export_metadata": 148,
+      "repeated_title": 30
+    }
+  },
+  "videos": [],
+  "order": 126,
+  "headings": [
+    {
+      "title": "核心组件全景",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "Prompts - 模板管理",
+      "id": "section-17",
+      "level": 2
+    },
+    {
+      "title": "Memory - 对话管理",
+      "id": "section-27",
+      "level": 2
+    },
+    {
+      "title": "Tools - 工具调用",
+      "id": "section-34",
+      "level": 2
+    },
+    {
+      "title": "Agents - 自主决策",
+      "id": "section-37",
+      "level": 2
+    },
+    {
+      "title": "组件关系图",
+      "id": "section-47",
+      "level": 2
+    },
+    {
+      "title": "从简单到复杂",
+      "id": "section-48",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-55",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-57",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-59",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们通过一个具体案例感受了 LangChain 能解决哪些痛点。本节会从“俯视图”的角度，拆解 LangChain 的核心组件，说明每一块分别负责什么、它们如何协同工作，以及在什么场景下该重点关注哪一块。建议你一边阅读，一边对照自己正在做或准备做的 AI 应用，思考：这些组件中，哪些是你最想马上用起来的？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "核心组件全景"
+    },
+    {
+      "anchor": "section-1",
+      "text": "LangChain 提供了 6 大核心组件:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "1. Models - 大模型接口封装 2. Prompts - Prompt 模板管理 3. Chains - 串联多个步骤（简单线性流程；复杂编排见第7章 LangGraph） 4. Memory - 对话历史管理 5. Tools - 外部工具调用 6.Agents - 让 AI 自主决策"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它们的关系就像做饭的工具:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Models = 灶台(提供火力)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Prompts = 菜谱(指导做什么)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Chains = 流程(先炒菜再调味，但只能一条路走到底；复杂路线见第7章)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Memory = 冰箱(记住之前做过什么)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Tools = 厨具(切菜、炒锅等)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Agents = 大厨(自己决定用什么工具)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "LangChain 封装了各种大模型的 API,提供统一接口。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "from langchain.chat_models import ChatOpenAI\n\n# Chat 模型\nchat_model = ChatOpenAI(\n    model=\"qwen3.6-plus\",\n    temperature=0.7\n)\n\n# 调用\nresponse = chat_model.invoke(\"原神好玩吗?\")"
+    },
+    {
+      "anchor": "section-1",
+      "text": "好处:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "统一接口 - 换模型只需改一行代码"
+    },
+    {
+      "anchor": "section-1",
+      "text": "参数标准化 - temperature、max_tokens 等统一管理"
+    },
+    {
+      "anchor": "section-1",
+      "text": "支持多种模型 - OpenAI、QWen、本地模型等"
+    },
+    {
+      "anchor": "section-17",
+      "text": "Prompts - 模板管理"
+    },
+    {
+      "anchor": "section-17",
+      "text": "不用每次手写 Prompt,用模板来管理。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "from langchain.prompts import PromptTemplate\n\n# 定义模板\ntemplate = \"\"\"你是一个游戏攻略专家。\n\n用户问题: {question}\n\n请提供详细的攻略建议。\n\"\"\"\n\nprompt = PromptTemplate(\n    template=template,\n    input_variables=[\"question\"]\n)\n\n# 使用\nfinal_prompt = prompt.format(\n    question=\"原神雷电将军怎么配队?\"\n)"
+    },
+    {
+      "anchor": "section-17",
+      "text": "复用 - 同一个模板用在多个场景"
+    },
+    {
+      "anchor": "section-17",
+      "text": "维护简单 - Prompt 集中管理"
+    },
+    {
+      "anchor": "section-17",
+      "text": "动态插值 - 自动填充变量"
+    },
+    {
+      "anchor": "section-17",
+      "text": "LangChain 提供了一种叫 LCEL 的管道语法，用 | 符号把多个处理步骤串联成一条流水线。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "# 用 | 把 Prompt 和 Model 连起来\nchain = prompt | chat_model\n\n# 启动\nresult = chain.invoke({\"question\": \"雷电将军怎么配队?\"})"
+    },
+    {
+      "anchor": "section-17",
+      "text": "| 左边步骤的输出会自动成为右边步骤的输入，省去了手动传递中间变量的麻烦。但需要注意，Chain本质是线性流水线——数据只能单向、顺序流动。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "如果要用到更复杂的控制——比如条件分支、循环重试、多步骤协作——Chain 的线性模型就力不从心了。这时需要更强大的编排工具：LangGraph（下一章我们来讨论这个神器）。"
+    },
+    {
+      "anchor": "section-27",
+      "text": "Memory - 对话管理"
+    },
+    {
+      "anchor": "section-27",
+      "text": "AI 需要记住之前的对话，才能连贯交流。"
+    },
+    {
+      "anchor": "section-27",
+      "text": "from langchain.memory import ConversationBufferMemory\nfrom langchain.chains import ConversationChain\n\n# 初始化 Memory\nmemory = ConversationBufferMemory()\n\n# 创建对话 Chain\nconversation = ConversationChain(\n    llm=chat_model,\n    memory=memory\n)\n\n# 多轮对话\nresponse1 = conversation.predict(\n    input=\"我在玩原神\"\n)\n# AI: \"原神是一款很受欢迎的开放世界游戏...\"\n\nresponse2 = conversation.predict(\n    input=\"它有什么好玩的角色?\"\n)\n# AI 知道\"它\"指的是原神,因为有 Memory"
+    },
+    {
+      "anchor": "section-27",
+      "text": "Memory 类型:"
+    },
+    {
+      "anchor": "section-27",
+      "text": "ConversationBufferMemory - 保存全部对话"
+    },
+    {
+      "anchor": "section-27",
+      "text": "ConversationSummaryMemory - 总结式记忆(节省 token)"
+    },
+    {
+      "anchor": "section-27",
+      "text": "ConversationBufferWindowMemory - 只保留最近 N 轮"
+    },
+    {
+      "anchor": "section-34",
+      "text": "Tools - 工具调用"
+    },
+    {
+      "anchor": "section-34",
+      "text": "让 AI 能调用外部工具，比如查询 API、搜索等。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "from langchain.tools import Tool\n\n# 定义工具\ndef get_character_info(character_name):\n    # 调用游戏 API 获取角色信息\n    return {\n        \"name\": character_name,\n        \"element\": \"雷\",\n        \"weapon\": \"长柄武器\"\n    }\n\ncharacter_tool = Tool(\n    name=\"查询角色信息\",\n    func=get_character_info,\n    description=\"查询原神角色的基础信息,包括元素、武器类型等\"\n)\n\n# 使用(后面会讲如何让 AI 自动调用)\nresult = character_tool.run(\"雷电将军\")"
+    },
+    {
+      "anchor": "section-37",
+      "text": "Agents - 自主决策"
+    },
+    {
+      "anchor": "section-37",
+      "text": "前面我们已经认识了 Models、Prompts、Chains 和 Tools，这些都还可以看成是“普通函数”和“函数调用链”。从本节开始，会偶尔看到一个新名字：Agent（智能体）。在本章的这个位置，你不用立刻掌握它的所有细节，只需要先把它当成一个会自己决定用哪个工具的“总控函数”。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "换句话说：当 Models、Prompts、Chains、Tools 都准备好了之后，Agent 就站在它们的最上面，负责回答三个问题："
+    },
+    {
+      "anchor": "section-37",
+      "text": "现在需要调用哪些工具？"
+    },
+    {
+      "anchor": "section-37",
+      "text": "这些工具按什么顺序使用？"
+    },
+    {
+      "anchor": "section-37",
+      "text": "把工具的结果怎么组织成最终答案？"
+    },
+    {
+      "anchor": "section-37",
+      "text": "在现代 LangChain 中，我们使用 create_agent 来快速构建一个 Agent。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "from langchain.agents import create_agent\n\n# 准备工具列表\ntools = [character_tool, team_tool, build_tool]\n\n# 创建 Agent\nagent = create_agent(\n    llm=chat_model,\n    tools=tools,\n    system_prompt=\"你是一个资深游戏助手。\"\n)\n\n# 使用 invoke 触发，传入消息序列\nresponse = agent.invoke({\n    \"messages\": [(\"user\", \"帮我分析一下雷电将军的最佳配队\")]\n})\nprint(response[\"messages\"][-1].content)"
+    },
+    {
+      "anchor": "section-37",
+      "text": "Agent 的思考过程:"
+    },
+    {
+      "anchor": "section-37",
+      "text": "思考: 用户想了解雷电将军的配队和圣遗物\n行动: 调用\"查询角色信息\"工具\n观察: 获得雷电将军的基础信息\n\n思考: 需要查询推荐配队\n行动: 调用\"推荐队伍\"工具\n观察: 获得配队建议\n\n思考: 需要查询圣遗物搭配\n行动: 调用\"圣遗物推荐\"工具\n观察: 获得圣遗物建议\n\n思考: 已有足够信息,可以回答\n最终答案: [综合分析结果]"
+    },
+    {
+      "anchor": "section-47",
+      "text": "组件关系图"
+    },
+    {
+      "anchor": "section-48",
+      "text": "从简单到复杂"
+    },
+    {
+      "anchor": "section-48",
+      "text": "在实际项目里，你可以在不同层级使用 LangChain："
+    },
+    {
+      "anchor": "section-48",
+      "text": "Level 1: 单次调用 (Model + Prompt)"
+    },
+    {
+      "anchor": "section-48",
+      "text": "chain = prompt | llm\nresult = chain.invoke({\"input\": \"问题\"})\n\n1\n2"
+    },
+    {
+      "anchor": "section-48",
+      "text": "Level 2: 多步流程 (Chain 串联)"
+    },
+    {
+      "anchor": "section-48",
+      "text": "overall_chain = chain1 | chain2 | chain3\n\n1"
+    },
+    {
+      "anchor": "section-48",
+      "text": "需要工具调用或 Agent 功能时，LangChain 也提供了相应的组件，下一节我们会从完整应用的角度继续深入。"
+    },
+    {
+      "anchor": "section-55",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-55",
+      "text": "中文 | English | 音标 | 说明\n链式表达式语言 | LCEL (LangChain Expression Language) | /læŋ tʃeɪn ɪkˈspreʃn ˈlæŋɡwɪdʒ/ | LangChain 的管道语法，用｜ 串联组件\n流水线 | Pipeline | /ˈpaɪplaɪn/ | 数据按顺序流经多个处理步骤的架构\n可运行接口 | Runnable Interface | /ˈrʌnəbl ˈɪntərfeɪs/ | LangChain 组件的统一调用接口标准\n智能体 | Agent | /ˈeɪdʒənt/ | 能自主决策调用哪些工具的总控层"
+    },
+    {
+      "anchor": "section-57",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-57",
+      "text": "本节我们认识了 LangChain 的各种积木：Models、Prompts、Chains、Memory、Tools 和Agents，但它们的真正力量要放到一个完整应用里才能看清楚。接下来，我们会用这些组件搭建一个原神攻略助手，从一次简单调用逐步发展到带记忆的对话系统。"
+    },
+    {
+      "anchor": "section-59",
+      "text": "图片"
+    }
+  ]
+}

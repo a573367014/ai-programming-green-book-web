@@ -1,0 +1,225 @@
+{
+  "id": "lesson-050",
+  "title": "RLHF（一）-什么是对齐",
+  "code": "1-1",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "RLHF",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/008-RLHF/050-图文-1-1-RLHF（一）-什么是对齐.pdf",
+  "sha256": "a5ad591fa0c25b6410c4baab071515e006f55059acaf1d3d909437b74f43cce7",
+  "pdf": "sources/pdf/lesson-050.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5260#mid=104890",
+  "minutes": 1,
+  "excerpt": "/ˌriːɪnˈfɔːsmənt ˈlɜːnɪŋ frəm ˈhjuːmən ˈfiːdbæk/",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "什么是\"好\"，什么是\"不好\"",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "音标",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "说明",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/əˈlaɪnmənt/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让AI系统的行为与人类价值观、意图和期望保持一致",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈhelpfl/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对齐三目标之一：真正理解用户意图并提供有用建议",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈɒnɪst/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对齐三目标之一：承认不确定、不夸大能力",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈhɑːmləs/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对齐三目标之一：拒绝有害请求、避免偏见",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˌriːɪnˈfɔːsmənt ˈlɜːnɪŋ frəm ˈhjuːmən ˈfiːdbæk/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "利用人类偏好数据训练语言模型的技术范式",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈsuːpəvaɪzd faɪn ˈtjuːnɪŋ/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用人工标注的问答对训练模型学会指令跟随",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈprefrəns/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "两个候选中\"哪个更好\"的相对判断",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈvæljuːz/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "判断\"好\"与\"坏\"的内在标准，难以枚举定义",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 452,
+    "represented_chars": 313,
+    "removed_chars": 139,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 139
+    }
+  },
+  "videos": [],
+  "order": 51,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "什么是\"好\"，什么是\"不好\""
+    },
+    {
+      "anchor": "article-start",
+      "text": "音标"
+    },
+    {
+      "anchor": "article-start",
+      "text": "说明"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/əˈlaɪnmənt/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "让AI系统的行为与人类价值观、意图和期望保持一致"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈhelpfl/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "对齐三目标之一：真正理解用户意图并提供有用建议"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈɒnɪst/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "对齐三目标之一：承认不确定、不夸大能力"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈhɑːmləs/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "对齐三目标之一：拒绝有害请求、避免偏见"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˌriːɪnˈfɔːsmənt ˈlɜːnɪŋ frəm ˈhjuːmən ˈfiːdbæk/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "利用人类偏好数据训练语言模型的技术范式"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈsuːpəvaɪzd faɪn ˈtjuːnɪŋ/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "用人工标注的问答对训练模型学会指令跟随"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈprefrəns/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "两个候选中\"哪个更好\"的相对判断"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈvæljuːz/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "判断\"好\"与\"坏\"的内在标准，难以枚举定义"
+    }
+  ]
+}

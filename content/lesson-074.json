@@ -1,0 +1,793 @@
+{
+  "id": "lesson-074",
+  "title": "Temperature（一）-控制创造力的旋钮",
+  "code": "1-1",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "Temperature-控制创造力的旋钮",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/011-Temperature-控制创造力的旋钮/074-图文-1-1-Temperature（一）-控制创造力的旋钮.pdf",
+  "sha256": "ecd74e30611d6d87ed47a5a0edfd503fd3152d6a0f797e8b7bb08743455400d0",
+  "pdf": "sources/pdf/lesson-074.pdf",
+  "pages": 6,
+  "source_url": "https://class.imooc.com/lesson/5263#mid=104898",
+  "minutes": 7,
+  "excerpt": "上一节我们学习了情境学习。本节将探讨Temperature（温度）参数如何控制AI的创造力。 这个参数对于开发者非常重要，因为它可以显著提高大模型回答的性能和质量。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们学习了情境学习。本节将探讨Temperature（温度）参数如何控制AI的创造力。 这个参数对于开发者非常重要，因为它可以显著提高大模型回答的性能和质量。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "9.1 不同Temperature的效果展示",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用同一个问题，在不同Temperature下的回答，来展示这参数的效果。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题：“给我讲一个关于猫的故事”。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Temperature = 0（完全确定性）",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT答案：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "从前有一只名叫山葵的猫，它住在一个温馨的小镇上。山葵非常喜欢 晒太阳和追逐蝴蝶。每天早上，它都会在主人的床边等待，期待着一天的开始。 山葵的主人是一位慈祥的老奶奶。…",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种设置下，模型会选择安全、传统的开头，情节发展可预测。如果问同样的问题10次，每次回答几乎完全一样。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "Temperature = 0.7（中等创造力）",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "山葵是一只好奇心极强的黑猫，她住在海边的一座灯塔里。有一天，当暴风雨来临时，山葵发现了一只被海浪冲上岸的小海豚。山葵想要帮助它，但她不会游泳。于是她开始鸣叫，引起了灯塔看守人的注意。…",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "中等创造力下，模型会给出更有创意的设定（如灯塔、海豚），情节有一定独特性。如果问10次，每次故事都不同，但都合理。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "Temperature = 1.5（高创造力，接近疯狂）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "量子猫薛定谔住在第五维度和第六维度的夹缝中。它同时存在又不存在， 是波也是粒子。有一天，它决定去时间的尽头旅行，在那里遇到了一个用星尘 做的老鼠。这只老鼠告诉薛定谔一个秘密:所有的猫其实都是宇宙意识 的碎片。…",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "高创造力下，模型会生成极其抽象和超现实的内容，逻辑连贯性下降，充满意想不到的元素。如果问10次，每次都是完全不同的、疯狂的故事。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "Temperature控制着AI的\"大胆程度\"。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "9.2 Temperature：温度，控制概率分布的\"平缓度\"",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "先解释Temperature这个参数。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "回顾：ChatGPT如何生成下一个词",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在第2节，我们讲过ChatGPT的核心机制：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "输入\"这部电影\"后，模型计算出每个候选词的概率：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "词      概率        说明\n   ─────────────────────────────\n    很好      35%     ← 最可能的选择\n    不错      25%     ← 较可能\n    还行      20%     ← 有一定可能\n    一般      10%     ← 不太可能\n    很差       5%     ← 很少选\n   ...其他词   5%     ← 极低概率",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "然后，模型从这个概率分布中采样一个词。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "采样",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 什么是\"采样\"？ 采样（sampling）就是从一堆可能的选项中，按照概率\"抽取\"一个出来。 比如模型给出5个词：很好(35%)、不错(25%)、还行(20%)、一般(10%)、很差(5%)，采样就是根据这些概率随机选一个。就像抽奖，概率高的词更容易被抽中，但不是100%会抽到。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "Temperature就是在采样之前，调整这个概率分布。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "9.3 Temperature的数学：Softmax函数",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 你可以跳过这部分数学，不影响理解。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在生成概率分布时，原始分数没有归一化：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "很好: 3.5 不错: 2.5 还行: 2.0 很差: -1.0 …",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "还需要对原始分数应用Softmax公式：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "𝑃 ( 𝑥 𝑖 ) = 𝑒 𝑧 𝑖 / 𝑇 ∑ 𝑗 𝑒 𝑧 𝑗 / 𝑇 P(x i  )= ∑ j  e z j  /T e z i  /T ",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "zi/T",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "xi",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "zj/T",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "∑j",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "其中：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "𝑥 𝑖 x i  是第i个词",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "𝑧 𝑖 z i  是该词的原始分数",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "zi",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "𝑇 T 是Temperature（温度参数）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "∑ 𝑗 ∑ j  表示对所有候选词求和",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然归一化后的所有token的概率和都是1，但不同的Temperature会让每个预测词的概率数值不一样。如果不想理解上述公式，只需要了解下述的结论：",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "当T=1（默认）：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当T=1（默认）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "很好: 35% 不错: 25% 还行: 20% 一般: 10% 很差: 5% …",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当T=0.5（降温）：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当T=0.5（降温）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "很好: 55% ← 最高概率的词概率变得更高 不错: 25% 还行: 12% 一般: 5% 很差: 1% ← 低概率的词概率变得更低 …",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "这让概率的分布变得\"尖锐\"",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当T=2（升温）：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当T=2（升温）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "很好: 28% ← 最高概率的词概率下降 不错: 24% 还行: 22% 一般: 12% 很差: 8% ← 低概率的词概率上升 … 分布变得\"平缓\"",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "用图像可能更容易理解。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设模型对\"这部电影____\"这句话，计算出以下几个词的概率：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "当 T=0.1（低温，确定性强）： 很好 ████████████████████████ 55% ← 概率大幅提升 不错 █████████ 25% 还行 █████ 12% 一般 ██ 5% 很差 █ 1% ← 概率被压制 当 T=1.0（默认，平衡）： 很好 █████████████ 35% ← 原始概率 不错 ████████ 25% 还行██████ 20% 一般 ███ 10% 很差 ██ 5% ← 原始概率 当 T=2.0（高温，随机性强）： 很好██████████ 28% ← 概率下降 不错 ████████ 24% 还行 ███████ 22% 一般 ████12% 很差 ███ 8% ← 概率上升",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "T越低，高概率词（很好）更容易被选中，低概率词（很差）几乎不会出现。T=1时，保持原始概率分布，既有一定随机性，又不会太离谱。T越高，所有词的概率差距变小，低概率词也有较大机会被选中。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就回应了为什么T越高，输出的文本越不重复，越有创造力，因为每个词的选中概率都比较接近。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Temperature的三种典型值",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "table",
+      "text": "Temperature 值 | 效果 | 适用场景 | 示例\n0-0.3 | 完全确定性，总是选最高概率的词 | 事实问答、代码生成、客服机器人 | “Python中如何读取文件?”\n0.7-1.0 | 平衡创造力与合理性 | 日常对话、适度创意写作、头脑风暴 | “给我一些周末活动建议”\n1.5-2.0 | 高创造力，可能出人意料 | 艺术创作、科幻故事、打破常规 | “写一首关于AI的诗”",
+      "rows": [
+        [
+          "Temperature 值",
+          "效果",
+          "适用场景",
+          "示例"
+        ],
+        [
+          "0-0.3",
+          "完全确定性，总是选最高概率的词",
+          "事实问答、代码生成、客服机器人",
+          "“Python中如何读取文件?”"
+        ],
+        [
+          "0.7-1.0",
+          "平衡创造力与合理性",
+          "日常对话、适度创意写作、头脑风暴",
+          "“给我一些周末活动建议”"
+        ],
+        [
+          "1.5-2.0",
+          "高创造力，可能出人意料",
+          "艺术创作、科幻故事、打破常规",
+          "“写一首关于AI的诗”"
+        ]
+      ],
+      "page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "9.4 下节预告",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将学习另一种控制采样的方法——Top-p（核采样），以及它与Temperature的关键区别。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "9.5 ■ 学点英语",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n温度 | Temperature | /ˈtɛmprətʃə®/ | 控制采样随机性的核心参数，值越高输出越发散\n采样 | Sampling | /ˈsɑːmplɪŋ/ | 根据概率分布随机抽取下一个 Token 的过程\n概率分布 | Probability Distribution | / prɒbəˈbɪləti dɪstrɪ ˌ ˌ ˈbjuːʃn/ | 模型对词表中每个候选词赋予的相对可能性\n激活值 | Logit | /ˈlɒdʒɪt/ | Softmax 归一化之前的原始分数\n归一化 | Softmax | /ˈsɒftmæks/ | 将原始分数转换为和为1的概率分布的函数\n确定性 | Determinism | /dɪˈtɜːmɪnɪzəm/ | 相同输入总是产生相同输出的性质\n创造性 | Creativity | / kriːeɪˈtɪvəti/ ˌ | 模型用语、联想、结构上的多样性\n贪心解码 | Greedy Decoding | /ˈɡriːdi diːˈkəʊdɪŋ/ | 每一步都选最高概率词的采样策略，等价于 T→0",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "温度",
+          "Temperature",
+          "/ˈtɛmprətʃə®/",
+          "控制采样随机性的核心参数，值越高输出越发散"
+        ],
+        [
+          "采样",
+          "Sampling",
+          "/ˈsɑːmplɪŋ/",
+          "根据概率分布随机抽取下一个 Token 的过程"
+        ],
+        [
+          "概率分布",
+          "Probability Distribution",
+          "/ prɒbəˈbɪləti dɪstrɪ ˌ ˌ ˈbjuːʃn/",
+          "模型对词表中每个候选词赋予的相对可能性"
+        ],
+        [
+          "激活值",
+          "Logit",
+          "/ˈlɒdʒɪt/",
+          "Softmax 归一化之前的原始分数"
+        ],
+        [
+          "归一化",
+          "Softmax",
+          "/ˈsɒftmæks/",
+          "将原始分数转换为和为1的概率分布的函数"
+        ],
+        [
+          "确定性",
+          "Determinism",
+          "/dɪˈtɜːmɪnɪzəm/",
+          "相同输入总是产生相同输出的性质"
+        ],
+        [
+          "创造性",
+          "Creativity",
+          "/ kriːeɪˈtɪvəti/ ˌ",
+          "模型用语、联想、结构上的多样性"
+        ],
+        [
+          "贪心解码",
+          "Greedy Decoding",
+          "/ˈɡriːdi diːˈkəʊdɪŋ/",
+          "每一步都选最高概率词的采样策略，等价于 T→0"
+        ]
+      ],
+      "page": 6
+    }
+  ],
+  "accounting": {
+    "source_chars": 3240,
+    "represented_chars": 2999,
+    "removed_chars": 241,
+    "tables": 2,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 183,
+      "repeated_title": 58
+    }
+  },
+  "videos": [],
+  "order": 75,
+  "headings": [
+    {
+      "title": "9.1 不同Temperature的效果展示",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "9.2 Temperature：温度，控制概率分布的\"平缓度\"",
+      "id": "section-15",
+      "level": 2
+    },
+    {
+      "title": "9.3 Temperature的数学：Softmax函数",
+      "id": "section-25",
+      "level": 2
+    },
+    {
+      "title": "Temperature的三种典型值",
+      "id": "section-57",
+      "level": 3
+    },
+    {
+      "title": "9.4 下节预告",
+      "id": "section-59",
+      "level": 2
+    },
+    {
+      "title": "9.5 ■ 学点英语",
+      "id": "section-61",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们学习了情境学习。本节将探讨Temperature（温度）参数如何控制AI的创造力。 这个参数对于开发者非常重要，因为它可以显著提高大模型回答的性能和质量。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "9.1 不同Temperature的效果展示"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用同一个问题，在不同Temperature下的回答，来展示这参数的效果。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "问题：“给我讲一个关于猫的故事”。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Temperature = 0（完全确定性）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "ChatGPT答案："
+    },
+    {
+      "anchor": "section-1",
+      "text": "从前有一只名叫山葵的猫，它住在一个温馨的小镇上。山葵非常喜欢 晒太阳和追逐蝴蝶。每天早上，它都会在主人的床边等待，期待着一天的开始。 山葵的主人是一位慈祥的老奶奶。…"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这种设置下，模型会选择安全、传统的开头，情节发展可预测。如果问同样的问题10次，每次回答几乎完全一样。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Temperature = 0.7（中等创造力）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "山葵是一只好奇心极强的黑猫，她住在海边的一座灯塔里。有一天，当暴风雨来临时，山葵发现了一只被海浪冲上岸的小海豚。山葵想要帮助它，但她不会游泳。于是她开始鸣叫，引起了灯塔看守人的注意。…"
+    },
+    {
+      "anchor": "section-1",
+      "text": "中等创造力下，模型会给出更有创意的设定（如灯塔、海豚），情节有一定独特性。如果问10次，每次故事都不同，但都合理。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Temperature = 1.5（高创造力，接近疯狂）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "量子猫薛定谔住在第五维度和第六维度的夹缝中。它同时存在又不存在， 是波也是粒子。有一天，它决定去时间的尽头旅行，在那里遇到了一个用星尘 做的老鼠。这只老鼠告诉薛定谔一个秘密:所有的猫其实都是宇宙意识 的碎片。…"
+    },
+    {
+      "anchor": "section-1",
+      "text": "高创造力下，模型会生成极其抽象和超现实的内容，逻辑连贯性下降，充满意想不到的元素。如果问10次，每次都是完全不同的、疯狂的故事。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Temperature控制着AI的\"大胆程度\"。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "9.2 Temperature：温度，控制概率分布的\"平缓度\""
+    },
+    {
+      "anchor": "section-15",
+      "text": "先解释Temperature这个参数。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "回顾：ChatGPT如何生成下一个词"
+    },
+    {
+      "anchor": "section-15",
+      "text": "在第2节，我们讲过ChatGPT的核心机制："
+    },
+    {
+      "anchor": "section-15",
+      "text": "输入\"这部电影\"后，模型计算出每个候选词的概率："
+    },
+    {
+      "anchor": "section-15",
+      "text": "词      概率        说明\n   ─────────────────────────────\n    很好      35%     ← 最可能的选择\n    不错      25%     ← 较可能\n    还行      20%     ← 有一定可能\n    一般      10%     ← 不太可能\n    很差       5%     ← 很少选\n   ...其他词   5%     ← 极低概率"
+    },
+    {
+      "anchor": "section-15",
+      "text": "然后，模型从这个概率分布中采样一个词。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "采样"
+    },
+    {
+      "anchor": "section-15",
+      "text": "什么是\"采样\"？ 采样（sampling）就是从一堆可能的选项中，按照概率\"抽取\"一个出来。 比如模型给出5个词：很好(35%)、不错(25%)、还行(20%)、一般(10%)、很差(5%)，采样就是根据这些概率随机选一个。就像抽奖，概率高的词更容易被抽中，但不是100%会抽到。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "Temperature就是在采样之前，调整这个概率分布。"
+    },
+    {
+      "anchor": "section-25",
+      "text": "9.3 Temperature的数学：Softmax函数"
+    },
+    {
+      "anchor": "section-25",
+      "text": "你可以跳过这部分数学，不影响理解。"
+    },
+    {
+      "anchor": "section-25",
+      "text": "在生成概率分布时，原始分数没有归一化："
+    },
+    {
+      "anchor": "section-25",
+      "text": "很好: 3.5 不错: 2.5 还行: 2.0 很差: -1.0 …"
+    },
+    {
+      "anchor": "section-25",
+      "text": "还需要对原始分数应用Softmax公式："
+    },
+    {
+      "anchor": "section-25",
+      "text": "𝑃 ( 𝑥 𝑖 ) = 𝑒 𝑧 𝑖 / 𝑇 ∑ 𝑗 𝑒 𝑧 𝑗 / 𝑇 P(x i  )= ∑ j  e z j  /T e z i  /T "
+    },
+    {
+      "anchor": "section-25",
+      "text": "zi/T"
+    },
+    {
+      "anchor": "section-25",
+      "text": "xi"
+    },
+    {
+      "anchor": "section-25",
+      "text": "zj/T"
+    },
+    {
+      "anchor": "section-25",
+      "text": "∑j"
+    },
+    {
+      "anchor": "section-25",
+      "text": "其中："
+    },
+    {
+      "anchor": "section-25",
+      "text": "𝑥 𝑖 x i  是第i个词"
+    },
+    {
+      "anchor": "section-25",
+      "text": "𝑧 𝑖 z i  是该词的原始分数"
+    },
+    {
+      "anchor": "section-25",
+      "text": "zi"
+    },
+    {
+      "anchor": "section-25",
+      "text": "𝑇 T 是Temperature（温度参数）"
+    },
+    {
+      "anchor": "section-25",
+      "text": "∑ 𝑗 ∑ j  表示对所有候选词求和"
+    },
+    {
+      "anchor": "section-25",
+      "text": "虽然归一化后的所有token的概率和都是1，但不同的Temperature会让每个预测词的概率数值不一样。如果不想理解上述公式，只需要了解下述的结论："
+    },
+    {
+      "anchor": "section-25",
+      "text": "当T=1（默认）："
+    },
+    {
+      "anchor": "section-25",
+      "text": "当T=1（默认）"
+    },
+    {
+      "anchor": "section-25",
+      "text": "很好: 35% 不错: 25% 还行: 20% 一般: 10% 很差: 5% …"
+    },
+    {
+      "anchor": "section-25",
+      "text": "当T=0.5（降温）："
+    },
+    {
+      "anchor": "section-25",
+      "text": "当T=0.5（降温）"
+    },
+    {
+      "anchor": "section-25",
+      "text": "很好: 55% ← 最高概率的词概率变得更高 不错: 25% 还行: 12% 一般: 5% 很差: 1% ← 低概率的词概率变得更低 …"
+    },
+    {
+      "anchor": "section-25",
+      "text": "这让概率的分布变得\"尖锐\""
+    },
+    {
+      "anchor": "section-25",
+      "text": "当T=2（升温）："
+    },
+    {
+      "anchor": "section-25",
+      "text": "当T=2（升温）"
+    },
+    {
+      "anchor": "section-25",
+      "text": "很好: 28% ← 最高概率的词概率下降 不错: 24% 还行: 22% 一般: 12% 很差: 8% ← 低概率的词概率上升 … 分布变得\"平缓\""
+    },
+    {
+      "anchor": "section-25",
+      "text": "用图像可能更容易理解。"
+    },
+    {
+      "anchor": "section-25",
+      "text": "假设模型对\"这部电影____\"这句话，计算出以下几个词的概率："
+    },
+    {
+      "anchor": "section-25",
+      "text": "当 T=0.1（低温，确定性强）： 很好 ████████████████████████ 55% ← 概率大幅提升 不错 █████████ 25% 还行 █████ 12% 一般 ██ 5% 很差 █ 1% ← 概率被压制 当 T=1.0（默认，平衡）： 很好 █████████████ 35% ← 原始概率 不错 ████████ 25% 还行██████ 20% 一般 ███ 10% 很差 ██ 5% ← 原始概率 当 T=2.0（高温，随机性强）： 很好██████████ 28% ← 概率下降 不错 ████████ 24% 还行 ███████ 22% 一般 ████12% 很差 ███ 8% ← 概率上升"
+    },
+    {
+      "anchor": "section-25",
+      "text": "T越低，高概率词（很好）更容易被选中，低概率词（很差）几乎不会出现。T=1时，保持原始概率分布，既有一定随机性，又不会太离谱。T越高，所有词的概率差距变小，低概率词也有较大机会被选中。"
+    },
+    {
+      "anchor": "section-25",
+      "text": "这就回应了为什么T越高，输出的文本越不重复，越有创造力，因为每个词的选中概率都比较接近。"
+    },
+    {
+      "anchor": "section-57",
+      "text": "Temperature的三种典型值"
+    },
+    {
+      "anchor": "section-57",
+      "text": "Temperature 值 | 效果 | 适用场景 | 示例\n0-0.3 | 完全确定性，总是选最高概率的词 | 事实问答、代码生成、客服机器人 | “Python中如何读取文件?”\n0.7-1.0 | 平衡创造力与合理性 | 日常对话、适度创意写作、头脑风暴 | “给我一些周末活动建议”\n1.5-2.0 | 高创造力，可能出人意料 | 艺术创作、科幻故事、打破常规 | “写一首关于AI的诗”"
+    },
+    {
+      "anchor": "section-59",
+      "text": "9.4 下节预告"
+    },
+    {
+      "anchor": "section-59",
+      "text": "下一节，我们将学习另一种控制采样的方法——Top-p（核采样），以及它与Temperature的关键区别。"
+    },
+    {
+      "anchor": "section-61",
+      "text": "9.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-61",
+      "text": "中文 | English | 音标 | 说明\n温度 | Temperature | /ˈtɛmprətʃə®/ | 控制采样随机性的核心参数，值越高输出越发散\n采样 | Sampling | /ˈsɑːmplɪŋ/ | 根据概率分布随机抽取下一个 Token 的过程\n概率分布 | Probability Distribution | / prɒbəˈbɪləti dɪstrɪ ˌ ˌ ˈbjuːʃn/ | 模型对词表中每个候选词赋予的相对可能性\n激活值 | Logit | /ˈlɒdʒɪt/ | Softmax 归一化之前的原始分数\n归一化 | Softmax | /ˈsɒftmæks/ | 将原始分数转换为和为1的概率分布的函数\n确定性 | Determinism | /dɪˈtɜːmɪnɪzəm/ | 相同输入总是产生相同输出的性质\n创造性 | Creativity | / kriːeɪˈtɪvəti/ ˌ | 模型用语、联想、结构上的多样性\n贪心解码 | Greedy Decoding | /ˈɡriːdi diːˈkəʊdɪŋ/ | 每一步都选最高概率词的采样策略，等价于 T→0"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+--- PDF 第 1 页 ---
+第7章 第13节 集成与发布 MCP
+来源: https://class.imooc.com/lesson/5281#mid=104942
+阶段: 阶段三: 【工具与协议】让AI连接世界
+周: 第7周 MCP：模型上下文协议
+模块: MCP通信协议与实战
+课节: 图文 1-6 集成与发布 MCP
+1-6 集成与发布 MCP
+第7章 第13节 集成与发布 MCP
+[!TIP] 阅读指南 上一节学会了在 Qoder 中使用现成的 MCP Server。本节讲解如何在自己的应用
+中通过代码集成 MCP Server，以及如何将自己开发的 MCP Server 发布出去。
+13.1 在自己的应用中集成 MCP
+Qoder 和 Claude Desktop 都提供了可视化的 MCP 使用方式，非常适合日常使用。但如果你正在开发
+自己的应用程序，就需要在代码中集成 MCP Server。
+[!TIP] 完整源码参考：samples/chapter7/ai_data_analyzer/，详细讲解请参考该目录下的
+README.md。
+项目目录结构
+samples/chapter7/ai_data_analyzer/
+├── ai_data_analyzer.py   # 核心示例代码：在 Python 中集成 MCP 并调用图表工具
+└── README.md             # 源码讲解小册：运行步骤、集成流程与常见问题
+
+
+--- PDF 第 2 页 ---
+看下运行效果
+============================================================
+MCP 集成示例 - 图表生成
+============================================================
+● 用户需求: 帮我对比这几款游戏的评分
+● 数据: [{"category": "原神", "value": 95}, {"category": "崩坏3", "value": 92}, 
+{"category": "明日方舟", "value": 88}]
+▸ 调用 MCP Server 生成图表...
+[MCP-Server-Chart] 2025-12-03T15:45:08.014Z ℹ️  setting up tool handlers...
+generate_bar_chart {
+  data: [
+    { category: '原神', value: 95 },
+    { category: '崩坏3', value: 92 },
+    { category: '明日方舟', value: 88 }
+  ],
+  title: '游戏评分对比'
+}
+[MCP-Server-Chart] 2025-12-03T15:45:08.029Z ℹ️  Calling tool: generate_bar_chart
+[MCP-Server-Chart] 2025-12-03T15:45:08.259Z ℹ️  Generated chart URL: 
+https://mdn.alipayobjects.com/one_clip/.../...
+● 图表生成成功!
+● 图表配置:
+https://mdn.alipayobjects.com/one_clip/.../...
+我们可以看到每一步都清晰的打印了出来，包括MCP Server的启动流程。关于具体的集成流程和代码
+实现细节，请参考 README.md 中的详细讲解。
+13.2 如何发布自己的 MCP Server
+学会了使用别人的 MCP Server，你可能也想把自己开发的工具发布出去，让更多人受益。
+其实，如果你用TypeScript开发MCP Server，它其实就是一个npm包，前端会nodejs的同学应该非常
+熟悉。所以，发布MCP Server并没有啥特别之处，完全就和你发布一个npm包一样。
+这里就不再过多的赘述了，毕竟我们主要是讲解LLM的相关知识，而非Web的知识。如果你感兴趣，你
+可以把我们上个小节写的MCP Server（装备属性计算）发布到npm试试。
+
+
+--- PDF 第 3 页 ---
+13.3 全书章节回顾
+到这里，我们已经完整掌握了 MCP 协议——从理解核心概念，到自己动手开发 MCP Server，再到使
+用现成的 Server 快速扩展 AI 能力。
+但你可能已经注意到，无论是使用 MCP、调用 API，还是构建 RAG 系统，我们每次都在重复写很
+多"胶水代码"——管理对话历史、处理工具调用、串联多个步骤。有没有一种方式，能把这些重复性工
+作标准化，让我们像搭积木一样快速构建 AI 应用？
+这就是下一章要探讨的内容：LangChain——一个将 AI 应用开发组件化的框架。我们会看到，它如何
+把"乐高积木"的理念应用到 AI 开发中，让复杂的工作流变得简洁优雅。
+13.4 ■ 学点英语
+中文
+English
+音标
+说明
+代码集成
+Code
+Integration
+/koʊd ˌɪntɪˈɡreɪʃn/
+通过MCP SDK编程方式在应用中连接和调用MCP
+Server
+npm 发
+布
+npm Publishing
+/en piː em ˈpʌblɪʃɪŋ/
+将TypeScript开发的MCP Server以npm包形式发
+布共享
+包管理器
+Package
+Manager
+/ˈpækɪdʒ ˈmænɪdʒər/
+管理MCP Server依赖和分发的工具，如npm、
+PyPI
+Stdio传
+输
+Stdio Transport
+/ˈstændərd aɪ oʊ
+ˈtrænspɔːrt/
+通过子进程标准输入输出建立MCP通信的传输方
+式

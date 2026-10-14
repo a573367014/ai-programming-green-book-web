@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>向量数据库（二）-进阶算法与Chroma实战 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-099">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 5 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>向量数据库</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 100</span></div>
+<h1 class="lesson-title">向量数据库（二）-进阶算法与Chroma实战</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>13 页原文</span><span>约 17 分钟阅读</span><span class="module-name">向量数据库</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-099.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-099.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<h2 id="section-0" data-source-page="1">6.1 LSH（局部敏感哈希）<a class="heading-link" href="#section-0" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">核心思想：用哈希函数把相似向量映射到同一个桶</p>
+<p data-source-page="1">哈希函数</p>
+<p data-source-page="1">Hash的本质是将任意长度的输入转化为固定长度的编码。相同的输入一定产生相同的编码，不同的输入则产生不同的编码。</p>
+<p data-source-page="1">举个具体的例子</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 传统哈希（如MD5、SHA）的特点
+import hashlib
+
+text1 = &quot;hello&quot;
+text2 = &quot;hello&quot;  # 完全相同
+text3 = &quot;hallo&quot;  # 只有一个字母不同
+
+hash1 = hashlib.md5(text1.encode()).hexdigest()
+hash2 = hashlib.md5(text2.encode()).hexdigest()
+hash3 = hashlib.md5(text3.encode()).hexdigest()
+
+print(f&quot;text1哈希: {hash1[:16]}...&quot;)  # 5d41402abc4b2a76...
+print(f&quot;text2哈希: {hash2[:16]}...&quot;)  # 5d41402abc4b2a76... (与text1相同)
+print(f&quot;text3哈希: {hash3[:16]}...&quot;)  # 437b930db84b8079... (完全不同)</code></pre></div>
+<p data-source-page="2">传统哈希的三大特点</p>
+<p class="list-item" data-source-page="2">确定性：如果输入相同 → 计算出来的哈希也相同</p>
+<p data-source-page="2">确定性</p>
+<p class="list-item" data-source-page="2">雪崩效应：即使输入变化很微小 → 哈希值剧烈变化（“hello” vs “hallo”）</p>
+<p class="list-item" data-source-page="2">平均分布：避免碰撞，让不同输入尽可能散列到不同位置</p>
+<p data-source-page="2">平均分布正因为这些特点，传统哈希常用在：密码存储（确定性）、文件校验（雪崩效应检测篡改）、快速查找（平均分布的哈希表）、去重（确定性判断相同）等场景。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">但这对向量检索没用，哈希的特点恰恰是向量检索最不想要的：</p>
+<aside class="callout" data-source-page="3"><p>向量1: [0.8, 0.9, 0.1] → 哈希 → &quot;a3f8d9e2&quot; 向量2: [0.75, 0.85, 0.15] → 哈希 → “b7c4e1f5”# 虽然很相似，但哈希完全不同 向量3: [0.1, 0.2, 0.9] → 哈希 → “c9a2b6d3” 结果：无法通过哈希值判断向量1和向量2相似</p></aside>
+<p data-source-page="3">LSH的创新：反其道而行之</p>
+<p data-source-page="3">LSH（Locality-Sensitive Hashing）的核心思想：相似的向量应该有更高概率被映射到相同的哈希值。</p>
+<p data-source-page="3">这恰好与传统哈希相反：</p>
+<p class="list-item" data-source-page="3">传统哈希：微小差异 → 完全不同的哈希值（避免碰撞）</p>
+<p class="list-item" data-source-page="3">LSH哈希：相似输入 → 相同或相近的哈希值（主动让相似向量“碰撞”）</p>
+<p data-source-page="3">工作原理</p>
+<p data-source-page="3">LSH 使用<strong>超平面（分割线）</strong>来切分空间，相似的向量因为离得近，所以大概率在同一侧。</p>
+<aside class="callout" data-source-page="3"><p>关于超平面： 简单理解，超平面就是高维空间中的&quot;分界线&quot;。2D平面可以用一条直线分割，3D空间可以用是一个2D平面来分割。不需要深究数学定义，只需要知道它的作用是&quot;把空间一分为二&quot;就行。 尤其不要去想象高维度的向量（1535维）到底是怎么被划分的。人类是3维生物，很难想象高维度的世界，这些只存储于数学中，而非能想象出来。</p></aside>
+<p data-source-page="3">具体算法示例</p>
+<p data-source-page="3">假设有三个向量：</p>
+<p class="list-item" data-source-page="3">向量1: [0.8, 0.9]</p>
+<p class="list-item" data-source-page="3">向量2: [0.75, 0.85] ← 与向量1相似</p>
+<p class="list-item" data-source-page="3">向量3: [0.1, 0.2] ← 与向量1很不同</p>
+<p data-source-page="3">步骤1：随机生成一条分割线 比如：x + y = 1</p>
+<p data-source-page="3">步骤1：随机生成一条分割线</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">x + y = 1
+y轴
+ ↑
+1|   \    ●C
+ |      \
+ |       \  ●A
+ |          \
+ |             \
+ |  ●B  ●D  \
+0|_________\____→ x轴
+ 0          1
+
+分割线: x + y = 1 (从(0,1)到(1,0)的斜线)</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">步骤2：判断每个向量在线的哪一侧</p>
+<p data-source-page="4">用分割线 x + y = 1 来判断。</p>
+<p data-source-page="4">判断规则：</p>
+<p class="list-item" data-source-page="4">如果 x + y &gt; 1，向量在分割线右侧</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">x + y &gt; 1</code></pre></div>
+<p class="list-item" data-source-page="4">如果 x + y &lt; 1，向量在分割线左侧</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">x + y &lt; 1</code></pre></div>
+<p data-source-page="4">可以看到：</p>
+<aside class="callout" data-source-page="4"><p>线左侧(x+y&lt;1): B、D； 线右侧(x+y&gt;1): A、C;</p></aside>
+<p data-source-page="4">步骤3：相同哈希码的分到同一桶</p>
+<p class="list-item" data-source-page="4">点A、点C → 哈希码都是 “1” → 落入 bucket_1 ← 相似，同桶</p>
+<p class="list-item" data-source-page="4">点B、点D → 哈希码都是 “0” → 落入 bucket_0 ← 不同，不同桶</p>
+<p data-source-page="4">查询时</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">查询向量: [0.78, 0.88]
+ ↓ 计算：0.78 + 0.88 = 1.66 &gt; 1
+ ↓ 落入 bucket_1
+ ↓ 只在 bucket_1 中搜索
+ 找到向量1、向量2（跳过向量3）</code></pre></div>
+<p data-source-page="5">选择建议</p>
+<p class="list-item" data-source-page="5">首选HNSW：大多数场景下性能最优，闭着眼睛选它就对了</p>
+<p data-source-page="5">首选HNSW</p>
+<p class="list-item" data-source-page="5">成本敏感选IVF：内存有限或数据量特别大</p>
+<p data-source-page="5">成本敏感选IVF</p>
+<p class="list-item" data-source-page="5">LSH：仅在超高维（&gt;5000维）或特殊需求时考虑</p>
+<h2 id="section-50" data-source-page="5">6.2 主流向量数据库对比<a class="heading-link" href="#section-50" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">聊完了向量数据库的几种搜索模式，看看市面上常见的向量数据库。</p>
+<h3 id="section-52" data-source-page="5">Chroma（最适合入门）<a class="heading-link" href="#section-52" aria-label="链接至本节">#</a></h3>
+<p class="list-item" data-source-page="5">开源免费，不花一分钱</p>
+<p class="list-item" data-source-page="5">支持内存模式和持久化</p>
+<p class="list-item" data-source-page="5">适合中小规模数据（&lt;100万）</p>
+<p data-source-page="5">索引算法</p>
+<p class="list-item" data-source-page="5">默认使用 HNSW（就是前面讲的第一种算法）</p>
+<p data-source-page="5">HNSW</p>
+<p class="list-item" data-source-page="5">不支持切换其他算法（IVF、LSH）</p>
+<h3 id="section-60" data-source-page="5">Milvus（企业级首选）<a class="heading-link" href="#section-60" aria-label="链接至本节">#</a></h3>
+<p class="list-item" data-source-page="5">开源，CNCF孵化项目（跟大名鼎鼎的Kubernetes是一家人）</p>
+<p class="list-item" data-source-page="5">支持亿级数据，性能强悍</p>
+<p class="list-item" data-source-page="5">分布式架构，高可用</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p class="list-item" data-source-page="6">支持多种算法：HNSW、IVF、DiskANN 等（前两种就是上面讲的）</p>
+<p data-source-page="6">HNSW、IVF、DiskANN</p>
+<p class="list-item" data-source-page="6">可根据场景灵活选择： 小数据量选 HNSW（速度快） 大数据量选 IVF（省内存） 超大数据量选DiskANN（用磁盘）</p>
+<p class="list-item" data-source-page="6">这就是 Milvus 的核心优势：不同场景用不同算法</p>
+<h2 id="section-68" data-source-page="6">6.3 实战：Chroma快速上手<a class="heading-link" href="#section-68" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">下面用Chroma来实现一个完整的向量检索流程。</p>
+<p data-source-page="6">环境准备</p>
+<p data-source-page="6">在开始之前，需要安装必要的Python库：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>BASH</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-bash"># 安装Chroma向量数据库
+pip install chromadb
+
+# 安装通义千问SDK（用于生成向量）
+pip install dashscope</code></pre></div>
+<p data-source-page="6">依赖说明</p>
+<p class="list-item" data-source-page="6">chromadb：轻量级向量数据库，支持本地存储和查询</p>
+<p class="list-item" data-source-page="6">dashscope：阿里云通义千问SDK，提供Embedding API</p>
+<p data-source-page="6">核心代码示例</p>
+<aside class="callout" data-source-page="6"><b>阅读提示</b><p>完整源码参考：samples/chapter5/chroma_faq_search.py</p></aside>
+<p data-source-page="6">下面展示关键步骤的核心伪代码：</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 步骤1：创建客户端和集合
+client = chromadb.PersistentClient(path=&quot;./chroma_db&quot;)
+collection = client.create_collection(
+    name=&quot;company_faq&quot;,
+    metadata={&quot;hnsw:space&quot;: &quot;cosine&quot;}  # 文本检索必须指定！
+)
+
+# 步骤2：生成向量并存储
+documents = [&quot;如何申请年假？ 员工入职满一年后...&quot;, ...]  # FAQ文本
+embeddings = embedding_api.call(documents)  # 调用API生成向量
+collection.add(ids=ids, embeddings=embeddings, metadatas=metadatas)
+
+# 步骤3：查询检索
+query_embedding = embedding_api.call(&quot;年假怎么申请？&quot;)  # 查询向量化
+results = collection.query(query_embeddings=[query_embedding], n_results=3)
+
+# 步骤4：处理结果
+for metadata, distance in zip(results[&#x27;metadatas&#x27;][0], results[&#x27;distances&#x27;][0]):
+    similarity = 1 - distance  # 转为相似度
+    print(f&quot;相似度: {similarity:.4f}&quot;)
+    print(f&quot;答案: {metadata[&#x27;answer&#x27;]}&quot;)</code></pre></div>
+<p data-source-page="7">运行输出示例</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">正在生成向量并存储...
+ 成功存储 5 条FAQ
+
+ 查询: 年假怎么申请？
+ 找到 3 条相关FAQ:
+#1 [相似度: 0.7640] [人事制度]
+   问题: 如何申请年假？
+   答案: 员工入职满一年后，可在OA系统提交年假申请，需提前3天申请，由直属领导审批。
+#2 [相似度: 0.5762] [人事制度] ...
+#3 [相似度: 0.5065] [人事制度] ...
+
+ 查询: 请假需要准备什么材料？
+ 找到 3 条相关FAQ:
+
+#1 [相似度: 0.5762] [人事制度]
+   问题: 病假需要什么证明？
+   答案: 病假需提供医院诊断证明，3天以上需提交病假条，由HR审批。
+#2 [相似度: 0.4790] [人事制度] ...
+#3 [相似度: 0.4056] [人事制度] ...</code></pre></div>
+<h2 id="section-82" data-source-page="8">6.4 Chroma 的两层结构<a class="heading-link" href="#section-82" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">在深入代码细节之前，先了解 Chroma 的核心结构。</p>
+<p data-source-page="8">Chroma 采用简洁的两层设计：</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">客户端 (Client)
+  |
+  +- 集合1(Collection): company_faq
+  +- 集合2(Collection): product_docs
+  +- 集合3(Collection): ...</code></pre></div>
+<p class="list-item" data-source-page="8">客户端（Client）：数据库的入口，负责管理所有数据 持久化模式：PersistentClient(path=&quot;./chroma_db&quot;) — 数据保存到磁盘 内存模式：Client() — 数据只存在内存，重启后消失</p>
+<p class="list-item" data-source-page="8">集合（Collection）：实际存储向量的容器，类似传统数据库的“表” 每个集合有独立的名称（如company_faq） 每个集合可配置不同的相似度算法 不同业务场景建议使用不同集合</p>
+<p data-source-page="8">就像在 MySQL 中先连接数据库，然后操作具体的表一样：Chroma 先创建客户端，再在客户端下创建多个集合。</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h2 id="section-89" data-source-page="9">6.5 相似度算法选择<a class="heading-link" href="#section-89" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 创建集合时指定使用余弦相似度
+collection = client.create_collection(
+    name=&quot;company_faq&quot;,
+    metadata={
+        &quot;description&quot;: &quot;公司FAQ知识库&quot;,
+        &quot;hnsw:space&quot;: &quot;cosine&quot;  # 使用余弦相似度
+    }
+)</code></pre></div>
+<p data-source-page="9">为什么创建集合时要指定相似度算法？</p>
+<p data-source-page="9">向量数据库不只是存储向量，更重要的是要考虑后续的查询。而查询非常依赖索引，不同的相似度算法会导致完全不同的索引组织方式：</p>
+<p class="list-item" data-source-page="9">余弦相似度：关注向量方向，索引会把方向相近的向量聚在一起（适合文本）</p>
+<p class="list-item" data-source-page="9">欧氏距离：关注空间位置，索引会把空间距离近的向量聚在一起（适合图像、坐标）</p>
+<p data-source-page="9">欧氏距离</p>
+<p data-source-page="9">这就像建图书馆：</p>
+<p class="list-item" data-source-page="9">按主题分类（类似余弦）：把“编程”“历史”“小说”分开放</p>
+<p data-source-page="9">主题</p>
+<p class="list-item" data-source-page="9">按书的厚度分类（类似欧氏）：把薄书、中等厚度、厚书分开放</p>
+<p data-source-page="9">书的厚度</p>
+<p data-source-page="9">如果不设置会怎样</p>
+<p class="list-item" data-source-page="9">Chroma默认使用L2距离（欧氏距离），不适合文本检索</p>
+<p class="list-item" data-source-page="9">会导致相似度分数偏低，甚至出现负数</p>
+<p class="list-item" data-source-page="9">检索结果非常离谱，几乎都是不相关内容</p>
+<p data-source-page="9">一旦建好索引，就无法更改算法了。所以文本检索必须在创建集合时显式指定 &quot;hnsw:space&quot;: &quot;cosine&quot;</p>
+<p data-source-page="9">Chroma相似度计算方式对比</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="10"><table><thead><tr><th scope="col">计算方式</th><th scope="col">参数值</th><th scope="col">适用场景</th><th scope="col">相似度范围</th><th scope="col">说明</th></tr></thead><tbody><tr><td>余弦相似度（推荐）</td><td>&quot;cosine&quot;</td><td>文本、语义</td><td>[0, 1]</td><td>1表示完全相同，0表示无关</td></tr><tr><td>欧氏距离</td><td>&quot;l2&quot;</td><td>图像、坐标</td><td>数值复杂</td><td>不推荐用于文本</td></tr><tr><td>内积</td><td>&quot;ip&quot;</td><td>归一化向量</td><td>数值复杂</td><td>特殊场景使用</td></tr></tbody></table></div>
+<h2 id="section-108" data-source-page="10">6.6 持久化模式<a class="heading-link" href="#section-108" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 持久化：数据保存到磁盘，重启不丢失
+# 代码执行后会在当前Python文件的同级创建一个名为chroma_db的目录，并存储数据库文件
+client = chromadb.PersistentClient(path=&quot;./chroma_db&quot;)
+
+# 内存：数据只在内存，重启后丢失（适合测试）
+client = chromadb.Client()</code></pre></div>
+<h2 id="section-110" data-source-page="10">6.7 存储参数详解<a class="heading-link" href="#section-110" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">以下4个参数是Chroma定义的标准参数，不是随意定义的。</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">collection.add(
+    ids=ids,              # 唯一标识符
+    embeddings=embeddings,  # 向量（用于检索）
+    documents=documents,    # 原始文本（用于调试）
+    metadatas=metadatas     # 业务数据（用于展示）
+)</code></pre></div>
+<p data-source-page="10">各个参数的作用</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="10"><table><thead><tr><th scope="col">参数</th><th scope="col">必须</th><th scope="col">作用</th><th scope="col">举例</th></tr></thead><tbody><tr><td>ids</td><td>是</td><td>唯一标识，用于更新/删除</td><td>&quot;faq 001&quot; _</td></tr><tr><td>embeddings</td><td>是</td><td>向量数据，用于相似度检索</td><td>[0.123, -0.456, ...]</td></tr><tr><td>documents</td><td>可选</td><td>原始文本，即向量数据对应的文本</td><td>&quot;如何申请年假？...&quot;</td></tr><tr><td>metadatas</td><td>可选</td><td>业务数据，返回给用户展示</td><td>{&quot;question&quot;: &quot;...&quot;, &quot;answer&quot;: &quot;...&quot;}</td></tr></tbody></table></div>
+<p data-source-page="10">为什么需要 documents虽然检索只用 embeddings，但存储 documents 有两个好处：</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<p class="list-item" data-source-page="11">调试方便：查看检索结果时，能看到原始文本，验证检索是否准确</p>
+<p data-source-page="11">调试方便</p>
+<p class="list-item" data-source-page="11">数据完整：不需要另外维护一个数据库来存储原文</p>
+<p data-source-page="11">数据完整</p>
+<p data-source-page="11">为什么需要 metadatas</p>
+<p data-source-page="11">metadatas 是返回给用户的关键信息：</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 检索后返回的是 metadata，不是embedding
+for metadata in results[&#x27;metadatas&#x27;][0]:
+    print(f&quot;问题: {metadata[&#x27;question&#x27;]}&quot;)
+    print(f&quot;答案: {metadata[&#x27;answer&#x27;]}&quot;)
+    print(f&quot;类别: {metadata[&#x27;category&#x27;]}&quot;)</code></pre></div>
+<p data-source-page="11">如果不存 metadatas，检索结果只有 ID，还需要去其他数据库查询详情，非常麻烦。</p>
+<p data-source-page="11">最佳实践</p>
+<p class="list-item" data-source-page="11">ids: 必须唯一，建议用有意义的编号（如 faq_001）</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">faq_001</code></pre></div>
+<p class="list-item" data-source-page="11">embeddings: 必须与API返回的向量一致</p>
+<p class="list-item" data-source-page="11">documents: 建议存储，方便调试</p>
+<p class="list-item" data-source-page="11">metadatas: 存储所有需要展示的字段（问题、答案、类别等）</p>
+<h2 id="section-130" data-source-page="11">6.8 相似度转换<a class="heading-link" href="#section-130" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">其实代码：</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=top_k
+    )</code></pre></div>
+<p data-source-page="11">已经查询出了最相似的k条结果，results就是这个结果。</p>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<p data-source-page="12">后续的代码在做什么？ Chroma确实查询出了结果，但它的结果指标并不是相似度，而是distance（距离）。</p>
+<div class="code-block" data-source-page="12"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Chroma返回的是distance（余弦距离）
+results = collection.query(
+    query_embeddings=[query_embedding],
+    n_results=3
+)
+
+# results[&#x27;distances&#x27;][0] = [0.24, 0.42, 0.49]  # 这是距离值，不是相似度！
+
+# 需要转换成相似度才好理解
+for distance in results[&#x27;distances&#x27;][0]:
+    similarity = 1 - distance  # 转换公式
+    print(f&quot;相似度: {similarity:.4f}&quot;)  # 0.76, 0.58, 0.51</code></pre></div>
+<h2 id="section-136" data-source-page="12">6.9 扩展阅读：为什么 similarity = 1 - distance<a class="heading-link" href="#section-136" aria-label="链接至本节">#</a></h2>
+<p data-source-page="12">这是余弦距离的数学定义：余弦距离 = 1 - 余弦相似度。</p>
+<p data-source-page="12">余弦距离 = 1 - 余弦相似度</p>
+<p data-source-page="12">余弦相似度 = cosθ（θ 是向量夹角），范围 [-1, 1]。为了获得一个&quot;距离&quot;指标，数学上直接用 1 -cosθ 来定义余弦距离。三个边界值对比如下：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="12"><table><thead><tr><th scope="col">场景</th><th scope="col">cosθ</th><th scope="col">余弦相似度</th><th scope="col">余弦距离</th></tr></thead><tbody><tr><td>完全相同</td><td>1</td><td>1</td><td>0</td></tr><tr><td>完全相反</td><td>-1</td><td>-1</td><td>2</td></tr><tr><td>正交（无关）</td><td>0</td><td>0</td><td>1</td></tr></tbody></table></div>
+<p data-source-page="12">可以看到：余弦相似度越高（接近 1），余弦距离越小（接近 0）。数值一一对应，用 相似度 = 1 - 距离 就能互相转换。</p>
+<p data-source-page="12">Chroma 配置了 &quot;hnsw:space&quot;: &quot;cosine&quot; 后，内部计算的就是余弦距离。所以从 results 拿到 distance后，用 1 - distance 就能还原回余弦相似度。</p>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<aside class="callout" data-source-page="13"><b>阅读提示</b><p>下一节预告 现在已经掌握了向量生成、向量检索的完整流程。但在实际项目中，还有关键问题：如何把文档切分成合适的片段？ 一份完整的技术手册可能有几十页，是整个文档生成一个向量？还是按章节切分？按段落切分？切得太大会导致检索不精准，切得太小又会丢失上下文。 下一节《第一个RAG应用：游戏知识问答》，实战一个完整的RAG应用，从文档处理、向量化、检索到生成，把前面学到的所有知识串起来。</p></aside>
+<h2 id="section-144" data-source-page="13">6.10 ■ 学点英语<a class="heading-link" href="#section-144" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="13"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>局部敏感哈希</td><td>Locality-Sensitive Hashing (LSH)</td><td>/loʊˈkæləti ˈsensətɪv ˈhæʃɪŋ/</td><td>将相似向量映射到同一哈希桶的近似搜索算法</td></tr><tr><td>HNSW 图</td><td>HNSW Graph</td><td>/eɪtʃ en es ˈdʌbəl juː ɡræf/</td><td>分层小世界图，通过多层跳表结构实现对数级搜索复杂度</td></tr><tr><td>Chroma</td><td>Chroma</td><td>/ˈkroʊmə/</td><td>轻量级开源向量数据库，适合学习和原型开发</td></tr><tr><td>余弦距离</td><td>Cosine Distance</td><td>/ˈkoʊsaɪn ˈdɪstəns/</td><td>1 - 余弦相似度，Chroma中配置cosine后返回的距离值</td></tr><tr><td>向量集合</td><td>Collection</td><td>/kəˈlekʃn/</td><td>Chroma中组织和存储向量的基本单位</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-098.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>向量数据库（一）- 核心算法</strong><small>向量数据库</small></a><a class="chapter-neighbor next" href="lesson-100.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>游戏知识问答系统</strong><small>第一个RAG应用：游戏知识问答系统</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5272#mid=104918" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-0" class="toc-level-2">6.1 LSH（局部敏感哈希）</a><a href="#section-50" class="toc-level-2">6.2 主流向量数据库对比</a><a href="#section-52" class="toc-level-3">Chroma（最适合入门）</a><a href="#section-60" class="toc-level-3">Milvus（企业级首选）</a><a href="#section-68" class="toc-level-2">6.3 实战：Chroma快速上手</a><a href="#section-82" class="toc-level-2">6.4 Chroma 的两层结构</a><a href="#section-89" class="toc-level-2">6.5 相似度算法选择</a><a href="#section-108" class="toc-level-2">6.6 持久化模式</a><a href="#section-110" class="toc-level-2">6.7 存储参数详解</a><a href="#section-130" class="toc-level-2">6.8 相似度转换</a><a href="#section-136" class="toc-level-2">6.9 扩展阅读：为什么 similarity = 1 - distance</a><a href="#section-144" class="toc-level-2">6.10 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-099", "title": "向量数据库（二）-进阶算法与Chroma实战", "stage": 2, "week": 5, "module": "向量数据库", "minutes": 17, "pages": 13, "type": "article"}</script>
+</body></html>

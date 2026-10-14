@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>CrewAI实战解析：程序1题目生成器 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-154">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-6">智能体</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 12 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>CrewAI 实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 155</span></div>
+<h1 class="lesson-title">CrewAI实战解析：程序1题目生成器</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>10 页原文</span><span>约 10 分钟阅读</span><span class="module-name">CrewAI 实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-154.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-154.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节我们了解了系统概览和学习目标。本节重点讲解程序1（question_generator.py），通过它深入理解CrewAI三大核心组件：Crew、Agent、Task的协作关系。</p></aside>
+<h2 id="section-1" data-source-page="1">业务流程回顾<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">程序1实现了从教学大纲到题库的完整流程：</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">─────────────────────────────────────────
+  阶段1: 设计题目框架
+  • AI决策：分析大纲，规划题目结构
+  • 输出：题目设计方案
+─────────────────────────────────────────
+  阶段2: 生成具体题目
+  • AI决策：生成题目内容和选项
+  • 输出：JSON格式题目
+─────────────────────────────────────────
+  阶段3: 数据持久化
+  • 传统业务：保存到 data/questions.json
+─────────────────────────────────────────</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-4" data-source-page="2">CrewAI三大组件的角色分工<a class="heading-link" href="#section-4" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">在CrewAI框架中，Crew、Agent、Task各司其职，形成了清晰的三层协作结构：</p>
+<p data-source-page="2">三大组件的职责：</p>
+<p data-source-page="2">三大组件的职责</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="2"><table><thead><tr><th scope="col">组件</th><th scope="col">类比角色</th><th scope="col">职责</th><th scope="col">程序1实例</th></tr></thead><tbody><tr><td>Crew</td><td>项目经理</td><td>统筹全局，决定执行模式</td><td>ExerciseCrew（Sequential模式）</td></tr><tr><td>Agent</td><td>专业员工</td><td>具备专业能力，执行任务</td><td>题目生成专家（QuestionExpert）</td></tr><tr><td>Task</td><td>具体工作</td><td>明确目标和输出要求</td><td>Task1: 设计框架 Task2: 生成题目</td></tr></tbody></table></div>
+<p data-source-page="2">用团队协作来理解三者关系：</p>
+<p data-source-page="2">用团队协作来理解三者关系</p>
+<p data-source-page="2">想象一个软件公司的项目团队：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">ExerciseCrew（团队）
+  ├─ 角色：项目经理
+  ├─ 持有资源：题目生成专家（员工）、LLM（工具）
+  └─ 核心职责：
+      • 创建工单（Task1、Task2）
+      • 分配给员工（Agent）
+      • 决定执行顺序（Sequential模式）
+      • 管理工单流转（Task1输出 → Task2输入）
+
+QuestionExpert（员工）
+  ├─ 角色：Python教育专家
+  ├─ 技能：编程教学、题目设计
+  └─ 工作方式：
+      • 接收工单（Task）
+      • 调用工具（LLM）完成工作
+      • 提交成果（输出结果）
+
+Task1 &amp; Task2（工单）
+  ├─ Task1工单内容：
+  │   • 任务：分析大纲，设计题目框架
+  │   • 指派给：QuestionExpert
+  │   • 要求：输出Markdown设计方案
+  │
+  └─ Task2工单内容：
+      • 任务：根据Task1方案生成具体题目
+      • 指派给：QuestionExpert
+      • 依赖：必须等Task1完成
+      • 要求：输出JSON格式题目</code></pre></div>
+<p data-source-page="3">在程序1中的实际运作：</p>
+<p data-source-page="3">在程序1中的实际运作</p>
+<p class="list-item" data-source-page="3">ExerciseCrew创建工单： task1 = create_design_task(self.question_expert, syllabus) task2 =create_generate_task(self.question_expert, task1.output) 1 2 代码块 项目经理说：“我需要两个工单，Task1设计框架，Task2生成题目”</p>
+<p data-source-page="3">ExerciseCrew分配工单给员工：</p>
+<p data-source-page="3">ExerciseCrew分配工单给员工</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">crew = Crew(
+    agents=[self.question_expert],  # 员工名单
+    tasks=[task1, task2],            # 工单列表
+    process=Process.sequential       # 工单顺序：先Task1，再Task2
+)</code></pre></div>
+<p data-source-page="4">项目经理说：“QuestionExpert，这两个工单都给你，按顺序做”</p>
+<p class="list-item" data-source-page="4">QuestionExpert执行工单： 拿到Task1工单 → 调用LLM → 输出设计方案 拿到Task2工单 → 使用Task1结果 → 调用LLM → 输出JSON题目</p>
+<p class="list-item" data-source-page="4">ExerciseCrew收集成果： result = crew.kickoff() # 启动团队工作，等待完成 1 代码块 项目经理说：“开始干活！等你们都做完我收成果”</p>
+<p data-source-page="4">关键理解：</p>
+<p data-source-page="4">关键理解</p>
+<p class="list-item" data-source-page="4">Crew不干活：它只负责协调，不直接调用LLM</p>
+<p data-source-page="4">Crew不干活</p>
+<p class="list-item" data-source-page="4">Agent干活：真正调用LLM的是Agent</p>
+<p data-source-page="4">Agent干活</p>
+<p class="list-item" data-source-page="4">Task是指令：Task里的description就是给Agent的工作说明书</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">description</code></pre></div>
+<p data-source-page="4">Task是指令</p>
+<p class="list-item" data-source-page="4">Sequential保证顺序：Crew确保Task2等Task1完成后才开始</p>
+<p data-source-page="4">Sequential保证顺序</p>
+<h2 id="section-33" data-source-page="4">代码实现：从组件到协作<a class="heading-link" href="#section-33" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">让我们看看这三个组件如何在代码中协同工作。</p>
+<p data-source-page="4">步骤1：定义Agent（专业员工）</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># agents/question_expert.py
+
+def create_question_expert(llm) -&gt; Agent:
+    &quot;&quot;&quot;创建题目生成专家Agent&quot;&quot;&quot;
+    return Agent(
+        role=&quot;Python编程练习题生成专家&quot;,
+        goal=&quot;根据教学大纲设计高质量的Python编程练习题&quot;,
+        backstory=&quot;&quot;&quot;
+        你是一位经验丰富的Python教育专家，深刻理解初学者的学习路径。
+        你擅长将复杂概念转化为清晰的练习题，帮助学生循序渐进地掌握知识。
+        &quot;&quot;&quot;,
+        llm=llm,
+        verbose=True
+    )</code></pre></div>
+<p data-source-page="5">关键点：</p>
+<p data-source-page="5">关键点</p>
+<p class="list-item" data-source-page="5">role: Agent的身份定位</p>
+<p class="list-item" data-source-page="5">goal: Agent的工作目标</p>
+<p class="list-item" data-source-page="5">backstory: Agent的专业背景（影响决策风格）</p>
+<p class="list-item" data-source-page="5">llm: Agent使用的语言模型</p>
+<p data-source-page="5">步骤2：定义Task（具体工作）</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># tasks/question_tasks.py
+
+def create_design_task(agent: Agent, syllabus: str) -&gt; Task:
+    &quot;&quot;&quot;创建Task1：设计题目框架&quot;&quot;&quot;
+    return Task(
+        description=f&quot;&quot;&quot;
+        基于以下教学大纲，设计练习题的整体框架：
+
+        {syllabus}
+
+        要求：
+        1. 分析大纲的知识点层次
+        2. 规划题目的难度梯度
+        3. 设计题目类型分布
+        &quot;&quot;&quot;,
+        expected_output=&quot;题目框架设计方案（Markdown格式）&quot;,
+        agent=agent  # 指定由哪个Agent执行
+    )
+
+def create_generate_task(agent: Agent, design_result: str) -&gt; Task:
+    &quot;&quot;&quot;创建Task2：生成具体题目（依赖Task1输出）&quot;&quot;&quot;
+    return Task(
+        description=f&quot;&quot;&quot;
+        根据以下设计方案，生成5道选择题：
+
+        {design_result}
+
+        要求：
+        1. 严格遵循JSON格式
+        2. 每题4个选项（A/B/C/D）
+        3. 包含详细解析
+        &quot;&quot;&quot;,
+        expected_output=&quot;题目列表（JSON格式）&quot;,
+        agent=agent,
+        context=[design_result]  # 依赖Task1的输出
+    )</code></pre></div>
+<p class="list-item" data-source-page="6">description: 任务的详细说明（这是给Agent看的Prompt）</p>
+<p class="list-item" data-source-page="6">expected_output: 明确输出格式</p>
+<p class="list-item" data-source-page="6">agent: 绑定执行者</p>
+<p class="list-item" data-source-page="6">context: 任务间依赖关系（Task2需要Task1的结果）</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">步骤3：Crew协调执行（项目经理）</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># crews/exercise_crew.py
+
+class ExerciseCrew:
+    &quot;&quot;&quot;统一的Crew，负责协调所有阶段&quot;&quot;&quot;
+
+    def __init__(self, llm):
+        self.llm = llm
+        self.question_expert = create_question_expert(llm)
+
+    def run_question_generation(self, syllabus: str) -&gt; str:
+        &quot;&quot;&quot;
+        程序1调用：执行题目生成流程（Sequential模式）
+        &quot;&quot;&quot;
+        # 创建两个Task
+        task1 = create_design_task(self.question_expert, syllabus)
+        task2 = create_generate_task(self.question_expert, task1.output)
+
+        # 创建Crew并执行
+        crew = Crew(
+            agents=[self.question_expert],
+            tasks=[task1, task2],
+            process=Process.sequential,  # Sequential模式
+            verbose=True
+        )
+
+        result = crew.kickoff()
+        return result</code></pre></div>
+<p class="list-item" data-source-page="7">agents: 参与的Agent列表（程序1只需1个Agent）</p>
+<p class="list-item" data-source-page="7">tasks: 任务列表（按执行顺序排列）</p>
+<p class="list-item" data-source-page="7">process=Process.sequential: 指定执行模式</p>
+<p class="list-item" data-source-page="7">kickoff(): 启动执行</p>
+<h2 id="section-55" data-source-page="7">下一节预告<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">下一节我们将学习程序2，看看Hierarchical模式如何协调多个Agent并行工作，以及如何将传统代码与AI决策完美融合。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-57" data-source-page="8">图片<a class="heading-link" href="#section-57" aria-label="链接至本节">#</a></h2>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<figure data-source-page="9"><button class="figure-open" aria-label="放大查看第 9 页图示"><img src="../assets/figures/98f4d4fb5c67d6dea9b37ff251d2599d.png" width="892" height="1350" loading="lazy" alt="CrewAI实战解析：程序1题目生成器 · 原 PDF 第 9 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-153.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>CrewAI 最终实战：习题生成与考试评测系统</strong><small>CrewAI 实战</small></a><a class="chapter-neighbor next" href="lesson-155.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>CrewAI 实战解析：程序2考试系统与混合架构</strong><small>CrewAI 实战</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5293#mid=105159" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">业务流程回顾</a><a href="#section-4" class="toc-level-2">CrewAI三大组件的角色分工</a><a href="#section-33" class="toc-level-2">代码实现：从组件到协作</a><a href="#section-55" class="toc-level-2">下一节预告</a><a href="#section-57" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-154", "title": "CrewAI实战解析：程序1题目生成器", "stage": 6, "week": 12, "module": "CrewAI 实战", "minutes": 10, "pages": 10, "type": "article"}</script>
+</body></html>

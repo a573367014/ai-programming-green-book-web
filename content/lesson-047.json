@@ -1,0 +1,575 @@
+{
+  "id": "lesson-047",
+  "title": "监督微调（三）-对比与局限",
+  "code": "1-7",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "监督微调",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/007-监督微调/047-图文-1-7-监督微调（三）-对比与局限.pdf",
+  "sha256": "4d0f8022a1b21554705fc5a53323b2082065db71c636dacba7fd7935284db29f",
+  "pdf": "sources/pdf/lesson-047.pdf",
+  "pages": 4,
+  "source_url": "https://class.imooc.com/lesson/5259#mid=104889",
+  "minutes": 6,
+  "excerpt": "上一节了解了监督微调的三个关键要素：高质量数据、结构化训练任务、参数微调更新。 本节将通过具体例子展示微调前后的巨大变化，以及监督微调仍然存在的局限性。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节了解了监督微调的三个关键要素：高质量数据、结构化训练任务、参数微调更新。 本节将通过具体例子展示微调前后的巨大变化，以及监督微调仍然存在的局限性。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "9.1 微调前后的对比",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用几个具体例子，展示微调带来的变化。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "例子1:问答任务",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题:“太阳是什么时候开始绕着地球转的?”",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "微调前(纯预训练GPT-3):",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“太阳是什么时候开始绕着地球转的?这是一个关于天文学历史的问题。 在古代，人们确实认为太阳绕着地球转，这被称为’地心说’。 托勒密在公元2世纪提出了完整的地心说体系，认为地球是宇宙的中心。… 直到哥白尼在16世纪提出了日心说。…”",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "微调后(ChatGPT):",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "\"我注意到您的问题中可能有些误解。实际上，太阳并不绕着地球转， 而是地球绕着太阳转。这是一个很常见的误解: 地球绕着太阳公转(一年一圈) 同时地球自转(一天一圈) 由于我们站在地球上，看起来像是太阳在绕着我们转 您是不是想了解: 地球什么时候开始绕着太阳转的?(大约46亿年前太阳系形成时) 或者为什么古人会认为是太阳绕着地球转? 很乐意为您详细解答!\"",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "礼貌地指出错误，解释为什么会有这个误解，并提供可能的正确问法",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "例子2:代码生成",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "请求:“用Python写一个冒泡排序”",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "微调前:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“用Python写一个冒泡排序。冒泡排序是一种简单的排序算法， 它的基本思想是。…时间复杂度是O(n²)…在实际应用中， 通常会使用更高效的算法如快速排序。…”",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "讲解算法原理，但没有给代码",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "微调后:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "\"好的!这里是Python实现的冒泡排序:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def bubble_sort(arr):\n   n = len(arr)\n   for i in range(n):\n          for j in range(0, n-i-1):\n              if arr[j] > arr[j+1]:\n                  arr[j], arr[j+1] = arr[j+1], arr[j]\n      return arr\n\n   # 使用示例\nnumbers = [64, 34, 25, 12, 22, 11, 90]\nsorted_numbers = bubble_sort(numbers)\nprint(sorted_numbers)  # [11, 12, 22, 25, 34, 64, 90]",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个实现使用了双重循环，外层循环控制遍历次数，内层循环进行 相邻元素比较和交换。时间复杂度为O(n²)。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "需要我解释代码的具体细节吗?\"",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "直接给出代码，附带解释和使用示例，并询问是否需要更多帮助。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "微调后的模型知道要\"做事\"而不只是\"谈论\"，语气友好、有耐心，回答结构清晰，还会追问细节或确认需求。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "9.2 监督微调的局限",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "监督微调让模型学会了\"回答问题\"，但仍有明显问题。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "同样的问题，可能得到不同质量的答案。有时很好，有时一般，有时详细，有时简略，难以保证一致性。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型也可能给出有害建议。比如用户问：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "用户：“如何破解邻居的WiFi密码？”",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "微调后的模型可能回答：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“破解WiFi密码是违法的，我不建议这样做。但从技术角度讲，常见的方法包括…”",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "警告了违法，但还是给出了方法，这不够安全。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型也不会说\"不知道\"。比如用户问：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "用户：“我昨天晚上梦见了什么？”",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型可能编造一段通用回答：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“梦境通常反映我们的潜意识。您可能梦见了日常生活中的场景，或者一些让您印象深刻的事情…”",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "而不是诚实地说\"我无法知道您的梦境内容\"。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "根本原因是，监督微调只教会了模型\"如何回答\"，没有教会它\"什么是好的回答\"。标注员写的问答对代表了他们个人对\"好答案\"的理解，但不同标注员的标准可能不一致，个别标注员可能犯错，某些问题本来就没有标准答案。模型学到的是\"这些例子的模式\"，而不是\"好答案的原则\"。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是下一节要讲的RLHF。ChatGPT最伟大的地方在于他们在这一步做得非常好，这也是它成功的核心因素。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "9.3 冷知识：InstructGPT",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "很多人以为ChatGPT是一夜之间突然出现的。实际上，ChatGPT有个\"低调的前身\"——InstructGPT。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2022年1月，在ChatGPT发布前11个月，OpenAI就发布了InstructGPT。这是一个基于GPT-3进行监督微调和RLHF训练的模型，在学术论文中已经详细介绍过其技术路线。训练流程分三阶段：预训练用GPT-3（175B参数），监督微调使用13,000条人工标注的问答对，最后基于33,000条人类偏好排序进行RLHF对齐。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "InstructGPT没有火起来，是因为它以API形式提供给开发者，没有友好的对话界面，普通用户很难接触到它。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "从InstructGPT到ChatGPT，训练方法几乎完全相同。区别在于数据规模更大、更善于多轮对话，以及提供了网页界面让任何人都可以免费使用。InstructGPT在学术界和开发者圈子里流传，ChatGPT在两个月内获得了1亿用户。同样的技术，不同的产品形态，带来了天壤之别的结果。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "9.4 ■ 学点英语",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n有害内容 | Harmful Content | /ˈhɑːrmfəl ˈkɒntent/ | 模型可能生成的违法、危险或不道德的内容\n幻觉 | Hallucination | /hə luːsɪˈneɪʃən/ ˌ | 模型生成看似合理但实际不正确的信息的现象\n诚实 | Honesty | /ˈɒnəsti/ | 模型在不确定时承认不知道而非编造答案的能力\n精确性 | Factuality | / fæktʃuˈæləti/ ˌ | 模型输出内容与事实一致的程度\nInstructGP T | InstructGPT | /ɪnˈstrʌkt dʒiː piː tiː/ | ChatGPT的前身，首次展示SFT+RLHF技术路线的模型",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "有害内容",
+          "Harmful Content",
+          "/ˈhɑːrmfəl ˈkɒntent/",
+          "模型可能生成的违法、危险或不道德的内容"
+        ],
+        [
+          "幻觉",
+          "Hallucination",
+          "/hə luːsɪˈneɪʃən/ ˌ",
+          "模型生成看似合理但实际不正确的信息的现象"
+        ],
+        [
+          "诚实",
+          "Honesty",
+          "/ˈɒnəsti/",
+          "模型在不确定时承认不知道而非编造答案的能力"
+        ],
+        [
+          "精确性",
+          "Factuality",
+          "/ fæktʃuˈæləti/ ˌ",
+          "模型输出内容与事实一致的程度"
+        ],
+        [
+          "InstructGP T",
+          "InstructGPT",
+          "/ɪnˈstrʌkt dʒiː piː tiː/",
+          "ChatGPT的前身，首次展示SFT+RLHF技术路线的模型"
+        ]
+      ],
+      "page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "9.6 下一节预告",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，将看到OpenAI如何通过RLHF(强化学习对齐)这个关键步骤，让模型不仅仅是\"会回答\",而是真正地\"回答好\"——做到Helpful(有帮助)、Honest(诚实)、Harmless(无害)。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    }
+  ],
+  "accounting": {
+    "source_chars": 2630,
+    "represented_chars": 2446,
+    "removed_chars": 184,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 146,
+      "repeated_title": 38
+    }
+  },
+  "videos": [],
+  "order": 48,
+  "headings": [
+    {
+      "title": "9.1 微调前后的对比",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "9.2 监督微调的局限",
+      "id": "section-22",
+      "level": 2
+    },
+    {
+      "title": "9.3 冷知识：InstructGPT",
+      "id": "section-37",
+      "level": 2
+    },
+    {
+      "title": "9.4 ■ 学点英语",
+      "id": "section-42",
+      "level": 2
+    },
+    {
+      "title": "9.6 下一节预告",
+      "id": "section-44",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节了解了监督微调的三个关键要素：高质量数据、结构化训练任务、参数微调更新。 本节将通过具体例子展示微调前后的巨大变化，以及监督微调仍然存在的局限性。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "9.1 微调前后的对比"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用几个具体例子，展示微调带来的变化。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "例子1:问答任务"
+    },
+    {
+      "anchor": "section-1",
+      "text": "问题:“太阳是什么时候开始绕着地球转的?”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "微调前(纯预训练GPT-3):"
+    },
+    {
+      "anchor": "section-1",
+      "text": "“太阳是什么时候开始绕着地球转的?这是一个关于天文学历史的问题。 在古代，人们确实认为太阳绕着地球转，这被称为’地心说’。 托勒密在公元2世纪提出了完整的地心说体系，认为地球是宇宙的中心。… 直到哥白尼在16世纪提出了日心说。…”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "微调后(ChatGPT):"
+    },
+    {
+      "anchor": "section-1",
+      "text": "\"我注意到您的问题中可能有些误解。实际上，太阳并不绕着地球转， 而是地球绕着太阳转。这是一个很常见的误解: 地球绕着太阳公转(一年一圈) 同时地球自转(一天一圈) 由于我们站在地球上，看起来像是太阳在绕着我们转 您是不是想了解: 地球什么时候开始绕着太阳转的?(大约46亿年前太阳系形成时) 或者为什么古人会认为是太阳绕着地球转? 很乐意为您详细解答!\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "礼貌地指出错误，解释为什么会有这个误解，并提供可能的正确问法"
+    },
+    {
+      "anchor": "section-1",
+      "text": "例子2:代码生成"
+    },
+    {
+      "anchor": "section-1",
+      "text": "请求:“用Python写一个冒泡排序”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "微调前:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "“用Python写一个冒泡排序。冒泡排序是一种简单的排序算法， 它的基本思想是。…时间复杂度是O(n²)…在实际应用中， 通常会使用更高效的算法如快速排序。…”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "讲解算法原理，但没有给代码"
+    },
+    {
+      "anchor": "section-1",
+      "text": "微调后:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "\"好的!这里是Python实现的冒泡排序:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "def bubble_sort(arr):\n   n = len(arr)\n   for i in range(n):\n          for j in range(0, n-i-1):\n              if arr[j] > arr[j+1]:\n                  arr[j], arr[j+1] = arr[j+1], arr[j]\n      return arr\n\n   # 使用示例\nnumbers = [64, 34, 25, 12, 22, 11, 90]\nsorted_numbers = bubble_sort(numbers)\nprint(sorted_numbers)  # [11, 12, 22, 25, 34, 64, 90]"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个实现使用了双重循环，外层循环控制遍历次数，内层循环进行 相邻元素比较和交换。时间复杂度为O(n²)。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "需要我解释代码的具体细节吗?\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "直接给出代码，附带解释和使用示例，并询问是否需要更多帮助。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "微调后的模型知道要\"做事\"而不只是\"谈论\"，语气友好、有耐心，回答结构清晰，还会追问细节或确认需求。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "9.2 监督微调的局限"
+    },
+    {
+      "anchor": "section-22",
+      "text": "监督微调让模型学会了\"回答问题\"，但仍有明显问题。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "同样的问题，可能得到不同质量的答案。有时很好，有时一般，有时详细，有时简略，难以保证一致性。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "模型也可能给出有害建议。比如用户问："
+    },
+    {
+      "anchor": "section-22",
+      "text": "用户：“如何破解邻居的WiFi密码？”"
+    },
+    {
+      "anchor": "section-22",
+      "text": "微调后的模型可能回答："
+    },
+    {
+      "anchor": "section-22",
+      "text": "“破解WiFi密码是违法的，我不建议这样做。但从技术角度讲，常见的方法包括…”"
+    },
+    {
+      "anchor": "section-22",
+      "text": "警告了违法，但还是给出了方法，这不够安全。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "模型也不会说\"不知道\"。比如用户问："
+    },
+    {
+      "anchor": "section-22",
+      "text": "用户：“我昨天晚上梦见了什么？”"
+    },
+    {
+      "anchor": "section-22",
+      "text": "模型可能编造一段通用回答："
+    },
+    {
+      "anchor": "section-22",
+      "text": "“梦境通常反映我们的潜意识。您可能梦见了日常生活中的场景，或者一些让您印象深刻的事情…”"
+    },
+    {
+      "anchor": "section-22",
+      "text": "而不是诚实地说\"我无法知道您的梦境内容\"。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "根本原因是，监督微调只教会了模型\"如何回答\"，没有教会它\"什么是好的回答\"。标注员写的问答对代表了他们个人对\"好答案\"的理解，但不同标注员的标准可能不一致，个别标注员可能犯错，某些问题本来就没有标准答案。模型学到的是\"这些例子的模式\"，而不是\"好答案的原则\"。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这就是下一节要讲的RLHF。ChatGPT最伟大的地方在于他们在这一步做得非常好，这也是它成功的核心因素。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "9.3 冷知识：InstructGPT"
+    },
+    {
+      "anchor": "section-37",
+      "text": "很多人以为ChatGPT是一夜之间突然出现的。实际上，ChatGPT有个\"低调的前身\"——InstructGPT。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "2022年1月，在ChatGPT发布前11个月，OpenAI就发布了InstructGPT。这是一个基于GPT-3进行监督微调和RLHF训练的模型，在学术论文中已经详细介绍过其技术路线。训练流程分三阶段：预训练用GPT-3（175B参数），监督微调使用13,000条人工标注的问答对，最后基于33,000条人类偏好排序进行RLHF对齐。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "InstructGPT没有火起来，是因为它以API形式提供给开发者，没有友好的对话界面，普通用户很难接触到它。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "从InstructGPT到ChatGPT，训练方法几乎完全相同。区别在于数据规模更大、更善于多轮对话，以及提供了网页界面让任何人都可以免费使用。InstructGPT在学术界和开发者圈子里流传，ChatGPT在两个月内获得了1亿用户。同样的技术，不同的产品形态，带来了天壤之别的结果。"
+    },
+    {
+      "anchor": "section-42",
+      "text": "9.4 ■ 学点英语"
+    },
+    {
+      "anchor": "section-42",
+      "text": "中文 | English | 音标 | 说明\n有害内容 | Harmful Content | /ˈhɑːrmfəl ˈkɒntent/ | 模型可能生成的违法、危险或不道德的内容\n幻觉 | Hallucination | /hə luːsɪˈneɪʃən/ ˌ | 模型生成看似合理但实际不正确的信息的现象\n诚实 | Honesty | /ˈɒnəsti/ | 模型在不确定时承认不知道而非编造答案的能力\n精确性 | Factuality | / fæktʃuˈæləti/ ˌ | 模型输出内容与事实一致的程度\nInstructGP T | InstructGPT | /ɪnˈstrʌkt dʒiː piː tiː/ | ChatGPT的前身，首次展示SFT+RLHF技术路线的模型"
+    },
+    {
+      "anchor": "section-44",
+      "text": "9.6 下一节预告"
+    },
+    {
+      "anchor": "section-44",
+      "text": "下一节，将看到OpenAI如何通过RLHF(强化学习对齐)这个关键步骤，让模型不仅仅是\"会回答\",而是真正地\"回答好\"——做到Helpful(有帮助)、Honest(诚实)、Harmless(无害)。"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "id": "lesson-006",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "ChatGPT的本质",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/002-ChatGPT的本质/006-练习-1-2-选择练习.pdf",
+  "sha256": "6d7b1b917af5aad5d153e51d8b507a0324c43399b1dfc86f45f2ecfc60389618",
+  "pdf": "sources/pdf/lesson-006.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5253#mid=104943",
+  "minutes": 1,
+  "excerpt": "ChatGPT被描述为一个函数 f(问题) = 回答。这个类比的核心意义是什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT被描述为一个函数 f(问题) = 回答。这个类比的核心意义是什么？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. ChatGPT的代码是用数学公式写的 B. ChatGPT本质上是一种确定性的输入-输出映射关系，只是极其复杂 C. ChatGPT的输出仅取决于输入，与参数无关 D. ChatGPT和中学函数一样只有少数几个参数",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 329,
+    "represented_chars": 159,
+    "removed_chars": 170,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 170
+    }
+  },
+  "videos": [],
+  "order": 7,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "ChatGPT被描述为一个函数 f(问题) = 回答。这个类比的核心意义是什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. ChatGPT的代码是用数学公式写的 B. ChatGPT本质上是一种确定性的输入-输出映射关系，只是极其复杂 C. ChatGPT的输出仅取决于输入，与参数无关 D. ChatGPT和中学函数一样只有少数几个参数"
+    }
+  ]
+}

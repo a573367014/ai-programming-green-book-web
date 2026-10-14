@@ -1,0 +1,1014 @@
+{
+  "id": "lesson-132",
+  "title": "条件分支与循环",
+  "code": "1-2",
+  "stage": 4,
+  "week": 9,
+  "week_title": "LangGraph：工作流编排",
+  "module": "文章写作Agent",
+  "type": "article",
+  "repo_path": "004-阶段四 【框架应用】高效AI开发/002-第9周 LangGraph：工作流编排/004-文章写作Agent/132-图文-1-2-条件分支与循环.pdf",
+  "sha256": "9bea832e6631fe335321622e854a387b01f2a7807edcf4c67a0390777a05c6a9",
+  "pdf": "sources/pdf/lesson-132.pdf",
+  "pages": 11,
+  "source_url": "https://class.imooc.com/lesson/5285#mid=105037",
+  "minutes": 9,
+  "excerpt": "上一节我们构建了一个简单的文章写作工作流：大纲 → 草稿 → 润色，三步顺序执行。但在实际应用中，我们常需要工作流“会思考、会判断”： 生成的草稿质量不够？循环重试→ 回到生成节点。 用户问题类型不同？条件分支 → 选择不同路径。 检测到敏感内容？转人工审核 → 跳转特定节点。 本节将学习两个核心机",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们构建了一个简单的文章写作工作流：大纲 → 草稿 → 润色，三步顺序执行。但在实际应用中，我们常需要工作流“会思考、会判断”： 生成的草稿质量不够？循环重试→ 回到生成节点。 用户问题类型不同？条件分支 → 选择不同路径。 检测到敏感内容？转人工审核 → 跳转特定节点。 本节将学习两个核心机制： 循环 (Loop)：指向前面的节点，重复执行。 分支 (Branch)：指向不同后续节点，分流处理。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "从固定流程到动态决策",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "第3节的局限",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "回顾第3节的工作流：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "START → 大纲 → 草稿 → 润色 → END\n\n1",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "1",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是一条固定的单行道：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "固定的单行道",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "[√] 流程清晰，执行可预测。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "[×] 无法根据中间结果调整路径。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "[×] 草稿质量差也只能继续润色。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "[×] 无法处理异常情况。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "两种动态机制",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际项目中，我们需要两种能力：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "循环能力：向后指，重复执行",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "循环能力",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "循环特征：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "循环特征",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "质量检查 → 草稿：指向前面的节点。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "质量检查 → 草稿",
+      "page": 2,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "形成有向有环图。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "有向有环图",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "节点可能执行多次。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "执行多次",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "必须有退出条件（避免死循环）。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "退出条件",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "分支能力：向前指，分流处理",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "分支能力",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "分支特征：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "分支特征",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "分类 → [技术/闲聊/人工]：指向不同后续节点。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "分类 → [技术/闲聊/人工]",
+      "page": 2,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "形成有向无环图 (DAG)。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "有向无环图 (DAG)",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "每个节点最多执行一次。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "最多执行一次",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "多条路径互不交叉，各自通向终点。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "互不交叉",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "条件边 (Conditional Edges)",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "核心概念",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "条件边允许根据 State 动态选择下一个节点：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "条件边",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 固定边: 永远走同一条路\nbuilder.add_edge(\"A\", \"B\")  # A → B\n\n# 条件边: 根据 State 选择路径\nbuilder.add_conditional_edges(\n    \"A\",                    # 起始节点\n    routing_function,       # 路由函数(判断逻辑)\n    {                       # 路由映射表\n        \"路径1\": \"B\",\n        \"路径2\": \"C\",\n        \"路径3\": END\n    }\n)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "路由函数示例：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def routing_function(state: MyState) -> str:\n    \"\"\"根据 State 返回路径名称\"\"\"\n    if state[\"score\"] > 80:\n        return \"路径1\"  # 走向节点 B\n    elif state[\"score\"] > 60:\n        return \"路径2\"  # 走向节点 C\n    else:\n        return \"路径3\"  # 结束流程",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "实战案例 1：循环重试机制",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "需求分析",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "场景：文章写作 Agent 的质量自动检查。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "场景",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心需求：实现循环重试机制。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心需求",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "草稿生成后，自动检查质量。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "质量合格（字数 800-1500） → 进入润色。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "质量不合格 → 循环回到草稿节点重新生成。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "循环回到草稿节点",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "最多重试 3 次，超限则强制进入润色。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "完整源码路径: samples/chapter9/article_writer/article_writer_with_loop.py",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "工作流结构可视化：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "工作流结构可视化",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "关键代码实现",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在 LangGraph v0.2+ 中，我们使用 START 和 END 常量来定义图的边界。以下是核心编排逻辑：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langgraph.graph import StateGraph, START, END\n\n# 1. 路由函数：根据字数和重试次数决定路径\ndef check_quality_route(state: ArticleState) -> str:\n    draft = state[\"draft\"]\n    retry_count = state.get(\"retry_count\", 0)\n    word_count = len(draft)\n\n    if 800 <= word_count <= 1500:\n        return \"polish\"  # 合格 -> 润色\n    elif retry_count >= 3:\n        return \"polish\"  # 达到重试上限 -> 强制进入润色\n    else:\n        return \"retry\"   # 不合格 -> 重试\n\n# 2. 构建图\nbuilder = StateGraph(ArticleState)\n\nbuilder.add_node(\"大纲\", generate_outline)\nbuilder.add_node(\"草稿\", write_draft)\nbuilder.add_node(\"质量检查\", quality_check)\nbuilder.add_node(\"润色\", polish_article)\n\n# 定义流程\nbuilder.add_edge(START, \"大纲\")\nbuilder.add_edge(\"大纲\", \"草稿\")\nbuilder.add_edge(\"草稿\", \"质量检查\")\n\n# 添加条件边实现循环\nbuilder.add_conditional_edges(\n    \"质量检查\",\n    check_quality_route,\n    {\n        \"retry\": \"草稿\",   # 路由返回 \"retry\" 时回到 \"草稿\" 节点\n        \"polish\": \"润色\"  # 路由返回 \"polish\" 时进入 \"润色\" 节点\n    }\n)\n\nbuilder.add_edge(\"润色\", END)",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "实战案例 2：条件分支路由",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "场景：智能客服系统的分类分发。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心需求：实现多路径分支。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "多路径分支",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "技术问题 → 走向 查文档 节点。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "查文档",
+      "page": 6,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "闲聊问候 → 走向 闲聊回复 节点。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "闲聊回复",
+      "page": 6,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "无法分类 → 走向 转人工 节点。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "完整源码路径: samples/chapter9/article_writer/question_router.py",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "分支路由通常用于将任务分发给不同的专业处理节点：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def question_router(state: CustomerState) -> str:\n    category = state[\"category\"]\n    if \"技术\" in category:\n        return \"technical\"\n    elif \"闲聊\" in category:\n        return \"casual\"\n    else:\n        return \"human\"\n\nbuilder = StateGraph(CustomerState)\n\n# 添加节点...\nbuilder.add_node(\"分类\", classify_question)\nbuilder.add_node(\"查文档\", search_docs)\nbuilder.add_node(\"闲聊\", casual_reply)\nbuilder.add_node(\"转人工\", transfer_human)\n\nbuilder.add_edge(START, \"分类\")\n\n# 添加条件分支\nbuilder.add_conditional_edges(\n    \"分类\",\n    question_router,\n    {\n        \"technical\": \"查文档\",\n        \"casual\": \"闲聊\",\n        \"human\": \"转人工\"\n    }\n)\n\n# 所有分支最终汇聚到结束\nbuilder.add_edge(\"查文档\", END)\nbuilder.add_edge(\"闲聊\", END)\nbuilder.add_edge(\"转人工\", END)",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n条件边 | Conditional Edge | /kənˈdɪʃənəl edʒ/ | 根据 State 动态决定下一步的边，实现分支和循环\n路由函数 | Routing Function | /ˈruːtɪŋ ˈfʌŋkʃn/ | 读取 State 返回路径名称的判断逻辑\n重试机制 | Retry Mechanism | /ˈriːtraɪ ˈmekənɪzəm/ | 条件循环 + 最大次数约束的容错模式\n有向无环图 vs 有向有环图 | DAG vs Cyclic Graph | /diː eɪ dʒiː ˈvɜːrsəs ˈsaɪklɪk ɡræf/ | 分支形成 DAG，循环形成有环图",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "条件边",
+          "Conditional Edge",
+          "/kənˈdɪʃənəl edʒ/",
+          "根据 State 动态决定下一步的边，实现分支和循环"
+        ],
+        [
+          "路由函数",
+          "Routing Function",
+          "/ˈruːtɪŋ ˈfʌŋkʃn/",
+          "读取 State 返回路径名称的判断逻辑"
+        ],
+        [
+          "重试机制",
+          "Retry Mechanism",
+          "/ˈriːtraɪ ˈmekənɪzəm/",
+          "条件循环 + 最大次数约束的容错模式"
+        ],
+        [
+          "有向无环图 vs 有向有环图",
+          "DAG vs Cyclic Graph",
+          "/diː eɪ dʒiː ˈvɜːrsəs ˈsaɪklɪk ɡræf/",
+          "分支形成 DAG，循环形成有环图"
+        ]
+      ],
+      "page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "下节预告",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "到目前为止，我们构建的都是全自动工作流：一旦启动，Agent 会按照预设的路径一路执行到底。但在真实的生产环境中，这种\"完全自动化\"往往是危险的。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "回想一下第3节的文章写作 Agent。虽然我们实现了大纲生成、草稿撰写、润色优化的完整流程，但有一个关键问题：AI 生成的每一步内容，真的可以直接用吗？",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "答案是否定的。真正可靠的工作流应该是：LLM 生成 → 人工审核/修改 → 继续执行。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将学习 LangGraph 最强大的特性之一——人工介入（Human-in-the-Loop）：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如何在关键节点暂停工作流，等待人工决策。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如何在人工审核后，继续执行后续流程。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如何实现「AI 高效生成 + 人类精准把关」的完美协作。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/e5b6f49ce9f20c6fc18962157d34de14.png",
+      "width": 1964,
+      "height": 432,
+      "page": 8
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/fe8896cdfbacc08d88c9f22af806f2b2.png",
+      "width": 1572,
+      "height": 684,
+      "page": 9
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/45847d959e0e17f57993011833441030.png",
+      "width": 962,
+      "height": 1558,
+      "page": 10
+    }
+  ],
+  "accounting": {
+    "source_chars": 3960,
+    "represented_chars": 3811,
+    "removed_chars": 149,
+    "tables": 1,
+    "images": 3,
+    "image_occurrences": 4,
+    "removals": {
+      "export_metadata": 131,
+      "repeated_title": 18
+    }
+  },
+  "videos": [],
+  "order": 133,
+  "headings": [
+    {
+      "title": "从固定流程到动态决策",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "第3节的局限",
+      "id": "section-2",
+      "level": 3
+    },
+    {
+      "title": "两种动态机制",
+      "id": "section-12",
+      "level": 3
+    },
+    {
+      "title": "条件边 (Conditional Edges)",
+      "id": "section-38",
+      "level": 2
+    },
+    {
+      "title": "核心概念",
+      "id": "section-39",
+      "level": 3
+    },
+    {
+      "title": "实战案例 1：循环重试机制",
+      "id": "section-45",
+      "level": 2
+    },
+    {
+      "title": "关键代码实现",
+      "id": "section-59",
+      "level": 3
+    },
+    {
+      "title": "实战案例 2：条件分支路由",
+      "id": "section-62",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-74",
+      "level": 2
+    },
+    {
+      "title": "下节预告",
+      "id": "section-76",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-84",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们构建了一个简单的文章写作工作流：大纲 → 草稿 → 润色，三步顺序执行。但在实际应用中，我们常需要工作流“会思考、会判断”： 生成的草稿质量不够？循环重试→ 回到生成节点。 用户问题类型不同？条件分支 → 选择不同路径。 检测到敏感内容？转人工审核 → 跳转特定节点。 本节将学习两个核心机制： 循环 (Loop)：指向前面的节点，重复执行。 分支 (Branch)：指向不同后续节点，分流处理。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "从固定流程到动态决策"
+    },
+    {
+      "anchor": "section-2",
+      "text": "第3节的局限"
+    },
+    {
+      "anchor": "section-2",
+      "text": "回顾第3节的工作流："
+    },
+    {
+      "anchor": "section-2",
+      "text": "START → 大纲 → 草稿 → 润色 → END\n\n1"
+    },
+    {
+      "anchor": "section-2",
+      "text": "1"
+    },
+    {
+      "anchor": "section-2",
+      "text": "这是一条固定的单行道："
+    },
+    {
+      "anchor": "section-2",
+      "text": "固定的单行道"
+    },
+    {
+      "anchor": "section-2",
+      "text": "[√] 流程清晰，执行可预测。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "[×] 无法根据中间结果调整路径。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "[×] 草稿质量差也只能继续润色。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "[×] 无法处理异常情况。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "两种动态机制"
+    },
+    {
+      "anchor": "section-12",
+      "text": "实际项目中，我们需要两种能力："
+    },
+    {
+      "anchor": "section-12",
+      "text": "循环能力：向后指，重复执行"
+    },
+    {
+      "anchor": "section-12",
+      "text": "循环能力"
+    },
+    {
+      "anchor": "section-12",
+      "text": "循环特征："
+    },
+    {
+      "anchor": "section-12",
+      "text": "循环特征"
+    },
+    {
+      "anchor": "section-12",
+      "text": "质量检查 → 草稿：指向前面的节点。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "质量检查 → 草稿"
+    },
+    {
+      "anchor": "section-12",
+      "text": "形成有向有环图。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "有向有环图"
+    },
+    {
+      "anchor": "section-12",
+      "text": "节点可能执行多次。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "执行多次"
+    },
+    {
+      "anchor": "section-12",
+      "text": "必须有退出条件（避免死循环）。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "退出条件"
+    },
+    {
+      "anchor": "section-12",
+      "text": "分支能力：向前指，分流处理"
+    },
+    {
+      "anchor": "section-12",
+      "text": "分支能力"
+    },
+    {
+      "anchor": "section-12",
+      "text": "分支特征："
+    },
+    {
+      "anchor": "section-12",
+      "text": "分支特征"
+    },
+    {
+      "anchor": "section-12",
+      "text": "分类 → [技术/闲聊/人工]：指向不同后续节点。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "分类 → [技术/闲聊/人工]"
+    },
+    {
+      "anchor": "section-12",
+      "text": "形成有向无环图 (DAG)。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "有向无环图 (DAG)"
+    },
+    {
+      "anchor": "section-12",
+      "text": "每个节点最多执行一次。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "最多执行一次"
+    },
+    {
+      "anchor": "section-12",
+      "text": "多条路径互不交叉，各自通向终点。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "互不交叉"
+    },
+    {
+      "anchor": "section-38",
+      "text": "条件边 (Conditional Edges)"
+    },
+    {
+      "anchor": "section-39",
+      "text": "核心概念"
+    },
+    {
+      "anchor": "section-39",
+      "text": "条件边允许根据 State 动态选择下一个节点："
+    },
+    {
+      "anchor": "section-39",
+      "text": "条件边"
+    },
+    {
+      "anchor": "section-39",
+      "text": "# 固定边: 永远走同一条路\nbuilder.add_edge(\"A\", \"B\")  # A → B\n\n# 条件边: 根据 State 选择路径\nbuilder.add_conditional_edges(\n    \"A\",                    # 起始节点\n    routing_function,       # 路由函数(判断逻辑)\n    {                       # 路由映射表\n        \"路径1\": \"B\",\n        \"路径2\": \"C\",\n        \"路径3\": END\n    }\n)"
+    },
+    {
+      "anchor": "section-39",
+      "text": "路由函数示例："
+    },
+    {
+      "anchor": "section-39",
+      "text": "def routing_function(state: MyState) -> str:\n    \"\"\"根据 State 返回路径名称\"\"\"\n    if state[\"score\"] > 80:\n        return \"路径1\"  # 走向节点 B\n    elif state[\"score\"] > 60:\n        return \"路径2\"  # 走向节点 C\n    else:\n        return \"路径3\"  # 结束流程"
+    },
+    {
+      "anchor": "section-45",
+      "text": "实战案例 1：循环重试机制"
+    },
+    {
+      "anchor": "section-45",
+      "text": "需求分析"
+    },
+    {
+      "anchor": "section-45",
+      "text": "场景：文章写作 Agent 的质量自动检查。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "场景"
+    },
+    {
+      "anchor": "section-45",
+      "text": "核心需求：实现循环重试机制。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "核心需求"
+    },
+    {
+      "anchor": "section-45",
+      "text": "草稿生成后，自动检查质量。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "质量合格（字数 800-1500） → 进入润色。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "质量不合格 → 循环回到草稿节点重新生成。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "循环回到草稿节点"
+    },
+    {
+      "anchor": "section-45",
+      "text": "最多重试 3 次，超限则强制进入润色。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "完整源码路径: samples/chapter9/article_writer/article_writer_with_loop.py"
+    },
+    {
+      "anchor": "section-45",
+      "text": "工作流结构可视化："
+    },
+    {
+      "anchor": "section-45",
+      "text": "工作流结构可视化"
+    },
+    {
+      "anchor": "section-59",
+      "text": "关键代码实现"
+    },
+    {
+      "anchor": "section-59",
+      "text": "在 LangGraph v0.2+ 中，我们使用 START 和 END 常量来定义图的边界。以下是核心编排逻辑："
+    },
+    {
+      "anchor": "section-59",
+      "text": "from langgraph.graph import StateGraph, START, END\n\n# 1. 路由函数：根据字数和重试次数决定路径\ndef check_quality_route(state: ArticleState) -> str:\n    draft = state[\"draft\"]\n    retry_count = state.get(\"retry_count\", 0)\n    word_count = len(draft)\n\n    if 800 <= word_count <= 1500:\n        return \"polish\"  # 合格 -> 润色\n    elif retry_count >= 3:\n        return \"polish\"  # 达到重试上限 -> 强制进入润色\n    else:\n        return \"retry\"   # 不合格 -> 重试\n\n# 2. 构建图\nbuilder = StateGraph(ArticleState)\n\nbuilder.add_node(\"大纲\", generate_outline)\nbuilder.add_node(\"草稿\", write_draft)\nbuilder.add_node(\"质量检查\", quality_check)\nbuilder.add_node(\"润色\", polish_article)\n\n# 定义流程\nbuilder.add_edge(START, \"大纲\")\nbuilder.add_edge(\"大纲\", \"草稿\")\nbuilder.add_edge(\"草稿\", \"质量检查\")\n\n# 添加条件边实现循环\nbuilder.add_conditional_edges(\n    \"质量检查\",\n    check_quality_route,\n    {\n        \"retry\": \"草稿\",   # 路由返回 \"retry\" 时回到 \"草稿\" 节点\n        \"polish\": \"润色\"  # 路由返回 \"polish\" 时进入 \"润色\" 节点\n    }\n)\n\nbuilder.add_edge(\"润色\", END)"
+    },
+    {
+      "anchor": "section-62",
+      "text": "实战案例 2：条件分支路由"
+    },
+    {
+      "anchor": "section-62",
+      "text": "场景：智能客服系统的分类分发。"
+    },
+    {
+      "anchor": "section-62",
+      "text": "核心需求：实现多路径分支。"
+    },
+    {
+      "anchor": "section-62",
+      "text": "多路径分支"
+    },
+    {
+      "anchor": "section-62",
+      "text": "技术问题 → 走向 查文档 节点。"
+    },
+    {
+      "anchor": "section-62",
+      "text": "查文档"
+    },
+    {
+      "anchor": "section-62",
+      "text": "闲聊问候 → 走向 闲聊回复 节点。"
+    },
+    {
+      "anchor": "section-62",
+      "text": "闲聊回复"
+    },
+    {
+      "anchor": "section-62",
+      "text": "无法分类 → 走向 转人工 节点。"
+    },
+    {
+      "anchor": "section-62",
+      "text": "完整源码路径: samples/chapter9/article_writer/question_router.py"
+    },
+    {
+      "anchor": "section-62",
+      "text": "分支路由通常用于将任务分发给不同的专业处理节点："
+    },
+    {
+      "anchor": "section-62",
+      "text": "def question_router(state: CustomerState) -> str:\n    category = state[\"category\"]\n    if \"技术\" in category:\n        return \"technical\"\n    elif \"闲聊\" in category:\n        return \"casual\"\n    else:\n        return \"human\"\n\nbuilder = StateGraph(CustomerState)\n\n# 添加节点...\nbuilder.add_node(\"分类\", classify_question)\nbuilder.add_node(\"查文档\", search_docs)\nbuilder.add_node(\"闲聊\", casual_reply)\nbuilder.add_node(\"转人工\", transfer_human)\n\nbuilder.add_edge(START, \"分类\")\n\n# 添加条件分支\nbuilder.add_conditional_edges(\n    \"分类\",\n    question_router,\n    {\n        \"technical\": \"查文档\",\n        \"casual\": \"闲聊\",\n        \"human\": \"转人工\"\n    }\n)\n\n# 所有分支最终汇聚到结束\nbuilder.add_edge(\"查文档\", END)\nbuilder.add_edge(\"闲聊\", END)\nbuilder.add_edge(\"转人工\", END)"
+    },
+    {
+      "anchor": "section-74",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-74",
+      "text": "中文 | English | 音标 | 说明\n条件边 | Conditional Edge | /kənˈdɪʃənəl edʒ/ | 根据 State 动态决定下一步的边，实现分支和循环\n路由函数 | Routing Function | /ˈruːtɪŋ ˈfʌŋkʃn/ | 读取 State 返回路径名称的判断逻辑\n重试机制 | Retry Mechanism | /ˈriːtraɪ ˈmekənɪzəm/ | 条件循环 + 最大次数约束的容错模式\n有向无环图 vs 有向有环图 | DAG vs Cyclic Graph | /diː eɪ dʒiː ˈvɜːrsəs ˈsaɪklɪk ɡræf/ | 分支形成 DAG，循环形成有环图"
+    },
+    {
+      "anchor": "section-76",
+      "text": "下节预告"
+    },
+    {
+      "anchor": "section-76",
+      "text": "到目前为止，我们构建的都是全自动工作流：一旦启动，Agent 会按照预设的路径一路执行到底。但在真实的生产环境中，这种\"完全自动化\"往往是危险的。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "回想一下第3节的文章写作 Agent。虽然我们实现了大纲生成、草稿撰写、润色优化的完整流程，但有一个关键问题：AI 生成的每一步内容，真的可以直接用吗？"
+    },
+    {
+      "anchor": "section-76",
+      "text": "答案是否定的。真正可靠的工作流应该是：LLM 生成 → 人工审核/修改 → 继续执行。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "下一节，我们将学习 LangGraph 最强大的特性之一——人工介入（Human-in-the-Loop）："
+    },
+    {
+      "anchor": "section-76",
+      "text": "如何在关键节点暂停工作流，等待人工决策。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "如何在人工审核后，继续执行后续流程。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "如何实现「AI 高效生成 + 人类精准把关」的完美协作。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "图片"
+    }
+  ]
+}

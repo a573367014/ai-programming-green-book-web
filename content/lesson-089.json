@@ -1,0 +1,684 @@
+{
+  "id": "lesson-089",
+  "title": "流式输出与长度控制",
+  "code": "1-3",
+  "stage": 2,
+  "week": 4,
+  "week_title": "理解大模型开发",
+  "module": "小试牛刀，做一个简单的翻译器",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/001-第4周 理解大模型开发/003-小试牛刀，做一个简单的翻译器/089-图文-1-3-流式输出与长度控制.pdf",
+  "sha256": "fdaaacff12e7238e4d61390c9f2491a6df923188c23d970914c3730462f832b4",
+  "pdf": "sources/pdf/lesson-089.pdf",
+  "pages": 5,
+  "source_url": "https://class.imooc.com/lesson/5269#mid=104908",
+  "minutes": 7,
+  "excerpt": "上一节我们完成了多轮对话与上下文管理。现在开始深入API参数——先学习流式输出（stream）和长度控制（max_tokens），这是改善用户体验和控制成本的基础。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们完成了多轮对话与上下文管理。现在开始深入API参数——先学习流式输出（stream）和长度控制（max_tokens），这是改善用户体验和控制成本的基础。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "7.1 从简单翻译到专业工具",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "回顾第6节的基础翻译器，它存在几个问题：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "等待时间长：长文本翻译时，只能干等，看不到进度",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "长度不可控：无法限制翻译结果的长度",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "风格固定：无法调整创意性（直译 vs 意译）",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "成本不透明：不知道消耗了多少Token",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "错误不友好：翻译被截断时没有提示",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "本节先解决前两个问题",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们将通过2个核心参数来解决：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "stream - 流式输出，解决等待问题",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "max_tokens - 控制长度，避免截断",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "其余参数（temperature、top_p等）将在下一节讨论。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.2 流式输出",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "先理解一个大模型开发里常用的方案：流式输出（Streaming）。它常用于改善用户体验。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "流式输出的原理",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "非流式：AI生成完整个翻译结果后，一次性返回",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "非流式",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "流式：AI每生成一小段内容，就立即返回，可以边生成边看到结果",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "非流式输出：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "用户输入 → [等待10秒…] → 完整翻译结果一次性显示",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "流式输出：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "用户输入 → The → weather → is → really → nice → today → … ↑ 立即开始 ↑ 逐字输出 ↑ 像打字机一样",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "流式输出不会让AI生成更快，但会让感知更快。这就是为什么几乎所有现代AI对话产品都使用流式输出。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面看如何在代码中实现它。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.3 stream参数实战",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 示例代码位置 本节参考的实际代码位于： /samples/chapter4/translator_pro_plus.py 你可以在项目根目录下找到这个文件，里面包含了完整的流式输出实现。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "翻译一篇1000字的文章，需要等待10秒才能看到结果，体验很差。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "非流式输出（一次性返回）：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译这段文本...\"}],\n    stream=False  # 默认值\n)\nprint(response.choices[0].message.content)  # 等待10秒后一次性显示",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "流式（逐字返回）:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译这段文本...\"}],\n    stream=True  # 启用流式输出\n)\n\n# 不仅要开启stream=True，还需要使用for逐字打印出来\nfor chunk in response:\n    if chunk.choices[0].delta.content:\n        print(chunk.choices[0].delta.content, end=\"\", flush=True)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际运行效果",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "非流式：\n[等待10秒...]\nThe weather is really nice today, let's go for a walk in the park.\n\n流式：\nThe wea[0.1s]ther is [0.1s]really ni[0.1s]ce today[0.1s], let's go[0.1s] for a \nwalk[0.1s]...",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "max_tokens：长度控制",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在第3节中，我们学习了API响应中的finish_reason字段，它会告诉我们生成结束的原因。当finish_reason='length'时，说明是因为达到了Token限制而被截断。下面看如何通过max_tokens参数来控制这个长度。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "参数说明",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "max_tokens：限制生成的最大Token数（不包括输入）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "生成的最大Token数",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "默认值：无限制（由模型自行决定何时停止）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "最大值：受模型上下文窗口限制（例如：如果模型上下文窗口是128K，输入用了1K，那么输出最多127K）",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "quote",
+      "text": "Token估算参考 中文：1个汉字 ≈ 1个Token 英文：平均每个单词 ≈ 1.3-1.5个Token（短单词如“the” 是1个，长单词可能被拆分为多个）",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "使用示例",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 限制翻译结果不超过100个Token\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译：今天天气真好...\"}],\n    max_tokens=100  # 最多生成100个Token\n)\n\n# 检查是否被截断\nif response.choices[0].finish_reason == 'length':\n    print(\"翻译结果被截断，请增加max_tokens或缩短输入\")\nelse:\n    print(response.choices[0].message.content)",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "实战建议",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "短文本翻译：max_tokens=200 足够",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "max_tokens=200",
+      "page": 4,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "长文章翻译：根据原文长度估算，原文Token数 × 1.5 倍",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "摘要翻译：限制在 max_tokens=50-100，强制精简",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "max_tokens=50-100",
+      "page": 4,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Token数估算技巧",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 粗略估算（中文）\ninput_chars = len(\"今天天气真好，我们去公园散步吧。\")  # 16个字\nestimated_tokens = input_chars * 1  # 约16个Token（1中文字≈1Token）\nmax_tokens = int(estimated_tokens * 1.5)  # 翻译结果预留1.5倍空间\n\nprint(f\"输入约{estimated_tokens}个Token，建议max_tokens={max_tokens}\")\n# 输出：输入约16个Token，建议max_tokens=24",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "7.4 下一节预告",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "掌握了流式输出和长度控制后，接下来学习如何控制翻译的创意性——通过temperature、top_p等参数，让翻译在直译和意译之间自由切换。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "7.5 ■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n流式输出 | Streaming Output | /ˈstriːmɪŋ ˈaʊtpʊt/ | AI边生成边返回结果，提升用户体验的技术\n最大令牌数 | Max Tokens | /mæks ˈtoʊkənz/ | 限制模型生成内容的最大Token数量\n逐块输出 | Chunk-by-chunk Output | /tʃʌŋk baɪ tʃʌŋk ˈaʊtpʊt/ | 流式模式下内容逐步返回的呈现方式\n感知速度 | Perceived Speed | /pərˈsiːvd spiːd/ | 用户感受上的响应速度，不等于实际生成速度\n截断检测 | Truncation Detection | /trʌŋˈkeɪʃn dɪˈtekʃn/ | 通过finish reason判断回复是否被截断 _",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "流式输出",
+          "Streaming Output",
+          "/ˈstriːmɪŋ ˈaʊtpʊt/",
+          "AI边生成边返回结果，提升用户体验的技术"
+        ],
+        [
+          "最大令牌数",
+          "Max Tokens",
+          "/mæks ˈtoʊkənz/",
+          "限制模型生成内容的最大Token数量"
+        ],
+        [
+          "逐块输出",
+          "Chunk-by-chunk Output",
+          "/tʃʌŋk baɪ tʃʌŋk ˈaʊtpʊt/",
+          "流式模式下内容逐步返回的呈现方式"
+        ],
+        [
+          "感知速度",
+          "Perceived Speed",
+          "/pərˈsiːvd spiːd/",
+          "用户感受上的响应速度，不等于实际生成速度"
+        ],
+        [
+          "截断检测",
+          "Truncation Detection",
+          "/trʌŋˈkeɪʃn dɪˈtekʃn/",
+          "通过finish reason判断回复是否被截断 _"
+        ]
+      ],
+      "page": 5
+    }
+  ],
+  "accounting": {
+    "source_chars": 3109,
+    "represented_chars": 2935,
+    "removed_chars": 174,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 144,
+      "repeated_title": 30
+    }
+  },
+  "videos": [],
+  "order": 90,
+  "headings": [
+    {
+      "title": "7.1 从简单翻译到专业工具",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "7.2 流式输出",
+      "id": "section-13",
+      "level": 2
+    },
+    {
+      "title": "7.3 stream参数实战",
+      "id": "section-25",
+      "level": 2
+    },
+    {
+      "title": "max_tokens：长度控制",
+      "id": "section-34",
+      "level": 3
+    },
+    {
+      "title": "7.4 下一节预告",
+      "id": "section-52",
+      "level": 2
+    },
+    {
+      "title": "7.5 ■ 学点英语",
+      "id": "section-54",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们完成了多轮对话与上下文管理。现在开始深入API参数——先学习流式输出（stream）和长度控制（max_tokens），这是改善用户体验和控制成本的基础。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "7.1 从简单翻译到专业工具"
+    },
+    {
+      "anchor": "section-1",
+      "text": "回顾第6节的基础翻译器，它存在几个问题："
+    },
+    {
+      "anchor": "section-1",
+      "text": "等待时间长：长文本翻译时，只能干等，看不到进度"
+    },
+    {
+      "anchor": "section-1",
+      "text": "长度不可控：无法限制翻译结果的长度"
+    },
+    {
+      "anchor": "section-1",
+      "text": "风格固定：无法调整创意性（直译 vs 意译）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "成本不透明：不知道消耗了多少Token"
+    },
+    {
+      "anchor": "section-1",
+      "text": "错误不友好：翻译被截断时没有提示"
+    },
+    {
+      "anchor": "section-1",
+      "text": "本节先解决前两个问题"
+    },
+    {
+      "anchor": "section-1",
+      "text": "我们将通过2个核心参数来解决："
+    },
+    {
+      "anchor": "section-1",
+      "text": "stream - 流式输出，解决等待问题"
+    },
+    {
+      "anchor": "section-1",
+      "text": "max_tokens - 控制长度，避免截断"
+    },
+    {
+      "anchor": "section-1",
+      "text": "其余参数（temperature、top_p等）将在下一节讨论。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "7.2 流式输出"
+    },
+    {
+      "anchor": "section-13",
+      "text": "先理解一个大模型开发里常用的方案：流式输出（Streaming）。它常用于改善用户体验。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "流式输出的原理"
+    },
+    {
+      "anchor": "section-13",
+      "text": "非流式：AI生成完整个翻译结果后，一次性返回"
+    },
+    {
+      "anchor": "section-13",
+      "text": "非流式"
+    },
+    {
+      "anchor": "section-13",
+      "text": "流式：AI每生成一小段内容，就立即返回，可以边生成边看到结果"
+    },
+    {
+      "anchor": "section-13",
+      "text": "非流式输出："
+    },
+    {
+      "anchor": "section-13",
+      "text": "用户输入 → [等待10秒…] → 完整翻译结果一次性显示"
+    },
+    {
+      "anchor": "section-13",
+      "text": "流式输出："
+    },
+    {
+      "anchor": "section-13",
+      "text": "用户输入 → The → weather → is → really → nice → today → … ↑ 立即开始 ↑ 逐字输出 ↑ 像打字机一样"
+    },
+    {
+      "anchor": "section-13",
+      "text": "流式输出不会让AI生成更快，但会让感知更快。这就是为什么几乎所有现代AI对话产品都使用流式输出。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "下面看如何在代码中实现它。"
+    },
+    {
+      "anchor": "section-25",
+      "text": "7.3 stream参数实战"
+    },
+    {
+      "anchor": "section-25",
+      "text": "示例代码位置 本节参考的实际代码位于： /samples/chapter4/translator_pro_plus.py 你可以在项目根目录下找到这个文件，里面包含了完整的流式输出实现。"
+    },
+    {
+      "anchor": "section-25",
+      "text": "翻译一篇1000字的文章，需要等待10秒才能看到结果，体验很差。"
+    },
+    {
+      "anchor": "section-25",
+      "text": "非流式输出（一次性返回）："
+    },
+    {
+      "anchor": "section-25",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译这段文本...\"}],\n    stream=False  # 默认值\n)\nprint(response.choices[0].message.content)  # 等待10秒后一次性显示"
+    },
+    {
+      "anchor": "section-25",
+      "text": "流式（逐字返回）:"
+    },
+    {
+      "anchor": "section-25",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译这段文本...\"}],\n    stream=True  # 启用流式输出\n)\n\n# 不仅要开启stream=True，还需要使用for逐字打印出来\nfor chunk in response:\n    if chunk.choices[0].delta.content:\n        print(chunk.choices[0].delta.content, end=\"\", flush=True)"
+    },
+    {
+      "anchor": "section-25",
+      "text": "实际运行效果"
+    },
+    {
+      "anchor": "section-25",
+      "text": "非流式：\n[等待10秒...]\nThe weather is really nice today, let's go for a walk in the park.\n\n流式：\nThe wea[0.1s]ther is [0.1s]really ni[0.1s]ce today[0.1s], let's go[0.1s] for a \nwalk[0.1s]..."
+    },
+    {
+      "anchor": "section-34",
+      "text": "max_tokens：长度控制"
+    },
+    {
+      "anchor": "section-34",
+      "text": "在第3节中，我们学习了API响应中的finish_reason字段，它会告诉我们生成结束的原因。当finish_reason='length'时，说明是因为达到了Token限制而被截断。下面看如何通过max_tokens参数来控制这个长度。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "参数说明"
+    },
+    {
+      "anchor": "section-34",
+      "text": "max_tokens：限制生成的最大Token数（不包括输入）"
+    },
+    {
+      "anchor": "section-34",
+      "text": "生成的最大Token数"
+    },
+    {
+      "anchor": "section-34",
+      "text": "默认值：无限制（由模型自行决定何时停止）"
+    },
+    {
+      "anchor": "section-34",
+      "text": "最大值：受模型上下文窗口限制（例如：如果模型上下文窗口是128K，输入用了1K，那么输出最多127K）"
+    },
+    {
+      "anchor": "section-34",
+      "text": "Token估算参考 中文：1个汉字 ≈ 1个Token 英文：平均每个单词 ≈ 1.3-1.5个Token（短单词如“the” 是1个，长单词可能被拆分为多个）"
+    },
+    {
+      "anchor": "section-34",
+      "text": "使用示例"
+    },
+    {
+      "anchor": "section-34",
+      "text": "# 限制翻译结果不超过100个Token\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译：今天天气真好...\"}],\n    max_tokens=100  # 最多生成100个Token\n)\n\n# 检查是否被截断\nif response.choices[0].finish_reason == 'length':\n    print(\"翻译结果被截断，请增加max_tokens或缩短输入\")\nelse:\n    print(response.choices[0].message.content)"
+    },
+    {
+      "anchor": "section-34",
+      "text": "实战建议"
+    },
+    {
+      "anchor": "section-34",
+      "text": "短文本翻译：max_tokens=200 足够"
+    },
+    {
+      "anchor": "section-34",
+      "text": "max_tokens=200"
+    },
+    {
+      "anchor": "section-34",
+      "text": "长文章翻译：根据原文长度估算，原文Token数 × 1.5 倍"
+    },
+    {
+      "anchor": "section-34",
+      "text": "摘要翻译：限制在 max_tokens=50-100，强制精简"
+    },
+    {
+      "anchor": "section-34",
+      "text": "max_tokens=50-100"
+    },
+    {
+      "anchor": "section-34",
+      "text": "Token数估算技巧"
+    },
+    {
+      "anchor": "section-34",
+      "text": "# 粗略估算（中文）\ninput_chars = len(\"今天天气真好，我们去公园散步吧。\")  # 16个字\nestimated_tokens = input_chars * 1  # 约16个Token（1中文字≈1Token）\nmax_tokens = int(estimated_tokens * 1.5)  # 翻译结果预留1.5倍空间\n\nprint(f\"输入约{estimated_tokens}个Token，建议max_tokens={max_tokens}\")\n# 输出：输入约16个Token，建议max_tokens=24"
+    },
+    {
+      "anchor": "section-52",
+      "text": "7.4 下一节预告"
+    },
+    {
+      "anchor": "section-52",
+      "text": "掌握了流式输出和长度控制后，接下来学习如何控制翻译的创意性——通过temperature、top_p等参数，让翻译在直译和意译之间自由切换。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "7.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-54",
+      "text": "中文 | English | 音标 | 说明\n流式输出 | Streaming Output | /ˈstriːmɪŋ ˈaʊtpʊt/ | AI边生成边返回结果，提升用户体验的技术\n最大令牌数 | Max Tokens | /mæks ˈtoʊkənz/ | 限制模型生成内容的最大Token数量\n逐块输出 | Chunk-by-chunk Output | /tʃʌŋk baɪ tʃʌŋk ˈaʊtpʊt/ | 流式模式下内容逐步返回的呈现方式\n感知速度 | Perceived Speed | /pərˈsiːvd spiːd/ | 用户感受上的响应速度，不等于实际生成速度\n截断检测 | Truncation Detection | /trʌŋˈkeɪʃn dɪˈtekʃn/ | 通过finish reason判断回复是否被截断 _"
+    }
+  ]
+}

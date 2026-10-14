@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>文档分块实战：Java编程规范问答 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-102">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 5 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第一个RAG应用：游戏知识问答系统</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 103</span></div>
+<h1 class="lesson-title">文档分块实战：Java编程规范问答</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>12 页原文</span><span>约 17 分钟阅读</span><span class="module-name">第一个RAG应用：游戏知识问答系统</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-102.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-102.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节我们学习了文档分块的理论和策略，现在用一份真实的PDF文档——《阿里巴巴Java开发手册》，来体验完整的RAG构建流程：从PDF提取、文本清洗、分块策略对比，到最终入库查询。</p></aside>
+<h2 id="section-1" data-source-page="1">9.1 准备工作：从PDF到可用文本<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">Chunking分块目标</p>
+<p data-source-page="1">场景：做一个能回答Java编程规范问题的智能助手</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户问：“变量命名有什么规范？”
+系统检索规范手册，给出准确答案：“代码中的命名均不能以下划线或美元符号开始...”
+
+1
+2</code></pre></div>
+<p data-source-page="1">数据源：阿里巴巴Java开发手册（PDF，37页，约4万字）</p>
+<p data-source-page="1">挑战：</p>
+<p class="list-item" data-source-page="1">PDF格式，不是纯文本</p>
+<p class="list-item" data-source-page="1">有页眉页脚、页码等干扰信息</p>
+<p class="list-item" data-source-page="1">如何切分才能保证检索准确？</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">第一步：提取PDF文本</p>
+<p data-source-page="2">安装工具：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>BASH</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-bash">pip install pdfplumber
+
+1</code></pre></div>
+<p data-source-page="2">install</p>
+<p data-source-page="2">提取代码：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 使用pdfplumber提取PDF文本
+with pdfplumber.open(pdf_path) as pdf:
+    for page in pdf.pages:
+        all_text += page.extract_text()
+
+print(f&quot;提取完成，共 {len(all_text)} 字符&quot;)</code></pre></div>
+<aside class="callout" data-source-page="2"><b>阅读提示</b><p>完整源码参考：samples/chunking/extract_pdf.py</p></aside>
+<p data-source-page="2">运行结果：</p>
+<aside class="callout" data-source-page="2"><p>提取完成，共40,109 字符，总行数: 1,204</p></aside>
+<p data-source-page="2">第二步：清洗文本</p>
+<p data-source-page="2">直接提取的文本包含很多干扰信息：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">阿里巴巴Java开发手册
+--------浏览时请使用PDF 左侧导航栏------
+.......</code></pre></div>
+<p data-source-page="2">这些都应该去掉。</p>
+<p data-source-page="2">清洗策略：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def clean_text(text):
+    # 1. 删除页眉页脚
+    text = 按行处理，跳过匹配的行
+
+    # 2. 删除目录、表格、法律声明等固定区域
+    根据行号跳过指定范围
+
+    # 3. 压缩多余空行
+    text = re.sub(r&#x27;\n{4,}&#x27;, &#x27;\n\n\n&#x27;, text)
+
+    return text.strip()</code></pre></div>
+<p data-source-page="3">效果：原始 40,109 字符 → 清洗后 36,495 字符，节省 9.0%</p>
+<aside class="callout" data-source-page="3"><b>阅读提示</b><p>完整源码参考：samples/chapter5/chunking/clean_text.py</p></aside>
+<h2 id="section-27" data-source-page="3">9.2 摘取测试文本<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">4万字的文本太长了，我们不需要全部，摘取一个有代表性的片段即可。</p>
+<p data-source-page="3">选择标准</p>
+<p data-source-page="3">好的测试段应该：长度适中（2000-3000字），结构清晰（有章节、有条目），内容完整（包含多个独立规范），有挑战性（有上下文依赖的内容）。</p>
+<p data-source-page="3">我们的选择：命名风格+常量定义</p>
+<p data-source-page="3">从第4-6页提取，包含：</p>
+<p class="list-item" data-source-page="3">16条命名规范</p>
+<p class="list-item" data-source-page="3">5条常量定义规范</p>
+<p class="list-item" data-source-page="3">正例、反例、说明齐全</p>
+<p class="list-item" data-source-page="3">总计约3000字</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 提取指定页面的文本
+with pdfplumber.open(pdf_path) as pdf:
+    for page_num in [3, 4, 5]:  # 第4-6页
+        test_text += pdf.pages[page_num].extract_text()
+
+test_text = clean_text(test_text)  # 清洗
+
+print(f&quot;测试文本长度：{len(test_text)} 字符&quot;)</code></pre></div>
+<aside class="callout" data-source-page="4"><b>阅读提示</b><p>完整源码参考：samples/chunking/extract_test_data.py</p></aside>
+<aside class="callout" data-source-page="4"><p>运行结果 测试数据: 3,389 字符</p></aside>
+<p data-source-page="4">运行结果</p>
+<p data-source-page="4">测试数据: 3,389 字符</p>
+<h2 id="section-42" data-source-page="4">9.3 分块策略对比<a class="heading-link" href="#section-42" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">现在我们有了3000字的测试文本，包含完整的命名规范和常量定义。其实，对于现在要测试的文本，有很明显的结构化标记，按照规范条目来拆分是最合适的。但是为了让同学们体验到不同chunking的结果，我们还是用了4种方式来切分。</p>
+<aside class="callout" data-source-page="4"><b>阅读提示</b><p>完整源码参考：samples/chunking/chunking_strategies.py 可以不看源码，但是务必看一下切分结果。 切分结果参考：samples/chunking/chunking_results/</p></aside>
+<h3 id="section-45" data-source-page="4">固定大小分块<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">思路：简单粗暴，按固定字符数切分，设置 50 字符重叠避免截断。</p>
+<p data-source-page="4">切分结果：共 8 个 chunk，平均大小 467 字符，大小范围 239-500 字符。</p>
+<p data-source-page="4">主要问题：</p>
+<p class="list-item" data-source-page="4">句子截断：如“TAPromotion”被切成“T”和“APromotion”</p>
+<p data-source-page="4">句子截断</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p class="list-item" data-source-page="5">规范条目被拆散：第 8 条规范的说明被截断，重叠部分造成内容冗余</p>
+<p data-source-page="5">规范条目被拆散</p>
+<p class="list-item" data-source-page="5">无视章节结构：“命名风格”和“常量定义”可能混在一个 chunk 里</p>
+<p data-source-page="5">无视章节结构</p>
+<h3 id="section-55" data-source-page="5">递归分块<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">思路：优先按大分隔符（章节）切，切不下再按小分隔符（段落、句子），并尝试合并小片段。</p>
+<p data-source-page="5">切分结果：共 6-10 个 chunk（优化后），平均大小 400-500 字符，大小范围 100-600 字符。</p>
+<p data-source-page="5">主要优势：</p>
+<p class="list-item" data-source-page="5">尊重文档结构：章节标题可以单独成块</p>
+<p data-source-page="5">尊重文档结构</p>
+<p class="list-item" data-source-page="5">保持规范完整性：每条规范不会被切断</p>
+<p data-source-page="5">保持规范完整性</p>
+<p class="list-item" data-source-page="5">自适应合并：能自动合并多个小片段到合理大小</p>
+<p data-source-page="5">自适应合并</p>
+<h3 id="section-65" data-source-page="5">结构化分块<a class="heading-link" href="#section-65" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">思路：识别文档的原生结构（章节、条目），按结构切分。对于 Java 开发手册，用正则识别“1. 【强制】”这种模式。</p>
+<p data-source-page="5">切分结果：共 20 个 chunk，平均大小 168 字符，大小范围 67-470 字符。</p>
+<p data-source-page="5">核心优势：</p>
+<p class="list-item" data-source-page="5">语义完整性最佳：每个 chunk 都是一条完整的规范条目</p>
+<p data-source-page="5">语义完整性最佳</p>
+<p class="list-item" data-source-page="5">检索精准度高：用户问“变量命名规范”，直接返回对应条目</p>
+<p data-source-page="5">检索精准度高</p>
+<h3 id="section-73" data-source-page="5">语义分块<a class="heading-link" href="#section-73" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">思路：用 Embedding 检测语义边界，在语义转折处切分。计算相邻句子的余弦相似度，低于阈值则切分。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">切分结果：共 30 个 chunk，平均大小 111 字符，大小范围 20-722 字符。</p>
+<p data-source-page="6">特点分析：</p>
+<p class="list-item" data-source-page="6">最智能：能自动识别话题转换，如 Chunk 2 单独是一句说明（29 字符）</p>
+<p data-source-page="6">最智能</p>
+<p class="list-item" data-source-page="6">大小不均匀：有的 chunk 只有20字符，有的却有722字符</p>
+<p data-source-page="6">大小不均匀</p>
+<p class="list-item" data-source-page="6">有成本：需要调用 Embedding API，对每个句子向量化</p>
+<p data-source-page="6">有成本</p>
+<p class="list-item" data-source-page="6">速度较慢：3000 字约 100 个句子，需要 100 次 Embedding 调用</p>
+<h3 id="section-84" data-source-page="6">策略选择结论<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">对于 Java 开发手册 这种有明确条目编号的文档，结构化分块是最佳选择：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">策略</th><th scope="col">Chunk数量</th><th scope="col">平均大小</th><th scope="col">语义完整性</th><th scope="col">适用场景</th></tr></thead><tbody><tr><td>固定大小</td><td>8个</td><td>467字符</td><td>★ 差</td><td>散文</td></tr><tr><td>递归分块</td><td>6-10个</td><td>400-500字符</td><td>★★★ 中等</td><td>层次结构文档</td></tr><tr><td>结构化</td><td>20个</td><td>168字符</td><td>★★★★★ 最佳</td><td>条目化文档</td></tr><tr><td>语义分块</td><td>30个</td><td>111字符</td><td>★★★★ 好</td><td>连贯性文档</td></tr></tbody></table></div>
+<h2 id="section-87" data-source-page="6">9.4 完整流程：从PDF到问答系统<a class="heading-link" href="#section-87" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">现在我们把整个流程串起来，做一个完整的 Java 编程规范问答系统。</p>
+<h3 id="section-89" data-source-page="6">项目结构<a class="heading-link" href="#section-89" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">完整的项目结构如下（详见 samples/chapter5/chunking/README.md）：</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">chunking/
+├── 数据准备
+│   ├── extract_pdf.py              # PDF文本提取
+│   ├── extracted_text.txt          # 原始提取结果
+│   ├── clean_text.py               # 文本清洗
+│   └── cleaned_text.txt            # 清洗后文本
+│
+├── 分块实验
+│   ├── extract_test_data.py        # 提取测试数据（命名+常量章节）
+│   ├── test_data.txt               # 测试数据（3,389字符）
+│   ├── chunking_strategies.py      # 4种分块策略对比实现
+│   └── chunking_results/           # 分块结果输出
+│       ├── 1_fixed_size.txt        # 固定大小分块结果（8个chunk）
+│       ├── 2_recursive.txt         # 递归分块结果（99个chunk）
+│       ├── 3_structure_based.txt   # 结构化分块结果（20个chunk）
+│       ├── 4_semantic.txt          # 语义分块结果（30个chunk）
+│       └── 分析报告.md              # 4种策略详细对比分析
+│
+└── 完整问答系统
+    └── java_qa_system/             # 离线/在线分离架构
+        ├── extract_sample_data.py  # 提取示例数据（前4章节）
+        ├── sample_data.txt         # 示例数据（8,679字符）
+        ├── offline_build_kb.py     # 离线：构建知识库
+        ├── online_query.py         # 在线：问答查询
+        ├── kb/                     # 向量数据库（运行后生成）
+        └── README.md               # 完整系统说明</code></pre></div>
+<aside class="callout" data-source-page="7"><p>说明：这是本书第一次给出完整的项目结构，以后各节不再在书中重复列举。本书包含多个小项目和一个大项目。对于复杂的大项目，同学们可以直接查看源码中的 README.md 文件，那里有更详细的结构说明、文件用途和快速开始指南。</p></aside>
+<p data-source-page="7">我们在之前的章节讨论过，RAG大致可以分为两个阶段：离线阶段和在线阶段。我们首先来构建离线阶段。</p>
+<h3 id="section-94" data-source-page="7">离线流程：构建知识库<a class="heading-link" href="#section-94" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">核心步骤：</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 1. 加载示例数据（为了节约API成本，我们只用前4个章节作为示例）
+with open(&#x27;sample_data.txt&#x27;, &#x27;r&#x27;) as f:
+    text = f.read()  # 8,679字符（前4个章节）
+
+# 2. 结构化分块（通过前面的讨论，我们确定使用结构化分块）
+chunks = structure_based_chunking(text)  # 50个chunk
+
+# 3. 配置Embedding
+qwen_ef = OpenAIEmbeddingFunction(
+    api_key=API_KEY,
+    api_base=&quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;,
+    model_name=&quot;text-embedding-v4&quot;
+)
+
+# 4. 创建向量库
+client = chromadb.PersistentClient(path=&quot;./kb&quot;)
+collection = client.create_collection(
+    name=&quot;java_spec&quot;,
+    embedding_function=qwen_ef
+)
+
+# 5. 分批添加文档（每扁10个）
+for i in range(0, len(chunks), 10):
+    batch = chunks[i:i+10]
+    collection.add(documents=batch, ids=[...])</code></pre></div>
+<aside class="callout" data-source-page="8"><p>说明：完整的PDF有216个chunk（约37页），但为了节约Embedding API成本，我们只用前4个章节作为示例数据（sample_data.txt），生成50个chunk。如果你需要完整的知识库，可以修改offline_build_kb.py中的DATA_FILE为cleaned_text.txt。</p></aside>
+<aside class="callout" data-source-page="8"><b>阅读提示</b><p>完整源码参考：samples/chunking/java_qa_system/offline_build_kb.py</p></aside>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h3 id="section-99" data-source-page="9">在线查询：问答系统<a class="heading-link" href="#section-99" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 1. 加载知识库
+collection = load_knowledge_base()
+
+# 2. 向量检索
+results = collection.query(
+    query_texts=[question],
+    n_results=3  # Top-3相关文档
+)
+
+# 3. 构建上下文
+context = &quot;\n\n&quot;.join([
+    f&quot;【参考{i+1}】\n{doc}&quot;
+    for i, doc in enumerate(results[&#x27;documents&#x27;][0])
+])
+
+# 4. 调用大模型生成答案
+prompt = f&quot;&quot;&quot;你是Java编程规范专家，请基于参考资料回答问题。
+
+参考资料：
+{context}
+
+问题：{question}
+&quot;&quot;&quot;
+
+response = client.chat.completions.create(
+    model=&quot;qwen-plus&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}],
+    temperature=0.3
+)
+
+return response.choices[0].message.content</code></pre></div>
+<aside class="callout" data-source-page="9"><b>阅读提示</b><p>完整源码参考：samples/chunking/java_qa_system/online_query.py</p></aside>
+<h3 id="section-102" data-source-page="9">运行效果<a class="heading-link" href="#section-102" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">离线构建向量数据库：</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">$ python offline_build.py
+============================================================
+离线处理：构建Java编程规范知识库
+============================================================
+
+[1/4] 加载示例数据...
+✓ 加载完成，共 8679 字符
+
+[2/4] 结构化分块...
+✓ 切分完成，共 50 个chunk
+  平均大小：173 字符/chunk
+
+  示例chunk:
+    Chunk 1: 1. 【强制】代码中的命名均不能以下划线或美元符号开始，......
+[3/4] 配置Embedding函数...
+✓ 使用模型: text-embedding-v4
+
+[4/4] 构建向量库...
+  清理旧数据...
+  处理第 1/5 批（10 个chunk）...
+  ......
+  处理第 5/5 批（10 个chunk）...
+
+知识库构建完成！</code></pre></div>
+<p data-source-page="10">在线查询：</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">$ python online_query.py
+
+============================================================
+问题：java左大括号应该换行还是不换行?
+============================================================
+
+[1/2] 检索相关规范...
+找到 3 条相关规范
+
+检索来源：
+  [1] 相似度: 54.32%
+      1. 【强制】大括号的使用约定。如果是大括号内为空，则简洁地写成{}即可.....
+  [2] 相似度: 37.96%
+      5. 【强制】采用4个空格缩进，禁止使用tab字符......
+  [3] 相似度: 33.17%
+      3. 【强制】if/for/while/switch/do等保留字与括号之间都必须加空格。
+
+[2/2] 生成答案...
+答案：
+根据《Java编程规范》【参考资料1】中的强制规范：如果是大括号内为空，则简洁地写成{}即可，不需
+要换行；如果是非空代码块则：
+1）左大括号前不换行。
+2）左大括号后换行。
+同时，【参考资料2】中的正例也体现了该规范：
+if (flag == 0) {
+    System.out.println(say);
+}
+
+反例：
+if (flag == 0)
+{
+    System.out.println(say);
+}
+综上，Java中左大括号应紧跟在行尾不换行，其后内容换行。</code></pre></div>
+<p data-source-page="11">上述输出结果分为两部分，一部分是查询向量数据库的资料，另一部分是将资料送给大模型的输出结果。</p>
+<h2 id="section-108" data-source-page="11">9.5 下一节预告<a class="heading-link" href="#section-108" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">在这一节中，我们从 PDF 提取到文本清洗，从分块策略对比到最终的问答系统，完成了一个完整的RAG 应用。但检索结果的准确性还有提升空间。</p>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<p data-source-page="12">比如，用户问&quot;变量命名规范&quot;，系统可能返回了 3 条相关规范——但排在第 1 位的不一定是最准确的；有时候检索到的内容过于简略，缺少上下文；甚至有些相关但重要的信息没有被检索到。</p>
+<p data-source-page="12"><strong>下一节《RAG 检索优化：让答案更准确》</strong>将带你深入了解如何提升检索质量：从 Chunk 大小调优、元数据过滤，到重排序（Rerank）、混合检索，让你的 RAG 系统从&quot;能用&quot;升级到&quot;好用&quot;。</p>
+<h2 id="section-112" data-source-page="12">9.6 ■ 学点英语<a class="heading-link" href="#section-112" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="12"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>PDF 文本提取</td><td>PDF Text Extraction</td><td>/piː diː ef tekst ɪkˈstrækʃn/</td><td>从PDF文件中提取纯文本内容的技术</td></tr><tr><td>文本清洗</td><td>Text Cleaning</td><td>/tekst ˈkliːnɪŋ/</td><td>去除页眉页脚页码等干扰信息，保留纯内容</td></tr><tr><td>结构化解析</td><td>Structured Parsing</td><td>/ˈstrʌktʃərd ˈpɑːrsɪŋ/</td><td>识别并保留文档层级结构（标题、条目、标签）</td></tr><tr><td>正例与反例</td><td>Positive &amp; Negative Examples</td><td>/ˈpɑːzətɪv ənd ˈneɡətɪv ɪɡ ˈzæmplz/</td><td>技术规范中展示正确做法和错误做法的对照示例</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-101.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>文档分块：Chunking的艺术</strong><small>第一个RAG应用：游戏知识问答系统</small></a><a class="chapter-neighbor next" href="lesson-103.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>RAG检索优化：让答案更准确</strong><small>第一个RAG应用：游戏知识问答系统</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5273#mid=104921" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">9.1 准备工作：从PDF到可用文本</a><a href="#section-27" class="toc-level-2">9.2 摘取测试文本</a><a href="#section-42" class="toc-level-2">9.3 分块策略对比</a><a href="#section-45" class="toc-level-3">固定大小分块</a><a href="#section-55" class="toc-level-3">递归分块</a><a href="#section-65" class="toc-level-3">结构化分块</a><a href="#section-73" class="toc-level-3">语义分块</a><a href="#section-84" class="toc-level-3">策略选择结论</a><a href="#section-87" class="toc-level-2">9.4 完整流程：从PDF到问答系统</a><a href="#section-89" class="toc-level-3">项目结构</a><a href="#section-94" class="toc-level-3">离线流程：构建知识库</a><a href="#section-99" class="toc-level-3">在线查询：问答系统</a><a href="#section-102" class="toc-level-3">运行效果</a><a href="#section-108" class="toc-level-2">9.5 下一节预告</a><a href="#section-112" class="toc-level-2">9.6 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-102", "title": "文档分块实战：Java编程规范问答", "stage": 2, "week": 5, "module": "第一个RAG应用：游戏知识问答系统", "minutes": 17, "pages": 12, "type": "article"}</script>
+</body></html>

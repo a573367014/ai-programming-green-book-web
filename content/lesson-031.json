@@ -1,0 +1,66 @@
+{
+  "id": "lesson-031",
+  "title": "选择练习 · 1-4",
+  "code": "1-4",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "Embedding",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/005-Embedding/031-练习-1-4-选择练习.pdf",
+  "sha256": "4183c99cf1fb1746210b37afcdb2864ca931976d33f3264351cf4f559a15281f",
+  "pdf": "sources/pdf/lesson-031.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5257#mid=104957",
+  "minutes": 1,
+  "excerpt": "\"国王 - 男人 + 女人 ≈ 女王\"这个著名的词向量实验说明了什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "\"国王 - 男人 + 女人 ≈ 女王\"这个著名的词向量实验说明了什么？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 词向量可以编码语言的语义关系，并能进行代数运算 B. 词向量的每个维度都有明确的语义含义 C.ChatGPT内部有一个专门的数学计算模块 D. 词向量只能处理名词，无法处理动词",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 299,
+    "represented_chars": 135,
+    "removed_chars": 164,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 164
+    }
+  },
+  "videos": [],
+  "order": 32,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "\"国王 - 男人 + 女人 ≈ 女王\"这个著名的词向量实验说明了什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 词向量可以编码语言的语义关系，并能进行代数运算 B. 词向量的每个维度都有明确的语义含义 C.ChatGPT内部有一个专门的数学计算模块 D. 词向量只能处理名词，无法处理动词"
+    }
+  ]
+}

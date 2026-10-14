@@ -1,0 +1,739 @@
+{
+  "id": "lesson-135",
+  "title": "Skill 的获取与生态",
+  "code": "1-2",
+  "stage": 5,
+  "week": 10,
+  "week_title": "Skill：可复用技能封装",
+  "module": "Skill的获取与生态",
+  "type": "article",
+  "repo_path": "005-阶段五 【能力封装】可复用技能/001-第10周 Skill：可复用技能封装/001-Skill的获取与生态/002-图文-1-2-Skill 的获取与生态.pdf",
+  "sha256": "c2eab669a3742044110a4a5061d8bad97972547aef251fb65ace246f78ab5a63",
+  "pdf": "sources/pdf/lesson-135.pdf",
+  "pages": 6,
+  "source_url": "https://class.imooc.com/lesson/5286#mid=105134",
+  "minutes": 11,
+  "excerpt": "上一节我们了解了为什么需要 Skill，以及它能解决什么问题。本节将介绍从哪里获取 Skill，盘点目前主流的 Skill 市场，并通过一个实际例子演示如何在 Qoder 中安装和使用Skill。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们了解了为什么需要 Skill，以及它能解决什么问题。本节将介绍从哪里获取 Skill，盘点目前主流的 Skill 市场，并通过一个实际例子演示如何在 Qoder 中安装和使用Skill。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "Skill 的来源主要有两种：自己创建，或者使用别人已经写好的。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "自己创建的 Skill 最有针对性——你可以把团队的最佳实践、个人的工作习惯、某个领域的专业知识都打包进去。上一节看到的代码审查 Skill 就是一个例子。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "但更多时候，你不需要从头开始。Skill 生态在过去一年里迅速壮大，已经形成了类似 App Store 的模式。从 GitHub 到腾讯，从 Qoder 到 MiniMax，各个平台都建立了自己的 Skill 市场，里面汇聚了大量高质量的 Skill。直接使用社区贡献的成熟 Skill，比自己写一个要省力得多。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "四大 Skill 获取途径",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目前主流的 Skill 市场主要有四个，按规模和覆盖面排序如下。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "作为全球最大的开发者社区，GitHub 是 Skill 资源最丰富的集散地。Anthropic 官方在GitHub.com/agentskills 维护了官方 Skill 集合，定义了标准的编写规范。与此同时，大量第三方开发者也在 GitHub 上分享自己创作的 Skill，覆盖了从代码审查到日志分析、从文档生成到自动化测试的各种场景。GitHub 的优势在于数量庞大、种类齐全、更新活跃，几乎任何类型的 Skill 都能在这里找到。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h3",
+      "text": "腾讯 SkillHub",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "腾讯推出了面向中国用户的 AI 技能社区 skillhub.cn，聚合了超过 1.3 万个主流 Skill。它提供中文界面和高速下载，解决了海外平台访问慢、搜索体验差的问题。SkillHub 还推出了精选榜单和安全审计机制，帮助用户从海量 Skill 中筛选出高质量的选项。如果你需要常用的、经过验证的 Skill，这里通常是最高效的发现途径。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "Qoder 技能市场",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Qoder 内置了技能市场 qoder.com/zh/marketplace，这是最便捷的获取途径——无需离开 IDE 就能浏览、搜索和安装 Skill。Qoder 的技能市场收录了一些官方和社区贡献的偏小众或特定场景的 Skill，并针对 Qoder 环境做了适配，安装后即可使用。对于 Qoder 用户来说，直接在 IDE 内搜索和安装是最顺手的方式。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "MiniMax Skills",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "MiniMax 是较早投入 Agent Skill 生态建设的厂商之一。它在 GitHub 上维护了一个 Skill 仓库GitHub.com/MiniMax-AI/skills，收录了覆盖前端开发、全栈开发、Android、iOS 等多个领域的Skill。这些 Skill 经过 MiniMax 团队筛选，质量有一定保障，适合刚接触 Skill 的开发者作为入门选择。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "Skill 的使用场所",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "有了获取途径，接下来一个自然的问题是：Skill 下载后在哪里用？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Skill 不是一个独立运行的程序。它必须寄生在一个 AI 工具里——也就是我们前面提到的 Agent。目前主流的 Agent 包括 Qoder、Claude Code、Cursor、Trae 等。这些工具负责读取 Skill、在合适的时机触发它、执行它需要的操作。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "没有 Agent，Skill 只是一堆 Markdown 文本——就像一本菜谱没有厨师来读，它永远炒不出一盘菜。因此，在安装任何 Skill 之前，确保你已经有了一个支持的 Agent 工具。本节后面以及本书后续所有实战，都默认在 Qoder 环境下操作。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "实战：以 Humanizer 为例，在 Qoder 中安装 Skill",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "了解了有哪些获取途径后，来看看一个实际的例子。我们从腾讯 SkillHub 上挑选一个简单又实用的Skill——Humanizer（消除 AI 痕迹），演示两种常见的安装方式。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "Humanizer 的作用很直观：它能自动识别并修复 AI 生成文本中的各种痕迹，比如过度使用的破折号、三段式排比、AI 高频词汇（delve、crucial、pivotal），以及那些\"值得注意的是\"、\"综上所述\"之类的套话。写技术文章、博客、报告时经常用得上。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "方式一：手动安装（下载 ZIP）",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是最通用的方法，适用于任何 Skill。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第 1 步：下载",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "打开 SkillHub 上的 Humanizer 页面，点击\"下载 ZIP 安装包\"按钮，获取压缩文件。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第 2 步：解压并放置",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "将压缩包解压后，你会得到一个名为 humanizer 的目录，里面包含 SKILL.md 和相关资源文件。把这个目录放到 Qoder 的项目技能目录中：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "code",
+      "text": "你的项目/\n  └── .qoder/\n        └── skills/\n              └── humanizer/    ← 把解压后的目录放这里\n                    ├── SKILL.md\n                    └── ...",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "放好之后，Qoder 下次启动时就会自动识别到这个 Skill。你可以在对话中输入 / 查看已安装的 Skill 列表。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h3",
+      "text": "方式二：自动安装（复制命令）",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "更省事的做法是让 AI 自己完成安装。在 SkillHub 的 Humanizer 页面上，有一个\"对话安装\"标签页，里面提供了可以直接复制给 AI 的安装指令。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "把这段话复制下来，在 Qoder 中粘贴发送：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "请先检查是否已安装 SkillHub 商店，若未安装，请根据 skillhub.cn/install/skillhub.md 安装 \nSkillHub 商店，但是只安装 CLI，然后安装 humanizer 技能。若已安装，则直接安装 humanizer 技\n能。\n\n1",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Qoder 会按照指示自动完成安装——下载、配置、注册一气呵成，整个过程不需要你手动管理文件。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "实战效果：对比一段文本的优化前后",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "安装完之后，我们来看看 Humanizer 到底能做什么。下面先用典型的 AI 腔调写一段微小说：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "优化前的版本（AI 痕迹重）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "《最后一次预测》\n\n在人工智能的研究史上，自由意志与确定论之间的张力始终是一个悬而未决的核心命题。值得注意的是，\n当李牧心博士开发的“预言家”系统连续一千天精准预测出她的每一个选择时，这个问题不再只是哲学思辨\n——而是变成了实验室中冰冷而真实的日常。\n\n“预言家”的分析逻辑并不复杂：它深入学习了李牧心过去几年的行为数据——每一次鼠标点击、每一次犹\n豫、每一次下意识的决策——然后通过概率模型推演出她最可能的选择。令人震惊的是，它从未失手。\n\n然而，最令人不寒而栗的不是系统的预测精度，而是李牧心试图打破预测时遭遇的那个悖论。当她决心做\n出一个完全不可预测的选择时，系统早在数小时前就已经预判到了她的这个意图。这个故事深刻揭示了一\n个核心问题：如果每一个“选择”都能被预先计算，那么自由意志是否只是一种错觉？",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "你能看出上面这段话里有哪些 AI 痕迹吗？我们拆开来看：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“在……的历史上”——教科书式的开篇模板，人类讲故事很少这么起头。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“值得注意的是”——典型的 AI 过渡套话，它只是告诉读者\"请注意\"，却没有用叙述让读者自然注意到。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "“令人震惊的是”——空洞的强调词，试图用词汇本身制造情绪，而非通过情节传递情绪。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“最令人不寒而栗的不是……而是……”——否定式排比，AI 最爱用的转折结构。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“这个故事深刻揭示了”——红果果的\"主题总结\"，AI 不相信读者能自己悟出寓意。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "满篇的抽象名词堆叠：范式转变、核心命题、深层揭示——读者像在读论文摘要。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些句式拆开看每个都没错，但堆在一起就产生了很强的\"机器味\"。接下来我们把这段文字丢给Humanizer 处理，看看会变成什么样子。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "不过这里有个要点：Humanizer 擅长识别和去除 AI 痕迹，但要让改写方向更精准，通常还需要配合一段提示词，告诉 AI 你希望改成什么风格。在 Qoder 中可以这样输入：",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "code",
+      "text": "/humanizer 下面这段微小说的AI痕迹太重了，帮我重新写一遍：\n\n1. 保留故事核心（李兰和预言家打赌）\n2. 去掉所有教科书式论述腔调（如\"值得注意的是\"、\"令人震惊的是\"）\n3. 用自然的人类口吻，加入具体细节和对话\n4. 结尾要有同样的反转效果\n\n原文：\n[把上面那篇微小说粘贴到这里]",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Humanizer 负责执行具体的痕迹检测和替换，提示词负责控制风格方向。两者配合，才能达到较好的效果。优化后的结果大致如下：",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "quote",
+      "text": "使用 Humanizer 优化后的版本 《最后一次预测》 李牧心的\"预言家\"已经连续一千天猜中她的所有选择。大到项目申报，小到午饭去哪吃，从没错过。 她受够了。 今天她要做一件预言家绝对猜不到的事——闭着眼睛在键盘上敲几下，申请一个听都没听过的新项目。 翻开预测记录，一行字差点让她把咖啡洒了： “第1001天：你会试图做一个随机选择来证明我有错。然后你会看见这句话，然后停下手里的动作。” 李牧心握着杯子的手悬在半空。她确实正要放下杯子。 她忽然不确定了：连这个\"不确定\"的念头，是不是也是被算好的？",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "对比两个版本，Humanizer 做的事情其实很简单：它把\"解释一个故事\"变成了\"讲一个故事\"。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "优化前的版本在拼命告诉读者\"这个故事很深刻\"、“这揭示了什么命题”——它在替读者思考。优化后的版本从具体场景切入（大到项目申报小到午饭去哪吃），用动作推动情节（一行字差点让她把咖啡洒了），结尾用画面收束（握着杯子的手悬在半空），把哲学的追问留给了读者自己。同样的反转结局，后者让人读完真的会愣一下——因为你在跟着主角一起怀疑。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是 Humanizer 这类 Skill 的价值——当你用 AI 辅助写作时，它能帮你把最后那一层\"机器味\"去掉，让文本读起来更像一个真实的人在说话。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h3",
+      "text": "两种方式的对比",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "手动安装的优点是普适性强——无论 Skill 来自哪个平台，只要你能拿到文件就可以安装。自动安装则更便捷，适合 SkillHub 这类有 CLI 工具的市场。初次接触时建议先用手动方式，对 Skill 的文件结构有了感觉之后，再切换到自动安装。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n技能中心 | SkillHub | /skɪl hʌb/ | 腾讯推出的AI技能社区，聚合超过1.3万个主流Skill\n人性化工具 | Humanizer | /ˈhjuːmənaɪzər/ | 自动识别和修复AI生成文本中机器味痕迹的Skill\n代理 | Agent | /ˈeɪdʒənt/ | 读取Skill、在合适时机触发并执行操作的寄生宿主工具\n代码托管平台 | GitHub | /ɡɪthʌb/ | 全球最大的开发者社区，Anthropic在此维护官方Skill集合",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "技能中心",
+          "SkillHub",
+          "/skɪl hʌb/",
+          "腾讯推出的AI技能社区，聚合超过1.3万个主流Skill"
+        ],
+        [
+          "人性化工具",
+          "Humanizer",
+          "/ˈhjuːmənaɪzər/",
+          "自动识别和修复AI生成文本中机器味痕迹的Skill"
+        ],
+        [
+          "代理",
+          "Agent",
+          "/ˈeɪdʒənt/",
+          "读取Skill、在合适时机触发并执行操作的寄生宿主工具"
+        ],
+        [
+          "代码托管平台",
+          "GitHub",
+          "/ɡɪthʌb/",
+          "全球最大的开发者社区，Anthropic在此维护官方Skill集合"
+        ]
+      ],
+      "page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "掌握了如何获取 Skill 之后，下一节我们将深入 Skill 的核心概念，学习 SKILL.md 的文件结构和编写规范，了解如何创建一个属于自己的 Skill。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    }
+  ],
+  "accounting": {
+    "source_chars": 4639,
+    "represented_chars": 4470,
+    "removed_chars": 169,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 141,
+      "repeated_title": 28
+    }
+  },
+  "videos": [],
+  "order": 136,
+  "headings": [
+    {
+      "title": "四大 Skill 获取途径",
+      "id": "section-4",
+      "level": 2
+    },
+    {
+      "title": "腾讯 SkillHub",
+      "id": "section-7",
+      "level": 3
+    },
+    {
+      "title": "Qoder 技能市场",
+      "id": "section-9",
+      "level": 3
+    },
+    {
+      "title": "MiniMax Skills",
+      "id": "section-11",
+      "level": 3
+    },
+    {
+      "title": "Skill 的使用场所",
+      "id": "section-13",
+      "level": 3
+    },
+    {
+      "title": "实战：以 Humanizer 为例，在 Qoder 中安装 Skill",
+      "id": "section-17",
+      "level": 2
+    },
+    {
+      "title": "方式一：手动安装（下载 ZIP）",
+      "id": "section-20",
+      "level": 3
+    },
+    {
+      "title": "方式二：自动安装（复制命令）",
+      "id": "section-28",
+      "level": 3
+    },
+    {
+      "title": "实战效果：对比一段文本的优化前后",
+      "id": "section-33",
+      "level": 3
+    },
+    {
+      "title": "两种方式的对比",
+      "id": "section-52",
+      "level": 3
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-54",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-56",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们了解了为什么需要 Skill，以及它能解决什么问题。本节将介绍从哪里获取 Skill，盘点目前主流的 Skill 市场，并通过一个实际例子演示如何在 Qoder 中安装和使用Skill。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "Skill 的来源主要有两种：自己创建，或者使用别人已经写好的。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "自己创建的 Skill 最有针对性——你可以把团队的最佳实践、个人的工作习惯、某个领域的专业知识都打包进去。上一节看到的代码审查 Skill 就是一个例子。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "但更多时候，你不需要从头开始。Skill 生态在过去一年里迅速壮大，已经形成了类似 App Store 的模式。从 GitHub 到腾讯，从 Qoder 到 MiniMax，各个平台都建立了自己的 Skill 市场，里面汇聚了大量高质量的 Skill。直接使用社区贡献的成熟 Skill，比自己写一个要省力得多。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "四大 Skill 获取途径"
+    },
+    {
+      "anchor": "section-4",
+      "text": "目前主流的 Skill 市场主要有四个，按规模和覆盖面排序如下。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "作为全球最大的开发者社区，GitHub 是 Skill 资源最丰富的集散地。Anthropic 官方在GitHub.com/agentskills 维护了官方 Skill 集合，定义了标准的编写规范。与此同时，大量第三方开发者也在 GitHub 上分享自己创作的 Skill，覆盖了从代码审查到日志分析、从文档生成到自动化测试的各种场景。GitHub 的优势在于数量庞大、种类齐全、更新活跃，几乎任何类型的 Skill 都能在这里找到。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "腾讯 SkillHub"
+    },
+    {
+      "anchor": "section-7",
+      "text": "腾讯推出了面向中国用户的 AI 技能社区 skillhub.cn，聚合了超过 1.3 万个主流 Skill。它提供中文界面和高速下载，解决了海外平台访问慢、搜索体验差的问题。SkillHub 还推出了精选榜单和安全审计机制，帮助用户从海量 Skill 中筛选出高质量的选项。如果你需要常用的、经过验证的 Skill，这里通常是最高效的发现途径。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "Qoder 技能市场"
+    },
+    {
+      "anchor": "section-9",
+      "text": "Qoder 内置了技能市场 qoder.com/zh/marketplace，这是最便捷的获取途径——无需离开 IDE 就能浏览、搜索和安装 Skill。Qoder 的技能市场收录了一些官方和社区贡献的偏小众或特定场景的 Skill，并针对 Qoder 环境做了适配，安装后即可使用。对于 Qoder 用户来说，直接在 IDE 内搜索和安装是最顺手的方式。"
+    },
+    {
+      "anchor": "section-11",
+      "text": "MiniMax Skills"
+    },
+    {
+      "anchor": "section-11",
+      "text": "MiniMax 是较早投入 Agent Skill 生态建设的厂商之一。它在 GitHub 上维护了一个 Skill 仓库GitHub.com/MiniMax-AI/skills，收录了覆盖前端开发、全栈开发、Android、iOS 等多个领域的Skill。这些 Skill 经过 MiniMax 团队筛选，质量有一定保障，适合刚接触 Skill 的开发者作为入门选择。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "Skill 的使用场所"
+    },
+    {
+      "anchor": "section-13",
+      "text": "有了获取途径，接下来一个自然的问题是：Skill 下载后在哪里用？"
+    },
+    {
+      "anchor": "section-13",
+      "text": "Skill 不是一个独立运行的程序。它必须寄生在一个 AI 工具里——也就是我们前面提到的 Agent。目前主流的 Agent 包括 Qoder、Claude Code、Cursor、Trae 等。这些工具负责读取 Skill、在合适的时机触发它、执行它需要的操作。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "没有 Agent，Skill 只是一堆 Markdown 文本——就像一本菜谱没有厨师来读，它永远炒不出一盘菜。因此，在安装任何 Skill 之前，确保你已经有了一个支持的 Agent 工具。本节后面以及本书后续所有实战，都默认在 Qoder 环境下操作。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "实战：以 Humanizer 为例，在 Qoder 中安装 Skill"
+    },
+    {
+      "anchor": "section-17",
+      "text": "了解了有哪些获取途径后，来看看一个实际的例子。我们从腾讯 SkillHub 上挑选一个简单又实用的Skill——Humanizer（消除 AI 痕迹），演示两种常见的安装方式。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "Humanizer 的作用很直观：它能自动识别并修复 AI 生成文本中的各种痕迹，比如过度使用的破折号、三段式排比、AI 高频词汇（delve、crucial、pivotal），以及那些\"值得注意的是\"、\"综上所述\"之类的套话。写技术文章、博客、报告时经常用得上。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "方式一：手动安装（下载 ZIP）"
+    },
+    {
+      "anchor": "section-20",
+      "text": "这是最通用的方法，适用于任何 Skill。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "第 1 步：下载"
+    },
+    {
+      "anchor": "section-20",
+      "text": "打开 SkillHub 上的 Humanizer 页面，点击\"下载 ZIP 安装包\"按钮，获取压缩文件。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "第 2 步：解压并放置"
+    },
+    {
+      "anchor": "section-20",
+      "text": "将压缩包解压后，你会得到一个名为 humanizer 的目录，里面包含 SKILL.md 和相关资源文件。把这个目录放到 Qoder 的项目技能目录中："
+    },
+    {
+      "anchor": "section-20",
+      "text": "你的项目/\n  └── .qoder/\n        └── skills/\n              └── humanizer/    ← 把解压后的目录放这里\n                    ├── SKILL.md\n                    └── ..."
+    },
+    {
+      "anchor": "section-20",
+      "text": "放好之后，Qoder 下次启动时就会自动识别到这个 Skill。你可以在对话中输入 / 查看已安装的 Skill 列表。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "方式二：自动安装（复制命令）"
+    },
+    {
+      "anchor": "section-28",
+      "text": "更省事的做法是让 AI 自己完成安装。在 SkillHub 的 Humanizer 页面上，有一个\"对话安装\"标签页，里面提供了可以直接复制给 AI 的安装指令。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "把这段话复制下来，在 Qoder 中粘贴发送："
+    },
+    {
+      "anchor": "section-28",
+      "text": "请先检查是否已安装 SkillHub 商店，若未安装，请根据 skillhub.cn/install/skillhub.md 安装 \nSkillHub 商店，但是只安装 CLI，然后安装 humanizer 技能。若已安装，则直接安装 humanizer 技\n能。\n\n1"
+    },
+    {
+      "anchor": "section-28",
+      "text": "Qoder 会按照指示自动完成安装——下载、配置、注册一气呵成，整个过程不需要你手动管理文件。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "实战效果：对比一段文本的优化前后"
+    },
+    {
+      "anchor": "section-33",
+      "text": "安装完之后，我们来看看 Humanizer 到底能做什么。下面先用典型的 AI 腔调写一段微小说："
+    },
+    {
+      "anchor": "section-33",
+      "text": "优化前的版本（AI 痕迹重）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "《最后一次预测》\n\n在人工智能的研究史上，自由意志与确定论之间的张力始终是一个悬而未决的核心命题。值得注意的是，\n当李牧心博士开发的“预言家”系统连续一千天精准预测出她的每一个选择时，这个问题不再只是哲学思辨\n——而是变成了实验室中冰冷而真实的日常。\n\n“预言家”的分析逻辑并不复杂：它深入学习了李牧心过去几年的行为数据——每一次鼠标点击、每一次犹\n豫、每一次下意识的决策——然后通过概率模型推演出她最可能的选择。令人震惊的是，它从未失手。\n\n然而，最令人不寒而栗的不是系统的预测精度，而是李牧心试图打破预测时遭遇的那个悖论。当她决心做\n出一个完全不可预测的选择时，系统早在数小时前就已经预判到了她的这个意图。这个故事深刻揭示了一\n个核心问题：如果每一个“选择”都能被预先计算，那么自由意志是否只是一种错觉？"
+    },
+    {
+      "anchor": "section-33",
+      "text": "你能看出上面这段话里有哪些 AI 痕迹吗？我们拆开来看："
+    },
+    {
+      "anchor": "section-33",
+      "text": "“在……的历史上”——教科书式的开篇模板，人类讲故事很少这么起头。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "“值得注意的是”——典型的 AI 过渡套话，它只是告诉读者\"请注意\"，却没有用叙述让读者自然注意到。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "“令人震惊的是”——空洞的强调词，试图用词汇本身制造情绪，而非通过情节传递情绪。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "“最令人不寒而栗的不是……而是……”——否定式排比，AI 最爱用的转折结构。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "“这个故事深刻揭示了”——红果果的\"主题总结\"，AI 不相信读者能自己悟出寓意。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "满篇的抽象名词堆叠：范式转变、核心命题、深层揭示——读者像在读论文摘要。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "这些句式拆开看每个都没错，但堆在一起就产生了很强的\"机器味\"。接下来我们把这段文字丢给Humanizer 处理，看看会变成什么样子。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "不过这里有个要点：Humanizer 擅长识别和去除 AI 痕迹，但要让改写方向更精准，通常还需要配合一段提示词，告诉 AI 你希望改成什么风格。在 Qoder 中可以这样输入："
+    },
+    {
+      "anchor": "section-33",
+      "text": "/humanizer 下面这段微小说的AI痕迹太重了，帮我重新写一遍：\n\n1. 保留故事核心（李兰和预言家打赌）\n2. 去掉所有教科书式论述腔调（如\"值得注意的是\"、\"令人震惊的是\"）\n3. 用自然的人类口吻，加入具体细节和对话\n4. 结尾要有同样的反转效果\n\n原文：\n[把上面那篇微小说粘贴到这里]"
+    },
+    {
+      "anchor": "section-33",
+      "text": "Humanizer 负责执行具体的痕迹检测和替换，提示词负责控制风格方向。两者配合，才能达到较好的效果。优化后的结果大致如下："
+    },
+    {
+      "anchor": "section-33",
+      "text": "使用 Humanizer 优化后的版本 《最后一次预测》 李牧心的\"预言家\"已经连续一千天猜中她的所有选择。大到项目申报，小到午饭去哪吃，从没错过。 她受够了。 今天她要做一件预言家绝对猜不到的事——闭着眼睛在键盘上敲几下，申请一个听都没听过的新项目。 翻开预测记录，一行字差点让她把咖啡洒了： “第1001天：你会试图做一个随机选择来证明我有错。然后你会看见这句话，然后停下手里的动作。” 李牧心握着杯子的手悬在半空。她确实正要放下杯子。 她忽然不确定了：连这个\"不确定\"的念头，是不是也是被算好的？"
+    },
+    {
+      "anchor": "section-33",
+      "text": "对比两个版本，Humanizer 做的事情其实很简单：它把\"解释一个故事\"变成了\"讲一个故事\"。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "优化前的版本在拼命告诉读者\"这个故事很深刻\"、“这揭示了什么命题”——它在替读者思考。优化后的版本从具体场景切入（大到项目申报小到午饭去哪吃），用动作推动情节（一行字差点让她把咖啡洒了），结尾用画面收束（握着杯子的手悬在半空），把哲学的追问留给了读者自己。同样的反转结局，后者让人读完真的会愣一下——因为你在跟着主角一起怀疑。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "这就是 Humanizer 这类 Skill 的价值——当你用 AI 辅助写作时，它能帮你把最后那一层\"机器味\"去掉，让文本读起来更像一个真实的人在说话。"
+    },
+    {
+      "anchor": "section-52",
+      "text": "两种方式的对比"
+    },
+    {
+      "anchor": "section-52",
+      "text": "手动安装的优点是普适性强——无论 Skill 来自哪个平台，只要你能拿到文件就可以安装。自动安装则更便捷，适合 SkillHub 这类有 CLI 工具的市场。初次接触时建议先用手动方式，对 Skill 的文件结构有了感觉之后，再切换到自动安装。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-54",
+      "text": "中文 | English | 音标 | 说明\n技能中心 | SkillHub | /skɪl hʌb/ | 腾讯推出的AI技能社区，聚合超过1.3万个主流Skill\n人性化工具 | Humanizer | /ˈhjuːmənaɪzər/ | 自动识别和修复AI生成文本中机器味痕迹的Skill\n代理 | Agent | /ˈeɪdʒənt/ | 读取Skill、在合适时机触发并执行操作的寄生宿主工具\n代码托管平台 | GitHub | /ɡɪthʌb/ | 全球最大的开发者社区，Anthropic在此维护官方Skill集合"
+    },
+    {
+      "anchor": "section-56",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-56",
+      "text": "掌握了如何获取 Skill 之后，下一节我们将深入 Skill 的核心概念，学习 SKILL.md 的文件结构和编写规范，了解如何创建一个属于自己的 Skill。"
+    }
+  ]
+}

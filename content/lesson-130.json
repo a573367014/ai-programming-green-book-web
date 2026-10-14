@@ -1,0 +1,1074 @@
+{
+  "id": "lesson-130",
+  "title": "LangGraph核心概念",
+  "code": "1-2",
+  "stage": 4,
+  "week": 9,
+  "week_title": "LangGraph：工作流编排",
+  "module": "为什么需要LangGraph",
+  "type": "article",
+  "repo_path": "004-阶段四 【框架应用】高效AI开发/002-第9周 LangGraph：工作流编排/003-为什么需要LangGraph/130-图文-1-2-LangGraph核心概念.pdf",
+  "sha256": "839e4908dfc6ee44b683332a9d0e50b6017729a2f8474485152b0238f089de07",
+  "pdf": "sources/pdf/lesson-130.pdf",
+  "pages": 9,
+  "source_url": "https://class.imooc.com/lesson/5284#mid=105035",
+  "minutes": 11,
+  "excerpt": "本节是对 LangGraph 核心概念的「地图说明书」。如果你已经大致理解了为什么需要 LangGraph，但还搞不清它到底由哪些部分组成，可以先快速通读本节，再在实战章节反复回来对照。 接下来，我们会正式进入四大核心概念：State（状态）、Node（节点）、Edge（边） 和 Graph（图）。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 本节是对 LangGraph 核心概念的「地图说明书」。如果你已经大致理解了为什么需要 LangGraph，但还搞不清它到底由哪些部分组成，可以先快速通读本节，再在实战章节反复回来对照。 接下来，我们会正式进入四大核心概念：State（状态）、Node（节点）、Edge（边） 和 Graph（图）。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "LangGraph的工作流由四个核心部分组成:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "State(状态)\n├─ 工作流的\"数据容器\"\n└─ 记录所有中间结果\n\nNode(节点)\n├─ 工作流的\"处理单元\"\n└─ 读取State→处理→更新State\n\nEdge(边)\n├─ 节点之间的\"连接线\"\n└─ 固定边 + 条件边\n\nGraph(图)\n├─ 整个工作流的\"容器\"\n└─ 组合State + Node + Edge",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "让我们逐个深入理解。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "State：工作流的数据中心",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么是State",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "State 是一个结构化的数据容器，存储工作流执行过程中的所有信息。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用写文章的例子类比:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "State就像一个文件夹",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "记录了搜集的资料、生成的大纲、写好的草稿、润色后的终稿",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "每个节点(搜资料、写大纲、写草稿。…)都会往文件夹里添加新内容",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "如何定义State",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在 LangGraph 中，我们通常使用 Python 的 TypedDict 来定义 State 的结构：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from typing import TypedDict\n\nclass ArticleState(TypedDict):\n    \"\"\"文章写作的状态\"\"\"\n    topic: str      # 主题\n    outline: str    # 大纲\n    draft: str      # 草稿\n    final: str      # 终稿",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "h3",
+      "text": "State的特点",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "累积性：State 的字段在执行过程中会不断被填充。执行完一个步骤后，返回的数据会自动合并到 State中，已有的数据会一直保留。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "code",
+      "text": "# 初始状态\n{\"topic\": \"Python异步编程\"}\n\n# 第1步后\n{\"topic\": \"Python异步编程\", \"outline\": \"1.基础 2.实战...\"}\n\n# 第2步后\n{\"topic\": \"Python异步编程\", \"outline\": \"1.基础...\", \"draft\": \"第一章...\"}\n\n# 所有中间结果都保留",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "Node：工作流的处理单元",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么是Node",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Node 是一个普通的 Python 函数，负责处理 State 中的数据。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它的工作逻辑非常清晰，是一个典型的「输入-处理-输出」过程：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "输入：Node 接收当前的 State 作为参数。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "输入",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "处理：函数内部根据需要从 State 中提取数据，进行计算（如调用模型或工具）。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "输出：计算完成后，返回一个字典，告诉系统需要更新哪些字段。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "输出",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "你可以把它想象成一个流水线上的工人：从传送带上拿走零件（读取 State），组装好后（处理数据），再把成品放回传送带（返回字典更新 State）。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h3",
+      "text": "Node函数的标准格式",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "def node_function(state: ArticleState) -> dict:\n    \"\"\"\n    输入:完整的State对象\n    处理:执行某个具体任务\n    输出:返回需要更新的字段(字典)\n    \"\"\"\n    # 从State读取需要的数据\n    topic = state[\"topic\"]\n\n    # 执行处理逻辑\n    result = do_something(topic)\n\n    # 返回要更新的字段\n    return {\"outline\": result}",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键要点:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键要点",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "输入参数:必须是State类型",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "返回值:字典，只包含需要更新的字段",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LangGraph会自动将返回的字典合并到State中",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "示例：三个Node",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "def generate_outline(state: ArticleState):\n    \"\"\"生成大纲节点\"\"\"\n    topic = state[\"topic\"]\n    outline = f\"关于{topic}的大纲:\\n1.基础\\n2.实战\\n3.总结\"\n    return {\"outline\": outline}\n\ndef write_draft(state: ArticleState):\n    \"\"\"写草稿节点\"\"\"\n    outline = state[\"outline\"]\n    draft = f\"根据大纲:\\n{outline}\\n\\n展开内容...\"\n    return {\"draft\": draft}\n\ndef polish(state: ArticleState):\n    \"\"\"润色节点\"\"\"\n    draft = state[\"draft\"]\n    final = f\"润色后:\\n{draft}\\n\\n优化表达...\"\n    return {\"final\": final}",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "Edge：节点之间的连接",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么是Edge",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Edge定义了节点之间的执行顺序。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用一个旅行的例子，最容易理解:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Edge就是景点之间的路线",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "固定边:A景点后一定去B景点",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "条件边:根据天气决定去B还是C",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "固定边（add_edge）",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用于顺序执行，无条件跳转:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 添加固定边\nworkflow.add_edge(\"生成大纲\", \"写草稿\")\nworkflow.add_edge(\"写草稿\", \"润色\")",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "执行流程:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "生成大纲 → 写草稿 → 润色\n\n1",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "条件边（add_conditional_edges）",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "根据条件选择下一步:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def route_next(state):\n    \"\"\"路由函数:决定下一步去哪\"\"\"\n    if state[\"quality_score\"] > 80:\n        return \"发布\"\n    else:\n        return \"修改\"\n\n# 添加条件边\nworkflow.add_conditional_edges(\n    \"质量检查\",           # 从哪个节点开始\n    route_next,          # 路由函数\n    {                    # 路由映射\n        \"发布\": \"publish_node\",\n        \"修改\": \"revise_node\"\n    }\n)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "code",
+      "text": "质量检查 ──┬─ 分数>80 → 发布\n          └─ 分数≤80 → 修改\n\n1\n2",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "Graph：组装完整工作流",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Graph是整个工作流的容器，把State、Node、Edge组合起来。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "旅行例子:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Graph就是完整的旅行计划书",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "包含所有景点(Node)、路线(Edge)、记录本(State)",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langgraph.graph import StateGraph, START, END\n\n# 1. 初始化状态图：必须指定 State 的结构\nworkflow = StateGraph(ArticleState)\n\n# 2. 注册节点：name 为唯一标识，func 为处理函数\nworkflow.add_node(\"生成大纲\", generate_outline)\nworkflow.add_node(\"写草稿\", write_draft)\nworkflow.add_node(\"润色\", polish)\n\n# 3. 编排路径：使用 START 和 END 常量定义边界\nworkflow.add_edge(START, \"生成大纲\")      # 指定入口点\nworkflow.add_edge(\"生成大纲\", \"写草稿\")  # 添加从 start 到 end 的固定连接\nworkflow.add_edge(\"写草稿\", \"润色\")\nworkflow.add_edge(\"润色\", END)             # 指定终点\n\n# 4. 编译应用：将逻辑图转换为可执行的 Runnable 对象\napp = workflow.compile()\n\n# 5. 调用执行：传入初始数据启动工作流\nresult = app.invoke({\"topic\": \"Python异步编程\"})",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "实战：最简工作流",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在让我们完整实现一个两节点的最简工作流，巩固上面的概念。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "场景设计",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "任务:给定一个数字，计算它的平方和立方",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "流程:",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "流程",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "输入数字 → [计算平方] → [计算立方] → 输出结果\n\n1",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心代码实现",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "完整源码文件: samples/chapter9/simple_langgraph_demo/simple_math_workflow.py",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在 LangGraph 中构建一个最简工作流（如本例中的数学计算）主要分为四个核心步骤：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "定义状态（State）：使用 TypedDict 规定数据流转的结构。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "定义状态（State）",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "定义节点（Node）：编写具体的处理函数（如计算平方、立方）。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "定义节点（Node）",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "构建图（Graph）：通过 StateGraph 将节点与边（START / END）连接。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "编译与运行：调用 compile() 生成可执行对象并传入初始数据。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "编译与运行",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为了保持正文简洁，建议你直接打开配套的源码文件查看详细实现。代码中包含了详尽的内联注释，展示了状态是如何从输入开始，经过各个节点的计算，最终汇聚成完整结果的。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "执行结果",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "计算平方:5² = 25\n计算立方:5³ = 125\n\n最终状态:\n{'number': 5, 'square': 25, 'cube': 125}",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "State更新机制详解",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是很多初学者容易混淆的地方，让我详细说明。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 初始State\n{\"number\": 5}\n\n# 执行\"平方\"节点后\n# 节点返回:{\"square\": 25}\n# LangGraph自动合并 →\n{\"number\": 5, \"square\": 25}\n\n# 执行\"立方\"节点后\n# 节点返回:{\"cube\": 125}\n# LangGraph自动合并 →\n{\"number\": 5, \"square\": 25, \"cube\": 125}",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "规则：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "节点只需返回新增或修改的字段",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "新增或修改",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LangGraph自动将返回值合并到State",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "已有字段会保留(累积性)",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n状态 | State | /steɪt/ | 工作流中结构化的数据容器，存储所有中间结果\n节点 | Node | /noʊd/ | 工作流的处理单元，接收 State 返回更新字典\n边 | Edge | /edʒ/ | 节点间的连接线，分固定边和条件边\n条件路由 | Conditional Routing | /kənˈdɪʃənəl ˈruːtɪŋ/ | 根据当前 State 动态选择下一个执行节点",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "状态",
+          "State",
+          "/steɪt/",
+          "工作流中结构化的数据容器，存储所有中间结果"
+        ],
+        [
+          "节点",
+          "Node",
+          "/noʊd/",
+          "工作流的处理单元，接收 State 返回更新字典"
+        ],
+        [
+          "边",
+          "Edge",
+          "/edʒ/",
+          "节点间的连接线，分固定边和条件边"
+        ],
+        [
+          "条件路由",
+          "Conditional Routing",
+          "/kənˈdɪʃənəl ˈruːtɪŋ/",
+          "根据当前 State 动态选择下一个执行节点"
+        ]
+      ],
+      "page": 9
+    },
+    {
+      "kind": "h2",
+      "text": "下节预告",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将用这些概念构建一个真实的文章写作 Agent，体验 LangGraph 在实战中的强大能力。",
+      "page": 9,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 4552,
+    "represented_chars": 4351,
+    "removed_chars": 201,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 148,
+      "repeated_title": 30,
+      "code_line_number_artifact": 23
+    }
+  },
+  "videos": [],
+  "order": 131,
+  "headings": [
+    {
+      "title": "State：工作流的数据中心",
+      "id": "section-4",
+      "level": 2
+    },
+    {
+      "title": "如何定义State",
+      "id": "section-11",
+      "level": 3
+    },
+    {
+      "title": "State的特点",
+      "id": "section-14",
+      "level": 3
+    },
+    {
+      "title": "Node：工作流的处理单元",
+      "id": "section-17",
+      "level": 2
+    },
+    {
+      "title": "Node函数的标准格式",
+      "id": "section-27",
+      "level": 3
+    },
+    {
+      "title": "示例：三个Node",
+      "id": "section-34",
+      "level": 3
+    },
+    {
+      "title": "Edge：节点之间的连接",
+      "id": "section-36",
+      "level": 2
+    },
+    {
+      "title": "固定边（add_edge）",
+      "id": "section-43",
+      "level": 3
+    },
+    {
+      "title": "条件边（add_conditional_edges）",
+      "id": "section-48",
+      "level": 3
+    },
+    {
+      "title": "Graph：组装完整工作流",
+      "id": "section-52",
+      "level": 2
+    },
+    {
+      "title": "实战：最简工作流",
+      "id": "section-58",
+      "level": 2
+    },
+    {
+      "title": "场景设计",
+      "id": "section-60",
+      "level": 3
+    },
+    {
+      "title": "State更新机制详解",
+      "id": "section-78",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-86",
+      "level": 2
+    },
+    {
+      "title": "下节预告",
+      "id": "section-88",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "本节是对 LangGraph 核心概念的「地图说明书」。如果你已经大致理解了为什么需要 LangGraph，但还搞不清它到底由哪些部分组成，可以先快速通读本节，再在实战章节反复回来对照。 接下来，我们会正式进入四大核心概念：State（状态）、Node（节点）、Edge（边） 和 Graph（图）。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "LangGraph的工作流由四个核心部分组成:"
+    },
+    {
+      "anchor": "article-start",
+      "text": "State(状态)\n├─ 工作流的\"数据容器\"\n└─ 记录所有中间结果\n\nNode(节点)\n├─ 工作流的\"处理单元\"\n└─ 读取State→处理→更新State\n\nEdge(边)\n├─ 节点之间的\"连接线\"\n└─ 固定边 + 条件边\n\nGraph(图)\n├─ 整个工作流的\"容器\"\n└─ 组合State + Node + Edge"
+    },
+    {
+      "anchor": "article-start",
+      "text": "让我们逐个深入理解。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "State：工作流的数据中心"
+    },
+    {
+      "anchor": "section-4",
+      "text": "什么是State"
+    },
+    {
+      "anchor": "section-4",
+      "text": "State 是一个结构化的数据容器，存储工作流执行过程中的所有信息。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "用写文章的例子类比:"
+    },
+    {
+      "anchor": "section-4",
+      "text": "State就像一个文件夹"
+    },
+    {
+      "anchor": "section-4",
+      "text": "记录了搜集的资料、生成的大纲、写好的草稿、润色后的终稿"
+    },
+    {
+      "anchor": "section-4",
+      "text": "每个节点(搜资料、写大纲、写草稿。…)都会往文件夹里添加新内容"
+    },
+    {
+      "anchor": "section-11",
+      "text": "如何定义State"
+    },
+    {
+      "anchor": "section-11",
+      "text": "在 LangGraph 中，我们通常使用 Python 的 TypedDict 来定义 State 的结构："
+    },
+    {
+      "anchor": "section-11",
+      "text": "from typing import TypedDict\n\nclass ArticleState(TypedDict):\n    \"\"\"文章写作的状态\"\"\"\n    topic: str      # 主题\n    outline: str    # 大纲\n    draft: str      # 草稿\n    final: str      # 终稿"
+    },
+    {
+      "anchor": "section-14",
+      "text": "State的特点"
+    },
+    {
+      "anchor": "section-14",
+      "text": "累积性：State 的字段在执行过程中会不断被填充。执行完一个步骤后，返回的数据会自动合并到 State中，已有的数据会一直保留。"
+    },
+    {
+      "anchor": "section-14",
+      "text": "# 初始状态\n{\"topic\": \"Python异步编程\"}\n\n# 第1步后\n{\"topic\": \"Python异步编程\", \"outline\": \"1.基础 2.实战...\"}\n\n# 第2步后\n{\"topic\": \"Python异步编程\", \"outline\": \"1.基础...\", \"draft\": \"第一章...\"}\n\n# 所有中间结果都保留"
+    },
+    {
+      "anchor": "section-17",
+      "text": "Node：工作流的处理单元"
+    },
+    {
+      "anchor": "section-17",
+      "text": "什么是Node"
+    },
+    {
+      "anchor": "section-17",
+      "text": "Node 是一个普通的 Python 函数，负责处理 State 中的数据。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "它的工作逻辑非常清晰，是一个典型的「输入-处理-输出」过程："
+    },
+    {
+      "anchor": "section-17",
+      "text": "输入：Node 接收当前的 State 作为参数。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "输入"
+    },
+    {
+      "anchor": "section-17",
+      "text": "处理：函数内部根据需要从 State 中提取数据，进行计算（如调用模型或工具）。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "输出：计算完成后，返回一个字典，告诉系统需要更新哪些字段。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "输出"
+    },
+    {
+      "anchor": "section-17",
+      "text": "你可以把它想象成一个流水线上的工人：从传送带上拿走零件（读取 State），组装好后（处理数据），再把成品放回传送带（返回字典更新 State）。"
+    },
+    {
+      "anchor": "section-27",
+      "text": "Node函数的标准格式"
+    },
+    {
+      "anchor": "section-27",
+      "text": "def node_function(state: ArticleState) -> dict:\n    \"\"\"\n    输入:完整的State对象\n    处理:执行某个具体任务\n    输出:返回需要更新的字段(字典)\n    \"\"\"\n    # 从State读取需要的数据\n    topic = state[\"topic\"]\n\n    # 执行处理逻辑\n    result = do_something(topic)\n\n    # 返回要更新的字段\n    return {\"outline\": result}"
+    },
+    {
+      "anchor": "section-27",
+      "text": "关键要点:"
+    },
+    {
+      "anchor": "section-27",
+      "text": "关键要点"
+    },
+    {
+      "anchor": "section-27",
+      "text": "输入参数:必须是State类型"
+    },
+    {
+      "anchor": "section-27",
+      "text": "返回值:字典，只包含需要更新的字段"
+    },
+    {
+      "anchor": "section-27",
+      "text": "LangGraph会自动将返回的字典合并到State中"
+    },
+    {
+      "anchor": "section-34",
+      "text": "示例：三个Node"
+    },
+    {
+      "anchor": "section-34",
+      "text": "def generate_outline(state: ArticleState):\n    \"\"\"生成大纲节点\"\"\"\n    topic = state[\"topic\"]\n    outline = f\"关于{topic}的大纲:\\n1.基础\\n2.实战\\n3.总结\"\n    return {\"outline\": outline}\n\ndef write_draft(state: ArticleState):\n    \"\"\"写草稿节点\"\"\"\n    outline = state[\"outline\"]\n    draft = f\"根据大纲:\\n{outline}\\n\\n展开内容...\"\n    return {\"draft\": draft}\n\ndef polish(state: ArticleState):\n    \"\"\"润色节点\"\"\"\n    draft = state[\"draft\"]\n    final = f\"润色后:\\n{draft}\\n\\n优化表达...\"\n    return {\"final\": final}"
+    },
+    {
+      "anchor": "section-36",
+      "text": "Edge：节点之间的连接"
+    },
+    {
+      "anchor": "section-36",
+      "text": "什么是Edge"
+    },
+    {
+      "anchor": "section-36",
+      "text": "Edge定义了节点之间的执行顺序。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "用一个旅行的例子，最容易理解:"
+    },
+    {
+      "anchor": "section-36",
+      "text": "Edge就是景点之间的路线"
+    },
+    {
+      "anchor": "section-36",
+      "text": "固定边:A景点后一定去B景点"
+    },
+    {
+      "anchor": "section-36",
+      "text": "条件边:根据天气决定去B还是C"
+    },
+    {
+      "anchor": "section-43",
+      "text": "固定边（add_edge）"
+    },
+    {
+      "anchor": "section-43",
+      "text": "用于顺序执行，无条件跳转:"
+    },
+    {
+      "anchor": "section-43",
+      "text": "# 添加固定边\nworkflow.add_edge(\"生成大纲\", \"写草稿\")\nworkflow.add_edge(\"写草稿\", \"润色\")"
+    },
+    {
+      "anchor": "section-43",
+      "text": "执行流程:"
+    },
+    {
+      "anchor": "section-43",
+      "text": "生成大纲 → 写草稿 → 润色\n\n1"
+    },
+    {
+      "anchor": "section-48",
+      "text": "条件边（add_conditional_edges）"
+    },
+    {
+      "anchor": "section-48",
+      "text": "根据条件选择下一步:"
+    },
+    {
+      "anchor": "section-48",
+      "text": "def route_next(state):\n    \"\"\"路由函数:决定下一步去哪\"\"\"\n    if state[\"quality_score\"] > 80:\n        return \"发布\"\n    else:\n        return \"修改\"\n\n# 添加条件边\nworkflow.add_conditional_edges(\n    \"质量检查\",           # 从哪个节点开始\n    route_next,          # 路由函数\n    {                    # 路由映射\n        \"发布\": \"publish_node\",\n        \"修改\": \"revise_node\"\n    }\n)"
+    },
+    {
+      "anchor": "section-48",
+      "text": "质量检查 ──┬─ 分数>80 → 发布\n          └─ 分数≤80 → 修改\n\n1\n2"
+    },
+    {
+      "anchor": "section-52",
+      "text": "Graph：组装完整工作流"
+    },
+    {
+      "anchor": "section-52",
+      "text": "Graph是整个工作流的容器，把State、Node、Edge组合起来。"
+    },
+    {
+      "anchor": "section-52",
+      "text": "旅行例子:"
+    },
+    {
+      "anchor": "section-52",
+      "text": "Graph就是完整的旅行计划书"
+    },
+    {
+      "anchor": "section-52",
+      "text": "包含所有景点(Node)、路线(Edge)、记录本(State)"
+    },
+    {
+      "anchor": "section-52",
+      "text": "from langgraph.graph import StateGraph, START, END\n\n# 1. 初始化状态图：必须指定 State 的结构\nworkflow = StateGraph(ArticleState)\n\n# 2. 注册节点：name 为唯一标识，func 为处理函数\nworkflow.add_node(\"生成大纲\", generate_outline)\nworkflow.add_node(\"写草稿\", write_draft)\nworkflow.add_node(\"润色\", polish)\n\n# 3. 编排路径：使用 START 和 END 常量定义边界\nworkflow.add_edge(START, \"生成大纲\")      # 指定入口点\nworkflow.add_edge(\"生成大纲\", \"写草稿\")  # 添加从 start 到 end 的固定连接\nworkflow.add_edge(\"写草稿\", \"润色\")\nworkflow.add_edge(\"润色\", END)             # 指定终点\n\n# 4. 编译应用：将逻辑图转换为可执行的 Runnable 对象\napp = workflow.compile()\n\n# 5. 调用执行：传入初始数据启动工作流\nresult = app.invoke({\"topic\": \"Python异步编程\"})"
+    },
+    {
+      "anchor": "section-58",
+      "text": "实战：最简工作流"
+    },
+    {
+      "anchor": "section-58",
+      "text": "现在让我们完整实现一个两节点的最简工作流，巩固上面的概念。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "场景设计"
+    },
+    {
+      "anchor": "section-60",
+      "text": "任务:给定一个数字，计算它的平方和立方"
+    },
+    {
+      "anchor": "section-60",
+      "text": "流程:"
+    },
+    {
+      "anchor": "section-60",
+      "text": "流程"
+    },
+    {
+      "anchor": "section-60",
+      "text": "输入数字 → [计算平方] → [计算立方] → 输出结果\n\n1"
+    },
+    {
+      "anchor": "section-60",
+      "text": "核心代码实现"
+    },
+    {
+      "anchor": "section-60",
+      "text": "完整源码文件: samples/chapter9/simple_langgraph_demo/simple_math_workflow.py"
+    },
+    {
+      "anchor": "section-60",
+      "text": "在 LangGraph 中构建一个最简工作流（如本例中的数学计算）主要分为四个核心步骤："
+    },
+    {
+      "anchor": "section-60",
+      "text": "定义状态（State）：使用 TypedDict 规定数据流转的结构。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "定义状态（State）"
+    },
+    {
+      "anchor": "section-60",
+      "text": "定义节点（Node）：编写具体的处理函数（如计算平方、立方）。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "定义节点（Node）"
+    },
+    {
+      "anchor": "section-60",
+      "text": "构建图（Graph）：通过 StateGraph 将节点与边（START / END）连接。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "编译与运行：调用 compile() 生成可执行对象并传入初始数据。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "编译与运行"
+    },
+    {
+      "anchor": "section-60",
+      "text": "为了保持正文简洁，建议你直接打开配套的源码文件查看详细实现。代码中包含了详尽的内联注释，展示了状态是如何从输入开始，经过各个节点的计算，最终汇聚成完整结果的。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "执行结果"
+    },
+    {
+      "anchor": "section-60",
+      "text": "计算平方:5² = 25\n计算立方:5³ = 125\n\n最终状态:\n{'number': 5, 'square': 25, 'cube': 125}"
+    },
+    {
+      "anchor": "section-78",
+      "text": "State更新机制详解"
+    },
+    {
+      "anchor": "section-78",
+      "text": "这是很多初学者容易混淆的地方，让我详细说明。"
+    },
+    {
+      "anchor": "section-78",
+      "text": "# 初始State\n{\"number\": 5}\n\n# 执行\"平方\"节点后\n# 节点返回:{\"square\": 25}\n# LangGraph自动合并 →\n{\"number\": 5, \"square\": 25}\n\n# 执行\"立方\"节点后\n# 节点返回:{\"cube\": 125}\n# LangGraph自动合并 →\n{\"number\": 5, \"square\": 25, \"cube\": 125}"
+    },
+    {
+      "anchor": "section-78",
+      "text": "规则："
+    },
+    {
+      "anchor": "section-78",
+      "text": "节点只需返回新增或修改的字段"
+    },
+    {
+      "anchor": "section-78",
+      "text": "新增或修改"
+    },
+    {
+      "anchor": "section-78",
+      "text": "LangGraph自动将返回值合并到State"
+    },
+    {
+      "anchor": "section-78",
+      "text": "已有字段会保留(累积性)"
+    },
+    {
+      "anchor": "section-86",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-86",
+      "text": "中文 | English | 音标 | 说明\n状态 | State | /steɪt/ | 工作流中结构化的数据容器，存储所有中间结果\n节点 | Node | /noʊd/ | 工作流的处理单元，接收 State 返回更新字典\n边 | Edge | /edʒ/ | 节点间的连接线，分固定边和条件边\n条件路由 | Conditional Routing | /kənˈdɪʃənəl ˈruːtɪŋ/ | 根据当前 State 动态选择下一个执行节点"
+    },
+    {
+      "anchor": "section-88",
+      "text": "下节预告"
+    },
+    {
+      "anchor": "section-88",
+      "text": "下一节，我们将用这些概念构建一个真实的文章写作 Agent，体验 LangGraph 在实战中的强大能力。"
+    }
+  ]
+}

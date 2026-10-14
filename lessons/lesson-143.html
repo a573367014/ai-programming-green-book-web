@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Agent的核心架构剖析 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-143">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-6">智能体</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 11 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Agent 的核心架构剖析</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 144</span></div>
+<h1 class="lesson-title">Agent的核心架构剖析</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>19 页原文</span><span>约 18 分钟阅读</span><span class="module-name">Agent 的核心架构剖析</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-143.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-143.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>理解 Agent 的架构，就像理解人类的大脑结构——只有知道各个模块如何协作，才能真正掌握 Agent 的设计精髓。</p></aside>
+<h2 id="section-1" data-source-page="1">经典架构：Perceive-Think-Act（PTA）<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">如果要用一句话概括 Agent 的核心架构，那就是：感知（Perceive）→ 思考（Think）→ 行动（Act）→ 观察（Observe）→ 循环往复。</p>
+<p data-source-page="1">这个模式并不是 LLM 时代的发明，而是来自经典的「智能体理论」（Intelligent Agent Theory）。早在 1995 年，Stuart Russell 和 Peter Norvig 在《人工智能：一种现代方法》中就提出了这个框架。</p>
+<h3 id="section-4" data-source-page="1">为什么是循环，而不是单向流程?<a class="heading-link" href="#section-4" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">传统的软件是这样工作的：</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">输入 → 处理 → 输出 → 结束
+
+1</code></pre></div>
+<p data-source-page="1">比如一个计算器程序：</p>
+<p class="list-item" data-source-page="1">输入：2 + 3</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">2 + 3</code></pre></div>
+<p class="list-item" data-source-page="2">处理：执行加法运算</p>
+<p class="list-item" data-source-page="2">输出：5</p>
+<p class="list-item" data-source-page="2">结束</p>
+<p data-source-page="2">但 Agent 不同。它运行在一个 动态变化的环境 中，需要不断地：</p>
+<p data-source-page="2">动态变化的环境</p>
+<p class="list-item" data-source-page="2">感知：环境发生了什么变化？</p>
+<p class="list-item" data-source-page="2">思考：我应该采取什么行动？</p>
+<p class="list-item" data-source-page="2">行动：执行决策</p>
+<p class="list-item" data-source-page="2">观察：我的行动产生了什么效果？</p>
+<p class="list-item" data-source-page="2">回到第 1 步，继续循环</p>
+<h3 id="section-20" data-source-page="2">Agent 循环的四个阶段<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">用一个具体例子来理解这个循环。假设让 Agent 准备一次周末出游：</p>
+<p data-source-page="2">第 1 轮：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">[感知] 用户目标：准备周末出游
+       环境信息：当前是周三，目的地未定
+
+[思考] 分析：需要先确定目的地和天气
+       计划：查询几个热门城市的天气预报
+
+[行动] 调用工具：get_weather(cities=[&quot;杭州&quot;, &quot;苏州&quot;, &quot;南京&quot;])
+
+[观察] 结果：杭州晴天，苏州多云，南京有雨</code></pre></div>
+<p data-source-page="2">第 2 轮：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">[感知] 新信息：杭州天气最好
+       用户偏好：喜欢自然景观（从历史对话记忆中提取）
+
+[思考] 决策：推荐杭州西湖
+       计划：查询景点开放时间和门票信息
+
+[行动] 调用工具：search_attractions(&quot;杭州西湖&quot;)
+
+[观察] 结果：西湖免费开放，周末人流量大</code></pre></div>
+<p data-source-page="3">第 3 轮：</p>
+<p data-source-page="3">我们会发现，这个循环的关键在于：</p>
+<p class="list-item" data-source-page="3">每一轮都基于上一轮的结果：Agent 不是一次性输出答案，而是逐步推进；</p>
+<p data-source-page="3">每一轮都基于上一轮的结果</p>
+<p class="list-item" data-source-page="3">可以根据中间结果调整策略：如果发现南京下雨，立刻调整为推荐杭州；</p>
+<p data-source-page="3">可以根据中间结果调整策略</p>
+<p class="list-item" data-source-page="3">持续与环境交互：通过工具获取实时信息，而不是仅依赖训练数据。</p>
+<p data-source-page="3">持续与环境交互</p>
+<h3 id="section-34" data-source-page="3">PTA 的工程化实现：ReAct<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">上面的例子展示了 Perceive-Think-Act 循环在具体场景中的运作方式。这个经典的理论框架，到了LLM 时代被工程化为一种更具体的实现模式——ReAct（Reasoning and Acting）。</p>
+<p data-source-page="3">我们在第 2 节已经提到过，ReAct 是 Agent 演进路径中第二阶段的关键模式。</p>
+<p data-source-page="3">从演进路径来看，Stage 2（ReAct）是当前工程实践的基线，Stage 3（自主 Agent）则是尚在探索中的目标方向。第 2 节已经说明，自主 Agent 的各项能力——自主规划、长期记忆、主动发起、自我修正——目前仍处于早期阶段，在可靠性、成本和安全性上还有大量工程问题待解决。因此，生产环境中实际落地的 Agent 系统，绝大多数仍然运行在 ReAct 模式或其精细化变体之上。理解 ReAct 架构，正是掌握当前可用 Agent 工程实践的基础。</p>
+<p data-source-page="3">ReAct 并没有创造一个新的循环结构，而是 把 PTA 框架中的&quot;思考&quot;过程从黑盒变成了白盒。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">传统方式（思考是黑盒）：
+Perceive → [Think：内部推理] → Act → Observe
+              ↑
+         你看不到这部分
+
+ReAct方式（思考显式输出）：
+Thought： &quot;我需要先查询杭州的天气...&quot;
+         ↓（这段文本会被记录和展示）
+Action： get_weather(&quot;杭州&quot;)
+Observation： {&quot;weather&quot;: &quot;晴天&quot;}
+Thought： &quot;天气不错，现在...&quot;
+         ↓
+...</code></pre></div>
+<p data-source-page="4">所以，PTA 和 ReAct 的关系可以这样理解：PTA 是理论框架，ReAct 是工程实现。PTA 描述了 Agent应有的四个步骤——感知、思考、行动、观察；ReAct 则给出了在 LLM 系统中每一步具体怎么做。核心流程依然是：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">感知输入 → 思考（现在可见） → 执行行动 → 观察结果 → 循环
+
+1</code></pre></div>
+<p data-source-page="4">ReAct 的价值：</p>
+<p data-source-page="4">ReAct 的价值</p>
+<p class="list-item" data-source-page="4">可解释：开发者能看到 Agent 的决策链</p>
+<p data-source-page="4">可解释</p>
+<p class="list-item" data-source-page="4">可调试：出错时可定位具体哪步思考有问题</p>
+<p data-source-page="4">可调试</p>
+<p class="list-item" data-source-page="4">可优化：通过分析 Thought 日志，改进 Prompt 或工具设计</p>
+<p data-source-page="4">可优化</p>
+<p data-source-page="4">它是当前最成熟、最可靠的 Agent 架构模式，也是整个第 3 节讨论各模块架构时依赖的核心框架。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-51" data-source-page="5">从循环到模块:两套概念的关系<a class="heading-link" href="#section-51" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">现在理解了 Agent 的循环流程：Perceive（感知）→ Thought（思考）→ Action（行动）→Observation（观察）→ 循环（ReAct 模式的完整形态）。</p>
+<p data-source-page="5">但如果去看实际的 Agent 系统代码，会发现它们通常被组织成这样的模块架构:</p>
+<p class="list-item" data-source-page="5">感知层(Perception Layer)</p>
+<p data-source-page="5">感知层</p>
+<p class="list-item" data-source-page="5">规划层(Planning Layer)</p>
+<p data-source-page="5">规划层</p>
+<p class="list-item" data-source-page="5">推理层(Reasoning Layer)</p>
+<p data-source-page="5">推理层</p>
+<p class="list-item" data-source-page="5">行动层(Action Layer)</p>
+<p data-source-page="5">行动层</p>
+<p class="list-item" data-source-page="5">记忆系统(Memory System)</p>
+<p data-source-page="5">记忆系统</p>
+<p data-source-page="5">这就产生了一个问题:四步循环和五个模块,它们之间是什么关系?</p>
+<p data-source-page="5">四步循环</p>
+<p data-source-page="5">五个模块</p>
+<h3 id="section-67" data-source-page="5">核心区分:流程 vs 架构<a class="heading-link" href="#section-67" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">两套概念的本质区别
+═══════════════════════════════════════
+● ReAct 循环
+  - 这是「流程视角」
+  - 描述 Agent **做什么**
+  - 关注时间顺序:先感知,再思考,再行动
+
+● 五个模块(感知层/规划层/推理层...)
+  - 这是「架构视角」
+  - 描述 Agent **怎么实现**
+  - 关注功能划分:每个模块负责什么</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<h3 id="section-69" data-source-page="6">对应关系:循环步骤如何映射到模块<a class="heading-link" href="#section-69" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">看看 ReAct 循环的每个步骤是由哪些模块实现的：</p>
+<h2 id="section-71" data-source-page="6">1. Thought(思考)被拆成了两个模块：<a class="heading-link" href="#section-71" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">1. Thought(思考)被拆成了两个模块</p>
+<p class="list-item" data-source-page="6">规划层(Planning):制定整体计划 “我要完成写周报这个任务，需要先查数据，再提取要点，最后生成正文”</p>
+<p class="list-item" data-source-page="6">推理层(Reasoning):每一步的具体决策 “现在查到的数据不够，我应该调用哪个工具?用什么参数?”</p>
+<h3 id="section-75" data-source-page="6">为什么要拆分?<a class="heading-link" href="#section-75" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">因为&quot;思考&quot;这个动作太复杂了:</p>
+<p class="list-item" data-source-page="6">有时需要宏观规划(把大任务拆成小任务)</p>
+<p data-source-page="6">宏观规划</p>
+<p class="list-item" data-source-page="6">有时需要微观决策(当前这一步怎么做)</p>
+<p data-source-page="6">微观决策</p>
+<p data-source-page="6">人类也是这样:计划&quot;准备一次旅行&quot;时，会先规划整体流程(订票、订酒店、查景点),然后在每个环节中推理具体操作(订哪个航班、选哪家酒店)。</p>
+<h2 id="section-82" data-source-page="6">2. Observation(观察)没有独立的层：<a class="heading-link" href="#section-82" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">2. Observation(观察)没有独立的层</p>
+<p data-source-page="6">观察其实是三个动作的组合:</p>
+<p class="list-item" data-source-page="6">记录结果:由记忆系统保存行动的输出</p>
+<p data-source-page="6">记录结果</p>
+<p class="list-item" data-source-page="6">分析结果:由推理层评估执行效果、识别异常、提取关键信息</p>
+<p data-source-page="6">分析结果</p>
+<p data-source-page="6">假设 Agent 调用天气 API 后收到错误:</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{&quot;error&quot;: &quot;城市不存在&quot;}
+
+1</code></pre></div>
+<p data-source-page="7">但如果有&quot;分析&quot;环节，推理层会:</p>
+<p class="list-item" data-source-page="7">识别这是错误而非正常数据</p>
+<p class="list-item" data-source-page="7">判断需要调整策略(重新询问用户或换个城市)</p>
+<p class="list-item" data-source-page="7">决定下一步行动</p>
+<p data-source-page="7">这就是为什么观察不只是被动接收，还包含主动分析和判断。</p>
+<h2 id="section-96" data-source-page="7">3. 记忆系统是贯穿整个循环的:<a class="heading-link" href="#section-96" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">3. 记忆系统是贯穿整个循环的</p>
+<p data-source-page="7">记忆系统不是循环中的某一步，而是全程参与:</p>
+<p data-source-page="7">全程参与</p>
+<p class="list-item" data-source-page="7">感知时:提取历史记忆</p>
+<p class="list-item" data-source-page="7">思考时:参考过往经验</p>
+<p class="list-item" data-source-page="7">行动后:记录执行结果</p>
+<h2 id="section-103" data-source-page="7">各模块详解<a class="heading-link" href="#section-103" aria-label="链接至本节">#</a></h2>
+<h3 id="section-104" data-source-page="7">感知层(Perception)<a class="heading-link" href="#section-104" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">职责:将外部世界的各种输入转化为LLM可以理解的文本形式。</p>
+<p data-source-page="7">职责</p>
+<p data-source-page="7">可以把感知层想象成Agent的&quot;翻译官&quot;:它负责把来自物理世界、数字系统、用户交互的各种信息，统一翻译成LLM能理解的语言。</p>
+<p data-source-page="7">感知层处理的输入来源:</p>
+<p data-source-page="7">感知层处理的输入来源</p>
+<p class="list-item" data-source-page="7">用户交互:自然语言指令、图片、语音等</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<p class="list-item" data-source-page="8">环境状态:当前时间、用户位置、系统状态等上下文信息</p>
+<p data-source-page="8">环境状态</p>
+<p class="list-item" data-source-page="8">历史记忆:从记忆系统中检索到的相关对话或经验</p>
+<p data-source-page="8">历史记忆</p>
+<p data-source-page="8">关键工作：</p>
+<p data-source-page="8">关键工作</p>
+<h2 id="section-117" data-source-page="8">1. 多模态转文本：<a class="heading-link" href="#section-117" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">1. 多模态转文本</p>
+<p class="list-item" data-source-page="8">图片 → 文本描述（通过GPT-4V等视觉模型）</p>
+<p class="list-item" data-source-page="8">语音 → 文字转写（通过Whisper等语音识别）</p>
+<h2 id="section-121" data-source-page="8">2. 结构化数据处理：<a class="heading-link" href="#section-121" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">2. 结构化数据处理</p>
+<p class="list-item" data-source-page="8">工具返回的 JSON 数据不一定要转成自然语言</p>
+<p class="list-item" data-source-page="8">关键是：让 LLM 能理解它的含义</p>
+<p data-source-page="8">让 LLM 能理解它的含义</p>
+<p data-source-page="8">例如天气 API 返回：</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{&quot;city&quot;: &quot;杭州&quot;, &quot;temp&quot;: 25, &quot;weather&quot;: &quot;晴&quot;}
+
+1</code></pre></div>
+<p data-source-page="8">两种处理方式都可以：</p>
+<p class="list-item" data-source-page="8">直接使用 JSON：Observation: {&quot;city&quot;: &quot;杭州&quot;, &quot;temp&quot;: 25, &quot;weather&quot;: &quot;晴&quot;}</p>
+<p class="list-item" data-source-page="8">转为自然语言：Observation: 杭州当前温度25度，天气晴朋</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Observation: 杭州当前温度25度，天气晴朋</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<p data-source-page="9">转为自然语言</p>
+<h2 id="section-133" data-source-page="9">3. 上下文组装：<a class="heading-link" href="#section-133" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">3. 上下文组装</p>
+<p class="list-item" data-source-page="9">将用户输入、工具返回、历史对话、可用工具列表等</p>
+<p class="list-item" data-source-page="9">组装成一个完整的Prompt,送给LLM处理</p>
+<p class="list-item" data-source-page="9">这是感知层最核心的价值:让LLM在每一步都能&quot;看到&quot;完整的世界</p>
+<p data-source-page="9">示例：</p>
+<p data-source-page="9">示例</p>
+<p data-source-page="9">用户输入：“帮我查一下明天杭州的天气”</p>
+<p data-source-page="9">感知层组装的 Prompt：</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">## 系统信息
+当前时间：2024年12月9日 14:30
+用户位置：上海
+
+## 用户信息
+用户偏好：喜欢详细的天气信息（温度、湿度、风力）
+
+## 可用工具
+1. get_weather(city, date): 获取指定城市和日期的天气
+2. search_web(query): 搜索网络信息
+
+## 用户请求
+帮我查一下明天杭州的天气</code></pre></div>
+<p data-source-page="9">这样，LLM 就能全面理解当前的“环境”了。</p>
+<p data-source-page="9">再看一个工具返回的例子：</p>
+<p data-source-page="9">再看一个工具返回的例子</p>
+<p data-source-page="9">假设调用 get_weather(&quot;杭州&quot;, &quot;2024-12-10&quot;) 后得到：</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;city&quot;: &quot;杭州&quot;,
+  &quot;date&quot;: &quot;2024-12-10&quot;,
+  &quot;temperature&quot;: {&quot;max&quot;: 18, &quot;min&quot;: 8},
+  &quot;humidity&quot;: 65,
+  &quot;wind&quot;: {&quot;speed&quot;: 12, &quot;direction&quot;: &quot;东北&quot;},
+  &quot;weather&quot;: &quot;多云&quot;
+}</code></pre></div>
+<p data-source-page="10">感知层有两种选择：</p>
+<p data-source-page="10">方式1：保持 JSON</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Observation: {&quot;city&quot;: &quot;杭州&quot;, &quot;temperature&quot;: {&quot;max&quot;: 18, &quot;min&quot;: 8}, ...}
+
+1</code></pre></div>
+<p data-source-page="10">→ 优点：保持结构，如果需要传给下一个工具很方便 → 缺点：嵌套层级多时，LLM 可能难以快速提取关键信息</p>
+<p data-source-page="10">方式2：转为自然语言</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Observation: 杭州2024年12月10日天气多云，温度8-18℃，湿度65%，东北风12m/s
+
+1</code></pre></div>
+<p data-source-page="10">→ 优点：LLM 更容易理解和推理，特别是需要总结时 → 缺点：如果下一步需要结构化数据，还得让LLM 重新解析</p>
+<p data-source-page="10">实践中的选择原则：</p>
+<p data-source-page="10">实践中的选择原则</p>
+<p class="list-item" data-source-page="10">如果是最后一步（直接回答用户），用自然语言</p>
+<p class="list-item" data-source-page="10">如果还需要继续调用工具，保持 JSON</p>
+<p class="list-item" data-source-page="10">如果数据结构复杂（如3层以上），提取关键信息后用自然语言</p>
+<p data-source-page="10">职责：将高层目标拆解为可执行的子任务序列。</p>
+<p data-source-page="10">在最新的 Agent 架构中，规划能力 被认为是 Agent 与普通聊天机器人的最大区别。</p>
+<p data-source-page="10">两种规划策略：</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<p data-source-page="11">两种规划策略</p>
+<h2 id="section-164" data-source-page="11">1. 一次性规划（Plan-then-Execute）<a class="heading-link" href="#section-164" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">先生成完整的任务计划，再逐步执行，适合目标明确、环境稳定的场景。比如用户说&quot;帮我写一份周报&quot;，Agent 会先制定完整计划：</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">检索本周工作记录 → 提取关键成果和数据 → 按照模板生成周报正文 → 校对和格式化
+
+1</code></pre></div>
+<p data-source-page="11">然后按照这个计划一步步执行。</p>
+<h2 id="section-168" data-source-page="11">2. 边规划边执行（Interleaved Planning）<a class="heading-link" href="#section-168" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">每执行一步后，根据结果重新规划下一步，这就是 ReAct 模式 的核心思想，适合环境动态变化、目标不明确的场景。</p>
+<p data-source-page="11">比如用户说&quot;帮我研究一下最新的 Agent 框架&quot;：</p>
+<p class="list-item" data-source-page="11">第 1 步：搜索&quot;2025 Agent framework&quot;，发现 CrewAI 和 AutoGen 很热门</p>
+<p class="list-item" data-source-page="11">第 2 步：深入查询 CrewAI 的特点，发现它强调团队协作</p>
+<p class="list-item" data-source-page="11">第 3 步：对比 CrewAI 和 AutoGen…</p>
+<p data-source-page="11">每一步都根据上一步的结果来决定下一步做什么。</p>
+<p data-source-page="11">职责：在每一步决策中，分析当前状态，选择最优行动。</p>
+<p data-source-page="11">这是 LLM 的核心能力所在。现代 Agent 的推理层通常包括两部分：</p>
+<h2 id="section-177" data-source-page="11">1. 知识推理：<a class="heading-link" href="#section-177" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">1. 知识推理</p>
+<p class="list-item" data-source-page="11">基于训练数据的知识：LLM 自身的参数中存储的知识；</p>
+<p data-source-page="11">基于训练数据的知识</p>
+<p class="list-item" data-source-page="11">外部知识源：通过 RAG（检索增强生成）从向量数据库、知识图谱等获取。</p>
+<p data-source-page="11">外部知识源</p>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<h2 id="section-183" data-source-page="12">2. 逻辑推理：<a class="heading-link" href="#section-183" aria-label="链接至本节">#</a></h2>
+<p data-source-page="12">2. 逻辑推理</p>
+<p class="list-item" data-source-page="12">Chain-of-Thought（思维链）：逐步推理，显式化中间步骤；</p>
+<p data-source-page="12">Chain-of-Thought（思维链）</p>
+<p class="list-item" data-source-page="12">Tree-of-Thought（思维树）：探索多条推理路径，选择最优解；</p>
+<p data-source-page="12">Tree-of-Thought（思维树）</p>
+<p class="list-item" data-source-page="12">Self-Reflection（自我反思）：检查自己的推理是否合理，必要时回溺修正。</p>
+<h3 id="section-190" data-source-page="12">示例：Chain-of-Thought 推理<a class="heading-link" href="#section-190" aria-label="链接至本节">#</a></h3>
+<p data-source-page="12">用户问：“我应该选杭州还是南京旅游？”</p>
+<p data-source-page="12">Agent 的推理过程：</p>
+<div class="code-block" data-source-page="12"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">[Step 1] 首先，我需要了解这两个城市的天气情况
+        → 调用 get_weather(&quot;杭州&quot;), get_weather(&quot;南京&quot;)
+
+[Step 2] 杭州晴天，南京有雨 → 天气角度杭州更好
+
+[Step 3] 接下来，检索用户偏好 → 用户喜欢自然风景
+
+[Step 4] 杭州有西湖，符合用户偏好 → 综合判断：推荐杭州</code></pre></div>
+<p data-source-page="12">这种逐步推理的方式，让 Agent 的决策过程 可解释、可追踪、可调试。</p>
+<p data-source-page="12">可解释、可追踪、可调试</p>
+<p data-source-page="12">新趋势：</p>
+<p data-source-page="12">新趋势</p>
+<p class="list-item" data-source-page="12">神经符号结合（Neuro-Symbolic）： 将 LLM 的语义理解与符号推理引擎结合； 在需要精确逻辑的场景（如数学、法律）提升可靠性。</p>
+<p class="list-item" data-source-page="12">多轮验证机制： Agent 在给出答案后，自我验证推理是否合理； 类似于人类的“检查一遍”过程。</p>
+<h3 id="section-200" data-source-page="12">行动层(Action)<a class="heading-link" href="#section-200" aria-label="链接至本节">#</a></h3>
+<p data-source-page="12">职责：将决策转化为具体的执行动作。</p>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<p data-source-page="13">LLM Agent 的行动层与传统机器人不同，它不是控制电机转动，而是 调用工具（Tool Calling）。</p>
+<p data-source-page="13">常见的行动类型：</p>
+<p data-source-page="13">常见的行动类型</p>
+<p class="list-item" data-source-page="13">查询外部服务： 调用天气 API、搜索引擎、数据库等； 这是最基础、最常用的行动。</p>
+<p class="list-item" data-source-page="13">操作文件系统： 读写文件、创建目录、执行脚本； 需要非常严格的 权限控制。</p>
+<p data-source-page="13">操作文件系统：</p>
+<p data-source-page="13">操作文件系统</p>
+<p class="list-item" data-source-page="13">读写文件、创建目录、执行脚本；</p>
+<p class="list-item" data-source-page="13">需要非常严格的 权限控制。</p>
+<p data-source-page="13">权限控制</p>
+<p class="list-item" data-source-page="13">与其他 Agent 交互： 在 Multi-Agent 系统中，发送消息给其他 Agent； CrewAI、AutoGen 等框架的核心功能。</p>
+<h3 id="section-213" data-source-page="13">记忆系统(Memory)<a class="heading-link" href="#section-213" aria-label="链接至本节">#</a></h3>
+<p data-source-page="13">职责：存储和检索历史信息，使 Agent 能够“记住”过去的交互。</p>
+<p data-source-page="13">这是目前Agent 研究的 热点领域。没有记忆的 Agent 就像“金鱼”，每次对话都是从零开始；有了记忆，Agent 才能真正成为“助理”。</p>
+<p data-source-page="13">两种记忆类型：</p>
+<p data-source-page="13">两种记忆类型</p>
+<h2 id="section-218" data-source-page="13">1. 短期记忆（Short-term Memory）<a class="heading-link" href="#section-218" aria-label="链接至本节">#</a></h2>
+<p class="list-item" data-source-page="13">定义：当前对话的上下文；</p>
+<p data-source-page="13">定义</p>
+<p class="list-item" data-source-page="13">存储方式：直接在 LLM 的上下文窗口中；</p>
+<p data-source-page="13">存储方式</p>
+<p class="list-item" data-source-page="13">生命周期：单次会话结束后清空。</p>
+<p data-source-page="13">生命周期</p>
+<span class="source-page-anchor" id="pdf-page-14"></span>
+<div class="code-block" data-source-page="14"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户：我喜欢吃川菜
+（存入短期记忆）
+
+Agent：好的，我记住了。
+
+用户：帮我推荐一家餐厅
+Agent：根据您喜欢川菜，我推荐...
+（从短期记忆中提取）</code></pre></div>
+<p data-source-page="14">挑战：</p>
+<p data-source-page="14">挑战</p>
+<p class="list-item" data-source-page="14">上下文窗口有限（如 GPT-4 的 128K tokens）；</p>
+<p class="list-item" data-source-page="14">对话太长时，早期信息会被截断。</p>
+<h2 id="section-230" data-source-page="14">2. 长期记忆（Long-term Memory）<a class="heading-link" href="#section-230" aria-label="链接至本节">#</a></h2>
+<p class="list-item" data-source-page="14">定义：跨对话的持久化信息；</p>
+<p class="list-item" data-source-page="14">存储方式：外部数据库（向量数据库、知识图谱、关系数据库）；</p>
+<p class="list-item" data-source-page="14">生命周期：持久存在，需要时检索。</p>
+<h3 id="section-234" data-source-page="14">核心技术：RAG + 向量数据库<a class="heading-link" href="#section-234" aria-label="链接至本节">#</a></h3>
+<p data-source-page="14">目前，向量数据库 被认为是 Agent 记忆系统的最佳选择：</p>
+<p data-source-page="14">向量数据库</p>
+<div class="code-block" data-source-page="14"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">[存储阶段]
+用户信息：“我喜欢吃川菜”
+→ Embedding 模型转化为向量
+→ 存入向量数据库（如 Pinecone, Weaviate, Chroma）
+
+[检索阶段]
+用户问：“帮我推荐餐厅”
+→ 将查询转为向量
+→ 在数据库中搜索相似向量
+→ 检索到：“用户喜欢川菜”
+→ 将这条信息添加到当前 Prompt</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-15"></span>
+<h3 id="section-238" data-source-page="15">新趋势：Agentic RAG<a class="heading-link" href="#section-238" aria-label="链接至本节">#</a></h3>
+<aside class="callout" data-source-page="15"><p>Agentic 是什么? 现在，你会发现很多技术都加上了&quot;Agentic&quot;前缀:Agentic RAG、Agentic Workflow、Agentic Search… Agentic = 赋予 Agent 特性,核心含义是: 从&quot;被动执行&quot;变为&quot;主动决策&quot; 从&quot;一次性处理&quot;变为&quot;多轮迭代&quot; 从&quot;固定流程&quot;变为&quot;自主规划&quot; 简单来说，给任何技术加上Agentic,就是让它具备Agent的自主性和循环能力。</p></aside>
+<p data-source-page="15">传统 RAG 是&quot;一次性检索&quot;:Agent 提问 → 检索 → 生成答案。</p>
+<p data-source-page="15">Agentic RAG是&quot;多轮自主检索&quot;:</p>
+<div class="code-block" data-source-page="15"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">第 1 轮：检索到一些信息
+Agent：这些信息不够，我需要更多关于 X 的内容
+
+第 2 轮：重新检索，调整查询
+Agent：现在信息足够了，可以生成答案</code></pre></div>
+<p data-source-page="15">这种模式让 Agent 对知识的获取更主动、更灵活。</p>
+<h2 id="section-244" data-source-page="15">下节预告<a class="heading-link" href="#section-244" aria-label="链接至本节">#</a></h2>
+<p data-source-page="15">现在了解了 Agent 的模块架构，但可能会好奇：这些模块背后的核心能力到底是如何实现的？感知如何理解环境？思考如何进行推理？行动如何准确执行？</p>
+<p data-source-page="15">下一节，我们将深入剖析 Agent 的三大核心能力——从多模态感知到 Chain-of-Thought 推理，再到工具调用的技术细节，可以看到，原来 Agent 的&quot;智能&quot;是通过这些具体的能力实现的。</p>
+<span class="source-page-anchor" id="pdf-page-16"></span>
+<h2 id="section-247" data-source-page="16">■ 学点英语<a class="heading-link" href="#section-247" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="16"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>感知-思考-行动</td><td>PTA (Perceive-Think- Act)</td><td>/piː tiː eɪ/</td><td>Agent运行的核心理论循环框架</td></tr><tr><td>感知层</td><td>Perception Layer</td><td>/pərˈsepʃn ˈleɪər/</td><td>将外部输入转化为LLM可理解形式的模块</td></tr><tr><td>规划层</td><td>Planning Layer</td><td>/ˈplænɪŋ ˈleɪər/</td><td>将高层目标拆解为可执行子任务序列的模块</td></tr><tr><td>推理层</td><td>Reasoning Layer</td><td>/ˈriːzənɪŋ ˈleɪər/</td><td>每一步决策中分析当前状态选择最优行动的模块</td></tr><tr><td>行动层</td><td>Action Layer</td><td>/ˈækʃn ˈleɪər/</td><td>将决策转化为具体执行动作的模块</td></tr><tr><td>自主检索增强生成</td><td>Agentic RAG</td><td>/eɪˈdʒentɪk ræɡ/</td><td>多轮自主检索，Agent主动调整查询策略的知识获取方式</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-17"></span>
+<h2 id="section-249" data-source-page="17">图片<a class="heading-link" href="#section-249" aria-label="链接至本节">#</a></h2>
+<span class="source-page-anchor" id="pdf-page-18"></span>
+<figure data-source-page="18"><button class="figure-open" aria-label="放大查看第 18 页图示"><img src="../assets/figures/6d349c19af7e90d6dde1c141ee1fa363.png" width="1024" height="1702" loading="lazy" alt="Agent的核心架构剖析 · 原 PDF 第 18 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-142.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>从Function Calling到Agent的演进</strong><small>什么是真正的Agent</small></a><a class="chapter-neighbor next" href="lesson-144.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>执行：能力实现详解</strong><small>Agent 的核心架构剖析</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5290#mid=105149" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">经典架构：Perceive-Think-Act（PTA）</a><a href="#section-4" class="toc-level-3">为什么是循环，而不是单向流程?</a><a href="#section-20" class="toc-level-3">Agent 循环的四个阶段</a><a href="#section-34" class="toc-level-3">PTA 的工程化实现：ReAct</a><a href="#section-51" class="toc-level-2">从循环到模块:两套概念的关系</a><a href="#section-67" class="toc-level-3">核心区分:流程 vs 架构</a><a href="#section-69" class="toc-level-3">对应关系:循环步骤如何映射到模块</a><a href="#section-71" class="toc-level-2">1. Thought(思考)被拆成了两个模块：</a><a href="#section-75" class="toc-level-3">为什么要拆分?</a><a href="#section-82" class="toc-level-2">2. Observation(观察)没有独立的层：</a><a href="#section-96" class="toc-level-2">3. 记忆系统是贯穿整个循环的:</a><a href="#section-103" class="toc-level-2">各模块详解</a><a href="#section-104" class="toc-level-3">感知层(Perception)</a><a href="#section-117" class="toc-level-2">1. 多模态转文本：</a><a href="#section-121" class="toc-level-2">2. 结构化数据处理：</a><a href="#section-133" class="toc-level-2">3. 上下文组装：</a><a href="#section-164" class="toc-level-2">1. 一次性规划（Plan-then-Execute）</a><a href="#section-168" class="toc-level-2">2. 边规划边执行（Interleaved Planning）</a><a href="#section-177" class="toc-level-2">1. 知识推理：</a><a href="#section-183" class="toc-level-2">2. 逻辑推理：</a><a href="#section-190" class="toc-level-3">示例：Chain-of-Thought 推理</a><a href="#section-200" class="toc-level-3">行动层(Action)</a><a href="#section-213" class="toc-level-3">记忆系统(Memory)</a><a href="#section-218" class="toc-level-2">1. 短期记忆（Short-term Memory）</a><a href="#section-230" class="toc-level-2">2. 长期记忆（Long-term Memory）</a><a href="#section-234" class="toc-level-3">核心技术：RAG + 向量数据库</a><a href="#section-238" class="toc-level-3">新趋势：Agentic RAG</a><a href="#section-244" class="toc-level-2">下节预告</a><a href="#section-247" class="toc-level-2">■ 学点英语</a><a href="#section-249" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-143", "title": "Agent的核心架构剖析", "stage": 6, "week": 11, "module": "Agent 的核心架构剖析", "minutes": 18, "pages": 19, "type": "article"}</script>
+</body></html>

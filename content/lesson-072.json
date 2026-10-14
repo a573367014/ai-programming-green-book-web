@@ -1,0 +1,67 @@
+{
+  "id": "lesson-072",
+  "title": "选择练习 · 1-5",
+  "code": "1-5",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "Context Learning",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/010-Context Learning/072-练习-1-5-选择练习.pdf",
+  "sha256": "8f5ed2b7dd5b977f7eba069f9d3bb0618899597ae23d15ca5927fb46ec22bcc3",
+  "pdf": "sources/pdf/lesson-072.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5262#mid=104985",
+  "minutes": 1,
+  "excerpt": "思维链（Chain-of-Thought）在小学算术题上能把准确率从 17% 跃升到 57% 以上。最贴近这一提升根本原因的解释是？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "思维链（Chain-of-Thought）在小学算术题上能把准确率从 17% 跃升到 57% 以上。最贴近这一提升根本原因的解释是？ (复习题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 模型本来就会算，只是以前被 RLHF 压制了输出 B. 把一个需要\"一次性完成\"的多步推理，拆成\"每一步都简单、前一步可作为下一步输入\"的自回归链 C. 推理过程会让模型调用一个隐藏的计算器模块 D. 加入推理步骤后模型参数变多了",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 397,
+    "represented_chars": 193,
+    "removed_chars": 204,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 204
+    }
+  },
+  "videos": [],
+  "order": 73,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "思维链（Chain-of-Thought）在小学算术题上能把准确率从 17% 跃升到 57% 以上。最贴近这一提升根本原因的解释是？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 模型本来就会算，只是以前被 RLHF 压制了输出 B. 把一个需要\"一次性完成\"的多步推理，拆成\"每一步都简单、前一步可作为下一步输入\"的自回归链 C. 推理过程会让模型调用一个隐藏的计算器模块 D. 加入推理步骤后模型参数变多了"
+    }
+  ]
+}

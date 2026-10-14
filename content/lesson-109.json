@@ -1,0 +1,883 @@
+{
+  "id": "lesson-109",
+  "title": "实战：游戏装备查询",
+  "code": "1-1",
+  "stage": 3,
+  "week": 6,
+  "week_title": "Function Calling：工具调用机制",
+  "module": "实战：游戏装备查询",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/001-第6周 Function Calling：工具调用机制/002-实战：游戏装备查询/109-图文-1-1-实战：游戏装备查询.pdf",
+  "sha256": "315d496b8e2e3a0f8af2e63c3b75ca04684893e6e9a804f85dbf288d569ba511",
+  "pdf": "sources/pdf/lesson-109.pdf",
+  "pages": 9,
+  "source_url": "https://class.imooc.com/lesson/5276#mid=104928",
+  "minutes": 14,
+  "excerpt": "掌握了调用流程和工具设计原则后，用一个完整的游戏装备查询项目把理论串起来——角色查询、伤害计算、对比建议，LLM 自动多轮调用、逐步决策。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 掌握了调用流程和工具设计原则后，用一个完整的游戏装备查询项目把理论串起来——角色查询、伤害计算、对比建议，LLM 自动多轮调用、逐步决策。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "4.1 实战：游戏装备查询",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面通过一个完整的实战项目来感受 Function Calling 的实际威力。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实现了一个游戏装备查询系统，当用户问\"帮我查一下胡桃和甘雨哪个输出更高？\"时，LLM 会自动：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "调用 get_character_info 查询两个角色的基础信息",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "get_character_info",
+      "page": 1,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "调用 calculate_damage 结合当前武器和圣遗物计算伤害期望",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "calculate_damage",
+      "page": 1,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "综合工具调用结果，给出对比建议",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter6/game_equipment_query.py",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "只讲核心要点，完整实现请参考源码。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "多轮调用循环",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "顺着源码的运行路径，从 chat_with_tools 这个核心对话循环看起：当用户提问时，代码是如何一轮一轮地调用 LLM、接收工具调用指令、再把工具结果喂回去的？",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "code",
+      "text": "while True:\n    response = client.chat.completions.create(...)\n    message = response.choices[0].message\n\n    if not message.tool_calls:\n        return message.content\n\n    for tool_call in message.tool_calls:\n        function_name = tool_call.function.name\n        arguments = json.loads(tool_call.function.arguments)\n        function = FUNCTION_MAP[function_name]\n        result = function(**arguments)\n        messages.append({\"role\": \"tool\", \"tool_call_id\": tool_call.id, \"content\": \njson.dumps(result, ensure_ascii=False)})",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "javascript"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这段代码的逻辑是这样的：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "第1轮循环\n  调用 LLM\n  ↓\n  决定调用 get_character_info\n  ↓\n  执行函数获取角色数据\n  ↓\n  写入 messages，继续循环\n\n第2轮循环\n  调用 LLM（此时它已经看到上一轮的结果）\n  ↓\n  决定调用 calculate_damage\n  ↓\n  执行函数计算两个角色的伤害\n  ↓\n  写入 messages，继续循环\n\n第3轮循环\n  调用 LLM\n  ↓\n  判断信息已经足够\n  ↓\n  message.tool_calls 为空\n  ↓\n  返回最终答案，跳出循环",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "函数映射表",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "有了上面的整体调用流程，再聚焦看循环里的这一行：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "function = FUNCTION_MAP[function_name]\n\n1",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "javascript"
+    },
+    {
+      "kind": "paragraph",
+      "text": "当 LLM 决定需要调用某个工具时，它在 tool_call.function.name 里只会给出一个函数名字符串，比如\"get_character_info\" 或 \"calculate_damage\"。为了把这个字符串变成真正可以执行的 Python 函数，代码中定义了一个\"函数映射表\"：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "code",
+      "text": "FUNCTION_MAP = {\n    \"get_character_info\": get_character_info,\n    \"calculate_damage\": calculate_damage\n}",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么需要映射表？因为 LLM 返回的 tool_call.function.name 只是一个字符串\"get_character_info\"，需要转换成真正可调用的函数对象。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "有了这个映射表，执行工具调用就变得非常简单：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "function_name = tool_call.function.name  # \"get_character_info\"\narguments = json.loads(tool_call.function.arguments)  # {\"character_name\": \"胡桃\"}\n\n# 通过映射表找到真实函数\nfunction = FUNCTION_MAP[function_name]\n\n# 执行函数\nresult = function(**arguments)",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "javascript"
+    },
+    {
+      "kind": "h3",
+      "text": "工具描述才是关键",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM 为什么这么聪明？不需要明确指示就能判断需要多少个工具来完成任务。 看一个对比就明白了，这完全是 description 的作用：",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "code",
+      "text": "# ✗ 不好的定义\n{\n    \"name\": \"get_character_info\",\n    \"description\": \"获取信息\",  # ← 太模糊！\n    \"parameters\": {...}\n}\n\n# ✓ 好的定义\n{\n    \"name\": \"get_character_info\",\n    \"description\": \"获取游戏角色的基础信息，包括等级、属性、当前装备等\",  # ← 清晰具体\n    \"parameters\": {...}\n}",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "当用户问\"胡桃多少级？\"时：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "模糊的描述：\"获取信息\"→ LLM 可能选错工具",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "清晰的描述：\"获取游戏角色的基础信息，包括等级。…\"→ LLM 精准匹配",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "描述要具体，说明\"获取什么信息\"“适用什么场景”。参数的 description 也要写清楚，比如 \"角色名称，如：胡桃、钟离、甘雨\"。必要时使用 enum 限制参数值，比如 [\"输出\", \"辅助\", \"生存\"]。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "完整的工具定义示例请参考源码中的 tools 数组。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "运行效果",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用户提问：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "帮我查一下胡桃和甘雨哪个输出更高？\n\n1",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "控制台输出如下：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "============================================================\n游戏装备查询系统 - Function Calling 演示\n============================================================\n\n用户提问: 帮我查一下胡桃和甘雨哪个输出更高？\n\n------------------------------------------------------------\n[调用工具] get_character_info({'character_name': '胡桃'})\n[工具结果] {'level': 90, 'element': '火', 'base_attack': 106, 'base_hp': 15552, \n'current_weapon': '护摩之杖', 'current_artifacts': '魔女4件套'}\n[调用工具] get_character_info({'character_name': '甘雨'})\n[工具结果] {'level': 90, 'element': '冰', 'base_attack': 335, 'base_hp': 9797, \n'current_weapon': '阿莫斯之弓', 'current_artifacts': '游走4件套'}\n[调用工具] calculate_damage({'character_name': '胡桃', 'weapon': '护摩之杖', \n'artifact_set': '魔女4件套'})\n[工具结果] {'character': '胡桃', 'weapon': '护摩之杖', 'artifacts': '魔女4件套', \n'estimated_damage': 21000, 'rating': '优秀'}\n[调用工具] calculate_damage({'character_name': '甘雨', 'weapon': '阿莫斯之弓', \n'artifact_set': '游走4件套'})\n[工具结果] {'character': '甘雨', 'weapon': '阿莫斯之弓', 'artifacts': '游走4件套', \n'estimated_damage': 24000, 'rating': '优秀'}\n------------------------------------------------------------",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM 最终给出的回答：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "根据计算结果，甘雨在当前装备（阿莫斯之弓 + 游走4件套）下的伤害期望为24000，而胡桃在当前装备\n（护摩之杖 + 魔女4件套）下的伤害期望为21000。因此，甘雨的输出略高于胡桃。\n不过，两者都属于\"优秀\"水平，具体表现还可能受到队伍搭配、操作手法和敌人类型等因素的影响！\n\n1\n2",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM 自动调用了4次工具，最后整合成了一个完美的对比回答。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "建议亲自跑一下源码，打印出每个关键节点的信息，搞清楚整个流程。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "多次调用的渐进式决策",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "看完上面的运行效果，可能会有一个疑问：这4次工具调用是怎么产生的？LLM 一次就能规划好吗？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "答案是否定的。背后发生了 3 次 LLM API 调用，其中前两次决定了需要调用哪些工具，最后一次生成最终结果。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "4次工具调用，既不是只调用1次LLM就能决定，也不需要调用4次LLM。实际上总共调用了2次LLM，来决定需要调用哪些工具。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是 Function Calling 最容易被误解的地方，可以用两个视角来理解：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从API调用次数看",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户：\"帮我查一下胡桃和甘雨哪个输出更高？\"\n\n第1次 API 调用\n  输入：用户问题 + 工具列表\n  ↓\n  LLM思考：需要两个角色的信息\n  ↓\n  输出：tool_calls = [\n    get_character_info(\"胡桃\"),\n    get_character_info(\"甘雨\")\n  ]\n  ↓\n  你执行2个函数，得到2个结果\n\n第2次 API 调用\n  输入：前面的对话 + 2个角色信息\n  ↓\n  LLM思考：现在可以计算伤害了\n  ↓\n  输出：tool_calls = [\n    calculate_damage(\"胡桃\", ...),\n    calculate_damage(\"甘雨\", ...)\n  ]\n  ↓\n  你执行2个函数，得到2个伤害值\n\n第3次 API 调用\n  输入：包含所有结果的完整对话历史\n  ↓\n  LLM思考：信息齐全了，可以回答用户了\n  ↓\n  输出：tool_calls = None（不再调用工具）\n        content = \"根据计算，甘雨输出更高...\"",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心发现：只调用了 3 次 API，但执行了 4 次工具函数——因为 LLM 可以在一次调用中返回多个tool_calls。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么分步调用",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "灵活性 - 下一步取决于这一步的结果",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "灵活性",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 例如：如果 get_character_info 返回\"角色不存在\"\n# LLM 就不会继续调用 calculate_damage 了\n\nif character_info[\"error\"]:\n    # LLM看到错误，直接回答\"找不到这个角色\"\n    return \"抱歉，数据库中没有这个角色\"",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "理论上可以一次规划好，但问题在于这要求数据非常理想。测试数据是准备的完美数据，但真实数据可能是残缺的，所以下一步必须依赖上一步的结果。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "真实性 - 模拟人类的思维过程",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "真实性",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "人类处理复杂问题时：\n\"先查A → 看结果 → 决定是否查B → 看结果 → 决定下一步\"\n\n而不是：\n\"提前规划好查A、B、C、D，然后一口气全查完\"",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "可控性 - 每一步你都可以介入",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可控性",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 你可以在每次调用后检查和控制\nfor tool_call in message.tool_calls:\n    # 危险操作检测\n    if tool_call.function.name == \"delete_all_data\":\n        result = {\"error\": \"此操作需要人工确认\"}\n        continue\n\n    # 权限检查\n    if not user.has_permission(tool_call.function.name):\n        result = {\"error\": \"权限不足\"}\n        continue\n\n    # 正常执行\n    result = execute_function(tool_call)",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "并行判断",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从 LLM 的角度看，它在做\"并行判断\"：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“要对比胡桃和甘雨” → 需要两个角色的信息",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "这两个信息相互独立，可以同时获取",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "相互独立",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "所以一次返回 [get_info(\"胡桃\"), get_info(\"甘雨\")]",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "[get_info(\"胡桃\"), get_info(\"甘雨\")]",
+      "page": 9,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "但如果信息之间有依赖关系：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "依赖关系",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“先查角色，再查装备” → 需要先知道角色信息才能推荐装备",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LLM 会分两次调用：第1次查角色，第2次查装备",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM 既不会笨到用 4 次 API 去规划 4 个工具函数，也不会简单粗暴地 1 次规划完。它在并行和串行之间找到了恰当的平衡。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h2",
+      "text": "4.2 下一节预告",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在掌握了 Function Calling 的工作原理和实战技巧，但在真实项目中，可能会面临这样的疑惑：如何设计一个复杂系统的工具集？如何让 LLM 在多个工具之间准确选择？如何处理 LLM 调用错误或参数缺失？如何控制多轮调用的次数以避免成本爆炸？下一节进入 Function Calling 的工程实践，从工具设计原则、错误处理策略到性能优化技巧，构建生产级的 Function Calling 系统。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h2",
+      "text": "4.3 ■ 学点英语",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n函数映射表 | Function Mapping Table | /ˈfʌŋkʃn ˈmæpɪŋ ˈteɪbl/ | 将LLM返回的工具名字符串映射到真实Python函数对象的字典\n渐进式决策 | Progressive Decision- Making | /prəˈɡresɪv dɪˈsɪʒn ˈmeɪkɪŋ/ | LLM逐步获取信息并据此决策下一步，而非一次性全部规划的模式\n并行调用 | Parallel Tool Calling | /ˈpærəlel tuːl ˈkɔːlɪŋ/ | LLM在单次API调用中返回多个相互独立的工具调用指令",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "函数映射表",
+          "Function Mapping Table",
+          "/ˈfʌŋkʃn ˈmæpɪŋ ˈteɪbl/",
+          "将LLM返回的工具名字符串映射到真实Python函数对象的字典"
+        ],
+        [
+          "渐进式决策",
+          "Progressive Decision- Making",
+          "/prəˈɡresɪv dɪˈsɪʒn ˈmeɪkɪŋ/",
+          "LLM逐步获取信息并据此决策下一步，而非一次性全部规划的模式"
+        ],
+        [
+          "并行调用",
+          "Parallel Tool Calling",
+          "/ˈpærəlel tuːl ˈkɔːlɪŋ/",
+          "LLM在单次API调用中返回多个相互独立的工具调用指令"
+        ]
+      ],
+      "page": 9
+    }
+  ],
+  "accounting": {
+    "source_chars": 6048,
+    "represented_chars": 5865,
+    "removed_chars": 183,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 153,
+      "repeated_title": 30
+    }
+  },
+  "videos": [],
+  "order": 110,
+  "headings": [
+    {
+      "title": "4.1 实战：游戏装备查询",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "工具描述才是关键",
+      "id": "section-24",
+      "level": 3
+    },
+    {
+      "title": "4.2 下一节预告",
+      "id": "section-72",
+      "level": 2
+    },
+    {
+      "title": "4.3 ■ 学点英语",
+      "id": "section-74",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "掌握了调用流程和工具设计原则后，用一个完整的游戏装备查询项目把理论串起来——角色查询、伤害计算、对比建议，LLM 自动多轮调用、逐步决策。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "4.1 实战：游戏装备查询"
+    },
+    {
+      "anchor": "section-1",
+      "text": "下面通过一个完整的实战项目来感受 Function Calling 的实际威力。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "实现了一个游戏装备查询系统，当用户问\"帮我查一下胡桃和甘雨哪个输出更高？\"时，LLM 会自动："
+    },
+    {
+      "anchor": "section-1",
+      "text": "调用 get_character_info 查询两个角色的基础信息"
+    },
+    {
+      "anchor": "section-1",
+      "text": "get_character_info"
+    },
+    {
+      "anchor": "section-1",
+      "text": "调用 calculate_damage 结合当前武器和圣遗物计算伤害期望"
+    },
+    {
+      "anchor": "section-1",
+      "text": "calculate_damage"
+    },
+    {
+      "anchor": "section-1",
+      "text": "综合工具调用结果，给出对比建议"
+    },
+    {
+      "anchor": "section-1",
+      "text": "完整源码参考：samples/chapter6/game_equipment_query.py"
+    },
+    {
+      "anchor": "section-1",
+      "text": "只讲核心要点，完整实现请参考源码。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "多轮调用循环"
+    },
+    {
+      "anchor": "section-1",
+      "text": "顺着源码的运行路径，从 chat_with_tools 这个核心对话循环看起：当用户提问时，代码是如何一轮一轮地调用 LLM、接收工具调用指令、再把工具结果喂回去的？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "while True:\n    response = client.chat.completions.create(...)\n    message = response.choices[0].message\n\n    if not message.tool_calls:\n        return message.content\n\n    for tool_call in message.tool_calls:\n        function_name = tool_call.function.name\n        arguments = json.loads(tool_call.function.arguments)\n        function = FUNCTION_MAP[function_name]\n        result = function(**arguments)\n        messages.append({\"role\": \"tool\", \"tool_call_id\": tool_call.id, \"content\": \njson.dumps(result, ensure_ascii=False)})"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这段代码的逻辑是这样的："
+    },
+    {
+      "anchor": "section-1",
+      "text": "第1轮循环\n  调用 LLM\n  ↓\n  决定调用 get_character_info\n  ↓\n  执行函数获取角色数据\n  ↓\n  写入 messages，继续循环\n\n第2轮循环\n  调用 LLM（此时它已经看到上一轮的结果）\n  ↓\n  决定调用 calculate_damage\n  ↓\n  执行函数计算两个角色的伤害\n  ↓\n  写入 messages，继续循环\n\n第3轮循环\n  调用 LLM\n  ↓\n  判断信息已经足够\n  ↓\n  message.tool_calls 为空\n  ↓\n  返回最终答案，跳出循环"
+    },
+    {
+      "anchor": "section-1",
+      "text": "函数映射表"
+    },
+    {
+      "anchor": "section-1",
+      "text": "有了上面的整体调用流程，再聚焦看循环里的这一行："
+    },
+    {
+      "anchor": "section-1",
+      "text": "function = FUNCTION_MAP[function_name]\n\n1"
+    },
+    {
+      "anchor": "section-1",
+      "text": "当 LLM 决定需要调用某个工具时，它在 tool_call.function.name 里只会给出一个函数名字符串，比如\"get_character_info\" 或 \"calculate_damage\"。为了把这个字符串变成真正可以执行的 Python 函数，代码中定义了一个\"函数映射表\"："
+    },
+    {
+      "anchor": "section-1",
+      "text": "FUNCTION_MAP = {\n    \"get_character_info\": get_character_info,\n    \"calculate_damage\": calculate_damage\n}"
+    },
+    {
+      "anchor": "section-1",
+      "text": "为什么需要映射表？因为 LLM 返回的 tool_call.function.name 只是一个字符串\"get_character_info\"，需要转换成真正可调用的函数对象。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "有了这个映射表，执行工具调用就变得非常简单："
+    },
+    {
+      "anchor": "section-1",
+      "text": "function_name = tool_call.function.name  # \"get_character_info\"\narguments = json.loads(tool_call.function.arguments)  # {\"character_name\": \"胡桃\"}\n\n# 通过映射表找到真实函数\nfunction = FUNCTION_MAP[function_name]\n\n# 执行函数\nresult = function(**arguments)"
+    },
+    {
+      "anchor": "section-24",
+      "text": "工具描述才是关键"
+    },
+    {
+      "anchor": "section-24",
+      "text": "LLM 为什么这么聪明？不需要明确指示就能判断需要多少个工具来完成任务。 看一个对比就明白了，这完全是 description 的作用："
+    },
+    {
+      "anchor": "section-24",
+      "text": "# ✗ 不好的定义\n{\n    \"name\": \"get_character_info\",\n    \"description\": \"获取信息\",  # ← 太模糊！\n    \"parameters\": {...}\n}\n\n# ✓ 好的定义\n{\n    \"name\": \"get_character_info\",\n    \"description\": \"获取游戏角色的基础信息，包括等级、属性、当前装备等\",  # ← 清晰具体\n    \"parameters\": {...}\n}"
+    },
+    {
+      "anchor": "section-24",
+      "text": "当用户问\"胡桃多少级？\"时："
+    },
+    {
+      "anchor": "section-24",
+      "text": "模糊的描述：\"获取信息\"→ LLM 可能选错工具"
+    },
+    {
+      "anchor": "section-24",
+      "text": "清晰的描述：\"获取游戏角色的基础信息，包括等级。…\"→ LLM 精准匹配"
+    },
+    {
+      "anchor": "section-24",
+      "text": "描述要具体，说明\"获取什么信息\"“适用什么场景”。参数的 description 也要写清楚，比如 \"角色名称，如：胡桃、钟离、甘雨\"。必要时使用 enum 限制参数值，比如 [\"输出\", \"辅助\", \"生存\"]。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "完整的工具定义示例请参考源码中的 tools 数组。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "运行效果"
+    },
+    {
+      "anchor": "section-24",
+      "text": "用户提问："
+    },
+    {
+      "anchor": "section-24",
+      "text": "帮我查一下胡桃和甘雨哪个输出更高？\n\n1"
+    },
+    {
+      "anchor": "section-24",
+      "text": "控制台输出如下："
+    },
+    {
+      "anchor": "section-24",
+      "text": "============================================================\n游戏装备查询系统 - Function Calling 演示\n============================================================\n\n用户提问: 帮我查一下胡桃和甘雨哪个输出更高？\n\n------------------------------------------------------------\n[调用工具] get_character_info({'character_name': '胡桃'})\n[工具结果] {'level': 90, 'element': '火', 'base_attack': 106, 'base_hp': 15552, \n'current_weapon': '护摩之杖', 'current_artifacts': '魔女4件套'}\n[调用工具] get_character_info({'character_name': '甘雨'})\n[工具结果] {'level': 90, 'element': '冰', 'base_attack': 335, 'base_hp': 9797, \n'current_weapon': '阿莫斯之弓', 'current_artifacts': '游走4件套'}\n[调用工具] calculate_damage({'character_name': '胡桃', 'weapon': '护摩之杖', \n'artifact_set': '魔女4件套'})\n[工具结果] {'character': '胡桃', 'weapon': '护摩之杖', 'artifacts': '魔女4件套', \n'estimated_damage': 21000, 'rating': '优秀'}\n[调用工具] calculate_damage({'character_name': '甘雨', 'weapon': '阿莫斯之弓', \n'artifact_set': '游走4件套'})\n[工具结果] {'character': '甘雨', 'weapon': '阿莫斯之弓', 'artifacts': '游走4件套', \n'estimated_damage': 24000, 'rating': '优秀'}\n------------------------------------------------------------"
+    },
+    {
+      "anchor": "section-24",
+      "text": "LLM 最终给出的回答："
+    },
+    {
+      "anchor": "section-24",
+      "text": "根据计算结果，甘雨在当前装备（阿莫斯之弓 + 游走4件套）下的伤害期望为24000，而胡桃在当前装备\n（护摩之杖 + 魔女4件套）下的伤害期望为21000。因此，甘雨的输出略高于胡桃。\n不过，两者都属于\"优秀\"水平，具体表现还可能受到队伍搭配、操作手法和敌人类型等因素的影响！\n\n1\n2"
+    },
+    {
+      "anchor": "section-24",
+      "text": "LLM 自动调用了4次工具，最后整合成了一个完美的对比回答。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "建议亲自跑一下源码，打印出每个关键节点的信息，搞清楚整个流程。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "多次调用的渐进式决策"
+    },
+    {
+      "anchor": "section-24",
+      "text": "看完上面的运行效果，可能会有一个疑问：这4次工具调用是怎么产生的？LLM 一次就能规划好吗？"
+    },
+    {
+      "anchor": "section-24",
+      "text": "答案是否定的。背后发生了 3 次 LLM API 调用，其中前两次决定了需要调用哪些工具，最后一次生成最终结果。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "4次工具调用，既不是只调用1次LLM就能决定，也不需要调用4次LLM。实际上总共调用了2次LLM，来决定需要调用哪些工具。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "这是 Function Calling 最容易被误解的地方，可以用两个视角来理解："
+    },
+    {
+      "anchor": "section-24",
+      "text": "从API调用次数看"
+    },
+    {
+      "anchor": "section-24",
+      "text": "用户：\"帮我查一下胡桃和甘雨哪个输出更高？\"\n\n第1次 API 调用\n  输入：用户问题 + 工具列表\n  ↓\n  LLM思考：需要两个角色的信息\n  ↓\n  输出：tool_calls = [\n    get_character_info(\"胡桃\"),\n    get_character_info(\"甘雨\")\n  ]\n  ↓\n  你执行2个函数，得到2个结果\n\n第2次 API 调用\n  输入：前面的对话 + 2个角色信息\n  ↓\n  LLM思考：现在可以计算伤害了\n  ↓\n  输出：tool_calls = [\n    calculate_damage(\"胡桃\", ...),\n    calculate_damage(\"甘雨\", ...)\n  ]\n  ↓\n  你执行2个函数，得到2个伤害值\n\n第3次 API 调用\n  输入：包含所有结果的完整对话历史\n  ↓\n  LLM思考：信息齐全了，可以回答用户了\n  ↓\n  输出：tool_calls = None（不再调用工具）\n        content = \"根据计算，甘雨输出更高...\""
+    },
+    {
+      "anchor": "section-24",
+      "text": "核心发现：只调用了 3 次 API，但执行了 4 次工具函数——因为 LLM 可以在一次调用中返回多个tool_calls。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "为什么分步调用"
+    },
+    {
+      "anchor": "section-24",
+      "text": "灵活性 - 下一步取决于这一步的结果"
+    },
+    {
+      "anchor": "section-24",
+      "text": "灵活性"
+    },
+    {
+      "anchor": "section-24",
+      "text": "# 例如：如果 get_character_info 返回\"角色不存在\"\n# LLM 就不会继续调用 calculate_damage 了\n\nif character_info[\"error\"]:\n    # LLM看到错误，直接回答\"找不到这个角色\"\n    return \"抱歉，数据库中没有这个角色\""
+    },
+    {
+      "anchor": "section-24",
+      "text": "理论上可以一次规划好，但问题在于这要求数据非常理想。测试数据是准备的完美数据，但真实数据可能是残缺的，所以下一步必须依赖上一步的结果。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "真实性 - 模拟人类的思维过程"
+    },
+    {
+      "anchor": "section-24",
+      "text": "真实性"
+    },
+    {
+      "anchor": "section-24",
+      "text": "人类处理复杂问题时：\n\"先查A → 看结果 → 决定是否查B → 看结果 → 决定下一步\"\n\n而不是：\n\"提前规划好查A、B、C、D，然后一口气全查完\""
+    },
+    {
+      "anchor": "section-24",
+      "text": "可控性 - 每一步你都可以介入"
+    },
+    {
+      "anchor": "section-24",
+      "text": "可控性"
+    },
+    {
+      "anchor": "section-24",
+      "text": "# 你可以在每次调用后检查和控制\nfor tool_call in message.tool_calls:\n    # 危险操作检测\n    if tool_call.function.name == \"delete_all_data\":\n        result = {\"error\": \"此操作需要人工确认\"}\n        continue\n\n    # 权限检查\n    if not user.has_permission(tool_call.function.name):\n        result = {\"error\": \"权限不足\"}\n        continue\n\n    # 正常执行\n    result = execute_function(tool_call)"
+    },
+    {
+      "anchor": "section-24",
+      "text": "并行判断"
+    },
+    {
+      "anchor": "section-24",
+      "text": "从 LLM 的角度看，它在做\"并行判断\"："
+    },
+    {
+      "anchor": "section-24",
+      "text": "“要对比胡桃和甘雨” → 需要两个角色的信息"
+    },
+    {
+      "anchor": "section-24",
+      "text": "这两个信息相互独立，可以同时获取"
+    },
+    {
+      "anchor": "section-24",
+      "text": "相互独立"
+    },
+    {
+      "anchor": "section-24",
+      "text": "所以一次返回 [get_info(\"胡桃\"), get_info(\"甘雨\")]"
+    },
+    {
+      "anchor": "section-24",
+      "text": "[get_info(\"胡桃\"), get_info(\"甘雨\")]"
+    },
+    {
+      "anchor": "section-24",
+      "text": "但如果信息之间有依赖关系："
+    },
+    {
+      "anchor": "section-24",
+      "text": "依赖关系"
+    },
+    {
+      "anchor": "section-24",
+      "text": "“先查角色，再查装备” → 需要先知道角色信息才能推荐装备"
+    },
+    {
+      "anchor": "section-24",
+      "text": "LLM 会分两次调用：第1次查角色，第2次查装备"
+    },
+    {
+      "anchor": "section-24",
+      "text": "LLM 既不会笨到用 4 次 API 去规划 4 个工具函数，也不会简单粗暴地 1 次规划完。它在并行和串行之间找到了恰当的平衡。"
+    },
+    {
+      "anchor": "section-72",
+      "text": "4.2 下一节预告"
+    },
+    {
+      "anchor": "section-72",
+      "text": "现在掌握了 Function Calling 的工作原理和实战技巧，但在真实项目中，可能会面临这样的疑惑：如何设计一个复杂系统的工具集？如何让 LLM 在多个工具之间准确选择？如何处理 LLM 调用错误或参数缺失？如何控制多轮调用的次数以避免成本爆炸？下一节进入 Function Calling 的工程实践，从工具设计原则、错误处理策略到性能优化技巧，构建生产级的 Function Calling 系统。"
+    },
+    {
+      "anchor": "section-74",
+      "text": "4.3 ■ 学点英语"
+    },
+    {
+      "anchor": "section-74",
+      "text": "中文 | English | 音标 | 说明\n函数映射表 | Function Mapping Table | /ˈfʌŋkʃn ˈmæpɪŋ ˈteɪbl/ | 将LLM返回的工具名字符串映射到真实Python函数对象的字典\n渐进式决策 | Progressive Decision- Making | /prəˈɡresɪv dɪˈsɪʒn ˈmeɪkɪŋ/ | LLM逐步获取信息并据此决策下一步，而非一次性全部规划的模式\n并行调用 | Parallel Tool Calling | /ˈpærəlel tuːl ˈkɔːlɪŋ/ | LLM在单次API调用中返回多个相互独立的工具调用指令"
+    }
+  ]
+}

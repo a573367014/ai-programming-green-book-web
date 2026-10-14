@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>为什么需要 Skill · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-134">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-5">能力封装</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 10 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Skill的获取与生态</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 135</span></div>
+<h1 class="lesson-title">为什么需要 Skill</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 11 分钟阅读</span><span class="module-name">Skill的获取与生态</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-134.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-134.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读提示</b><p></p></aside>
+<p data-source-page="1">阅读指南</p>
+<p data-source-page="1">假设这个场景：你的团队正在构建一个企业级应用，需要 AI 助手帮忙做代码审查。但你发现一个问题：</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">资深工程师的代码审查流程：
+  1. 根据代码类型（API/数据库/前端）选择不同的审查策略
+  2. 检查是否符合团队的技术栈规范（Python 3.10+/FastAPI/PostgreSQL）
+  3. 评估安全风险（SQL注入/认证/数据验证）
+  4. 分析性能瓶颈（数据库查询/内存泄漏/并发问题）
+  5. 验证错误处理的完整性
+  6. 给出可落地的改进建议
+这是一套非常专业知识体系
+不是简单的&quot;检查清单&quot;</code></pre></div>
+<p data-source-page="1">问题是：如何让 AI 掌握这套专业知识，像资深工程师一样思考和决策？ 这就是我们需要 Skill 的原因。</p>
+<aside class="callout" data-source-page="1"><p>不只是编程领域。金融分析师看财报有自己的一套判断逻辑，医生读病历有自己的一套诊断思路，教师备课有自己的一套教学设计方法——每个专业领域都有沉淀多年的隐性知识体系。而这些，是通用大模型天然不具备的。Skill 要解决的，正是这个问题。</p></aside>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-6" data-source-page="2">专业知识的缺失<a class="heading-link" href="#section-6" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">看一个实际例子。你的团队需要 AI 帮忙审查一段数据库查询代码：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 需要审查的代码
+def get_user_orders(user_id):
+    query = f&quot;SELECT * FROM orders WHERE user_id = {user_id}&quot;
+    return db.execute(query)</code></pre></div>
+<p data-source-page="2">普通 AI（没有专业知识）的回答：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">AI: &quot;这段代码看起来没什么问题，可以正常查询订单。&quot;
+
+× 没有识别出 SQL 注入风险
+× 没有检查是否有索引优化
+× 没有考虑大数据量的分页问题
+× 没有验证用户权限</code></pre></div>
+<p data-source-page="2">拥有专业知识的 AI 应该这样回答：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">严重安全风险：SQL 注入漏洞
+  问题：直接拼接用户输入到 SQL 语句
+  修复：使用参数化查询
+
+性能问题：可能查询大量数据
+  建议：添加分页限制，检查 user_id 是否有索引
+
+权限问题：未验证当前用户是否有权限查看这些订单
+  建议：添加权限校验逻辑
+
+改进建议：
+def get_user_orders(user_id, current_user, page=1):
+    if not has_permission(current_user, user_id):
+        raise PermissionError()
+    query = &quot;SELECT * FROM orders WHERE user_id = ?
+             LIMIT ? OFFSET ?&quot;
+    return db.execute(query, [user_id, 20, (page-1)*20])</code></pre></div>
+<p class="list-item" data-source-page="2">× 普通 AI：只能做表面检查，缺乏专业判断</p>
+<p class="list-item" data-source-page="2">✓ 专业 AI：掌握安全最佳实践、性能优化经验、架构设计原则</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-15" data-source-page="3">传统方案为什么不行<a class="heading-link" href="#section-15" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">你大概会想：“那我写一个超长的提示词，把所有规范都说明清楚不就行了？”</p>
+<p data-source-page="3">方案：超长提示词</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">&quot;你是一个资深代码审查专家。审查代码时要注意：
+─────────────────────────────────────────────────────────
+ 1. 安全：检查SQL注入、XSS、认证授权...（200字说明）
+ 2. 性能：数据库索引、缓存策略、并发控制...（200字说明）
+ 3. 架构：SOLID原则、设计模式、依赖注入...（200字说明）
+ 4. 规范：Python 3.10+、类型注解、docstring...（200字）
+ 5. 测试：单元测试、边界情况、异常处理...（200字说明）
+ ...（总共2000+字的详细说明）&quot;
+─────────────────────────────────────────────────────────</code></pre></div>
+<p data-source-page="3">但这个方案有几个问题：每次都加载所有内容会消耗大量 token，而且静态文本无法包含可执行的检查逻辑，更麻烦的是难以更新和维护——改一处就要重新复制粘贴。</p>
+<h2 id="section-20" data-source-page="3">Skill 的思路<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">现在，看看 Agent Skill 是如何优雅地解决这些问题的。</p>
+<p data-source-page="3">Agent Skill</p>
+<p data-source-page="3">Skill 的诞生背景</p>
+<p data-source-page="3">2025年10月，Anthropic 公司发布了 Agent Skill，这是 AI 领域的一个重要突破。在此之前，AI Agent 的开发面临着一个核心挑战：如何让 AI 掌握专业领域的知识和规范。</p>
+<p data-source-page="3">传统方式（超长提示词、MCP Server）都存在局限：只能传递“文字”或“工具”，但无法传递“决策逻辑”和“工作流程”。</p>
+<h3 id="section-26" data-source-page="3">Agent Skill 的突破性设计<a class="heading-link" href="#section-26" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">Agent Skill 解决了这个问题，它是一种将专业知识、工作流程和最佳实践封装成标准化模块的机制。关键特性：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">1. 渐进式加载 (Efficient)
+   ─────────────────────────────────
+   只在需要时才加载相关内容
+   ✓ 减少 token 消耗
+   ✓ 保持快速响应
+
+2. 可组合 (Composable)
+   ─────────────────────────────────
+   AI 自动识别并协调多个 Skill
+   Skill 可以堆叠使用
+   ✓ 自动协调无需手动选择
+
+3. 跨平台 (Portable)
+   ─────────────────────────────────
+   同一格式在所有 Claude 产品中通用
+   ✓ Claude 应用 / API / Code
+   ✓ 写一次，随处使用
+
+4. 可执行 (Powerful)
+   ─────────────────────────────────
+   支持包含可执行代码
+   ✓ 复杂逻辑用代码实现更可靠
+   ✓ 提高任务执行的可靠性</code></pre></div>
+<h3 id="section-29" data-source-page="4">开放标准与生态影响<a class="heading-link" href="#section-29" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">2025年12月，Anthropic 将 Agent Skill 公布为开放标准。这意味着任何 AI 平台都可以采用——不限于 Claude，其他平台也能使用，这推动了 AI 生态的标准化。Skill 可以跨平台复用，写一次就能随处使用，降低了学习和迁移的成本。同时，开放标准也促进了社区协作，最佳实践得以共享，AI 应用的开发速度也随之加快。</p>
+<h3 id="section-31" data-source-page="4">Skill 的物理形式<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">Agent Skill 本质上就是一个 Markdown 文件 + 可选的资源文件：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">code-review/          # Skill 目录
+  ├─ SKILL.md       # 核心文件（包含指令、流程、规范）
+  ├─ checklist.md   # 额外的参考文档
+  └─ script.py      # 可执行的脚本（可选）</code></pre></div>
+<p data-source-page="4">AI 只需读取这个 Markdown 文件，就能掌握完整的专业知识和工作流。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h3 id="section-35" data-source-page="5">Skill 的使用体验<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">在深入学习Skill前，我们先用同样的代码审查场景，看看用Skill 后的体验:</p>
+<p data-source-page="5">以下是一个Skill，先大概熟悉下他的”长相“。</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>YAML</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-yaml">SKILL.md
+
+---
+name: code-review
+description: 专业的代码审查助手,审查代码的安全性、性能、可读性和规范性
+---
+
+# 代码审查 Skill
+
+## 审查标准
+1. **安全检查**
+   - SQL 注入风险
+   - XSS 漏洞
+   - 敏感信息泄露
+
+2. **性能分析**
+   - 时间复杂度
+   - 空间复杂度
+   - 潜在性能瓶颈
+
+3. **代码质量**
+   - 可读性
+   - 命名规范
+   - 注释完整性
+
+4. **边界情况**
+   - 空值处理
+   - 异常处理
+   - 边界值测试</code></pre></div>
+<aside class="callout" data-source-page="5"><b>阅读提示</b><p>这并不是一个优秀的Skill，只是为了便于你理解，所以它非常简单。真正的Skill多达上千字。</p></aside>
+<p data-source-page="5">使用效果</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">第1次使用
+─────────────────────────────────────────────────────────
+你: &quot;帮我审查这段代码&quot;
+    [粘贴代码]
+
+AI: (自动识别到需要 code-review Skill)
+    (加载审查标准)
+    &quot;我将从以下方面审查你的代码:
+     1. 安全性检查...
+     2. 性能分析...
+     3. 代码质量...&quot;
+
+    ✓ 自动应用完整的审查流程</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">第2次、第3次...第N次使用
+─────────────────────────────────────────────────────────
+你: &quot;审查一下这段代码&quot;
+
+AI: (自动激活 code-review Skill)
+    (每次都是相同的高标准审查)
+
+   ✓ 无需重复说明
+    ✓ 标准一致
+    ✓ 不占用对话上下文</code></pre></div>
+<p data-source-page="6">效果解析</p>
+<p data-source-page="6">这段演示体现了 Skill 的两个关键价值。第一次使用时，AI 不再需要你反复提示&quot;请按 XX 标准审查&quot;，而是自动识别场景并加载对应的专业知识。后续使用时，每次都是同样的高标准，不会因为对话轮次增多而降低审查质量，这些标准也不会占用用户的对话上下文。</p>
+<h2 id="section-45" data-source-page="6">在哪里使用 Skill<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">了解了 Skill 的价值后，下一个问题是：在哪里可以用到它？</p>
+<p data-source-page="6">Skill 最初是 Anthropic 为其 AI 编程工具 Claude Code 打造的一项功能。设计思路很明确：让 AI 在编程场景中能按需加载专业知识，而不是每次都要从零开始解释上下文。</p>
+<p data-source-page="6">但 Skill 的魅力在于，它很快就不再局限于 Claude Code 了。由于 Anthropic 将其公布为开放标准，其他开发工具可以按照相同的格式实现兼容支持。到今天，越来越多的主流工具都接入了 Skill 生态：</p>
+<p class="list-item" data-source-page="6">Qoder、Trae、Cursor、OpenClaw、Hermes、Codex</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">Qoder</p>
+<p data-source-page="7">Trae</p>
+<p data-source-page="7">Cursor</p>
+<p data-source-page="7">OpenClaw</p>
+<p data-source-page="7">Hermes</p>
+<p data-source-page="7">Codex</p>
+<p data-source-page="7">这就意味着，你写的 SKILL.md 文件可以在不同工具间复用，不需要为每个平台重写一遍。写一次，到处能用。</p>
+<p data-source-page="7">下一节，我们将以 Qoder 为例，实际演示如何获取和安装一个 Skill。</p>
+<h2 id="section-58" data-source-page="7">■ 学点英语<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>技能</td><td>Skill</td><td>/skɪl/</td><td>将专业知识、工作流程和最佳实践封装成标准化模块的机制</td></tr><tr><td>代理技能</td><td>Agent Skill</td><td>/ˈeɪdʒənt skɪl/</td><td>Skill的官方名称，强调其作为Agent能力扩展模块的定位</td></tr><tr><td>技能核心文件</td><td>SKILL.md</td><td>/skɪl ˈmɑːkdaʊn/</td><td>Skill的核心Markdown文件，包含YAML元数据和详细指令正文</td></tr><tr><td>渐进加载</td><td>Progressive Loading</td><td>/prəˈɡresɪv ˈloʊdɪŋ/</td><td>Skill只在需要时才加载相关内容的机制，减少token消耗</td></tr></tbody></table></div>
+<h2 id="section-60" data-source-page="7">下一节预告<a class="heading-link" href="#section-60" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">了解了 Skill 的价值和适用范围后，下一节我们来盘点 Skill 的获取途径——GitHub、腾讯 SkillHub、Qoder 技能市场、MiniMax 等主流生态各有何特点，并上手安装第一个 Skill。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-133.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>人工介入(Human-in-the-Loop)</strong><small>文章写作Agent</small></a><a class="chapter-neighbor next" href="lesson-135.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Skill 的获取与生态</strong><small>Skill的获取与生态</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5286#mid=105133" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-6" class="toc-level-2">专业知识的缺失</a><a href="#section-15" class="toc-level-2">传统方案为什么不行</a><a href="#section-20" class="toc-level-2">Skill 的思路</a><a href="#section-26" class="toc-level-3">Agent Skill 的突破性设计</a><a href="#section-29" class="toc-level-3">开放标准与生态影响</a><a href="#section-31" class="toc-level-3">Skill 的物理形式</a><a href="#section-35" class="toc-level-3">Skill 的使用体验</a><a href="#section-45" class="toc-level-2">在哪里使用 Skill</a><a href="#section-58" class="toc-level-2">■ 学点英语</a><a href="#section-60" class="toc-level-2">下一节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-134", "title": "为什么需要 Skill", "stage": 5, "week": 10, "module": "Skill的获取与生态", "minutes": 11, "pages": 7, "type": "article"}</script>
+</body></html>

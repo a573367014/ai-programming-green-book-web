@@ -1,0 +1,617 @@
+{
+  "id": "lesson-147",
+  "title": "Agent 的实现范式对比",
+  "code": "1-5",
+  "stage": 6,
+  "week": 11,
+  "week_title": "Agent：智能体架构",
+  "module": "Agent 的核心架构剖析",
+  "type": "article",
+  "repo_path": "006-阶段六 【智能体】从单体到多体/001-第11周 Agent：智能体架构/002-Agent 的核心架构剖析/013-图文-1-5-Agent 的实现范式对比.pdf",
+  "sha256": "2dd7c5983bf26a7aeb61494e8113b5d66c857638128d4970ac779e965a44fcb0",
+  "pdf": "sources/pdf/lesson-147.pdf",
+  "pages": 6,
+  "source_url": "https://class.imooc.com/lesson/5290#mid=105154",
+  "minutes": 9,
+  "excerpt": "学完了 Agent 的核心概念、架构、能力、记忆和推理模式，现在面临一个实际问题：如何实现一个 Agent？ 你会发现，同样是实现一个客服 Agent，有人用 100 行代码搞定，有人写了 5000 行还没跑通；有人直接调 API，有人引入了三个框架。这些差异的背后，是不同的实现范式选择。 本节我们",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 学完了 Agent 的核心概念、架构、能力、记忆和推理模式，现在面临一个实际问题：如何实现一个 Agent？ 你会发现，同样是实现一个客服 Agent，有人用 100 行代码搞定，有人写了 5000 行还没跑通；有人直接调 API，有人引入了三个框架。这些差异的背后，是不同的实现范式选择。 本节我们聊聊 Agent 实现的几种主要方式，以及如何根据你的场景做出正确选择。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "架构选择：单体 vs 模块化",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "单体 Agent：一个模型搞定一切",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心思想：用一个 LLM 承担所有角色——感知、理解、规划、执行，所有决策都在同一个 Prompt 的指导下完成，没有功能分工。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象一个万能助手，你问什么它都要自己处理：查天气、订票、写代码、解答问题。…所有能力都塞在一个\"脑子\"里。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型实现：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型实现",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 单体Agent：一个LLM处理所有任务\ndef single_agent(user_input, chat_history):\n    system_prompt = \"\"\"\n    你是一个全能助手，可以：\n    1. 回答各类问题\n    2. 帮助用户订票\n    3. 查询天气信息\n    4. 编写代码\n    5. 分析数据\n\n    请根据用户输入，判断需求并给出回复。\n    \"\"\"\n\n    messages = [{\"role\": \"system\", \"content\": system_prompt}]\n    messages.extend(chat_history)  # 可以有多轮对话\n    messages.append({\"role\": \"user\", \"content\": user_input})\n\n    # 关键：所有任务都由同一个LLM处理，没有功能分工\n    response = llm.chat(messages)\n    return response",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "优势在于简单直接、代码量少，部署方便、依赖少，架构简单、容易理解。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "优势",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "劣势在于 LLM 负担重，容易\"人格分裂\"（一会儿是客服，一会儿是技术专家）；难以优化（所有逻辑混在一个 Prompt 里）；扩展性差（新增能力要重写整个 Prompt）；Prompt 容易臃肿（十几种能力写在一起）。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "适用场景：任务单一明确（如情感分析 Agent）、预算有限追求低成本、快速验证原型。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "模块化 Agent：专业分工，各司其职",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心思想：将 Agent 拆分为多个模块，每个模块专注一件事。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型架构：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型架构",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "优势在于每个模块可独立优化（用不同的模型、不同的 Prompt），扩展性强（新增能力只需加一个模块），可维护性好（问题出在哪个模块一目了然），成本可控（简单任务用小模型，复杂任务才上大模型）。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "劣势在于复杂度高、开发成本大，多次 LLM 调用导致响应变慢，模块间协调需要额外设计。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "适用场景：任务复杂多样（如综合客服系统）、对准确性要求高、长期维护的生产系统。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "混合模式：务实的选择",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际项目中，很少纯单体或纯模块化，更多是混合——核心对话用单体（保持流畅），复杂任务拆模块（保证质量），高频操作缓存（降低成本）。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "经验法则：80% 的简单问题用单体快速响应，20% 的复杂问题用模块化深度处理。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "控制方式：Prompt-driven vs Code-driven（提示词驱动 vs 代码驱动）",
+      "page": 3,
+      "size": 17.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h3",
+      "text": "Prompt-driven（提示词驱动）：让 LLM 自己决策",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心思想：通过精心设计的 Prompt，让 LLM 自主完成推理、规划、工具调用等决策。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象给助手一本\"工作手册\"（Prompt），然后完全信任它按手册自主工作，不干预具体的执行流程。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "system_prompt = \"\"\"\n你是一个智能助手，可以使用以下工具：\n- search(query): 搜索网络\n- calculator(expr): 计算数学表达式\n\n遇到问题时，你可以：\n1. 先思考需要什么信息\n2. 选择合适的工具获取信息\n3. 根据结果继续思考或给出答案\n\n你可以自由决定何时使用工具、使用哪个工具。\n\"\"\"\n\n# LLM 根据 Prompt 自主决定整个流程\nresponse = llm.chat([{\"role\": \"system\", \"content\": system_prompt}, ...])",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "优势在于灵活性极高（LLM 可以创造性地组合工具），适应性强（自动处理意外情况），开发快（只需写好 Prompt）。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "劣势在于不稳定（LLM 可能不按套路出牌），难调试（出错了不知道是哪步思考有问题），成本高（每次决策都要调 LLM，调试时尤其浪费 Tokens）。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h3",
+      "text": "Code-driven（代码驱动）：代码控制流程",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心思想：用代码明确定义 Agent 的行为逻辑，LLM 只负责理解和生成。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def code_driven_agent(user_input):\n    # 代码控制流程\n    intent = classify_intent(user_input)  # LLM 分类\n\n    if intent == \"查天气\":\n        city = extract_city(user_input)  # LLM 提取\n        weather = get_weather(city)  # 工具调用\n        return format_weather_response(weather)  # LLM 生成回复\n\n    elif intent == \"订票\":\n        # 明确的流程步骤\n        ...",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "优势在于稳定可控（流程完全由代码决定），易调试（每一步都清晰可见），性能好（只在必要时调用LLM），成本较低。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "劣势在于灵活性差（只能处理预定义的场景），开发重（每个场景都要写代码），扩展麻烦（新增场景要改代码）。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h3",
+      "text": "混合模式：最佳实践",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现代 Agent 的主流做法：用代码定义主流程（保证稳定性），在关键节点让 LLM 自主决策（保留灵活性）。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例（混合模式）：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例（混合模式）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def hybrid_agent(user_input):\n    # Code-driven: 明确的流程框架\n    intent = classify_intent(user_input)\n\n    if intent == \"复杂查询\":\n        # Prompt-driven: 让 LLM 自主规划\n        plan = llm.generate_plan(user_input)\n        results = execute_plan(plan)  # LLM 决定步骤\n        return summarize(results)\n\n    elif intent == \"简单问答\":\n        # Code-driven: 直接处理\n        return simple_qa(user_input)",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "经验法则：流程清晰的部分用代码（如登录验证），需要灵活应变的部分用 Prompt（如客户投诉处理）。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "下节预告",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "学完了这些实现范式，接下来我们不再纸上谈兵。第8节将带你从零实现一个智能旅行规划Agent——用户只需说出预算、时间和偏好，Agent就能自动规划完整的旅行方案。这个项目将完整展示我们前面学习的所有能力：四步决策流程、Chain of Thought推理、记忆系统，以及如何选择合适的实现范式。代码不多，但五脏俱全，看完你就知道如何把理论变成能跑的Agent。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n单体智能体 | Monolithic Agent | / mɒnəˈlɪθɪk ˈeɪdʒənt/ ˌ | 用一个LLM承担所有角色，没有功能分工的架构\n模块化智能体 | Modular Agent | /ˈmɒdjʊlər ˈeɪdʒənt/ | 将Agent拆分为多个专业模块各司其职的架构\n提示词驱动 | Prompt-driven | /prɒmpt ˈdrɪvn/ | 通过Prompt让LLM自主完成决策的控制方式\n代码驱动 | Code-driven | /koʊd ˈdrɪvn/ | 用代码明确定义Agent行为逻辑的控制方式\n混合范式 | Hybrid Paradigm | /ˈhaɪbrɪd ˈpærədaɪm/ | 代码控流程+LLM做决策的Agent实现方式\n系统提示词 | System Prompt | /ˈsɪstəm prɒmpt/ | 定义Agent角色和行为的顶层指令文本",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "单体智能体",
+          "Monolithic Agent",
+          "/ mɒnəˈlɪθɪk ˈeɪdʒənt/ ˌ",
+          "用一个LLM承担所有角色，没有功能分工的架构"
+        ],
+        [
+          "模块化智能体",
+          "Modular Agent",
+          "/ˈmɒdjʊlər ˈeɪdʒənt/",
+          "将Agent拆分为多个专业模块各司其职的架构"
+        ],
+        [
+          "提示词驱动",
+          "Prompt-driven",
+          "/prɒmpt ˈdrɪvn/",
+          "通过Prompt让LLM自主完成决策的控制方式"
+        ],
+        [
+          "代码驱动",
+          "Code-driven",
+          "/koʊd ˈdrɪvn/",
+          "用代码明确定义Agent行为逻辑的控制方式"
+        ],
+        [
+          "混合范式",
+          "Hybrid Paradigm",
+          "/ˈhaɪbrɪd ˈpærədaɪm/",
+          "代码控流程+LLM做决策的Agent实现方式"
+        ],
+        [
+          "系统提示词",
+          "System Prompt",
+          "/ˈsɪstəm prɒmpt/",
+          "定义Agent角色和行为的顶层指令文本"
+        ]
+      ],
+      "page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "![](013-图文-1-5-Agent 的实现范式对比.assets/img-001.png)",
+      "page": 6,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 3658,
+    "represented_chars": 3479,
+    "removed_chars": 179,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 149,
+      "repeated_title": 30
+    }
+  },
+  "videos": [],
+  "order": 148,
+  "headings": [
+    {
+      "title": "架构选择：单体 vs 模块化",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "单体 Agent：一个模型搞定一切",
+      "id": "section-2",
+      "level": 3
+    },
+    {
+      "title": "模块化 Agent：专业分工，各司其职",
+      "id": "section-12",
+      "level": 3
+    },
+    {
+      "title": "混合模式：务实的选择",
+      "id": "section-19",
+      "level": 3
+    },
+    {
+      "title": "控制方式：Prompt-driven vs Code-driven（提示词驱动 vs 代码驱动）",
+      "id": "section-22",
+      "level": 2
+    },
+    {
+      "title": "Prompt-driven（提示词驱动）：让 LLM 自己决策",
+      "id": "section-23",
+      "level": 3
+    },
+    {
+      "title": "Code-driven（代码驱动）：代码控制流程",
+      "id": "section-29",
+      "level": 3
+    },
+    {
+      "title": "混合模式：最佳实践",
+      "id": "section-34",
+      "level": 3
+    },
+    {
+      "title": "下节预告",
+      "id": "section-40",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-42",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-44",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "学完了 Agent 的核心概念、架构、能力、记忆和推理模式，现在面临一个实际问题：如何实现一个 Agent？ 你会发现，同样是实现一个客服 Agent，有人用 100 行代码搞定，有人写了 5000 行还没跑通；有人直接调 API，有人引入了三个框架。这些差异的背后，是不同的实现范式选择。 本节我们聊聊 Agent 实现的几种主要方式，以及如何根据你的场景做出正确选择。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "架构选择：单体 vs 模块化"
+    },
+    {
+      "anchor": "section-2",
+      "text": "单体 Agent：一个模型搞定一切"
+    },
+    {
+      "anchor": "section-2",
+      "text": "核心思想：用一个 LLM 承担所有角色——感知、理解、规划、执行，所有决策都在同一个 Prompt 的指导下完成，没有功能分工。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "想象一个万能助手，你问什么它都要自己处理：查天气、订票、写代码、解答问题。…所有能力都塞在一个\"脑子\"里。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "典型实现："
+    },
+    {
+      "anchor": "section-2",
+      "text": "典型实现"
+    },
+    {
+      "anchor": "section-2",
+      "text": "# 单体Agent：一个LLM处理所有任务\ndef single_agent(user_input, chat_history):\n    system_prompt = \"\"\"\n    你是一个全能助手，可以：\n    1. 回答各类问题\n    2. 帮助用户订票\n    3. 查询天气信息\n    4. 编写代码\n    5. 分析数据\n\n    请根据用户输入，判断需求并给出回复。\n    \"\"\"\n\n    messages = [{\"role\": \"system\", \"content\": system_prompt}]\n    messages.extend(chat_history)  # 可以有多轮对话\n    messages.append({\"role\": \"user\", \"content\": user_input})\n\n    # 关键：所有任务都由同一个LLM处理，没有功能分工\n    response = llm.chat(messages)\n    return response"
+    },
+    {
+      "anchor": "section-2",
+      "text": "优势在于简单直接、代码量少，部署方便、依赖少，架构简单、容易理解。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "优势"
+    },
+    {
+      "anchor": "section-2",
+      "text": "劣势在于 LLM 负担重，容易\"人格分裂\"（一会儿是客服，一会儿是技术专家）；难以优化（所有逻辑混在一个 Prompt 里）；扩展性差（新增能力要重写整个 Prompt）；Prompt 容易臃肿（十几种能力写在一起）。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "适用场景：任务单一明确（如情感分析 Agent）、预算有限追求低成本、快速验证原型。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "模块化 Agent：专业分工，各司其职"
+    },
+    {
+      "anchor": "section-12",
+      "text": "核心思想：将 Agent 拆分为多个模块，每个模块专注一件事。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "典型架构："
+    },
+    {
+      "anchor": "section-12",
+      "text": "典型架构"
+    },
+    {
+      "anchor": "section-12",
+      "text": "优势在于每个模块可独立优化（用不同的模型、不同的 Prompt），扩展性强（新增能力只需加一个模块），可维护性好（问题出在哪个模块一目了然），成本可控（简单任务用小模型，复杂任务才上大模型）。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "劣势在于复杂度高、开发成本大，多次 LLM 调用导致响应变慢，模块间协调需要额外设计。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "适用场景：任务复杂多样（如综合客服系统）、对准确性要求高、长期维护的生产系统。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "混合模式：务实的选择"
+    },
+    {
+      "anchor": "section-19",
+      "text": "实际项目中，很少纯单体或纯模块化，更多是混合——核心对话用单体（保持流畅），复杂任务拆模块（保证质量），高频操作缓存（降低成本）。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "经验法则：80% 的简单问题用单体快速响应，20% 的复杂问题用模块化深度处理。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "控制方式：Prompt-driven vs Code-driven（提示词驱动 vs 代码驱动）"
+    },
+    {
+      "anchor": "section-23",
+      "text": "Prompt-driven（提示词驱动）：让 LLM 自己决策"
+    },
+    {
+      "anchor": "section-23",
+      "text": "核心思想：通过精心设计的 Prompt，让 LLM 自主完成推理、规划、工具调用等决策。"
+    },
+    {
+      "anchor": "section-23",
+      "text": "想象给助手一本\"工作手册\"（Prompt），然后完全信任它按手册自主工作，不干预具体的执行流程。"
+    },
+    {
+      "anchor": "section-23",
+      "text": "system_prompt = \"\"\"\n你是一个智能助手，可以使用以下工具：\n- search(query): 搜索网络\n- calculator(expr): 计算数学表达式\n\n遇到问题时，你可以：\n1. 先思考需要什么信息\n2. 选择合适的工具获取信息\n3. 根据结果继续思考或给出答案\n\n你可以自由决定何时使用工具、使用哪个工具。\n\"\"\"\n\n# LLM 根据 Prompt 自主决定整个流程\nresponse = llm.chat([{\"role\": \"system\", \"content\": system_prompt}, ...])"
+    },
+    {
+      "anchor": "section-23",
+      "text": "优势在于灵活性极高（LLM 可以创造性地组合工具），适应性强（自动处理意外情况），开发快（只需写好 Prompt）。"
+    },
+    {
+      "anchor": "section-23",
+      "text": "劣势在于不稳定（LLM 可能不按套路出牌），难调试（出错了不知道是哪步思考有问题），成本高（每次决策都要调 LLM，调试时尤其浪费 Tokens）。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "Code-driven（代码驱动）：代码控制流程"
+    },
+    {
+      "anchor": "section-29",
+      "text": "核心思想：用代码明确定义 Agent 的行为逻辑，LLM 只负责理解和生成。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "def code_driven_agent(user_input):\n    # 代码控制流程\n    intent = classify_intent(user_input)  # LLM 分类\n\n    if intent == \"查天气\":\n        city = extract_city(user_input)  # LLM 提取\n        weather = get_weather(city)  # 工具调用\n        return format_weather_response(weather)  # LLM 生成回复\n\n    elif intent == \"订票\":\n        # 明确的流程步骤\n        ..."
+    },
+    {
+      "anchor": "section-29",
+      "text": "优势在于稳定可控（流程完全由代码决定），易调试（每一步都清晰可见），性能好（只在必要时调用LLM），成本较低。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "劣势在于灵活性差（只能处理预定义的场景），开发重（每个场景都要写代码），扩展麻烦（新增场景要改代码）。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "混合模式：最佳实践"
+    },
+    {
+      "anchor": "section-34",
+      "text": "现代 Agent 的主流做法：用代码定义主流程（保证稳定性），在关键节点让 LLM 自主决策（保留灵活性）。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "示例（混合模式）："
+    },
+    {
+      "anchor": "section-34",
+      "text": "示例（混合模式）"
+    },
+    {
+      "anchor": "section-34",
+      "text": "def hybrid_agent(user_input):\n    # Code-driven: 明确的流程框架\n    intent = classify_intent(user_input)\n\n    if intent == \"复杂查询\":\n        # Prompt-driven: 让 LLM 自主规划\n        plan = llm.generate_plan(user_input)\n        results = execute_plan(plan)  # LLM 决定步骤\n        return summarize(results)\n\n    elif intent == \"简单问答\":\n        # Code-driven: 直接处理\n        return simple_qa(user_input)"
+    },
+    {
+      "anchor": "section-34",
+      "text": "经验法则：流程清晰的部分用代码（如登录验证），需要灵活应变的部分用 Prompt（如客户投诉处理）。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "下节预告"
+    },
+    {
+      "anchor": "section-40",
+      "text": "学完了这些实现范式，接下来我们不再纸上谈兵。第8节将带你从零实现一个智能旅行规划Agent——用户只需说出预算、时间和偏好，Agent就能自动规划完整的旅行方案。这个项目将完整展示我们前面学习的所有能力：四步决策流程、Chain of Thought推理、记忆系统，以及如何选择合适的实现范式。代码不多，但五脏俱全，看完你就知道如何把理论变成能跑的Agent。"
+    },
+    {
+      "anchor": "section-42",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-42",
+      "text": "中文 | English | 音标 | 说明\n单体智能体 | Monolithic Agent | / mɒnəˈlɪθɪk ˈeɪdʒənt/ ˌ | 用一个LLM承担所有角色，没有功能分工的架构\n模块化智能体 | Modular Agent | /ˈmɒdjʊlər ˈeɪdʒənt/ | 将Agent拆分为多个专业模块各司其职的架构\n提示词驱动 | Prompt-driven | /prɒmpt ˈdrɪvn/ | 通过Prompt让LLM自主完成决策的控制方式\n代码驱动 | Code-driven | /koʊd ˈdrɪvn/ | 用代码明确定义Agent行为逻辑的控制方式\n混合范式 | Hybrid Paradigm | /ˈhaɪbrɪd ˈpærədaɪm/ | 代码控流程+LLM做决策的Agent实现方式\n系统提示词 | System Prompt | /ˈsɪstəm prɒmpt/ | 定义Agent角色和行为的顶层指令文本"
+    },
+    {
+      "anchor": "section-44",
+      "text": "图片"
+    },
+    {
+      "anchor": "section-44",
+      "text": "![](013-图文-1-5-Agent 的实现范式对比.assets/img-001.png)"
+    }
+  ]
+}

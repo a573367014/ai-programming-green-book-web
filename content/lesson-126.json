@@ -1,0 +1,1001 @@
+{
+  "id": "lesson-126",
+  "title": "第一个LangChain应用",
+  "code": "1-1",
+  "stage": 4,
+  "week": 8,
+  "week_title": "LangChain框架入门",
+  "module": "RAG集成：打造智能知识库",
+  "type": "article",
+  "repo_path": "004-阶段四 【框架应用】高效AI开发/001-第8周 LangChain框架入门/002-RAG集成：打造智能知识库/126-图文-1-1-第一个LangChain应用.pdf",
+  "sha256": "4f07c599a18062010a6bbeabdf315e0a75b6436713511458bb87d03b6c6b5d88",
+  "pdf": "sources/pdf/lesson-126.pdf",
+  "pages": 11,
+  "source_url": "https://class.imooc.com/lesson/5283#mid=105031",
+  "minutes": 16,
+  "excerpt": "本节会以“Level 1 ~ Level 5”的形式，逐步把一个简单的模型调用，升级成带Prompt、带记忆、可交互的原神攻略助手。 建议先快速通读一遍，弄清每个 Level 的“新能力”是什么，然后再回头对照代码动手运行。 不需要死记硬背代码细节，更重要的是理解：什么时候只用模型，什么时候要加 P",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 本节会以“Level 1 ~ Level 5”的形式，逐步把一个简单的模型调用，升级成带Prompt、带记忆、可交互的原神攻略助手。 建议先快速通读一遍，弄清每个 Level 的“新能力”是什么，然后再回头对照代码动手运行。 不需要死记硬背代码细节，更重要的是理解：什么时候只用模型，什么时候要加 Prompt，什么时候需要 Chain 和 Memory 来帮你管理流程和上下文。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "应用目标",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目标: 一个会聊天、能记忆、可查询的原神攻略助手",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目标:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "技术栈:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LangChain",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Qwen 大模型",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "对话历史管理",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就像搭积木:先搭一个基础版本，然后逐步增强。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "环境准备",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "安装依赖:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "pip install \"langchain==1.2.15\" \"langchain-openai==1.2.1\"\n\n1",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "bash"
+    },
+    {
+      "kind": "paragraph",
+      "text": "langchain 是主框架包，会自动安装 langchain-core、langchain-text-splitters 等子模块。langchain-openai 是 OpenAI 兼容接口的适配器（通义千问也兼容 OpenAI 协议，所以直接用这个）。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整的源码目录结构与运行指引，请参考samples/chapter8/langchain_demo/README.md。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么装 langchain-openai?",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LangChain 的模型集成是模块化的:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "langchain - LangChain 的基础包",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "langchain-core - LangChain 的核心依赖",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "langchain-openai - 兼容 OpenAI 接口(由于 Qwen 也兼容 OpenAI,所以 Qwen 可以直接用这个)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "配置 API Key:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "import os\n\n# Qwen API 配置\nos.environ[\"OPENAI_API_KEY\"] = \"your-qwen-api-key\"\nos.environ[\"OPENAI_API_BASE\"] = \"https://dashscope.aliyuncs.com/compatible-mode/v1\"",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "quote",
+      "text": "注意，这里我们将Qwen的API_KEY和地址写入到OPENAI的相关环境变量。LangChain在运行的过程中，会自动寻找这些环境变量，不需要我们在手动赋值了。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "Level 1: 最简单的对话",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从最基础的开始 - 调用一次大模型。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter8/langchain_demo/01_basic_call.py",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain_openai import ChatOpenAI\n\n# 初始化模型\nllm = ChatOpenAI(\n    model=\"qwen3.6-plus\"\n    temperature=0.7,\n)\n\n# 调用\nresponse = llm.invoke(\"原神好玩吗?\")\nprint(response.content)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "运行效果:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "《原神》是一款由米哈游（miHoYo）开发的开放世界冒险游戏，自2020年发布以来受到了全球玩家的喜\n爱。.....\n\n1",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里发生了什么?",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "ChatOpenAI 封装了 API 调用细节",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "invoke() 方法发送请求",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "invoke()",
+      "page": 3,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "返回 AIMessage 对象，.content 是回复文本",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "AIMessage",
+      "page": 3,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "但这还不算 LangChain 应用，只是用了它的模型封装。真正的价值在后面。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "Level 2: 使用 Prompt 模板",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "手写 Prompt 太麻烦了，用模板管理更优雅。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter8/langchain_demo/02_with_prompt.py",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain_openai import ChatOpenAI\nfrom langchain_core.prompts import ChatPromptTemplate\n\n# 定义角色与任务\nsystem_prompt = \"\"\"你是一位资深的原神游戏攻略专家。\n\n你的特点:\n- 熟悉所有角色、武器、圣遗物配置\n- 提供实用的配队建议和养成攻略\n- 语言简洁,重点突出\n\n请根据用户问题提供专业建议。\"\"\"\n\n# 创建 Prompt 模板\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", system_prompt),\n    (\"user\", \"{question}\")\n])\n\n# 初始化模型\nllm = ChatOpenAI(\n    model=\"qwen3.6-plus\"\n    temperature=0.7,\n)\n\n# 组装成 Chain\nchain = prompt | llm\n\n# 使用\nresponse = chain.invoke({\"question\": \"雷电将军怎么配队?\"})\nprint(response.content)",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "code",
+      "text": "雷电将军配队核心思路：**充能+后台输出+元素反应/辅助**。以下是主流配队推荐：\n..........\n\n1\n2",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Level 2 相比 Level 1 的三大进步：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "① 引入 Prompt 模板 - 管理复杂提示词",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Level 1 的问题：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 简单问题还好\nresponse = llm.invoke(\"原神好玩吗?\")\n\n# 但如果需要设定角色和规则就比较麻烦\nresponse = llm.invoke([\n    {\"role\": \"system\", \"content\": \"你是一位资深的原神游戏攻略专家。你的特点：熟悉所有角\n色...\"},\n    {\"role\": \"user\", \"content\": \"雷电将军怎么配队?\"}\n])",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Level 2 的解决方案：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 定义一次模板\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", system_prompt),  # system_prompt 定义了AI的角色和规则\n    (\"user\", \"{question}\")       # {question} 是占位符，使用时填入具体问题\n])\n\n# 之后只需传入业务参数\nchain.invoke({\"question\": \"雷电将军怎么配队?\"})",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatPromptTemplate把复杂的消息结构封装成可复用的模板：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 定义角色与规则（写一次，到处用）\nsystem_prompt = \"\"\"你是一位资深的原神游戏攻略专家。\n\n你的特点:\n- 熟悉所有角色、武器、圣遗物配置\n- 提供实用的配队建议和养成攻略\n- 语言简洁,重点突出\n\n请根据用户问题提供专业建议。\"\"\"\n\n# 创建模板（system 消息 + user 消息）\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", system_prompt),  # 固定的角色设定\n    (\"user\", \"{question}\")      # 动态的用户问题\n])",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "② 管道语法 - 串联组件流程",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "还记得第 2 节中提到的管道“全自动流水线”吗？在 Level 1 中，我们需要手动获取响应并打印。到了Level 2，通过 | 符号，我们将 Prompt 和模型“焊接”在了一起。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "code",
+      "text": "# ✓ 管道写法（声明式流程，数据自动流转）\nchain = prompt | llm\nresponse = chain.invoke({\"question\": \"...\"})",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "小结：Level 2 的本质 Level 1 是\"直接调用\"，Level 2 引入了组件化思维：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Prompt 模板 = 可复用的提示词管理",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "管道语法 = 声明式的流程编排 这就是 LangChain 的设计哲学：用组件组合替代代码拼接。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "Level 3: 增加对话记忆",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们之前讨论过，AI并不记得之前说过什么，因为AI没有记忆。我们之前都是手动把之前的会话内容携带在提示词里。那么来看看LangChain怎么优雅的解决这个问题：",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter8/langchain_demo/03_with_memory.py",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "测试一下:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 第一轮\nresponse1 = chain.invoke({\"question\": \"我想玩雷电将军\"})\n\n# 第二轮\nresponse2 = chain.invoke({\"question\": \"她怎么配队?\"})\n# AI 不知道\"她\"指的是雷电将军",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "解决方案 - 添加 Memory:",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "要让 AI 记住对话，在 LangChain 里可以先记住一个简单的“三步法”:",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "在提示词里留出一个位置,专门放「之前说过的话」。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "留出一个位置",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "准备一个地方专门存这次对话的来往消息(就像聊天记录)。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用一个**“记忆包装器”**把原来的对话链包起来，让它在每次调用前自动把历史塞进去，调用后再把这次对话补充到历史里。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面的代码就是按照这三步展开的实现，代码里出现的那些类名，你可以先把它们当成完成这三步的“工具箱”。其中:",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "list",
+      "text": "InMemoryChatMessageHistory 可以理解为「放在内存里的聊天记录本」;",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "RunnableWithMessageHistory 可以理解为前面提到的「记忆包装器」。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 系统提示词\nsystem_prompt = \"\"\"你是一位资深的原神游戏攻略专家。\n请根据对话历史和用户问题提供专业建议。\"\"\"\n\n# Prompt 模板(增加历史占位符)\n# 第一步：留出位置\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", system_prompt),\n    MessagesPlaceholder(variable_name=\"history\"),  # 专门放「之前说过的话」的位置\n    (\"user\", \"{question}\")\n])\n\n# 初始化模型\nllm = ChatOpenAI(\n    model=\"qwen3.6-plus\"\n    temperature=0.7,\n)\n\n# 基础 Chain\nbase_chain = prompt | llm\n\n# 第二步：准备存储聊天记录的地方\n# 用一个字典保存这次对话的所有消息,键是 session_id\nchat_histories = {}  # 比如这次我们会用 'chat_001' 作为对话的名字\n\ndef get_chat_history(session_id: str):\n    \"\"\"根据 session_id 获取对应对话的聊天记录\n\n    session_id 就是给这次对话起的名字,比如 \"chat_001\"\n    \"\"\"\n    if session_id not in chat_histories:\n        # 如果这是个新对话，创建一个新的历史记录\n        chat_histories[session_id] = InMemoryChatMessageHistory()\n    return chat_histories[session_id]\n\n# 第三步：用“记忆包装器”包起来\n# 这个包装器会自动做两件事：\n# 1. 对话前：把历史记录拿出来，填到 \"history\" 位置\n# 2. 对话后：把这次的问题和AI回答存起来\nchain_with_history = RunnableWithMessageHistory(\n    base_chain,                        # 原本的Chain\n    get_chat_history,                  # 怎么获取历史的函数\n    input_messages_key=\"question\",    # 用户问题的字段名\n    history_messages_key=\"history\",   # 历史消息的字段名\n)\n\n# 使用：需要指定对话标识(session_id)\nconfig = {\"configurable\": {\"session_id\": \"chat_001\"}}  # 给这次对话起个名字\n\n# 第一轮对话\nresponse1 = chain_with_history.invoke(\n    {\"question\": \"我想玩雷电将军\"},\n    config=config  # 携带对话标识\n)\nprint(\"回复1:\", response1.content)\n\n# 第二轮对话（用同一个 session_id，所以AI能记得上次对话）\nresponse2 = chain_with_history.invoke(\n    {\"question\": \"她怎么配队?\"},  # AI知道\"她\"指的是雷电将军\n    config=config  # 同一个 session_id\n)\nprint(\"回复2:\", response2.content)",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "python"
+    },
+    {
+      "kind": "code",
+      "text": "回复1: 雷电将军是非常强力的充能辅助,可以...\n\n回复2: 雷电将军的配队推荐如下:\n       (AI 知道\"她\"指的是雷电将军!)\n       ...",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "Level 4: 输出结构化",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "有时候需要模型返回 JSON 格式的结构化数据。LangChain 提供了与 Pydantic 结合的方案，只需定义一个数据类和一个解析器：",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "code",
+      "text": "from pydantic import BaseModel, Field\nfrom langchain.output_parsers import PydanticOutputParser\n\n# 定义数据结构\nclass TeamRecommendation(BaseModel):\n    team_name: str = Field(description=\"队伍名称\")\n    members: list[str] = Field(description=\"队伍成员列表\")\n\n# 创建解析器\nparser = PydanticOutputParser(pydantic_object=TeamRecommendation)\n\n# 组装链条\nchain = prompt | llm | parser\n\n# 调用后直接拿到结构化对象\nresult = chain.invoke({\n    \"character\": \"雷电将军\",\n    \"format_instructions\": parser.get_format_instructions()\n})\nprint(result.team_name)  # 直接访问字段",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "Level 5: 流式输出",
+      "page": 10,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用户不想等待完整响应，希望看到 AI 逐字输出。LangChain 支持流式调用：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 用 stream() 替代 invoke() 即可\nfor chunk in chain.stream({\"question\": \"雷电将军的培养优先级\"}):\n    print(chunk.content, end=\"\", flush=True)",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "invoke() 等待完整响应后一次性返回，stream() 逐块返回、实时显示。使用方式完全一致，只需把.invoke() 换成 .stream()。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "h2",
+      "text": "完整示例",
+      "page": 10,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "以上是 LangChain 的基础用法。完整的交互式对话示例（整合记忆+流式输出）请参考源码：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter8/langchain_demo/06_complete_chat.py",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n聊天提示模板 | ChatPromptTemplate | /tʃæt prɑːmpt ˈtemplət/ | 管理 system/user 消息结构的模板类\n消息占位符 | MessagesPlaceholder | /ˈmesɪdʒɪz ˈpleɪshoʊldər/ | 在模板中预留历史对话的插入位置\n会话标识 | Session ID | /ˈseʃn aɪ diː/ | 区分不同对话会话的唯一标识符\n流式输出 | Stream Output | /striːm ˈaʊtpʊt/ | 逐块返回响应而非一次性完成的模式",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "聊天提示模板",
+          "ChatPromptTemplate",
+          "/tʃæt prɑːmpt ˈtemplət/",
+          "管理 system/user 消息结构的模板类"
+        ],
+        [
+          "消息占位符",
+          "MessagesPlaceholder",
+          "/ˈmesɪdʒɪz ˈpleɪshoʊldər/",
+          "在模板中预留历史对话的插入位置"
+        ],
+        [
+          "会话标识",
+          "Session ID",
+          "/ˈseʃn aɪ diː/",
+          "区分不同对话会话的唯一标识符"
+        ],
+        [
+          "流式输出",
+          "Stream Output",
+          "/striːm ˈaʊtpʊt/",
+          "逐块返回响应而非一次性完成的模式"
+        ]
+      ],
+      "page": 11
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "无论是 Prompt 模板还是对话记忆，AI 始终只能\"说话\"，无法真正\"行动\"。如果想让 AI 查询实时天气、搜索最新攻略或者操作数据库，就需要用到 LangChain 的工具调用机制。这是下一节将要讨论的内容。",
+      "page": 11,
+      "size": 11.25,
+      "end_page": 11
+    }
+  ],
+  "accounting": {
+    "source_chars": 6848,
+    "represented_chars": 6669,
+    "removed_chars": 179,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 147,
+      "repeated_title": 32
+    }
+  },
+  "videos": [],
+  "order": 127,
+  "headings": [
+    {
+      "title": "应用目标",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "环境准备",
+      "id": "section-9",
+      "level": 2
+    },
+    {
+      "title": "Level 1: 最简单的对话",
+      "id": "section-22",
+      "level": 2
+    },
+    {
+      "title": "Level 2: 使用 Prompt 模板",
+      "id": "section-35",
+      "level": 2
+    },
+    {
+      "title": "Level 3: 增加对话记忆",
+      "id": "section-54",
+      "level": 2
+    },
+    {
+      "title": "Level 4: 输出结构化",
+      "id": "section-70",
+      "level": 2
+    },
+    {
+      "title": "Level 5: 流式输出",
+      "id": "section-73",
+      "level": 2
+    },
+    {
+      "title": "完整示例",
+      "id": "section-77",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-80",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-82",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "本节会以“Level 1 ~ Level 5”的形式，逐步把一个简单的模型调用，升级成带Prompt、带记忆、可交互的原神攻略助手。 建议先快速通读一遍，弄清每个 Level 的“新能力”是什么，然后再回头对照代码动手运行。 不需要死记硬背代码细节，更重要的是理解：什么时候只用模型，什么时候要加 Prompt，什么时候需要 Chain 和 Memory 来帮你管理流程和上下文。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "应用目标"
+    },
+    {
+      "anchor": "section-1",
+      "text": "目标: 一个会聊天、能记忆、可查询的原神攻略助手"
+    },
+    {
+      "anchor": "section-1",
+      "text": "目标:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "技术栈:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "LangChain"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Qwen 大模型"
+    },
+    {
+      "anchor": "section-1",
+      "text": "对话历史管理"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这就像搭积木:先搭一个基础版本，然后逐步增强。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "环境准备"
+    },
+    {
+      "anchor": "section-9",
+      "text": "安装依赖:"
+    },
+    {
+      "anchor": "section-9",
+      "text": "pip install \"langchain==1.2.15\" \"langchain-openai==1.2.1\"\n\n1"
+    },
+    {
+      "anchor": "section-9",
+      "text": "langchain 是主框架包，会自动安装 langchain-core、langchain-text-splitters 等子模块。langchain-openai 是 OpenAI 兼容接口的适配器（通义千问也兼容 OpenAI 协议，所以直接用这个）。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "完整的源码目录结构与运行指引，请参考samples/chapter8/langchain_demo/README.md。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "为什么装 langchain-openai?"
+    },
+    {
+      "anchor": "section-9",
+      "text": "LangChain 的模型集成是模块化的:"
+    },
+    {
+      "anchor": "section-9",
+      "text": "langchain - LangChain 的基础包"
+    },
+    {
+      "anchor": "section-9",
+      "text": "langchain-core - LangChain 的核心依赖"
+    },
+    {
+      "anchor": "section-9",
+      "text": "langchain-openai - 兼容 OpenAI 接口(由于 Qwen 也兼容 OpenAI,所以 Qwen 可以直接用这个)"
+    },
+    {
+      "anchor": "section-9",
+      "text": "配置 API Key:"
+    },
+    {
+      "anchor": "section-9",
+      "text": "import os\n\n# Qwen API 配置\nos.environ[\"OPENAI_API_KEY\"] = \"your-qwen-api-key\"\nos.environ[\"OPENAI_API_BASE\"] = \"https://dashscope.aliyuncs.com/compatible-mode/v1\""
+    },
+    {
+      "anchor": "section-9",
+      "text": "注意，这里我们将Qwen的API_KEY和地址写入到OPENAI的相关环境变量。LangChain在运行的过程中，会自动寻找这些环境变量，不需要我们在手动赋值了。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Level 1: 最简单的对话"
+    },
+    {
+      "anchor": "section-22",
+      "text": "从最基础的开始 - 调用一次大模型。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "完整源码参考：samples/chapter8/langchain_demo/01_basic_call.py"
+    },
+    {
+      "anchor": "section-22",
+      "text": "from langchain_openai import ChatOpenAI\n\n# 初始化模型\nllm = ChatOpenAI(\n    model=\"qwen3.6-plus\"\n    temperature=0.7,\n)\n\n# 调用\nresponse = llm.invoke(\"原神好玩吗?\")\nprint(response.content)"
+    },
+    {
+      "anchor": "section-22",
+      "text": "运行效果:"
+    },
+    {
+      "anchor": "section-22",
+      "text": "《原神》是一款由米哈游（miHoYo）开发的开放世界冒险游戏，自2020年发布以来受到了全球玩家的喜\n爱。.....\n\n1"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这里发生了什么?"
+    },
+    {
+      "anchor": "section-22",
+      "text": "ChatOpenAI 封装了 API 调用细节"
+    },
+    {
+      "anchor": "section-22",
+      "text": "invoke() 方法发送请求"
+    },
+    {
+      "anchor": "section-22",
+      "text": "invoke()"
+    },
+    {
+      "anchor": "section-22",
+      "text": "返回 AIMessage 对象，.content 是回复文本"
+    },
+    {
+      "anchor": "section-22",
+      "text": "AIMessage"
+    },
+    {
+      "anchor": "section-22",
+      "text": "但这还不算 LangChain 应用，只是用了它的模型封装。真正的价值在后面。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "Level 2: 使用 Prompt 模板"
+    },
+    {
+      "anchor": "section-35",
+      "text": "手写 Prompt 太麻烦了，用模板管理更优雅。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "完整源码参考：samples/chapter8/langchain_demo/02_with_prompt.py"
+    },
+    {
+      "anchor": "section-35",
+      "text": "from langchain_openai import ChatOpenAI\nfrom langchain_core.prompts import ChatPromptTemplate\n\n# 定义角色与任务\nsystem_prompt = \"\"\"你是一位资深的原神游戏攻略专家。\n\n你的特点:\n- 熟悉所有角色、武器、圣遗物配置\n- 提供实用的配队建议和养成攻略\n- 语言简洁,重点突出\n\n请根据用户问题提供专业建议。\"\"\"\n\n# 创建 Prompt 模板\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", system_prompt),\n    (\"user\", \"{question}\")\n])\n\n# 初始化模型\nllm = ChatOpenAI(\n    model=\"qwen3.6-plus\"\n    temperature=0.7,\n)\n\n# 组装成 Chain\nchain = prompt | llm\n\n# 使用\nresponse = chain.invoke({\"question\": \"雷电将军怎么配队?\"})\nprint(response.content)"
+    },
+    {
+      "anchor": "section-35",
+      "text": "雷电将军配队核心思路：**充能+后台输出+元素反应/辅助**。以下是主流配队推荐：\n..........\n\n1\n2"
+    },
+    {
+      "anchor": "section-35",
+      "text": "Level 2 相比 Level 1 的三大进步："
+    },
+    {
+      "anchor": "section-35",
+      "text": "① 引入 Prompt 模板 - 管理复杂提示词"
+    },
+    {
+      "anchor": "section-35",
+      "text": "Level 1 的问题："
+    },
+    {
+      "anchor": "section-35",
+      "text": "# 简单问题还好\nresponse = llm.invoke(\"原神好玩吗?\")\n\n# 但如果需要设定角色和规则就比较麻烦\nresponse = llm.invoke([\n    {\"role\": \"system\", \"content\": \"你是一位资深的原神游戏攻略专家。你的特点：熟悉所有角\n色...\"},\n    {\"role\": \"user\", \"content\": \"雷电将军怎么配队?\"}\n])"
+    },
+    {
+      "anchor": "section-35",
+      "text": "Level 2 的解决方案："
+    },
+    {
+      "anchor": "section-35",
+      "text": "# 定义一次模板\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", system_prompt),  # system_prompt 定义了AI的角色和规则\n    (\"user\", \"{question}\")       # {question} 是占位符，使用时填入具体问题\n])\n\n# 之后只需传入业务参数\nchain.invoke({\"question\": \"雷电将军怎么配队?\"})"
+    },
+    {
+      "anchor": "section-35",
+      "text": "ChatPromptTemplate把复杂的消息结构封装成可复用的模板："
+    },
+    {
+      "anchor": "section-35",
+      "text": "# 定义角色与规则（写一次，到处用）\nsystem_prompt = \"\"\"你是一位资深的原神游戏攻略专家。\n\n你的特点:\n- 熟悉所有角色、武器、圣遗物配置\n- 提供实用的配队建议和养成攻略\n- 语言简洁,重点突出\n\n请根据用户问题提供专业建议。\"\"\"\n\n# 创建模板（system 消息 + user 消息）\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", system_prompt),  # 固定的角色设定\n    (\"user\", \"{question}\")      # 动态的用户问题\n])"
+    },
+    {
+      "anchor": "section-35",
+      "text": "② 管道语法 - 串联组件流程"
+    },
+    {
+      "anchor": "section-35",
+      "text": "还记得第 2 节中提到的管道“全自动流水线”吗？在 Level 1 中，我们需要手动获取响应并打印。到了Level 2，通过 | 符号，我们将 Prompt 和模型“焊接”在了一起。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "# ✓ 管道写法（声明式流程，数据自动流转）\nchain = prompt | llm\nresponse = chain.invoke({\"question\": \"...\"})"
+    },
+    {
+      "anchor": "section-35",
+      "text": "小结：Level 2 的本质 Level 1 是\"直接调用\"，Level 2 引入了组件化思维："
+    },
+    {
+      "anchor": "section-35",
+      "text": "Prompt 模板 = 可复用的提示词管理"
+    },
+    {
+      "anchor": "section-35",
+      "text": "管道语法 = 声明式的流程编排 这就是 LangChain 的设计哲学：用组件组合替代代码拼接。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "Level 3: 增加对话记忆"
+    },
+    {
+      "anchor": "section-54",
+      "text": "我们之前讨论过，AI并不记得之前说过什么，因为AI没有记忆。我们之前都是手动把之前的会话内容携带在提示词里。那么来看看LangChain怎么优雅的解决这个问题："
+    },
+    {
+      "anchor": "section-54",
+      "text": "完整源码参考：samples/chapter8/langchain_demo/03_with_memory.py"
+    },
+    {
+      "anchor": "section-54",
+      "text": "测试一下:"
+    },
+    {
+      "anchor": "section-54",
+      "text": "# 第一轮\nresponse1 = chain.invoke({\"question\": \"我想玩雷电将军\"})\n\n# 第二轮\nresponse2 = chain.invoke({\"question\": \"她怎么配队?\"})\n# AI 不知道\"她\"指的是雷电将军"
+    },
+    {
+      "anchor": "section-54",
+      "text": "解决方案 - 添加 Memory:"
+    },
+    {
+      "anchor": "section-54",
+      "text": "要让 AI 记住对话，在 LangChain 里可以先记住一个简单的“三步法”:"
+    },
+    {
+      "anchor": "section-54",
+      "text": "在提示词里留出一个位置,专门放「之前说过的话」。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "留出一个位置"
+    },
+    {
+      "anchor": "section-54",
+      "text": "准备一个地方专门存这次对话的来往消息(就像聊天记录)。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "用一个**“记忆包装器”**把原来的对话链包起来，让它在每次调用前自动把历史塞进去，调用后再把这次对话补充到历史里。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "下面的代码就是按照这三步展开的实现，代码里出现的那些类名，你可以先把它们当成完成这三步的“工具箱”。其中:"
+    },
+    {
+      "anchor": "section-54",
+      "text": "InMemoryChatMessageHistory 可以理解为「放在内存里的聊天记录本」;"
+    },
+    {
+      "anchor": "section-54",
+      "text": "RunnableWithMessageHistory 可以理解为前面提到的「记忆包装器」。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "# 系统提示词\nsystem_prompt = \"\"\"你是一位资深的原神游戏攻略专家。\n请根据对话历史和用户问题提供专业建议。\"\"\"\n\n# Prompt 模板(增加历史占位符)\n# 第一步：留出位置\nprompt = ChatPromptTemplate.from_messages([\n    (\"system\", system_prompt),\n    MessagesPlaceholder(variable_name=\"history\"),  # 专门放「之前说过的话」的位置\n    (\"user\", \"{question}\")\n])\n\n# 初始化模型\nllm = ChatOpenAI(\n    model=\"qwen3.6-plus\"\n    temperature=0.7,\n)\n\n# 基础 Chain\nbase_chain = prompt | llm\n\n# 第二步：准备存储聊天记录的地方\n# 用一个字典保存这次对话的所有消息,键是 session_id\nchat_histories = {}  # 比如这次我们会用 'chat_001' 作为对话的名字\n\ndef get_chat_history(session_id: str):\n    \"\"\"根据 session_id 获取对应对话的聊天记录\n\n    session_id 就是给这次对话起的名字,比如 \"chat_001\"\n    \"\"\"\n    if session_id not in chat_histories:\n        # 如果这是个新对话，创建一个新的历史记录\n        chat_histories[session_id] = InMemoryChatMessageHistory()\n    return chat_histories[session_id]\n\n# 第三步：用“记忆包装器”包起来\n# 这个包装器会自动做两件事：\n# 1. 对话前：把历史记录拿出来，填到 \"history\" 位置\n# 2. 对话后：把这次的问题和AI回答存起来\nchain_with_history = RunnableWithMessageHistory(\n    base_chain,                        # 原本的Chain\n    get_chat_history,                  # 怎么获取历史的函数\n    input_messages_key=\"question\",    # 用户问题的字段名\n    history_messages_key=\"history\",   # 历史消息的字段名\n)\n\n# 使用：需要指定对话标识(session_id)\nconfig = {\"configurable\": {\"session_id\": \"chat_001\"}}  # 给这次对话起个名字\n\n# 第一轮对话\nresponse1 = chain_with_history.invoke(\n    {\"question\": \"我想玩雷电将军\"},\n    config=config  # 携带对话标识\n)\nprint(\"回复1:\", response1.content)\n\n# 第二轮对话（用同一个 session_id，所以AI能记得上次对话）\nresponse2 = chain_with_history.invoke(\n    {\"question\": \"她怎么配队?\"},  # AI知道\"她\"指的是雷电将军\n    config=config  # 同一个 session_id\n)\nprint(\"回复2:\", response2.content)"
+    },
+    {
+      "anchor": "section-54",
+      "text": "回复1: 雷电将军是非常强力的充能辅助,可以...\n\n回复2: 雷电将军的配队推荐如下:\n       (AI 知道\"她\"指的是雷电将军!)\n       ..."
+    },
+    {
+      "anchor": "section-70",
+      "text": "Level 4: 输出结构化"
+    },
+    {
+      "anchor": "section-70",
+      "text": "有时候需要模型返回 JSON 格式的结构化数据。LangChain 提供了与 Pydantic 结合的方案，只需定义一个数据类和一个解析器："
+    },
+    {
+      "anchor": "section-70",
+      "text": "from pydantic import BaseModel, Field\nfrom langchain.output_parsers import PydanticOutputParser\n\n# 定义数据结构\nclass TeamRecommendation(BaseModel):\n    team_name: str = Field(description=\"队伍名称\")\n    members: list[str] = Field(description=\"队伍成员列表\")\n\n# 创建解析器\nparser = PydanticOutputParser(pydantic_object=TeamRecommendation)\n\n# 组装链条\nchain = prompt | llm | parser\n\n# 调用后直接拿到结构化对象\nresult = chain.invoke({\n    \"character\": \"雷电将军\",\n    \"format_instructions\": parser.get_format_instructions()\n})\nprint(result.team_name)  # 直接访问字段"
+    },
+    {
+      "anchor": "section-73",
+      "text": "Level 5: 流式输出"
+    },
+    {
+      "anchor": "section-73",
+      "text": "用户不想等待完整响应，希望看到 AI 逐字输出。LangChain 支持流式调用："
+    },
+    {
+      "anchor": "section-73",
+      "text": "# 用 stream() 替代 invoke() 即可\nfor chunk in chain.stream({\"question\": \"雷电将军的培养优先级\"}):\n    print(chunk.content, end=\"\", flush=True)"
+    },
+    {
+      "anchor": "section-73",
+      "text": "invoke() 等待完整响应后一次性返回，stream() 逐块返回、实时显示。使用方式完全一致，只需把.invoke() 换成 .stream()。"
+    },
+    {
+      "anchor": "section-77",
+      "text": "完整示例"
+    },
+    {
+      "anchor": "section-77",
+      "text": "以上是 LangChain 的基础用法。完整的交互式对话示例（整合记忆+流式输出）请参考源码："
+    },
+    {
+      "anchor": "section-77",
+      "text": "完整源码参考：samples/chapter8/langchain_demo/06_complete_chat.py"
+    },
+    {
+      "anchor": "section-80",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-80",
+      "text": "中文 | English | 音标 | 说明\n聊天提示模板 | ChatPromptTemplate | /tʃæt prɑːmpt ˈtemplət/ | 管理 system/user 消息结构的模板类\n消息占位符 | MessagesPlaceholder | /ˈmesɪdʒɪz ˈpleɪshoʊldər/ | 在模板中预留历史对话的插入位置\n会话标识 | Session ID | /ˈseʃn aɪ diː/ | 区分不同对话会话的唯一标识符\n流式输出 | Stream Output | /striːm ˈaʊtpʊt/ | 逐块返回响应而非一次性完成的模式"
+    },
+    {
+      "anchor": "section-82",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-82",
+      "text": "无论是 Prompt 模板还是对话记忆，AI 始终只能\"说话\"，无法真正\"行动\"。如果想让 AI 查询实时天气、搜索最新攻略或者操作数据库，就需要用到 LangChain 的工具调用机制。这是下一节将要讨论的内容。"
+    }
+  ]
+}

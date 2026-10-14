@@ -1,0 +1,273 @@
+{
+  "id": "lesson-033",
+  "title": "强化练习题 · 1-6",
+  "code": "1-6",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "Embedding",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/005-Embedding/033-图文-1-6-强化练习题.pdf",
+  "sha256": "35ed447c45be2dfd3ac97e3fc619400e038f88c541b9b5d459c4371c548ec49c",
+  "pdf": "sources/pdf/lesson-033.pdf",
+  "pages": 3,
+  "source_url": "https://class.imooc.com/lesson/5257#mid=104958",
+  "minutes": 7,
+  "excerpt": "题干: 两个向量[1, 2, 3]和[2, 4, 6]的余弦相似度是____。 (复习题)",
+  "items": [
+    {
+      "kind": "h2",
+      "text": "1",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 填空题 难度: 中等",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: 两个向量[1, 2, 3]和[2, 4, 6]的余弦相似度是____。 (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "参考答案: 1",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: 向量[2, 4, 6] = 2 × [1, 2, 3]，两个向量方向完全相同，夹角为0°，cos(0°)=1。余弦相似度只关心方向不关心大小，所以即使长度不同，方向相同就是1。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 判断题 难度: 中等",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: 索绪尔的语言学理论认为，词的意义来自于它本身的字形和发音，而非它与其他词的关系。 (复习题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确答案: 错误",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: 索绪尔的观点正相反：他认为词的意义不在符号本身，而在于它与其他词的差异关系网络。Embedding用向量空间中的距离和方向实现了这个哲学洞见。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 简答题 难度: 困难",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: 教材提到\"哲学的思辨和科学的实验，常常是从不同路径，抵达同一个真理\"。请以索绪尔（1916）和Mikolov（2013）为例，说说两人分别从什么路径得出了什么相似的结论。 (思维题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "参考答案: ○ 索绪尔（哲学路径）：通过思辨分析语言的本质，推导出\"词的意义在于它与其他词的关系网络\"的结论 ○ Mikolov（工程路径）：为了解决计算机高效表示词的工程问题，设计了从上下文预测词的算法，发现词向量的副产品——语义关系被编码成了向量方向，可以做代数运算 ○ 共同指向：语言的本质是关系网络，且这种关系可以被数学化 ○ 深层意义：当数学模型与哲学洞见高度一致时，说明我们很可能触及了事物的真实本质",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 阅读理解题 难度: 困难",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "阅读材料: “This distributional hypothesis—that words that occur in similar contexts tend to have similar meanings—is the fundamental assumption underlying all modern word embedding methods. The idea was first formulated by linguist John R. Firth in 1957: ‘You shall know a word by the company it keeps.’ […] Word2Vec operationalizes this hypothesis by training a neural network to predict either a word from its surrounding context (CBOW) or the context from a word (Skip-gram). The resulting word vectors have been shown to encode rich semantic and syntactic information, even though the training signal is purely based on co-occurrence statistics.” （来源：John R. Firth, 1957年, 语言学理论; 以及Mikolov et al., 2013年,Word2Vec论文, Introduction章节） (延展题)",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 单选题 难度: 困难 题号: 1",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: According to the passage, what is the “distributional hypothesis” that underlies all modern word embedding methods?",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "选项A: Words that have similar spellings tend to have similar meanings 选项B: Words that occur in similar contexts tend to have similar meanings 选项C: All words are distributed equally across all contexts 选项D: Word meanings are distributed across multiple languages",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确答案: B",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: The passage directly states the distributional hypothesis: “words that occur in similar contexts tend to have similar meanings.” This is operationalized by the CBOW and Skip-gram architectures in Word2Vec, which train on co-occurrence patterns—the same “relationship network” that Saussure described philosophically nearly a century earlier.",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 简答题 难度: 困难 题号: 2",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: The passage notes that Firth’s 1957 insight—“You shall know a word by the company it keeps”—and Saussure’s structuralist linguistics (described in this section) arrive at similar conclusions about meaning. In 1-2 sentences, explain how the training signal in Word2Vec(predicting a word from its context) is a computational implementation of this idea. (延展题)",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "参考答案: ● Word2Vec’s training objective directly mirrors Firth’s insight: by learning to predict “fish” when the context is “cats eat ___” or to predict “cat” when surrounded by“the ___ eats fish”, the model is forced to encode exactly the “company” (context) that defines a word’s meaning. The resulting vectors store information about which contexts each word appears in, making them a mathematical implementation of the distributional hypothesis.",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 3
+    }
+  ],
+  "accounting": {
+    "source_chars": 3074,
+    "represented_chars": 2935,
+    "removed_chars": 139,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 126,
+      "repeated_title": 13
+    }
+  },
+  "videos": [],
+  "order": 34,
+  "headings": [
+    {
+      "title": "1",
+      "id": "section-0",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "section-0",
+      "text": "1"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 填空题 难度: 中等"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: 两个向量[1, 2, 3]和[2, 4, 6]的余弦相似度是____。 (复习题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "参考答案: 1"
+    },
+    {
+      "anchor": "section-0",
+      "text": "解析: 向量[2, 4, 6] = 2 × [1, 2, 3]，两个向量方向完全相同，夹角为0°，cos(0°)=1。余弦相似度只关心方向不关心大小，所以即使长度不同，方向相同就是1。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 判断题 难度: 中等"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: 索绪尔的语言学理论认为，词的意义来自于它本身的字形和发音，而非它与其他词的关系。 (复习题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "正确答案: 错误"
+    },
+    {
+      "anchor": "section-0",
+      "text": "解析: 索绪尔的观点正相反：他认为词的意义不在符号本身，而在于它与其他词的差异关系网络。Embedding用向量空间中的距离和方向实现了这个哲学洞见。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 简答题 难度: 困难"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: 教材提到\"哲学的思辨和科学的实验，常常是从不同路径，抵达同一个真理\"。请以索绪尔（1916）和Mikolov（2013）为例，说说两人分别从什么路径得出了什么相似的结论。 (思维题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "参考答案: ○ 索绪尔（哲学路径）：通过思辨分析语言的本质，推导出\"词的意义在于它与其他词的关系网络\"的结论 ○ Mikolov（工程路径）：为了解决计算机高效表示词的工程问题，设计了从上下文预测词的算法，发现词向量的副产品——语义关系被编码成了向量方向，可以做代数运算 ○ 共同指向：语言的本质是关系网络，且这种关系可以被数学化 ○ 深层意义：当数学模型与哲学洞见高度一致时，说明我们很可能触及了事物的真实本质"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 阅读理解题 难度: 困难"
+    },
+    {
+      "anchor": "section-0",
+      "text": "阅读材料: “This distributional hypothesis—that words that occur in similar contexts tend to have similar meanings—is the fundamental assumption underlying all modern word embedding methods. The idea was first formulated by linguist John R. Firth in 1957: ‘You shall know a word by the company it keeps.’ […] Word2Vec operationalizes this hypothesis by training a neural network to predict either a word from its surrounding context (CBOW) or the context from a word (Skip-gram). The resulting word vectors have been shown to encode rich semantic and syntactic information, even though the training signal is purely based on co-occurrence statistics.” （来源：John R. Firth, 1957年, 语言学理论; 以及Mikolov et al., 2013年,Word2Vec论文, Introduction章节） (延展题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 单选题 难度: 困难 题号: 1"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: According to the passage, what is the “distributional hypothesis” that underlies all modern word embedding methods?"
+    },
+    {
+      "anchor": "section-0",
+      "text": "选项A: Words that have similar spellings tend to have similar meanings 选项B: Words that occur in similar contexts tend to have similar meanings 选项C: All words are distributed equally across all contexts 选项D: Word meanings are distributed across multiple languages"
+    },
+    {
+      "anchor": "section-0",
+      "text": "正确答案: B"
+    },
+    {
+      "anchor": "section-0",
+      "text": "解析: The passage directly states the distributional hypothesis: “words that occur in similar contexts tend to have similar meanings.” This is operationalized by the CBOW and Skip-gram architectures in Word2Vec, which train on co-occurrence patterns—the same “relationship network” that Saussure described philosophically nearly a century earlier."
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 简答题 难度: 困难 题号: 2"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: The passage notes that Firth’s 1957 insight—“You shall know a word by the company it keeps”—and Saussure’s structuralist linguistics (described in this section) arrive at similar conclusions about meaning. In 1-2 sentences, explain how the training signal in Word2Vec(predicting a word from its context) is a computational implementation of this idea. (延展题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "参考答案: ● Word2Vec’s training objective directly mirrors Firth’s insight: by learning to predict “fish” when the context is “cats eat ___” or to predict “cat” when surrounded by“the ___ eats fish”, the model is forced to encode exactly the “company” (context) that defines a word’s meaning. The resulting vectors store information about which contexts each word appears in, making them a mathematical implementation of the distributional hypothesis."
+    }
+  ]
+}

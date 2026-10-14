@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>人工介入(Human-in-the-Loop) · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-133">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-4">框架应用</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 9 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>文章写作Agent</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 134</span></div>
+<h1 class="lesson-title">人工介入(Human-in-the-Loop)</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>9 页原文</span><span>约 15 分钟阅读</span><span class="module-name">文章写作Agent</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-133.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-133.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>想象你在构建一个AI代码生成助手。测试阶段表现很好，但正式使用后发现:AI生成的代码虽然能运行，但有时会违反团队的代码规范，甚至引入潜在的安全漏洞。 你立刻意识到:AI虽然高效，但生成的代码仍需要人类审核。完全自动化可能带来不可控的风险。 解决方案是什么?加入人工介入(Human-in-the-Loop)——让AI生成代码后暂停，等待工程师审核通过后再继续执行。 这就是本节要解决的问题:如何在自动化工作流中优雅地加入人工控制点，实现人机协作。</p></aside>
+<h2 id="section-1" data-source-page="1">核心概念<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<h3 id="section-2" data-source-page="1">人工介入的关键机制<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">LangGraph通过编译时设置暂停点实现人工介入:</p>
+<p data-source-page="1">编译时设置暂停点</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from langgraph.checkpoint.memory import MemorySaver
+
+# 编译时指定暂停点
+checkpointer = MemorySaver()  # 必需:保存状态快照
+app = workflow.compile(
+    interrupt_before=[&quot;review&quot;],  # 在review节点前暂停
+    checkpointer=checkpointer
+)</code></pre></div>
+<p data-source-page="2">两个关键要素:</p>
+<p data-source-page="2">两个关键要素</p>
+<p class="list-item" data-source-page="2">interrupt_before: 指定在哪个节点前暂停工作流</p>
+<p class="list-item" data-source-page="2">checkpointer: 保存工作流状态，支持暂停后恢复</p>
+<p data-source-page="2">执行模式</p>
+<p data-source-page="2">人工介入采用两次调用模式:</p>
+<p data-source-page="2">两次调用</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">config = {&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;session_001&quot;}}
+
+# 第一次调用:执行到暂停点
+result = app.invoke({&quot;requirement&quot;: &quot;...&quot;}, config)
+
+# 工程师审核并更新决策
+app.update_state(config, {&quot;human_decision&quot;: &quot;approve&quot;})
+
+# 第二次调用:从暂停点继续
+result = app.invoke(None, config)  # None表示从检查点恢复</code></pre></div>
+<p data-source-page="2">关键点:</p>
+<p data-source-page="2">关键点</p>
+<p class="list-item" data-source-page="2">thread_id: 唯一标识一次工作流会话</p>
+<p class="list-item" data-source-page="2">update_state(): 更新状态中的人工决策</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">update_state()</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p class="list-item" data-source-page="3">第二次调用传入 None,自动从检查点恢复</p>
+<h2 id="section-20" data-source-page="3">实战案例：代码审核系统<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">需求分析</p>
+<p data-source-page="3">项目目标:构建一个AI代码生成系统，工程师通过键盘实时输入审核决策</p>
+<p data-source-page="3">项目目标</p>
+<p data-source-page="3">业务流程:</p>
+<p data-source-page="3">业务流程</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">START → AI生成代码 → ⏸ 暂停等待审核 → 工程师输入(approve/reject) → 提交/拒绝 → END
+
+1</code></pre></div>
+<h3 id="section-27" data-source-page="3">State设计<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h3>
+<aside class="callout" data-source-page="3"><p>完整源码: samples/chapter9/code_review/code_review_workflow.py</p></aside>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from typing import TypedDict, Optional
+
+class CodeState(TypedDict):
+    requirement: str                # 需求描述
+    code: str                       # AI生成的代码
+    human_decision: Optional[str]   # 工程师决策: approve/reject
+    final_code: str                 # 最终提交代码</code></pre></div>
+<p data-source-page="3">关键字段: human_decision 初始为 None,工程师审核后更新为 approve/reject</p>
+<h3 id="section-31" data-source-page="3">核心节点<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h3>
+<aside class="callout" data-source-page="3"><p>完整源码: samples/chapter9/code_review/code_review_workflow.py 以下仅展示关键逻辑，完整实现请参考源码。</p></aside>
+<p data-source-page="3">节点2:工程师审核</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<aside class="callout" data-source-page="4"><p>interrupt_before=[&quot;review&quot;] 在 review 节点门前暂停，human_review 在第一次调用时并未执行。 第二次 invoke(None) 恢复后，human_decision 已被 update_state 设置， 所以human_review 只执行一次，直接处理决策结果。 代码展示放在了主流程中（见下文「第一次调用」后的代码）。</p></aside>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def human_review(state: CodeState):
+    &quot;&quot;&quot;工程师审核节点&quot;&quot;&quot;
+    decision = state.get(&quot;human_decision&quot;)
+    print(f&quot;工程师决策: {decision}&quot;)
+    return state</code></pre></div>
+<p data-source-page="4">关键设计:</p>
+<p data-source-page="4">关键设计</p>
+<p class="list-item" data-source-page="4">human_review 只负责处理决策结果，不负责展示代码</p>
+<p class="list-item" data-source-page="4">代码展示放在 第一次 invoke() 之后（此时已拿到 result[&quot;code&quot;]）</p>
+<p class="list-item" data-source-page="4">工程师看到代码后输入决策，update_state 写入状态，第二次 invoke(None) 从 review 节点恢复执行</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h3 id="section-41" data-source-page="5">工作流构建<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from langgraph.graph import StateGraph, START, END
+from langgraph.checkpoint.memory import MemorySaver
+
+workflow = StateGraph(CodeState)
+
+# 添加3个节点
+workflow.add_node(&quot;generate&quot;, generate_code)
+workflow.add_node(&quot;review&quot;, human_review)
+workflow.add_node(&quot;commit&quot;, commit_code)
+
+# 定义流程
+workflow.add_edge(START, &quot;generate&quot;)
+workflow.add_edge(&quot;generate&quot;, &quot;review&quot;)
+workflow.add_edge(&quot;review&quot;, &quot;commit&quot;)
+workflow.add_edge(&quot;commit&quot;, END)
+
+# 编译:在review节点前暂停
+checkpointer = MemorySaver()
+app = workflow.compile(
+    interrupt_before=[&quot;review&quot;],
+    checkpointer=checkpointer
+)</code></pre></div>
+<p data-source-page="5">流程:</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">START → [generate] → ⏸ 暂停点 → [review] → [commit] → END
+
+1</code></pre></div>
+<h3 id="section-45" data-source-page="5">两次调用的执行机制<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这是人工介入最核心的概念:工作流需要调用两次 invoke()。</p>
+<p data-source-page="5">工作流需要调用两次 invoke()</p>
+<p data-source-page="5">为什么需要两次调用</p>
+<p data-source-page="5">因为人工介入本质上是将一个完整的工作流切成两段:</p>
+<p data-source-page="5">将一个完整的工作流切成两段</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐
+│  完整工作流(无人工介入)                                        │
+│  START → generate → review → commit → END                   │
+│  ▲                                                          │
+│  └─ 一次invoke()直接完成                                      │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│  人工介入工作流(切成两段)                                       │
+│                                                             │
+│  【第一段】                【暂停】              【第二段】      │
+│  START → generate  →  ⏸ 等待工程师  →  review → commit → END  │
+│         ▲                    │                  ▲           │
+│         │                    │                  │           │
+│    第一次invoke()         人工决策          第二次invoke()     │
+└─────────────────────────────────────────────────────────────┘</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">config = {&quot;configurable&quot;: {&quot;thread_id&quot;: &quot;session_001&quot;}}
+
+# 第一次调用:从START开始,执行到review节点前
+result = app.invoke(
+    {&quot;requirement&quot;: &quot;快速排序算法&quot;},  # 传入初始输入
+    config=config
+)
+
+# 此时工作流状态:
+# ✓ generate节点已执行(代码已生成)
+# ⏸ review节点前暂停(因为interrupt_before)
+# ✗ review和commit节点尚未执行
+
+print(result[&quot;code&quot;])           # 可以访问已生成的代码
+print(result[&quot;human_decision&quot;]) # None(尚未决策)</code></pre></div>
+<p data-source-page="6">人工决策:更新状态</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 工程师查看代码后做出决策
+app.update_state(config, {&quot;human_decision&quot;: &quot;approve&quot;})
+
+1
+2</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">update_state() 的作用:</p>
+<p data-source-page="7">update_state() 的作用</p>
+<p class="list-item" data-source-page="7">更新保存在 checkpointer 中的状态快照</p>
+<p class="list-item" data-source-page="7">设置 human_decision 字段，从 None 变为 approve</p>
+<p class="list-item" data-source-page="7">不会触发工作流继续执行,只是更新状态</p>
+<p data-source-page="7">不会触发工作流继续执行</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 第二次调用:从暂停点继续执行
+result = app.invoke(
+    None,      # 关键:传入None表示&quot;从检查点恢复&quot;
+    config     # 必须使用相同的thread_id
+)
+
+# 此时工作流状态:
+# ✓ 从review节点继续执行
+# ✓ review节点读取到human_decision=&quot;approve&quot;
+# ✓ commit节点执行完成
+# ✓ 到达END
+
+print(result[&quot;final_code&quot;])  # 最终提交的代码</code></pre></div>
+<p class="list-item" data-source-page="7">传入 None 而不是初始输入 None 告诉LangGraph:“不要从头开始，从检查点恢复”</p>
+<p class="list-item" data-source-page="7">必须使用相同的 thread_id 这样才能找到第一次调用保存的状态快照</p>
+<p data-source-page="7">相同的 thread_id</p>
+<p class="list-item" data-source-page="7">这样才能找到第一次调用保存的状态快照</p>
+<p class="list-item" data-source-page="7">工作流从暂停点(review节点)继续执行</p>
+<h3 id="section-67" data-source-page="7">MemorySaver：状态快照的幕后英雄<a class="heading-link" href="#section-67" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">为什么必须使用 checkpointer</p>
+<p data-source-page="7">在代码审核案例中，如果没有 checkpointer,工作流无法实现暂停/恢复:</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 错误:没有checkpointer
+app = workflow.compile(interrupt_before=[&quot;review&quot;])
+# 报错:interrupt_before requires checkpointer
+
+# ✓ 正确:提供checkpointer
+from langgraph.checkpoint.memory import MemorySaver
+
+checkpointer = MemorySaver()
+app = workflow.compile(
+    interrupt_before=[&quot;review&quot;],
+    checkpointer=checkpointer  # 必需:保存状态快照
+)</code></pre></div>
+<p data-source-page="8">原因:暂停/恢复需要保存和恢复工作流状态,这正是 checkpointer 的职责。而CheckPointer有很多种类型。</p>
+<p data-source-page="8">内存存储 vs 持久化存储:</p>
+<p data-source-page="8">内存存储 vs 持久化存储</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># MemorySaver:存储在内存中(进程结束即丢失)
+from langgraph.checkpoint.memory import MemorySaver
+checkpointer = MemorySaver()  # 适合演示和测试
+
+# SqliteSaver:持久化到数据库(进程结束后仍保留)
+from langgraph.checkpoint.sqlite import SqliteSaver
+checkpointer = SqliteSaver.from_conn_string(&quot;checkpoints.db&quot;)</code></pre></div>
+<p data-source-page="8">多个暂停点的工作流</p>
+<p data-source-page="8">在复杂业务场景中，可能需要多个人工审核点。LangGraph 支持在多个节点前设置暂停点。</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from langgraph.checkpoint.memory import MemorySaver
+
+# 编译时指定多个暂停点
+checkpointer = MemorySaver()
+app = workflow.compile(
+    interrupt_before=[&quot;review1&quot;, &quot;review2&quot;],  # 列表形式,多个节点
+    checkpointer=checkpointer
+)
+START → [generate] → ⏸ 暂停点1 → [review1] → [test] → ⏸ 暂停点2 → [review2] → [deploy] → 
+END
+
+1</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<p class="list-item" data-source-page="9">有N个暂停点就需要N+1次调用 invoke()</p>
+<p data-source-page="9">N个暂停点</p>
+<p data-source-page="9">N+1次调用</p>
+<p class="list-item" data-source-page="9">每次暂停后都要: update_state() 更新决策 invoke(None, config) 继续执行</p>
+<p class="list-item" data-source-page="9">必须始终使用相同的 thread_id</p>
+<h2 id="section-83" data-source-page="9">■ 学点英语<a class="heading-link" href="#section-83" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="9"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>人工介入</td><td>Human-in-the- Loop</td><td>/ˈhjuːmən ɪn ðə luːp/</td><td>工作流中设置暂停点等待人类审核和决策</td></tr><tr><td>检查点管理器</td><td>Checkpointer</td><td>/ˈtʃekpɔɪntər/</td><td>保存工作流状态快照，支持暂停后恢复</td></tr><tr><td>中断</td><td>Interrupt</td><td>/ ɪntəˈrʌpt/ ˌ</td><td>编译时设置 interrupt before 在指定节点前暂 _ 停</td></tr><tr><td>恢复</td><td>Resume</td><td>/rɪˈzuːm/</td><td>第二次 invoke(None) 从检查点继续执行</td></tr></tbody></table></div>
+<h2 id="section-85" data-source-page="9">下节预告<a class="heading-link" href="#section-85" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">现在你已经掌握了 LangGraph 构建复杂工作流的能力。但你可能会发现一个新问题：每次让 AI 帮你写代码、审查代码、生成文档时，都要重复说明一遍规范和要求——&quot;请用 Python 3.10+ 语法，遵循PEP 8，所有函数要有类型注解。…&quot;说了十遍、二十遍，是不是很烦？</p>
+<p data-source-page="9">接下来的 第10章 Skill，我们将学习如何把这些重复的指令和专业知识封装成可复用的模块，让 AI 自动遵循团队规范，就像给它配备了一套专业的&quot;工作手册&quot;。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-132.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>条件分支与循环</strong><small>文章写作Agent</small></a><a class="chapter-neighbor next" href="lesson-134.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>为什么需要 Skill</strong><small>Skill的获取与生态</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5285#mid=105038" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">核心概念</a><a href="#section-2" class="toc-level-3">人工介入的关键机制</a><a href="#section-20" class="toc-level-2">实战案例：代码审核系统</a><a href="#section-27" class="toc-level-3">State设计</a><a href="#section-31" class="toc-level-3">核心节点</a><a href="#section-41" class="toc-level-3">工作流构建</a><a href="#section-45" class="toc-level-3">两次调用的执行机制</a><a href="#section-67" class="toc-level-3">MemorySaver：状态快照的幕后英雄</a><a href="#section-83" class="toc-level-2">■ 学点英语</a><a href="#section-85" class="toc-level-2">下节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-133", "title": "人工介入(Human-in-the-Loop)", "stage": 4, "week": 9, "module": "文章写作Agent", "minutes": 15, "pages": 9, "type": "article"}</script>
+</body></html>

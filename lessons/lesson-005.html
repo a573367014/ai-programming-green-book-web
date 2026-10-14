@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>ChatGPT的本质 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-005">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>ChatGPT的本质</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 006</span></div>
+<h1 class="lesson-title">ChatGPT的本质</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 10 分钟阅读</span><span class="module-name">ChatGPT的本质</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-005.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-005.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><section class="video-section"><h2 id="video-0">ChatGPT 的本质 · 配套视频</h2><video controls preload="metadata" playsinline src="../sources/video/video-03.mp4"></video><p class="video-caption">本地视频 · <a href="../sources/video/video-03.mp4" download>下载视频</a></p></section><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>理解大模型的核心原理，有助于写出更好的AI程序。本书以ChatGPT为例讲解，其他大模型（Gemini、DeepSeek等）原理相同。 本章将带你深入ChatGPT的内部，从本质、工作原理、训练过程到能力边界，用平实的语言和生动的类比，让你真正理解这个正在改变世界的技术。 现在，让我们从最根本的问题开始：ChatGPT到底是什么？</p></aside>
+<h2 id="section-1" data-source-page="1">1.1 回到中学数学课：函数的本质<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">我想从一个你一定熟悉的概念说起：函数。还记得中学数学课上，老师在黑板上写下的那个公式吗？</p>
+<div class="math-line" data-source-page="1">y = f(x)<details class="formula-source"><summary>查看原文公式文本</summary><p>𝑦 = 𝑓 ( 𝑥 ) y=f(x) · = · ( · )</p></details></div>
+<p data-source-page="1">这是函数的标准形式。给定一个输入x，通过某种规则f进行计算，得到输出y。简单，明了，优雅。那时我们学的函数，大多数是这样的：</p>
+<div class="math-line" data-source-page="1">y = 2x + 3<details class="formula-source"><summary>查看原文公式文本</summary><p>𝑦 = 2 𝑥 + 3 y=2x+3</p></details></div>
+<div class="math-line" data-source-page="1">y = x<sup>2</sup><details class="formula-source"><summary>查看原文公式文本</summary><p>𝑦 = 𝑥 2 y=x 2 · x 2 · x2</p></details></div>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="math-line" data-source-page="2">y = sin(x)<details class="formula-source"><summary>查看原文公式文本</summary><p>𝑦 = sin ⁡ ( 𝑥 ) y=sin(x) · sin</p></details></div>
+<p data-source-page="2">规则简单，输入输出的关系一目了然。但函数的力量，远不止于此。ChatGPT，从数学上讲，也是一个函数：</p>
+<div class="math-line" data-source-page="2">回答 = ChatGPT(问题)<details class="formula-source"><summary>查看原文公式文本</summary><p>回答 = ChatGPT ( 问题 ) 回答=ChatGPT(问题) · 回答</p></details></div>
+<p data-source-page="2">你输入一个问题（输入x），ChatGPT执行某种计算（函数f），然后返回一个回答（输出y）。</p>
+<p data-source-page="2">这不是比喻，不是类比，而是数学意义上的精确描述。ChatGPT就是一个函数——只不过，是一个极其复杂的函数。</p>
+<h2 id="section-19" data-source-page="2">1.2 1750亿个参数的&quot;旋钮&quot;<a class="heading-link" href="#section-19" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">但ChatGPT和我们在中学学的函数，有一个本质的区别。中学的函数，参数通常只有几个：</p>
+<p data-source-page="2">这里只有2个参数：系数&quot;2&quot;和常数&quot;3&quot;。而ChatGPT呢？它有1750亿个参数。 1750亿。这是一个什么概念？</p>
+<p class="list-item" data-source-page="2">比地球上的人口（80亿）多20倍</p>
+<p class="list-item" data-source-page="2">如果每秒数一个数，要数5000多年</p>
+<p class="list-item" data-source-page="2">如果用A4纸打印，每页100个数字，需要17.5亿页纸，堆起来高达17.5万米——比珠穆朗玛峰（8849米）高20倍</p>
+<p data-source-page="2">我第一次看到这个数字的时候，也被震撼了。我们究竟在和一个什么样的&quot;函数&quot;打交道？</p>
+<p data-source-page="2">换个角度想，一个拥有1750亿参数的模型，它是怎么&quot;理解&quot;你的问题，又是怎么&quot;组织&quot;出回答的？</p>
+<p data-source-page="2">为了回答这个问题，我们可以把ChatGPT想象成一个巨大的控制面板。面板上密密麻麻排列着1750亿个旋钮，每个旋钮都可以调节，每个旋钮的位置都会影响最终的输出。</p>
+<div class="math-line" data-source-page="2">回答 = f(问题, θ<sub>1</sub>, θ<sub>2</sub>, θ<sub>3</sub>, …, θ<sub>175000000000</sub>)<details class="formula-source"><summary>查看原文公式文本</summary><p>回答 = 𝑓 ( 问题 , 𝜃 1 , 𝜃 2 , 𝜃 3 , . . . , 𝜃 1 7 5 0 0 0 0 0 0 0 0 0 ) 回答=f(问题,θ 1  ,θ 2  ,θ 3  ,...,θ · 175000000000  ) · θ1 · θ2θ3 · θ175000000000</p></details></div>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">这1750亿个旋钮（参数），共同决定了ChatGPT如何理解语义、如何组织逻辑、如何选择措辞。</p>
+<aside class="callout" data-source-page="3"><b>补充说明</b><p>关于参数数量的说明 本书中我们主要以GPT-3的1750亿参数作为讲解示例。 为什么不用最新的GPT-5.2？ 因为OpenAI从GPT-4开始就不再公开参数量等技术细节，而GPT-3是最后一个公开详细技术参数（96层网络、12288维嵌入等）的模型。GPT-3.5（与GPT3同源，是ChatGPT最初版本的基座）虽然也很重要，但它的参数量同样未公开，估计在1750亿左右。1750亿这个确切的数字，能让你更直观地理解这些概念。 不过请放心，所有GPT模型的核心原理是完全一致的——无论是1750亿参数还是现在万亿级别的参数，它们的工作机制都是相同的。而且以现在人类对Transformer架构的痴迷（后面你会了解Transformer，以及为什么我说是&quot;痴迷&quot;），短期内模型机制不会有太大的变化。</p></aside>
+<h2 id="section-35" data-source-page="3">1.3 参数到底是什么？<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">说到这里，你可能会问：这些&quot;参数&quot;到底是什么？为什么要有这么多？</p>
+<p data-source-page="3">让我直接告诉你：参数是存储知识的容器。</p>
+<p data-source-page="3">存储知识的容器</p>
+<p data-source-page="3">每个参数（准确说是参数的组合）编码了语言的某种规律：</p>
+<p class="list-item" data-source-page="3">有些参数记录了&quot;主语后面通常跟动词&quot;</p>
+<p class="list-item" data-source-page="3">有些参数记录了&quot;&#x27;苹果公司’是一家科技公司&quot;</p>
+<p class="list-item" data-source-page="3">有些参数记录了&quot;悲伤的情绪通常用某些词汇表达&quot;</p>
+<p data-source-page="3">每一种语言现象，每一点世界知识，都需要一些参数来存储和表达。</p>
+<h2 id="section-44" data-source-page="3">1.4 语言的复杂性<a class="heading-link" href="#section-44" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">现在，关键问题来了：为什么需要这么多参数？</p>
+<p data-source-page="3">答案很简单，也很深刻：因为语言太复杂了。</p>
+<p data-source-page="3">因为语言太复杂了。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h3 id="section-48" data-source-page="4">语言复杂性的四个例子<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">让我给你举几个例子，感受一下语言的复杂性。</p>
+<p class="list-item" data-source-page="4">一词多义</p>
+<aside class="callout" data-source-page="4"><p>“这本书很重”（重量大） “这件事很重要”（重要）</p></aside>
+<p data-source-page="4">同一个&quot;重&quot;字，在不同语境下，意思完全不同。人类当然能够理解，但是模型需要参数来捕捉这种微妙的差异。</p>
+<p class="list-item" data-source-page="4">指代消解</p>
+<p data-source-page="4">所谓指代消解，就是判断代词（如&quot;他&quot;、“它”、&quot;这个&quot;等）具体指代什么。这在人类看来很自然，但对计算机是一个复杂的推理问题。比如：</p>
+<aside class="callout" data-source-page="4"><p>“小明买了一个苹果手机。它的屏幕很大。”</p></aside>
+<p data-source-page="4">&quot;它&quot;指的是什么？是苹果手机，不是小明，也不是水果苹果，而是指iPhone手机。模型需要参数来追踪这种指代关系。</p>
+<p class="list-item" data-source-page="4">隐含的常识</p>
+<aside class="callout" data-source-page="4"><p>“他把玻璃杯掉在地上，碎了。”</p></aside>
+<p data-source-page="4">什么碎了？是玻璃杯，不是地板。这需要常识：玻璃杯易碎，地板不易碎。模型需要参数来存储这些常识。</p>
+<p class="list-item" data-source-page="4">语用学</p>
+<aside class="callout" data-source-page="4"><p>“你能把窗户关上吗？”</p></aside>
+<p data-source-page="4">这表面上是一个疑问句，实际上是一个请求，甚至隐含着不耐烦的情绪。模型需要参数来理解这些语用规则，甚至需要结合上下文，能推测出是否有不耐烦的情绪。</p>
+<p data-source-page="4">这还只是最表面的复杂性。</p>
+<p data-source-page="4">语言的世界里，近义词之间有微妙的差异，同一个词在不同语境下意思完全不同。还有成语俗语背后的文化典故，医学、法律这些专业领域的术语……更别说人说话时的那种感觉，褒义贬义、正式口语，模型都得学会分辨。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">每一个维度，都需要大量参数来捕捉。</p>
+<p data-source-page="5">有人做过一个粗略的估算：人类语言中有数十万个词汇，数百万种常见的词语搭配，数千万个事实性知识，数亿种可能的句子结构……要让模型&quot;理解&quot;这一切，1750亿个参数，可能还不够。</p>
+<h2 id="section-67" data-source-page="5">1.5 可以解方程吗？<a class="heading-link" href="#section-67" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">既然ChatGPT是一个函数，有1750亿个参数需要确定，那为什么不能像我们在学校学的那样，用解方程组的方法来求解这些参数呢？</p>
+<p data-source-page="5">这是一个极好的问题。让我详细解释为什么不能。</p>
+<h3 id="section-70" data-source-page="5">为什么不能解方程组？<a class="heading-link" href="#section-70" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">先回顾一下中学的解方程组是怎么做的：</p>
+<div class="math-line" data-source-page="5">假设我们有一个函数：y = ax + b。我们的目标是求出参数 a 和 b：<details class="formula-source"><summary>查看原文公式文本</summary><p>假设我们有一个函数： 𝑦 = 𝑎 𝑥 + 𝑏 y=ax+b。我们的目标是求出参数 𝑎 a 和 𝑏 b：</p></details></div>
+<p data-source-page="5">第1步：根据已知条件列方程</p>
+<p data-source-page="5">已知条件：</p>
+<p class="list-item" data-source-page="5">当 𝑥 = 1 x=1 时， 𝑦 = 5 y=5</p>
+<p class="list-item" data-source-page="5">当 𝑥 = 2 x=2 时， 𝑦 = 7 y=7</p>
+<p data-source-page="5">可以列出方程组：</p>
+<div class="math-line" data-source-page="5"><span class="equation-system"><span>5 = a · 1 + b</span><span>7 = a · 2 + b</span></span><details class="formula-source"><summary>查看原文公式文本</summary><p>{ 5 = 𝑎 ⋅ 1 + 𝑏 7 = 𝑎 ⋅ 2 + 𝑏 { 5=a⋅1+b 7=a⋅2+b </p></details></div>
+<p data-source-page="5">第2步：直接求解</p>
+<div class="math-line" data-source-page="5">用消元法，直接算出：a = 2，b = 3<details class="formula-source"><summary>查看原文公式文本</summary><p>用消元法，直接算出： 𝑎 = 2 a=2， 𝑏 = 3 b=3 · b=3 · a=2</p></details></div>
+<p data-source-page="5">完成！我们找到了精确的参数值。那么，能用同样的方法求ChatGPT的参数吗？不太实际。有以下几个问题。</p>
+<p class="list-item" data-source-page="5">问题一，方程太复杂</p>
+<div class="math-line" data-source-page="5">中学的方程组是线性的：2x + 3y = 10<details class="formula-source"><summary>查看原文公式文本</summary><p>中学的方程组是线性的： 2 𝑥 + 3 𝑦 = 1 0 2x+3y=10</p></details></div>
+<p data-source-page="5">但ChatGPT的&quot;方程&quot;是96层嵌套的非线性系统：</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="math-line" data-source-page="6">输出 = 第96层(…第2层(第1层(输入)))<details class="formula-source"><summary>查看原文公式文本</summary><p>输出 = 第96层 ( . . . 第2层 ( 第1层 ( 输入 ) ) ) 输出=第96层(...第2层(第1层(输入)))</p></details></div>
+<p data-source-page="6">其中每一层都有数十亿个参数，且包含ReLU这样的非线性转换。这是一个极度复杂的非线性系统，没有解析解（就是没有公式可以直接算出答案）。</p>
+<aside class="callout" data-source-page="6"><b>补充说明</b><p>术语说明：什么是线性和非线性？ 线性：输入和输出成正比关系。比如买水果： 买1斤苹果5元，买2斤10元，3斤15元 → 成正比 非线性：输入和输出的关系有转折。比如： 学习时间与成绩：从0小时到1小时，成绩大幅提升；但从10小时到11小时，可能几乎不增长了 药物剂量：1粒没效果，2粒有效，3粒可能中毒 → 不是简单的翻倍关系 ReLU函数：负数全部变成0，正数保持不变 → 在零点有个&quot;拐弯&quot;</p></aside>
+<p data-source-page="6">那为什么ChatGPT需要非线性？</p>
+<p data-source-page="6">因为语言规律不是简单的正比关系。比如&quot;喜欢&quot;这个词：</p>
+<p class="list-item" data-source-page="6">在&quot;我喜欢你&quot;里是亲密</p>
+<p class="list-item" data-source-page="6">在&quot;我喜欢吃苹果&quot;里是偏好</p>
+<p class="list-item" data-source-page="6">在&quot;我喜欢得很&quot;里是讽刺</p>
+<p data-source-page="6">同一个词，不同语境意思完全不同。这种复杂关系必须用非线性函数来表达。</p>
+<p class="list-item" data-source-page="6">问题二，计算量无法承受</p>
+<p data-source-page="6">即使理论上能列出方程组，求解1750亿个未知数的方程组：</p>
+<div class="math-line" data-source-page="6">传统方法（如高斯消元法）的计算复杂度是 O(n<sup>3</sup>)。对于1750亿，就是 (1750亿)<sup>3</sup><details class="formula-source"><summary>查看原文公式文本</summary><p>传统方法（如高斯消元法）的计算复杂度是 𝑂 ( 𝑛 3 ) O(n 3 )。对于1750亿，就是 ( 1 7 5 0 亿 ) 3</p></details></div>
+<p data-source-page="6">(1750亿) 3 的计算量。这个数字大到宇宙中的原子数都不够用来计数</p>
+<p data-source-page="6">n3</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-101" data-source-page="7">1.6 ■ 学点英语<a class="heading-link" href="#section-101" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>函数</td><td>Function</td><td>/ˈfʌŋkʃən/</td><td>输入到输出的映射关系</td></tr><tr><td>参数</td><td>Parameter</td><td>/pəˈræmɪtər/</td><td>模型中可学习的权重和偏置</td></tr><tr><td>大模型</td><td>Large Language Model (LLM)</td><td>/lɑːdʒ ˈlæŋɡwɪdʒ ˈmɒdl/</td><td>基于海量数据训练的神经网络语言模型</td></tr><tr><td>线性</td><td>Linear</td><td>/ˈlɪniər/</td><td>输入输出成正比，可加可乘的简单关系</td></tr><tr><td>非线性</td><td>Nonlinear</td><td>/nɒnˈlɪniər/</td><td>输入输出有转折和拐弯的复杂关系</td></tr><tr><td>一词多义</td><td>Polysemy</td><td>/pəˈlɪsəmi/</td><td>同一词语在不同语境中含义不同</td></tr><tr><td>指代消解</td><td>Anaphora Resolution</td><td>/əˈnæfərə rezəˈluːʃən/ ˌ</td><td>判断代词（他/它/这个）具体指代什么</td></tr><tr><td>语用学</td><td>Pragmatics</td><td>/præɡˈmætɪks/</td><td>研究语境如何影响语言的理解和使用</td></tr><tr><td>分布式编码</td><td>Distributed Representation</td><td>/dɪˈstrɪbjuːtɪd reprɪzen ˌ ˈteɪʃən/</td><td>知识分散在一组参数组合中而非一对一存储</td></tr><tr><td>解析解</td><td>Closed-form Solution</td><td>/kləʊzd fɔːm səˈluːʃən/</td><td>可以直接用公式算出的精确数学解</td></tr><tr><td>非线性系统</td><td>Nonlinear System</td><td>/nɒnˈlɪniər ˈsɪstəm/</td><td>输出与输入不成正比的复杂系统</td></tr><tr><td>激活函数</td><td>Activation Function</td><td>/ æktɪˈveɪʃən ˈfʌŋkʃən/ ˌ</td><td>引入非线性的关键数学操作，如ReLU</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-004.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Vibe-Spec-Coding，用自然语言来编程</strong><small>序与前言</small></a><a class="chapter-neighbor next" href="lesson-006.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-2</strong><small>ChatGPT的本质</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5253#mid=104869" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">1.1 回到中学数学课：函数的本质</a><a href="#section-19" class="toc-level-2">1.2 1750亿个参数的&quot;旋钮&quot;</a><a href="#section-35" class="toc-level-2">1.3 参数到底是什么？</a><a href="#section-44" class="toc-level-2">1.4 语言的复杂性</a><a href="#section-48" class="toc-level-3">语言复杂性的四个例子</a><a href="#section-67" class="toc-level-2">1.5 可以解方程吗？</a><a href="#section-70" class="toc-level-3">为什么不能解方程组？</a><a href="#section-101" class="toc-level-2">1.6 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-005", "title": "ChatGPT的本质", "stage": 1, "week": 1, "module": "ChatGPT的本质", "minutes": 10, "pages": 7, "type": "article"}</script>
+</body></html>

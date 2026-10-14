@@ -1,0 +1,66 @@
+{
+  "id": "lesson-019",
+  "title": "选择练习 · 1-7",
+  "code": "1-7",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "文字接龙的游戏",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/003-文字接龙的游戏/019-练习-1-7-选择练习.pdf",
+  "sha256": "44a670651265907177e9e7e9f59c13957c2fcc9104bd74db87083f427eea41ad",
+  "pdf": "sources/pdf/lesson-019.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5254#mid=104951",
+  "minutes": 1,
+  "excerpt": "为什么ChatGPT需要用Token而不是直接用\"词\"作为预测的基本单位？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么ChatGPT需要用Token而不是直接用\"词\"作为预测的基本单位？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 因为Token比词更容易理解 B. 因为词的数量无限且不断增长，用一个固定大小的Token词表可以组合出无限词汇 C. 因为模型只能处理数字输入 D. 因为Token可以减少计算误差",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 304,
+    "represented_chars": 140,
+    "removed_chars": 164,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 164
+    }
+  },
+  "videos": [],
+  "order": 20,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "为什么ChatGPT需要用Token而不是直接用\"词\"作为预测的基本单位？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 因为Token比词更容易理解 B. 因为词的数量无限且不断增长，用一个固定大小的Token词表可以组合出无限词汇 C. 因为模型只能处理数字输入 D. 因为Token可以减少计算误差"
+    }
+  ]
+}

@@ -1,0 +1,1471 @@
+{
+  "id": "lesson-071",
+  "title": "Thought教AI思考",
+  "code": "1-4",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "Context Learning",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/010-Context Learning/071-图文-1-4-Thought教AI思考.pdf",
+  "sha256": "feea3483b450edfabab4914b00dca615c34c21a9b9c3efd57146d6e53123f84d",
+  "pdf": "sources/pdf/lesson-071.pdf",
+  "pages": 10,
+  "source_url": "https://class.imooc.com/lesson/5262#mid=104897",
+  "minutes": 12,
+  "excerpt": "上一节，我们看了情境学习——通过在提示词中给几个例子，模型就能学会新任务。 但这里有一个更神奇的现象： 如果不仅给模型\"答案\"，还给\"推理过程\"，它的表现会大幅提升。 而且这个提升不是一点点，在某些复杂任务上，准确率可以从17%跃升到78%。 这个方法叫做CoT（Chain-of-Thought P",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节，我们看了情境学习——通过在提示词中给几个例子，模型就能学会新任务。 但这里有一个更神奇的现象： 如果不仅给模型\"答案\"，还给\"推理过程\"，它的表现会大幅提升。 而且这个提升不是一点点，在某些复杂任务上，准确率可以从17%跃升到78%。 这个方法叫做CoT（Chain-of-Thought Prompting），中文可以译为\"思维链提示\"或\"推理链提示\"。 第一次看到这个结果时，很多研究者都感到震惊：为什么让模型\"展示思考过程\"会让它变得更聪明？ 让我带你深入这个现象。 本文中的错误示例基于早期的GPT-3。现在大模型普遍都内置了CoT，所以并不一定可以复现。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "8.1 什么是思维链",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "思维链（Chain-of-Thought, CoT）：在提示词中不仅提供问题和答案，还提供从问题到答案的推理步骤，引导模型进行逐步推理。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心思想是对比两种方式：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "标准方法： 问题 → 答案 思维链： 问题 → 推理步骤1 → 推理步骤2 → … → 答案",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "思维链就是教AI\"展示你的工作过程\"（Show your work）。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.2 一个对比实验：加不加推理，差别有多大",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用小学数学题来展示思维链的威力：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "问题： 咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "不带推理过程",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "通过Few-Shot给出示例，但只有答案，没有推理。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "例1： 问题：小明有15个苹果，吃了3个，还剩多少？ 答案：12个 例2： 问题：教室里有8个学生，又来了5个，现在有多少学生？ 答案：13个 例3（目标问题）： 问题：咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ 答案：",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "GPT-3的回答:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "20个",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "错误！ 正确答案是 23 - 7 + 5 = 21。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "错误！",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当然，不是每次都会计算错误，这是一个概率问题。但在复杂数学题上，这种方法准确率只有17%左右。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "带推理过程",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "同样用Few-Shot，但示例中包含完整推理步骤：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "例1： 问题：小明有15个苹果，吃了3个，还剩多少？ 推理：小明原来有15个苹果，吃了3个，所以用减法：15 - 3 = 12 答案：12个 例2： 问题：教室里有8个学生，又来了5个，现在有多少学生？ 推理：原来8个学生，又来了5个，所以用加法：8 + 5 = 13 答案：13个 例3（目标问题）：问题：咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ 推理：",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "GPT-3的回答：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "推理：咖啡店原来有23杯，上午卖了7杯，剩下 23-7=16杯。 下午又做了5杯，所以 16+5=21杯。 答案：21杯",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "完全正确！不仅答案对了，推理步骤也清晰明了。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "准确率从17%提升到57%（加上其他优化可达74%）。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "17%提升到57%",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 数据来源：Wei等，2022年，《Chain-of-Thought Prompting Elicits Reasoning in Large Language Models》",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么示例中要有推理？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为模型会\"模仿\"示例格式——示例有推理，它就会生成推理；示例只有答案，它就只给答案。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.3 思维链的两种主要形式",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "研究者们发现，思维链有两种主要使用方式。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "形式1：Few-Shot CoT（需要示例）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是刚才看到的方式——在示例中展示推理步骤，让模型模仿。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "结构模板:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "示例1: [问题] → [推理过程] → [答案] 示例2: [问题] → [推理过程] → [答案] … 目标问题: [问题] →[模型自动生成推理] → [模型给出答案]",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "适用场景:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "需要特定推理模式(如数学证明、逻辑推理)",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "想控制推理的风格和详细程度",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有高质量示例可供参考",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "形式2：Zero-Shot CoT（不需要示例）2022年的一个惊人发现：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "不需要任何示例，只需在问题后加一句\"Let’s think step by step\"（让我们一步步思考），模型就会自动展示推理！",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "用同样的咖啡店问题测试：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ Let’s think step by step.",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "好的，让我们一步步来： 第一步：咖啡店原来有23杯咖啡 第二步：上午卖了7杯，剩下 23 - 7 =16杯 第三步：下午又做了5杯，总共 16 + 5 = 21杯 因此，现在有21杯咖啡。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "完全正确！ 仅仅加了一句话，准确率就有巨大提升。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "完全正确！",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "常用触发短语:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "英文：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“Let’s think step by step”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“Let’s approach this step-by-step”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“Let’s break this down”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "中文：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“让我们一步步思考”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“让我们仔细分析”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“让我们分步骤解决”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么如此简单的一句话就有效？",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "预训练数据中有大量这样的文本模式:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“让我们一步步解决这个问题: 第一步。… 第二步。… 因此。…”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型学会了:看到\"一步步\"这类短语 → 应该生成详细推理过程。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Zero-Shot CoT巧妙利用了这个模式，无需示例就能触发推理能力。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.4 思维链为什么有效：深层原理",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是最令人着迷的问题：为什么展示推理过程会让模型变得更\"聪明\"？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么展示推理过程会让模型变得更\"聪明\"？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "分解复杂问题",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "复杂问题直接求解很难，但如果分解成小步骤，每一步都不难。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "直接问： “23杯咖啡，上午卖7杯，下午做5杯，现在有多少？” 模型需要\"一次性\"推理： 23 - 7+ 5 = ? 这对模型的\"工作记忆\"要求很高 用思维链： 步骤1：23 - 7 = ? → 16 步骤2：16 + 5 = ?→ 21 每一步都是简单的算术，容易做对",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "类比：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "人类也是这样: 直接算 23 × 47 很难 但如果分解: 23 × 47 ──── 161 (23 × 7) 920 (23 × 40)──── 1081 每一步都简单，组合起来解决复杂问题",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h3",
+      "text": "利用自回归的优势",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT是自回归模型，一个词一个词生成。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "问题 → 直接生成答案 模型只有一次机会，必须\"想好了\"才输出",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "思维链方法：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "问题 → 生成推理步骤1 → 步骤2 → 步骤3 → 答案 ↑ ↑ ↑ 每生成一个词，都可以作为后续推理的\"输入\"",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型可以\"边想边说\"，前面的推理可以帮助后面的推理",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一个具体的例子:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "问题:“小明比小红大3岁，小红8岁，小明多少岁?”",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果直接生成答案:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "模型需要在生成\"11\"之前，就在\"脑海中\"完成 8+3 的计算",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果用CoT:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "模型生成:“小红8岁” → 这个信息现在在上下文中了 然后生成:“小明比小红大3岁” → 关系也明确了 然后生成:“所以8+3=11” → 可以\"看着\"前面的信息计算 最后生成:“小明11岁”",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "每一步都基于已经生成的内容，降低了认知负荷。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "自我纠错机会",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在推理过程中，模型有机会\"发现\"并\"纠正\"错误。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "问题:“如果今天是周三，3天后是星期几?”",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "直接答:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "可能错误地回答\"周五\"(算错了)",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用CoT:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“今天是周三， 1天后是周四， 2天后是周五， 3天后是周六” ← 在生成过程中逐步推进，不容易出错",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "或者即使中途出错:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“今天是周三， 1天后是周四， 2天后是周五， 3天后是。…等等，应该是周六，不是周五”",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型在生成过程中可以自我纠正。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 如果你足够仔细看过DeepSeek等支持推理的大模型的推理过程，你会发现，它有时候确实会出现： \"等等，这里好像有问题。让我修正一下。\" 这其实就是模型在自我纠错。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "8.5 思维链的局限和陷阱",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然思维链很强大，但它也有局限。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "可能生成错误的推理",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型可能生成看起来合理，但实际错误的推理过程。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里不给出示例，因为简单的推理现在大模型基本不会出错。但你要知道，在某些情况下，推理是有可能出错的。毕竟我们之前已经学习过，大模型的回答是具有随机性的。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h3",
+      "text": "增加了Token消耗",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对比：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "标准回答： “答案：21杯” ← 3个tokens 思维链回答： “让我一步步思考： 咖啡店原来有23杯，上午卖了7杯，剩下23-7=16杯。 下午又做了5杯，所以16+5=21杯。 答案：21杯” ← 约40个tokens",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "消耗增加了10倍以上。如果使用API,这意味着成本增加10倍。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "对简单问题可能过度复杂化",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "quote",
+      "text": "问题:“2+2等于多少?” 思维链： “让我仔细思考： 2是一个数字，另一个2也是一个数字。 加法意味着将两个数字相加。 2+2表示将2和2相加。 1+1=2,2+1=3,2+2=4。 所以答案是4。” ←过度复杂化，浪费 直接答: “4” ← 完全够用",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在很多大模型，比如DeepSeek，都有深度思考模式。但其实有时候，简单的问题，你无需开启深度思考模式，这个模式速度很慢。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "8.6 冷知识与趣闻",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "趣闻一：思维链是意外的发现",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "CoT的诞生其实是个“美丽的意外”。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2022年，谷歌研究团队在测试GPT-3时，某位研究者在准备示例时“习惯性地”多写了几行推理步骤，想着“这样示例更清晰”。结果跑实验时发现，准确率突然从17%跳到了57%！",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "他们起初以为是实验出错了，反复验证后才确认：原来在示例里展示推理过程，能让模型\"学会\"如何一步步思考。这个发现直接催生了一篇引用量超过7000次的经典论文。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "更有趣的是，后来又有人发现，甚至不给示例，只要加一句\"Let’s think step by step\"，模型也会自动展示推理——这就是后来的Zero-Shot CoT。从\"在示例里多写几行\"到\"只加一句话就能触发推理\"，这个进化路径本身就很神奇。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "趣闻二：大模型也会\"边说边改\"",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "使用CoT时，有个让人惊讶的现象：模型在生成推理过程中，可能突然\"发现\"自己算错了，然后主动改口纠正。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "早期典型的例子是这样的：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "问题：小明有10个苹果，吃了3个，又买了5个，现在有多少？ 模型推理： 小明原来有10个苹果吃了3个，剩下 10 - 3 = 7个 又买了5个，所以 7 - 5… 等等，这里应该是加法！ 7 + 5 = 12个 答案：12个",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个\"等等\"让很多研究者第一次看到时都吓了一跳——模型居然会在推理中途\"意识到\"错误并自我修正，就像人类\"边说边想\"时突然发现不对劲。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "更神奇的是，这种自我纠错不是研究者刻意训练的，而是CoT自然“涌现”出来的能力。当模型被要求展示推理步骤时，它生成的每一步都会成为后续推理的“输入”，这让模型有机会“看到”前面的错误并纠正。这也解释了为什么CoT能显著提升准确率——不仅因为分步推理更简单，还因为模型获得了“边想边改”的机会。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "8.7 下节预告",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在本节中，我们看到通过Chain-of-Thought让模型“边想边说”,可以大幅提升复杂任务的准确率，也让推理过程变得可检查、可审查。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将把视角从“如何思考”转向“思考的风格”,看看Temperature 和 Top-p 这些采样参数如何决定答案是保守还是发散、稳定还是惊喜。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h2",
+      "text": "8.8 推荐阅读",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models (Wei 等， 2022)",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "系统性地提出并评估了CoT提示方法，展示了在数学、符号推理等多种任务上，仅通过在提示中加入推理步骤就能显著提升大模型的推理能力，是理解本节内容的关键论文。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h2",
+      "text": "8.9 ■ 学点英语",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n思维链 | Chain-of-Thought (CoT) | /tʃeɪn ɒv θɔːt/ | 让模型显式输出中间推理步骤的提示技术\n分步推理 | Step-by-step Reasoning | /step baɪ step ˈriːzənɪŋ/ | 把复杂问题拆为可逐步推导的小问题\n自回归 | Autoregressive | / ɔːtəʊrɪˈɡresɪv/ ˌ | 根据已生成内容预测下一个 Token 的生成方式\n推理 | Reasoning | /ˈriːzənɪŋ/ | 基于前提推导结论的思维过程\n自我纠错 | Self-correction | / self kəˈrekʃn/ ˌ | 模型在后续步骤中修正前面错误的能力\n工作记忆 | Working Memory | /ˈwɜːkɪŋ ˈmeməri/ | 临时存放中间计算结果的内在缓存\n算力预算 | Compute Budget | /kəmˈpjuːt ˈbʌdʒɪt/ | 单次推理允许消耗的最大 Token 或计算量\n阈值效应 | Threshold Effect | /ˈθreʃhəʊld ɪˈfekt/ | 性能收益只在规模跨过某一点后才出现的非线性现象",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "思维链",
+          "Chain-of-Thought (CoT)",
+          "/tʃeɪn ɒv θɔːt/",
+          "让模型显式输出中间推理步骤的提示技术"
+        ],
+        [
+          "分步推理",
+          "Step-by-step Reasoning",
+          "/step baɪ step ˈriːzənɪŋ/",
+          "把复杂问题拆为可逐步推导的小问题"
+        ],
+        [
+          "自回归",
+          "Autoregressive",
+          "/ ɔːtəʊrɪˈɡresɪv/ ˌ",
+          "根据已生成内容预测下一个 Token 的生成方式"
+        ],
+        [
+          "推理",
+          "Reasoning",
+          "/ˈriːzənɪŋ/",
+          "基于前提推导结论的思维过程"
+        ],
+        [
+          "自我纠错",
+          "Self-correction",
+          "/ self kəˈrekʃn/ ˌ",
+          "模型在后续步骤中修正前面错误的能力"
+        ],
+        [
+          "工作记忆",
+          "Working Memory",
+          "/ˈwɜːkɪŋ ˈmeməri/",
+          "临时存放中间计算结果的内在缓存"
+        ],
+        [
+          "算力预算",
+          "Compute Budget",
+          "/kəmˈpjuːt ˈbʌdʒɪt/",
+          "单次推理允许消耗的最大 Token 或计算量"
+        ],
+        [
+          "阈值效应",
+          "Threshold Effect",
+          "/ˈθreʃhəʊld ɪˈfekt/",
+          "性能收益只在规模跨过某一点后才出现的非线性现象"
+        ]
+      ],
+      "page": 9
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 10,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/a198503a9d49f61d2b5a796ecb1092d1.png",
+      "width": 802,
+      "height": 400,
+      "page": 10
+    }
+  ],
+  "accounting": {
+    "source_chars": 5214,
+    "represented_chars": 5037,
+    "removed_chars": 177,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 1,
+    "removals": {
+      "export_metadata": 149,
+      "repeated_title": 28
+    }
+  },
+  "videos": [],
+  "order": 72,
+  "headings": [
+    {
+      "title": "8.1 什么是思维链",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "8.2 一个对比实验：加不加推理，差别有多大",
+      "id": "section-6",
+      "level": 2
+    },
+    {
+      "title": "不带推理过程",
+      "id": "section-10",
+      "level": 3
+    },
+    {
+      "title": "带推理过程",
+      "id": "section-18",
+      "level": 3
+    },
+    {
+      "title": "8.3 思维链的两种主要形式",
+      "id": "section-29",
+      "level": 2
+    },
+    {
+      "title": "8.4 思维链为什么有效：深层原理",
+      "id": "section-60",
+      "level": 2
+    },
+    {
+      "title": "分解复杂问题",
+      "id": "section-63",
+      "level": 3
+    },
+    {
+      "title": "利用自回归的优势",
+      "id": "section-68",
+      "level": 3
+    },
+    {
+      "title": "自我纠错机会",
+      "id": "section-81",
+      "level": 3
+    },
+    {
+      "title": "8.5 思维链的局限和陷阱",
+      "id": "section-92",
+      "level": 2
+    },
+    {
+      "title": "可能生成错误的推理",
+      "id": "section-94",
+      "level": 3
+    },
+    {
+      "title": "增加了Token消耗",
+      "id": "section-97",
+      "level": 3
+    },
+    {
+      "title": "对简单问题可能过度复杂化",
+      "id": "section-101",
+      "level": 3
+    },
+    {
+      "title": "8.6 冷知识与趣闻",
+      "id": "section-104",
+      "level": 2
+    },
+    {
+      "title": "8.7 下节预告",
+      "id": "section-116",
+      "level": 2
+    },
+    {
+      "title": "8.8 推荐阅读",
+      "id": "section-119",
+      "level": 2
+    },
+    {
+      "title": "8.9 ■ 学点英语",
+      "id": "section-122",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-124",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节，我们看了情境学习——通过在提示词中给几个例子，模型就能学会新任务。 但这里有一个更神奇的现象： 如果不仅给模型\"答案\"，还给\"推理过程\"，它的表现会大幅提升。 而且这个提升不是一点点，在某些复杂任务上，准确率可以从17%跃升到78%。 这个方法叫做CoT（Chain-of-Thought Prompting），中文可以译为\"思维链提示\"或\"推理链提示\"。 第一次看到这个结果时，很多研究者都感到震惊：为什么让模型\"展示思考过程\"会让它变得更聪明？ 让我带你深入这个现象。 本文中的错误示例基于早期的GPT-3。现在大模型普遍都内置了CoT，所以并不一定可以复现。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "8.1 什么是思维链"
+    },
+    {
+      "anchor": "section-1",
+      "text": "思维链（Chain-of-Thought, CoT）：在提示词中不仅提供问题和答案，还提供从问题到答案的推理步骤，引导模型进行逐步推理。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "核心思想是对比两种方式："
+    },
+    {
+      "anchor": "section-1",
+      "text": "标准方法： 问题 → 答案 思维链： 问题 → 推理步骤1 → 推理步骤2 → … → 答案"
+    },
+    {
+      "anchor": "section-1",
+      "text": "思维链就是教AI\"展示你的工作过程\"（Show your work）。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "8.2 一个对比实验：加不加推理，差别有多大"
+    },
+    {
+      "anchor": "section-6",
+      "text": "用小学数学题来展示思维链的威力："
+    },
+    {
+      "anchor": "section-6",
+      "text": "问题： 咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？"
+    },
+    {
+      "anchor": "section-6",
+      "text": "问题："
+    },
+    {
+      "anchor": "section-10",
+      "text": "不带推理过程"
+    },
+    {
+      "anchor": "section-10",
+      "text": "通过Few-Shot给出示例，但只有答案，没有推理。"
+    },
+    {
+      "anchor": "section-10",
+      "text": "例1： 问题：小明有15个苹果，吃了3个，还剩多少？ 答案：12个 例2： 问题：教室里有8个学生，又来了5个，现在有多少学生？ 答案：13个 例3（目标问题）： 问题：咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ 答案："
+    },
+    {
+      "anchor": "section-10",
+      "text": "GPT-3的回答:"
+    },
+    {
+      "anchor": "section-10",
+      "text": "20个"
+    },
+    {
+      "anchor": "section-10",
+      "text": "错误！ 正确答案是 23 - 7 + 5 = 21。"
+    },
+    {
+      "anchor": "section-10",
+      "text": "错误！"
+    },
+    {
+      "anchor": "section-10",
+      "text": "当然，不是每次都会计算错误，这是一个概率问题。但在复杂数学题上，这种方法准确率只有17%左右。"
+    },
+    {
+      "anchor": "section-18",
+      "text": "带推理过程"
+    },
+    {
+      "anchor": "section-18",
+      "text": "同样用Few-Shot，但示例中包含完整推理步骤："
+    },
+    {
+      "anchor": "section-18",
+      "text": "例1： 问题：小明有15个苹果，吃了3个，还剩多少？ 推理：小明原来有15个苹果，吃了3个，所以用减法：15 - 3 = 12 答案：12个 例2： 问题：教室里有8个学生，又来了5个，现在有多少学生？ 推理：原来8个学生，又来了5个，所以用加法：8 + 5 = 13 答案：13个 例3（目标问题）：问题：咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ 推理："
+    },
+    {
+      "anchor": "section-18",
+      "text": "GPT-3的回答："
+    },
+    {
+      "anchor": "section-18",
+      "text": "推理：咖啡店原来有23杯，上午卖了7杯，剩下 23-7=16杯。 下午又做了5杯，所以 16+5=21杯。 答案：21杯"
+    },
+    {
+      "anchor": "section-18",
+      "text": "完全正确！不仅答案对了，推理步骤也清晰明了。"
+    },
+    {
+      "anchor": "section-18",
+      "text": "准确率从17%提升到57%（加上其他优化可达74%）。"
+    },
+    {
+      "anchor": "section-18",
+      "text": "17%提升到57%"
+    },
+    {
+      "anchor": "section-18",
+      "text": "数据来源：Wei等，2022年，《Chain-of-Thought Prompting Elicits Reasoning in Large Language Models》"
+    },
+    {
+      "anchor": "section-18",
+      "text": "为什么示例中要有推理？"
+    },
+    {
+      "anchor": "section-18",
+      "text": "因为模型会\"模仿\"示例格式——示例有推理，它就会生成推理；示例只有答案，它就只给答案。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "8.3 思维链的两种主要形式"
+    },
+    {
+      "anchor": "section-29",
+      "text": "研究者们发现，思维链有两种主要使用方式。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "形式1：Few-Shot CoT（需要示例）"
+    },
+    {
+      "anchor": "section-29",
+      "text": "这就是刚才看到的方式——在示例中展示推理步骤，让模型模仿。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "结构模板:"
+    },
+    {
+      "anchor": "section-29",
+      "text": "示例1: [问题] → [推理过程] → [答案] 示例2: [问题] → [推理过程] → [答案] … 目标问题: [问题] →[模型自动生成推理] → [模型给出答案]"
+    },
+    {
+      "anchor": "section-29",
+      "text": "适用场景:"
+    },
+    {
+      "anchor": "section-29",
+      "text": "需要特定推理模式(如数学证明、逻辑推理)"
+    },
+    {
+      "anchor": "section-29",
+      "text": "想控制推理的风格和详细程度"
+    },
+    {
+      "anchor": "section-29",
+      "text": "有高质量示例可供参考"
+    },
+    {
+      "anchor": "section-29",
+      "text": "形式2：Zero-Shot CoT（不需要示例）2022年的一个惊人发现："
+    },
+    {
+      "anchor": "section-29",
+      "text": "不需要任何示例，只需在问题后加一句\"Let’s think step by step\"（让我们一步步思考），模型就会自动展示推理！"
+    },
+    {
+      "anchor": "section-29",
+      "text": "用同样的咖啡店问题测试："
+    },
+    {
+      "anchor": "section-29",
+      "text": "咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ Let’s think step by step."
+    },
+    {
+      "anchor": "section-29",
+      "text": "好的，让我们一步步来： 第一步：咖啡店原来有23杯咖啡 第二步：上午卖了7杯，剩下 23 - 7 =16杯 第三步：下午又做了5杯，总共 16 + 5 = 21杯 因此，现在有21杯咖啡。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "完全正确！ 仅仅加了一句话，准确率就有巨大提升。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "完全正确！"
+    },
+    {
+      "anchor": "section-29",
+      "text": "常用触发短语:"
+    },
+    {
+      "anchor": "section-29",
+      "text": "英文："
+    },
+    {
+      "anchor": "section-29",
+      "text": "“Let’s think step by step”"
+    },
+    {
+      "anchor": "section-29",
+      "text": "“Let’s approach this step-by-step”"
+    },
+    {
+      "anchor": "section-29",
+      "text": "“Let’s break this down”"
+    },
+    {
+      "anchor": "section-29",
+      "text": "中文："
+    },
+    {
+      "anchor": "section-29",
+      "text": "“让我们一步步思考”"
+    },
+    {
+      "anchor": "section-29",
+      "text": "“让我们仔细分析”"
+    },
+    {
+      "anchor": "section-29",
+      "text": "“让我们分步骤解决”"
+    },
+    {
+      "anchor": "section-29",
+      "text": "为什么如此简单的一句话就有效？"
+    },
+    {
+      "anchor": "section-29",
+      "text": "预训练数据中有大量这样的文本模式:"
+    },
+    {
+      "anchor": "section-29",
+      "text": "“让我们一步步解决这个问题: 第一步。… 第二步。… 因此。…”"
+    },
+    {
+      "anchor": "section-29",
+      "text": "模型学会了:看到\"一步步\"这类短语 → 应该生成详细推理过程。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "Zero-Shot CoT巧妙利用了这个模式，无需示例就能触发推理能力。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "8.4 思维链为什么有效：深层原理"
+    },
+    {
+      "anchor": "section-60",
+      "text": "这是最令人着迷的问题：为什么展示推理过程会让模型变得更\"聪明\"？"
+    },
+    {
+      "anchor": "section-60",
+      "text": "为什么展示推理过程会让模型变得更\"聪明\"？"
+    },
+    {
+      "anchor": "section-63",
+      "text": "分解复杂问题"
+    },
+    {
+      "anchor": "section-63",
+      "text": "复杂问题直接求解很难，但如果分解成小步骤，每一步都不难。"
+    },
+    {
+      "anchor": "section-63",
+      "text": "直接问： “23杯咖啡，上午卖7杯，下午做5杯，现在有多少？” 模型需要\"一次性\"推理： 23 - 7+ 5 = ? 这对模型的\"工作记忆\"要求很高 用思维链： 步骤1：23 - 7 = ? → 16 步骤2：16 + 5 = ?→ 21 每一步都是简单的算术，容易做对"
+    },
+    {
+      "anchor": "section-63",
+      "text": "类比："
+    },
+    {
+      "anchor": "section-63",
+      "text": "人类也是这样: 直接算 23 × 47 很难 但如果分解: 23 × 47 ──── 161 (23 × 7) 920 (23 × 40)──── 1081 每一步都简单，组合起来解决复杂问题"
+    },
+    {
+      "anchor": "section-68",
+      "text": "利用自回归的优势"
+    },
+    {
+      "anchor": "section-68",
+      "text": "ChatGPT是自回归模型，一个词一个词生成。"
+    },
+    {
+      "anchor": "section-68",
+      "text": "问题 → 直接生成答案 模型只有一次机会，必须\"想好了\"才输出"
+    },
+    {
+      "anchor": "section-68",
+      "text": "思维链方法："
+    },
+    {
+      "anchor": "section-68",
+      "text": "问题 → 生成推理步骤1 → 步骤2 → 步骤3 → 答案 ↑ ↑ ↑ 每生成一个词，都可以作为后续推理的\"输入\""
+    },
+    {
+      "anchor": "section-68",
+      "text": "模型可以\"边想边说\"，前面的推理可以帮助后面的推理"
+    },
+    {
+      "anchor": "section-68",
+      "text": "一个具体的例子:"
+    },
+    {
+      "anchor": "section-68",
+      "text": "问题:“小明比小红大3岁，小红8岁，小明多少岁?”"
+    },
+    {
+      "anchor": "section-68",
+      "text": "如果直接生成答案:"
+    },
+    {
+      "anchor": "section-68",
+      "text": "模型需要在生成\"11\"之前，就在\"脑海中\"完成 8+3 的计算"
+    },
+    {
+      "anchor": "section-68",
+      "text": "如果用CoT:"
+    },
+    {
+      "anchor": "section-68",
+      "text": "模型生成:“小红8岁” → 这个信息现在在上下文中了 然后生成:“小明比小红大3岁” → 关系也明确了 然后生成:“所以8+3=11” → 可以\"看着\"前面的信息计算 最后生成:“小明11岁”"
+    },
+    {
+      "anchor": "section-68",
+      "text": "每一步都基于已经生成的内容，降低了认知负荷。"
+    },
+    {
+      "anchor": "section-81",
+      "text": "自我纠错机会"
+    },
+    {
+      "anchor": "section-81",
+      "text": "在推理过程中，模型有机会\"发现\"并\"纠正\"错误。"
+    },
+    {
+      "anchor": "section-81",
+      "text": "问题:“如果今天是周三，3天后是星期几?”"
+    },
+    {
+      "anchor": "section-81",
+      "text": "直接答:"
+    },
+    {
+      "anchor": "section-81",
+      "text": "可能错误地回答\"周五\"(算错了)"
+    },
+    {
+      "anchor": "section-81",
+      "text": "用CoT:"
+    },
+    {
+      "anchor": "section-81",
+      "text": "“今天是周三， 1天后是周四， 2天后是周五， 3天后是周六” ← 在生成过程中逐步推进，不容易出错"
+    },
+    {
+      "anchor": "section-81",
+      "text": "或者即使中途出错:"
+    },
+    {
+      "anchor": "section-81",
+      "text": "“今天是周三， 1天后是周四， 2天后是周五， 3天后是。…等等，应该是周六，不是周五”"
+    },
+    {
+      "anchor": "section-81",
+      "text": "模型在生成过程中可以自我纠正。"
+    },
+    {
+      "anchor": "section-81",
+      "text": "如果你足够仔细看过DeepSeek等支持推理的大模型的推理过程，你会发现，它有时候确实会出现： \"等等，这里好像有问题。让我修正一下。\" 这其实就是模型在自我纠错。"
+    },
+    {
+      "anchor": "section-92",
+      "text": "8.5 思维链的局限和陷阱"
+    },
+    {
+      "anchor": "section-92",
+      "text": "虽然思维链很强大，但它也有局限。"
+    },
+    {
+      "anchor": "section-94",
+      "text": "可能生成错误的推理"
+    },
+    {
+      "anchor": "section-94",
+      "text": "模型可能生成看起来合理，但实际错误的推理过程。"
+    },
+    {
+      "anchor": "section-94",
+      "text": "这里不给出示例，因为简单的推理现在大模型基本不会出错。但你要知道，在某些情况下，推理是有可能出错的。毕竟我们之前已经学习过，大模型的回答是具有随机性的。"
+    },
+    {
+      "anchor": "section-97",
+      "text": "增加了Token消耗"
+    },
+    {
+      "anchor": "section-97",
+      "text": "对比："
+    },
+    {
+      "anchor": "section-97",
+      "text": "标准回答： “答案：21杯” ← 3个tokens 思维链回答： “让我一步步思考： 咖啡店原来有23杯，上午卖了7杯，剩下23-7=16杯。 下午又做了5杯，所以16+5=21杯。 答案：21杯” ← 约40个tokens"
+    },
+    {
+      "anchor": "section-97",
+      "text": "消耗增加了10倍以上。如果使用API,这意味着成本增加10倍。"
+    },
+    {
+      "anchor": "section-101",
+      "text": "对简单问题可能过度复杂化"
+    },
+    {
+      "anchor": "section-101",
+      "text": "问题:“2+2等于多少?” 思维链： “让我仔细思考： 2是一个数字，另一个2也是一个数字。 加法意味着将两个数字相加。 2+2表示将2和2相加。 1+1=2,2+1=3,2+2=4。 所以答案是4。” ←过度复杂化，浪费 直接答: “4” ← 完全够用"
+    },
+    {
+      "anchor": "section-101",
+      "text": "现在很多大模型，比如DeepSeek，都有深度思考模式。但其实有时候，简单的问题，你无需开启深度思考模式，这个模式速度很慢。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "8.6 冷知识与趣闻"
+    },
+    {
+      "anchor": "section-104",
+      "text": "趣闻一：思维链是意外的发现"
+    },
+    {
+      "anchor": "section-104",
+      "text": "CoT的诞生其实是个“美丽的意外”。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "2022年，谷歌研究团队在测试GPT-3时，某位研究者在准备示例时“习惯性地”多写了几行推理步骤，想着“这样示例更清晰”。结果跑实验时发现，准确率突然从17%跳到了57%！"
+    },
+    {
+      "anchor": "section-104",
+      "text": "他们起初以为是实验出错了，反复验证后才确认：原来在示例里展示推理过程，能让模型\"学会\"如何一步步思考。这个发现直接催生了一篇引用量超过7000次的经典论文。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "更有趣的是，后来又有人发现，甚至不给示例，只要加一句\"Let’s think step by step\"，模型也会自动展示推理——这就是后来的Zero-Shot CoT。从\"在示例里多写几行\"到\"只加一句话就能触发推理\"，这个进化路径本身就很神奇。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "趣闻二：大模型也会\"边说边改\""
+    },
+    {
+      "anchor": "section-104",
+      "text": "使用CoT时，有个让人惊讶的现象：模型在生成推理过程中，可能突然\"发现\"自己算错了，然后主动改口纠正。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "早期典型的例子是这样的："
+    },
+    {
+      "anchor": "section-104",
+      "text": "问题：小明有10个苹果，吃了3个，又买了5个，现在有多少？ 模型推理： 小明原来有10个苹果吃了3个，剩下 10 - 3 = 7个 又买了5个，所以 7 - 5… 等等，这里应该是加法！ 7 + 5 = 12个 答案：12个"
+    },
+    {
+      "anchor": "section-104",
+      "text": "这个\"等等\"让很多研究者第一次看到时都吓了一跳——模型居然会在推理中途\"意识到\"错误并自我修正，就像人类\"边说边想\"时突然发现不对劲。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "更神奇的是，这种自我纠错不是研究者刻意训练的，而是CoT自然“涌现”出来的能力。当模型被要求展示推理步骤时，它生成的每一步都会成为后续推理的“输入”，这让模型有机会“看到”前面的错误并纠正。这也解释了为什么CoT能显著提升准确率——不仅因为分步推理更简单，还因为模型获得了“边想边改”的机会。"
+    },
+    {
+      "anchor": "section-116",
+      "text": "8.7 下节预告"
+    },
+    {
+      "anchor": "section-116",
+      "text": "在本节中，我们看到通过Chain-of-Thought让模型“边想边说”,可以大幅提升复杂任务的准确率，也让推理过程变得可检查、可审查。"
+    },
+    {
+      "anchor": "section-116",
+      "text": "下一节，我们将把视角从“如何思考”转向“思考的风格”,看看Temperature 和 Top-p 这些采样参数如何决定答案是保守还是发散、稳定还是惊喜。"
+    },
+    {
+      "anchor": "section-119",
+      "text": "8.8 推荐阅读"
+    },
+    {
+      "anchor": "section-119",
+      "text": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models (Wei 等， 2022)"
+    },
+    {
+      "anchor": "section-119",
+      "text": "系统性地提出并评估了CoT提示方法，展示了在数学、符号推理等多种任务上，仅通过在提示中加入推理步骤就能显著提升大模型的推理能力，是理解本节内容的关键论文。"
+    },
+    {
+      "anchor": "section-122",
+      "text": "8.9 ■ 学点英语"
+    },
+    {
+      "anchor": "section-122",
+      "text": "中文 | English | 音标 | 说明\n思维链 | Chain-of-Thought (CoT) | /tʃeɪn ɒv θɔːt/ | 让模型显式输出中间推理步骤的提示技术\n分步推理 | Step-by-step Reasoning | /step baɪ step ˈriːzənɪŋ/ | 把复杂问题拆为可逐步推导的小问题\n自回归 | Autoregressive | / ɔːtəʊrɪˈɡresɪv/ ˌ | 根据已生成内容预测下一个 Token 的生成方式\n推理 | Reasoning | /ˈriːzənɪŋ/ | 基于前提推导结论的思维过程\n自我纠错 | Self-correction | / self kəˈrekʃn/ ˌ | 模型在后续步骤中修正前面错误的能力\n工作记忆 | Working Memory | /ˈwɜːkɪŋ ˈmeməri/ | 临时存放中间计算结果的内在缓存\n算力预算 | Compute Budget | /kəmˈpjuːt ˈbʌdʒɪt/ | 单次推理允许消耗的最大 Token 或计算量\n阈值效应 | Threshold Effect | /ˈθreʃhəʊld ɪˈfekt/ | 性能收益只在规模跨过某一点后才出现的非线性现象"
+    },
+    {
+      "anchor": "section-124",
+      "text": "图片"
+    }
+  ]
+}

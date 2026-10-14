@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Function Calling进阶实战 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-110">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 6 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Function Calling进阶实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 111</span></div>
+<h1 class="lesson-title">Function Calling进阶实战</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>12 页原文</span><span>约 17 分钟阅读</span><span class="module-name">Function Calling进阶实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-110.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-110.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前两节学了 Function Calling 的基本原理和工作流程，但在实际项目中会碰到更多麻烦：LLM 选错工具、传错参数，多工具配合不当，还要兼顾成本、性能与健壮性。本节围绕这些实战问题，梳理一套可落地的工程方案。所有概念和伪代码都对应一份完整示例源码（samples/chapter6/robust_function_calling.py），可以一边看文档一边对照代码。</p></aside>
+<h2 id="section-1" data-source-page="1">5.1 Function Calling的工程化防线<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">这一部分从工程视角梳理上一节“理想版 Function Calling”中尚未处理好的地方：包括调用流程中的错误与保护机制、工具与参数设计的坑、多工具协作时的职责边界，以及性能与成本上的隐性风险。要让 FC 真正跑在生产环境，还有很多细节要处理。</p>
+<p data-source-page="1">工具调用可能出错的场景</p>
+<p data-source-page="1">在实际使用中，Function Calling 会遇到各种错误：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">场景1：LLM选错工具
+用户：&quot;帮我算一下2的100次方&quot;
+LLM错误地调用：get_weather() ← 完全错误的工具
+
+场景2：参数错误
+用户：&quot;查一下北京天气&quot;
+LLM调用：get_weather(city=123) ← 参数类型错误
+
+场景3：工具执行失败
+用户：&quot;查询XXX角色信息&quot;
+工具返回：{&quot;error&quot;: &quot;角色不存在&quot;} ← API返回错误
+
+场景4：网络异常
+调用外部API时超时或连接失败</code></pre></div>
+<p data-source-page="2">如果不处理这些错误，整个流程就会崩溃。</p>
+<p data-source-page="2">基础错误处理</p>
+<p data-source-page="2">从工程视角看，要让 Function Calling 不“崩”，至少要在调用循环里补上几道保护：</p>
+<p class="list-item" data-source-page="2">使用 max_iterations 限制整体循环次数，防止 LLM 在工具调用和回答之间来回跳转造成死循环。</p>
+<p class="list-item" data-source-page="2">在每一轮中，对工具名称、参数解析、函数执行分别加上 try/except，把错误转化为结构化的信息返回给 LLM，而不是让程序直接抛异常退出。</p>
+<p class="list-item" data-source-page="2">在最外层再包一层 API 调用保护，一旦底层模型调用失败，就给出清晰的系统错误提示，而不是静默挂掉。</p>
+<aside class="callout" data-source-page="2"><b>阅读提示</b><p>代码出处 以下伪代码节选自配套源码 robust_function_calling.py 中的robust_function_call 函数，仅保留了错误处理相关的核心逻辑。</p></aside>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">max_iterations = 5
+iteration = 0
+
+while iteration &lt; max_iterations:
+    # 1. 调用 LLM，拿到本轮的决策
+    message = call_llm_with_tools(messages)
+
+    # 2. 如果没有 tool_calls，说明可以直接给出最终回答
+    if not message.tool_calls:
+        return message.content
+
+    # 3. 先把 LLM 的决策写入对话历史
+    messages.append(message)
+
+    # 4. 依次执行本轮的每个工具调用
+    for tool_call in message.tool_calls:
+        try:
+            function_name = tool_call.function.name
+            check_tool_exists(function_name)          # 验证工具存在
+
+            arguments = parse_arguments(tool_call)    # 解析参数，可能失败
+            result = run_function(function_name, arguments)  # 执行函数
+
+            append_tool_result(messages, tool_call.id, result)  # 正常结果写回
+        except Exception as e:
+            append_tool_error(messages, tool_call.id, e)       # 出错信息写回，让 LLM 自行
+处理
+
+# 超过最大轮数仍未完成，给出兜底提示
+return &quot;处理超时，请简化问题后重试。&quot;</code></pre></div>
+<p data-source-page="3">上面代码中有一个关键设计：当工具执行失败时，错误信息以 {&quot;error&quot;: &quot;...&quot;} 的格式返回给 LLM。</p>
+<p data-source-page="3">下面通过一个具体例子来看：</p>
+<p data-source-page="3">角色不存在的例子</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户：&quot;查一下雷电将军和八重神子哪个输出高？&quot;
+
+第1次LLM调用 → tool_calls = [
+    get_character_info(&quot;雷电将军&quot;),
+    get_character_info(&quot;八重神子&quot;)
+]
+
+执行结果：
+- get_character_info(&quot;雷电将军&quot;) → {&quot;error&quot;: &quot;角色不存在&quot;}
+- get_character_info(&quot;八重神子&quot;) → {&quot;error&quot;: &quot;角色不存在&quot;}
+
+第2次LLM调用 → 看到两个错误
+LLM思考：&quot;数据库里没有这两个角色，我不能瞎编&quot;
+返回 content = &quot;抱歉，数据库中没有雷电将军和八重神子的信息。
+              目前支持的角色有：胡桃、甘雨...&quot;</code></pre></div>
+<p data-source-page="4">LLM 不知道工具调用失败了，可能基于空数据胡乱回答。</p>
+<p data-source-page="4">反过来，当 LLM 能收到错误信息，情况完全不同——LLM 知道查询失败的原因，可以给出准确的错误提示。</p>
+<h2 id="section-20" data-source-page="4">5.2 定义工具时对照这张清单<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">第2节已经详细讲过“如何定义一个好的工具”，这里不再重复原理，只给出一份可以在实战中快速对照的检查清单——写 tools JSON 定义时放在旁边当自检表。</p>
+<p class="list-item" data-source-page="4">☐ name 是否清晰且符合函数命名规范？</p>
+<p class="list-item" data-source-page="4">☐ description 是否说明了工具的用途？</p>
+<p class="list-item" data-source-page="4">☐ description 是否说明了适用场景？</p>
+<p class="list-item" data-source-page="4">☐ 每个参数是否都有 description？</p>
+<p class="list-item" data-source-page="4">☐ description 中是否给出了示例值？</p>
+<p class="list-item" data-source-page="4">☐ 是否标明了 required 参数？</p>
+<p class="list-item" data-source-page="4">☐ 类型定义是否准确？</p>
+<p class="list-item" data-source-page="4">☐ 能否使用 enum 限制参数范围？</p>
+<p class="list-item" data-source-page="4">☐ 工具之间的职责是否清晰不重叠？</p>
+<p data-source-page="4">如果 LLM 经常选错工具或传错参数，检查以下几点：</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p class="list-item" data-source-page="5">描述太模糊？ → 补充具体的使用场景和参数示例</p>
+<p data-source-page="5">描述太模糊？</p>
+<p class="list-item" data-source-page="5">功能重叠？ → 明确区分不同工具的职责边界</p>
+<p data-source-page="5">功能重叠？</p>
+<p class="list-item" data-source-page="5">参数太复杂？ → 考虑拆分成多个简单工具</p>
+<p data-source-page="5">参数太复杂？</p>
+<p class="list-item" data-source-page="5">缺少约束？ → 使用 enum 和 required 限制输入</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">enum</code></pre></div>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">required</code></pre></div>
+<p data-source-page="5">缺少约束？</p>
+<h2 id="section-42" data-source-page="5">5.3 多工具如何协作<a class="heading-link" href="#section-42" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">单一职责原则</p>
+<p data-source-page="5">每个工具应该只做一件事，做好一件事。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># ✗ 不好的设计：一个工具做太多事
+def character_analysis(character_name, include_equipment=True,
+                       include_damage=True, include_team=True):
+    &quot;&quot;&quot;又查信息，又推荐装备，又算伤害，还分析队伍&quot;&quot;&quot;
+    # 功能太复杂，LLM 很难正确使用
+    pass
+
+# ✓ 好的设计：拆分成多个专注的工具
+def get_character_info(character_name):
+    &quot;&quot;&quot;只负责获取角色基础信息&quot;&quot;&quot;
+    pass
+
+def calculate_damage(character_name, weapon, artifact_set):
+    &quot;&quot;&quot;只负责计算伤害&quot;&quot;&quot;
+    pass
+
+def recommend_team(character_name):
+    &quot;&quot;&quot;只负责推荐队伍搭配&quot;&quot;&quot;
+    pass</code></pre></div>
+<p data-source-page="6">每个工具只做一件事，LLM 更容易理解每个工具的作用、参数更简单出错率更低、而且可以灵活组合而非强制执行所有功能。</p>
+<p data-source-page="6">工具要保持独立性</p>
+<p data-source-page="6">每个工具应该是独立可用的，不要在 description 中写明必须先调用其他工具。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># ✗ 不好的定义：硬编码依赖关系
+{
+    &quot;name&quot;: &quot;calculate_damage&quot;,
+    &quot;description&quot;: &quot;计算伤害。必须先调用 get_character_info 获取角色数据。&quot;,
+    # ← 问题：假设了固定的调用顺序，限制了灵活性
+    &quot;parameters&quot;: {...}
+}
+
+# ✓ 好的定义：工具独立可用
+{
+    &quot;name&quot;: &quot;calculate_damage&quot;,
+    &quot;description&quot;: &quot;根据角色、武器和圣遗物计算伤害期望值。如果不指定装备，将使用当前装备。&quot;,
+    # ← 只描述自己的功能，不提其他工具
+    &quot;parameters&quot;: {
+        &quot;character_name&quot;: &quot;...&quot;,
+        &quot;weapon&quot;: &quot;...（可选）&quot;,  # ← 通过默认参数实现灵活性
+        &quot;artifact_set&quot;: &quot;...（可选）&quot;
+    }
+}</code></pre></div>
+<p data-source-page="7">可以这样理解为什么工具要保持独立：硬编码&quot;先调用 A 再调用 B&quot;的依赖关系，等于限制了组合灵活性，也会让 LLM 困惑——它完全能推断出&quot;先查信息再算伤害&quot;的顺序，不需要人工指定。</p>
+<p data-source-page="7">工具描述只说明自己能做什么即可。</p>
+<p data-source-page="7">自己能做什么</p>
+<p data-source-page="7">避免工具功能重叠</p>
+<p data-source-page="7">如果两个工具功能相似，LLM 会困惑，不知道该选哪个。</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># ✗ 不好的设计：功能重叠
+{
+    &quot;name&quot;: &quot;get_weather&quot;,
+    &quot;description&quot;: &quot;获取天气信息&quot;,
+    ...
+},
+{
+    &quot;name&quot;: &quot;query_weather&quot;,  # ← 和上面有什么区别？
+    &quot;description&quot;: &quot;查询天气数据&quot;,
+    ...
+}</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-56" data-source-page="8">5.4 性能与成本控制<a class="heading-link" href="#section-56" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">减少不必要的工具定义</p>
+<p data-source-page="8">只暴露用户真正需要的工具。</p>
+<p data-source-page="8">如果你的系统有20个内部函数，但用户只会用到其中5个，就只定义这5个工具。</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 假设你有这些函数
+def get_character_info(...): pass
+def get_weapon_info(...): pass
+def get_artifact_info(...): pass
+def calculate_damage(...): pass
+def recommend_team(...): pass
+def analyze_abyss(...): pass
+def check_event(...): pass
+# ... 还有更多
+
+# ✗ 不好：把所有函数都暴露给 LLM
+tools = [定义所有20个工具]
+# LLM 需要从20个工具中选择，容易选错
+
+# ✓ 好：只暴露高频核心工具
+tools = [
+    get_character_info,
+    calculate_damage,
+    recommend_team
+]
+# LLM 从3个工具中选择，准确率高</code></pre></div>
+<h2 id="section-61" data-source-page="8">5.5 常见的坑与对策<a class="heading-link" href="#section-61" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">LLM 可能会&quot;创造&quot;参数值</p>
+<p data-source-page="8">即使写了很详细的 description，LLM 有时还是会传入意料之外的值：</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 期望的调用
+get_character_info(&quot;胡桃&quot;)
+
+# LLM 可能传入
+get_character_info(&quot;Hu Tao&quot;)         # 英文名
+get_character_info(&quot;胡桃(火)&quot;)       # 带属性
+get_character_info(&quot;香菱的好朋友&quot;)   # 描述性文字</code></pre></div>
+<p data-source-page="9">在函数内部做映射和容错</p>
+<p data-source-page="9">详细实现请参考源码的 get_character_info 函数，核心逻辑：</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 名称标准化映射表
+name_mapping = {
+    &quot;hu tao&quot;: &quot;胡桃&quot;,
+    &quot;hutao&quot;: &quot;胡桃&quot;,
+    &quot;胡桃(火)&quot;: &quot;胡桃&quot;,
+    &quot;香菱的好朋友&quot;: &quot;胡桃&quot;,
+    # ...
+}
+
+# 统一转换为小写查找
+normalized_name = character_name.lower().strip()
+if normalized_name in name_mapping:
+    character_name = name_mapping[normalized_name]</code></pre></div>
+<h3 id="section-68" data-source-page="9">处理用户未说明参数<a class="heading-link" href="#section-68" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">很多时候用户不会把所有参数说全，比如只说&quot;查一下天气&quot;，却没说城市和日期。这类情况本质上是&quot;关键参数缺省&quot;，需要在工具定义和实现里约定好如何补全或反问。</p>
+<p data-source-page="9">设置默认值</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def get_weather(city: str = &quot;上海&quot;, date: str = &quot;今天&quot;):
+    &quot;&quot;&quot;默认查询上海今天的天气&quot;&quot;&quot;
+    ...</code></pre></div>
+<p data-source-page="9">让 LLM 反问用户</p>
+<p data-source-page="9">在工具定义中说明：</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+    &quot;description&quot;: &quot;获取指定城市的天气。如果用户没有说明城市，请先询问用户所在城市。&quot;
+}</code></pre></div>
+<h3 id="section-75" data-source-page="10">控制成本<a class="heading-link" href="#section-75" aria-label="链接至本节">#</a></h3>
+<p data-source-page="10">分场景加载工具</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">if &quot;天气&quot; in user_input:
+    tools = weather_tools
+elif &quot;角色&quot; in user_input:
+    tools = game_tools
+else:
+    tools = common_tools</code></pre></div>
+<p data-source-page="10">缓存常见查询结果</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">import functools
+
+@functools.lru_cache(maxsize=100)
+def get_character_info(character_name: str):
+    &quot;&quot;&quot;同一角色的信息会被缓存&quot;&quot;&quot;
+    return CHARACTER_DB.get(character_name)</code></pre></div>
+<p data-source-page="10">lru_cache 装饰器详解</p>
+<p data-source-page="10">lru_cache 是 Python 内置的缓存装饰器，会自动记录函数的调用结果。</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 第1次调用：执行函数，查询数据库
+result1 = get_character_info(&quot;胡桃&quot;)  # ← 真正执行
+
+# 第2次调用同一参数：直接返回缓存结果
+result2 = get_character_info(&quot;胡桃&quot;)  # ← 从缓存读取，极快！
+
+# 不同参数：重新执行
+result3 = get_character_info(&quot;甘雨&quot;)  # ← 真正执行</code></pre></div>
+<p data-source-page="10">参数说明：maxsize=100 表示最多缓存 100 个不同的调用结果，超过后删除最久未使用的缓存（LRU= Least Recently Used）。</p>
+<p data-source-page="10">只适用于不变数据（如角色基础信息）；如果数据会变化（如实时天气），不要使用缓存。</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<h2 id="section-85" data-source-page="11">5.6 一份完整的示例代码<a class="heading-link" href="#section-85" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">前面几节从错误处理、工具定义、多工具协作、成本控制等维度拆解了&quot;理想版 Function Calling&quot;在工程上需要补齐的细节。这一节，把这些技巧全部落到一份可以直接运行的示例里，方便完整体验一个&quot;健壮版&quot; FC 流程：</p>
+<aside class="callout" data-source-page="11"><b>阅读提示</b><p>本节配套完整示例源码：samples/chapter6/robust_function_calling.py</p></aside>
+<p data-source-page="11">建议按下面的方式使用这份源码：</p>
+<p class="list-item" data-source-page="11">先跑通源码，体验一轮完整的工具调用对话。</p>
+<p class="list-item" data-source-page="11">对照前面各小节，分别在源码里找到对应的实现位置（错误处理、检查清单、多工具协作、缓存等）。</p>
+<p class="list-item" data-source-page="11">结合自己项目的需求，按“检查清单”的方式，一项项把这些防护和优化搬到真实系统中。</p>
+<h2 id="section-92" data-source-page="11">5.7 下一节预告<a class="heading-link" href="#section-92" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">在这一节，“理想版 Function Calling” 升级成了可以跑在真实系统里的&quot;健壮版&quot;：补哪些防线、如何在代码里实现这些防线、如何用完整示例源码做自检，这些都已梳理清楚。但当系统越来越复杂、工具越来越多，仅靠手工维护 Function Calling 逻辑就会变得吃力——需要一种更&quot;工程化&quot;的方式来组织这些工具和后端能力。</p>
+<p data-source-page="11">现在，是时候把视角从&quot;单个应用里的 Function Calling&quot;提升到&quot;整个系统的能力编排&quot;了：如何在多服务、多工具的场景下，让 AI 安全地、可观测地调用一切？ 下一章将从这个问题出发，系统讲解 MCP（Model Context Protocol），看看它是如何在 Function Calling 之上，提供一套标准化的&quot;工具接入与管理&quot;方案的。</p>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<h2 id="section-95" data-source-page="12">5.8 ■ 学点英语<a class="heading-link" href="#section-95" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="12"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>单一职责原则</td><td>Single Responsibility Principle</td><td>/ˈsɪŋɡl rɪ spɒnsə ˌ ˈbɪləti ˈprɪnsəpl/</td><td>每个工具只做一件事、做好一件事的工具设计原则</td></tr><tr><td>名称标准化映射</td><td>Name Normalization Mapping</td><td>/neɪm nɔːməlaɪ ˌ ˈzeɪʃn ˈmæpɪŋ/</td><td>在函数内部处理LLM传入的变体名称，统一转换为标准值的容错策略</td></tr><tr><td>分场景加载</td><td>Scenario-based Tool Loading</td><td>/sɪˈnɑːriəʊ beɪst tuːl ˈləʊdɪŋ/</td><td>根据用户输入关键词预判业务场景、只加载该场景相关工具的性能优化策略</td></tr><tr><td>最近最少使用缓存</td><td>lru cache _</td><td>/lruː kæʃ/</td><td>Python内置缓存装饰器，自动记录函数调用结果，对不变数据节省重复查询成本</td></tr><tr><td>工程化防线</td><td>Engineering Guardrails</td><td>/ endʒɪˈnɪərɪŋ ˌ ˈɡɑːdreɪlz/</td><td>围绕FC调用流程构建的错误处理、安全检查、超时兜底等工程保护机制</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-109.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>实战：游戏装备查询</strong><small>实战：游戏装备查询</small></a><a class="chapter-neighbor next" href="lesson-111.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>为什么需要 MCP</strong><small>MCP核心概念</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5277#mid=104929" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">5.1 Function Calling的工程化防线</a><a href="#section-20" class="toc-level-2">5.2 定义工具时对照这张清单</a><a href="#section-42" class="toc-level-2">5.3 多工具如何协作</a><a href="#section-56" class="toc-level-2">5.4 性能与成本控制</a><a href="#section-61" class="toc-level-2">5.5 常见的坑与对策</a><a href="#section-68" class="toc-level-3">处理用户未说明参数</a><a href="#section-75" class="toc-level-3">控制成本</a><a href="#section-85" class="toc-level-2">5.6 一份完整的示例代码</a><a href="#section-92" class="toc-level-2">5.7 下一节预告</a><a href="#section-95" class="toc-level-2">5.8 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-110", "title": "Function Calling进阶实战", "stage": 3, "week": 6, "module": "Function Calling进阶实战", "minutes": 17, "pages": 12, "type": "article"}</script>
+</body></html>

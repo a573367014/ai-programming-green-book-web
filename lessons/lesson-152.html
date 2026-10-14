@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>CrewAI框架：构建多Agent协作系统 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-152">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-6">智能体</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 12 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>CrewAI 实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 153</span></div>
+<h1 class="lesson-title">CrewAI框架：构建多Agent协作系统</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>20 页原文</span><span>约 27 分钟阅读</span><span class="module-name">CrewAI 实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-152.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-152.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>在上一节中，我们深入了解了Google A2A协议——一个为Agent间通信建立标准的协议。但仅有通信标准还不够，我们还需要一个高效的框架来编排和管理多个Agent的协作。 举个场景：你要组织一场大型活动，需要策划、执行、宣传等多个团队协同工作。如果只靠口头协调，效率会很低。你需要项目管理工具来分配任务、跟踪进度、协调资源。 CrewAI就是这样一个&quot;项目管理工具&quot;，专门用于管理多Agent系统的协作。它让Agent团队能够： 明确各自的角色和职责 按照预定义的流程执行任务 自动处理任务依赖和数据传递 监控执行状态并处理异常 本节将从理论出发，系统性地介绍CrewAI框架的核心概念和工作机制，并通过教育场景的实例来加深理解。当然，只看本小节肯定不能很好的理解。建议结合后续的实战代码一起理解。</p></aside>
+<h2 id="section-1" data-source-page="1">为什么需要CrewAI框架<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<h3 id="section-2" data-source-page="1">多Agent协作的根本挑战<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">在构建多Agent系统时，会面临几个根本性的挑战：</p>
+<p data-source-page="1">依赖管理复杂性：多个Agent之间往往存在复杂的依赖关系。一个Agent的输出可能是另一个Agent的输入，手动管理这些依赖既繁琐又容易出错。</p>
+<p data-source-page="1">执行顺序控制：不同任务需要按照特定的顺序执行，某些任务必须等待前置任务完成后才能开始，这种时序控制需要精确的协调机制。</p>
+<p data-source-page="1">状态跟踪困难：在复杂的协作流程中，很难实时跟踪每个Agent的执行状态、进度和中间结果。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">错误传播处理：当某个Agent执行失败时，如何优雅地处理错误并向其他Agent传达，避免整个系统崩溃。</p>
+<p data-source-page="2">传统解决方案的局限</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 传统手动编排的局限性
+def manual_orchestration():
+    # 步骤1：执行Agent A
+    result_a = agent_a.run(input_data)
+
+    # 步骤2：基于A的结果执行Agent B
+    result_b = agent_b.run(result_a)
+
+    # 步骤3：基于B的结果执行Agent C
+    result_c = agent_c.run(result_b)
+
+    # 错误处理需要在每个步骤中重复
+    # 依赖关系需要手动维护
+    # 执行状态难以统一监控</code></pre></div>
+<p data-source-page="2">这种方式的主要问题：</p>
+<p class="list-item" data-source-page="2">代码冗余：每个项目都需要重复编写类似的编排逻辑</p>
+<p data-source-page="2">代码冗余</p>
+<p class="list-item" data-source-page="2">维护困难：流程变更需要修改大量代码</p>
+<p data-source-page="2">维护困难</p>
+<p class="list-item" data-source-page="2">扩展性差：增加新的Agent或调整流程非常困难</p>
+<p data-source-page="2">扩展性差</p>
+<p class="list-item" data-source-page="2">缺乏标准化：不同项目采用不同的编排方式</p>
+<p data-source-page="2">缺乏标准化</p>
+<h3 id="section-19" data-source-page="2">CrewAI的核心价值<a class="heading-link" href="#section-19" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">CrewAI框架通过声明式的方式来解决上述根本性问题，让多Agent协作变得简单而优雅：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># CrewAI的简洁之美 - 三行代码搞定复杂协作
+from crewai import Crew, Agent, Task
+
+# 只需定义角色、任务和依赖关系
+crew = Crew(
+    # 定义2个Agent
+    agents=[Agent(role=&quot;分析师&quot;), Agent(role=&quot;写手&quot;)],
+    tasks=[
+        # 任务1由Agent0来执行
+        Task(description=&quot;分析数据&quot;, agent=agents[0]),
+        # 任务2由Agent1来执行
+        Task(description=&quot;撰写报告&quot;, agent=agents[1], context=[tasks[0]])
+    ]
+)
+
+# 开始执行，自动处理所有复杂性
+result = crew.kickoff()</code></pre></div>
+<p data-source-page="3">这就是CrewAI的魅力：声明即执行。开发者只需描述&quot;要做什么&quot;和&quot;谁来做&quot;，框架自动处理：</p>
+<p class="list-item" data-source-page="3">任务调度和执行顺序</p>
+<p class="list-item" data-source-page="3">数据在Agent间的传递</p>
+<p class="list-item" data-source-page="3">错误处理和状态监控</p>
+<p class="list-item" data-source-page="3">执行日志和进度跟踪</p>
+<p data-source-page="3">相比传统手动编排需要数十行代码处理各种细节，CrewAI让复杂协作变得如此简单。</p>
+<h2 id="section-28" data-source-page="3">CrewAI核心概念<a class="heading-link" href="#section-28" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">理解CrewAI就像理解一个现代化的企业组织架构：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">公司(Crew)
+  ↳ 多个部门团队协同工作
+─────────────────────────────────────
+  部门员工(Agent)  ←→  专业角色
+    ↳ 各司其职，有明确的职责和能力
+─────────────────────────────────────
+  工作任务(Task)   ←→  具体工作
+    ↳ 定义做什么、谁来做、怎么做
+─────────────────────────────────────
+  运行模式(Process) ←→ 管理机制
+    ↳ 决策流程和协作方式</code></pre></div>
+<p data-source-page="4">CrewAI框架正是基于这样的组织思维设计的：</p>
+<p class="list-item" data-source-page="4">Crew（团队）：多Agent协作的基本组织单位</p>
+<p data-source-page="4">Crew（团队）</p>
+<p class="list-item" data-source-page="4">Agent（员工）：具有特定角色和能力的执行单元</p>
+<p data-source-page="4">Agent（员工）</p>
+<p class="list-item" data-source-page="4">Task（任务）：定义具体工作内容和执行标准</p>
+<p data-source-page="4">Task（任务）</p>
+<p class="list-item" data-source-page="4">Process（流程）：控制任务执行的管理模式</p>
+<p data-source-page="4">Process（流程）</p>
+<p data-source-page="4">让我们逐一深入理解这四个核心概念：</p>
+<h3 id="section-41" data-source-page="4">Crew（团队）- 协作的组织单位<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">理论定义：Crew是CrewAI中多Agent协作的基本组织单位，类似于现实世界中的项目团队。它将多个具有不同专业能力的Agent组织在一起，按照预定义的流程协同完成复杂任务。</p>
+<p data-source-page="4">核心组成要素：</p>
+<p class="list-item" data-source-page="4">Agents集合：多个具有不同角色和专长的Agent</p>
+<p data-source-page="4">Agents集合</p>
+<p class="list-item" data-source-page="4">Tasks序列：预定义的工作任务流程</p>
+<p data-source-page="4">Tasks序列</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p class="list-item" data-source-page="5">Process模式：任务执行的控制模式（顺序或层级）</p>
+<p data-source-page="5">Process模式</p>
+<p class="list-item" data-source-page="5">配置参数：执行环境和行为控制选项</p>
+<p data-source-page="5">配置参数</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 创建一个Crew
+basic_crew = Crew(
+    agents=[agent1, agent2, agent3],  # Agent团队
+    tasks=[task1, task2, task3],      # 任务序列
+    process=Process.sequential,       # 执行模式
+    verbose=True                      # 日志级别
+)</code></pre></div>
+<p data-source-page="5">设计原则：</p>
+<p data-source-page="5">设计原则</p>
+<p class="list-item" data-source-page="5">每个Crew应该有明确的业务目标</p>
+<p class="list-item" data-source-page="5">Agent的技能组合应该覆盖任务所需的所有专业领域</p>
+<p class="list-item" data-source-page="5">任务流程应该反映实际的业务逻辑依赖关系</p>
+<h3 id="section-58" data-source-page="5">Agent（智能体）- 执行单元<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">理论定义：Agent是Crew中的基本执行单元，代表具有特定角色、目标和能力的智能实体。每个Agent都是一个独立的决策主体，能够在给定的约束条件下自主完成分配的任务。</p>
+<p data-source-page="5">核心属性：</p>
+<p class="list-item" data-source-page="5">Role（角色）：Agent的身份标识和专业定位</p>
+<p data-source-page="5">Role（角色）</p>
+<p class="list-item" data-source-page="5">Goal（目标）：Agent需要达成的具体目标</p>
+<p data-source-page="5">Goal（目标）</p>
+<p class="list-item" data-source-page="5">Backstory（背景）：影响Agent行为模式的专业背景</p>
+<p data-source-page="5">Backstory（背景）</p>
+<p class="list-item" data-source-page="5">Tools（工具）：Agent可用的外部能力集合（非常重要）</p>
+<p data-source-page="5">Tools（工具）</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p class="list-item" data-source-page="6">LLM配置：底层语言模型的配置参数</p>
+<p data-source-page="6">LLM配置</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Agent的完整定义
+professional_agent = Agent(
+    role=&quot;数据分析师&quot;,                    # 专业角色
+    goal=&quot;从数据中提取有价值的洞察&quot;,       # 具体目标
+    backstory=&quot;拥有10年数据分析经验的专业人士&quot;, # 专业背景
+    tools=[data_processor, visualization], # 专业工具
+    llm=ChatOpenAI(model=&quot;gpt-5&quot;)        # AI能力配置
+)</code></pre></div>
+<p data-source-page="6">行为特征：</p>
+<p data-source-page="6">行为特征</p>
+<p class="list-item" data-source-page="6">基于角色和目标做出决策</p>
+<p class="list-item" data-source-page="6">能够使用工具扩展自身能力</p>
+<p class="list-item" data-source-page="6">在任务执行中保持一致性</p>
+<h3 id="section-77" data-source-page="6">Task（任务）- 工作单元<a class="heading-link" href="#section-77" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">理论定义：Task是Crew中最小的工作单元，定义了具体需要完成的工作内容、负责的Agent以及期望的输出结果。Task之间可以通过依赖关系形成复杂的工作流。</p>
+<p data-source-page="6">核心要素：</p>
+<p class="list-item" data-source-page="6">Description（描述）：详细的工作内容说明</p>
+<p data-source-page="6">Description（描述）</p>
+<p class="list-item" data-source-page="6">Agent（负责人）：负责执行此任务的Agent</p>
+<p data-source-page="6">Agent（负责人）</p>
+<p class="list-item" data-source-page="6">Expected Output（期望输出）：任务完成标准和输出格式</p>
+<p data-source-page="6">Expected Output（期望输出）</p>
+<p class="list-item" data-source-page="6">Context（上下文）：依赖的前置任务结果</p>
+<p data-source-page="6">Context（上下文）</p>
+<p class="list-item" data-source-page="6">Tools（专用工具）：此任务可使用的特定工具</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">Tools（专用工具）</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Task的完整定义
+analysis_task = Task(
+    description=&quot;分析用户行为数据，识别关键趋势和异常模式&quot;,
+    agent=data_analyst,                    # 指定执行Agent
+    expected_output=&quot;包含趋势图表和洞察结论的分析报告&quot;,
+    context=[data_collection_task],        # 依赖前置任务
+    tools=[statistical_analyzer]           # 专用分析工具
+)</code></pre></div>
+<p data-source-page="7">依赖机制：</p>
+<p data-source-page="7">依赖机制</p>
+<p class="list-item" data-source-page="7">Context属性建立任务间的依赖关系</p>
+<p class="list-item" data-source-page="7">前置任务的输出自动成为后续任务的输入</p>
+<p class="list-item" data-source-page="7">支持多对多的复杂依赖拓扑</p>
+<aside class="callout" data-source-page="7"><b>阅读提示</b><p>大多数时候，一个复杂的任务会由多个Task构成。这些Task之间会形成工作流，具体的组织结构由后续的Process来决定。</p></aside>
+<p data-source-page="7">Task与Agent的区别 - 常见混淆点</p>
+<p data-source-page="7">很多初学者容易混淆Task和Agent，这里我们明确两者的本质区别：</p>
+<p data-source-page="7">Agent是&quot;谁&quot;，Task是&quot;做什么&quot;：</p>
+<p data-source-page="7">Agent是&quot;谁&quot;，Task是&quot;做什么&quot;</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Agent：定义能力和角色
+analyst = Agent(
+    role=&quot;数据分析师&quot;,           # 我是谁
+    goal=&quot;提供数据洞察&quot;,         # 我的职责
+    tools=[data_tool, viz_tool]  # 我能用什么工具
+)
+
+# Task：定义具体工作
+task = Task(
+    description=&quot;分析本月销售数据&quot;,  # 做什么
+    agent=analyst,                  # 谁来做
+    expected_output=&quot;分析报告&quot;      # 要什么结果
+)</code></pre></div>
+<p data-source-page="8">简单来说，Agent可以理解成员工，Agent通常会定义员工的能力，但并不涉及他具体做什么；但Task不同，Task（任务）就是明确要做的事情，是业务。 比如有A员工擅长Java Web开发；B员工擅长Python数据分析，这就是Agent，他们并不涉及具体的任务。 而Task类似我要用Java语言开发一个Web网站，那么很显然A员工就是合适的完成此任务的Agent。</p>
+<p data-source-page="8">核心差异对比：</p>
+<p data-source-page="8">核心差异对比</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">维度</th><th scope="col">Agent（能力主体）</th><th scope="col">Task（工作指令）</th></tr></thead><tbody><tr><td>定位</td><td>专业人员</td><td>具体任务</td></tr><tr><td>定义内容</td><td>角色、目标、工具</td><td>工作内容、标准</td></tr><tr><td>可复用性</td><td>可执行多个Task</td><td>一次性工作</td></tr><tr><td>生命周期</td><td>Crew存续期间持续存在</td><td>执行完成后结束</td></tr></tbody></table></div>
+<p data-source-page="8">容易混淆的场景：</p>
+<p data-source-page="8">容易混淆的场景</p>
+<p data-source-page="8">场景1：Agent有tools，Task也有tools？</p>
+<p class="list-item" data-source-page="8">Agent的tools：这个Agent通常可以使用的工具集合</p>
+<p class="list-item" data-source-page="8">Task的tools：限制此任务只能使用这些特定工具</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Agent级别的tools - 通用能力
+analyst = Agent(role=&quot;分析师&quot;, tools=[general_tool, data_tool, viz_tool])
+
+# Task级别的tools - 限制工具范围
+task = Task(
+    description=&quot;分析销售数据&quot;,
+    agent=analyst,
+    tools=[data_tool]  # 执行这个任务时，只能用data_tool
+)</code></pre></div>
+<p data-source-page="9">工具使用规则：</p>
+<p data-source-page="9">工具使用规则</p>
+<p class="list-item" data-source-page="9">如果Task指定了tools：Agent只能使用Task指定的这些工具（即使Agent有其他工具也不能用）</p>
+<p class="list-item" data-source-page="9">如果Task没指定tools：Agent可以使用自己的所有工具</p>
+<p data-source-page="9">这种机制的好处是可以针对特定任务限制工具使用范围，提高安全性和执行效率。</p>
+<p data-source-page="9">场景2：一个Agent可以执行多个Task吗？ 可以！一个Agent就像一个员工，可以承担多项工作：</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">analyst = Agent(role=&quot;数据分析师&quot;)
+
+task1 = Task(description=&quot;分析用户数据&quot;, agent=analyst)
+task2 = Task(description=&quot;分析销售数据&quot;, agent=analyst)
+task3 = Task(description=&quot;生成月度报告&quot;, agent=analyst)
+# 同一个Agent执行三个不同的任务</code></pre></div>
+<p data-source-page="9">场景3：一个Task可以分配给多个Agent吗？ 不可以！CrewAI中Task和Agent是1:1绑定关系，一个Task只能指定一个Agent负责执行。</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># ✗ 错误：Task不能分配给多个Agent
+task = Task(
+    description=&quot;复杂分析&quot;,
+    agent=[analyst1, analyst2]  # 这样是不行的
+)
+
+# ✓ 正确：需要拆分成多个Task
+task1 = Task(description=&quot;数据收集&quot;, agent=analyst1)
+task2 = Task(description=&quot;数据分析&quot;, agent=analyst2, context=[task1])</code></pre></div>
+<p data-source-page="9">Agent是人，Task是任务或者工单；人可以干多个活，但每个工单只能一个人负责。</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<h2 id="section-122" data-source-page="10">Process（执行模式）<a class="heading-link" href="#section-122" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">之前讨论过，完成一项复杂的工作可能需要多个任务（Task）。那么多个任务之间是什么关系？Process就定义了Crew中多个Task的执行模式，决定了任务如何被调度和执行。</p>
+<p data-source-page="10">CrewAI提供两种主要的执行模式来适应不同的协作需求。理解这两种模式的差异，对于设计高效的多Agent系统至关重要。</p>
+<h3 id="section-125" data-source-page="10">Sequential（顺序模式）<a class="heading-link" href="#section-125" aria-label="链接至本节">#</a></h3>
+<p data-source-page="10">顺序模式是最简单直观的执行方式，任务严格按照定义的顺序依次执行。</p>
+<p data-source-page="10">核心特点：</p>
+<p class="list-item" data-source-page="10">任务严格按照定义顺序执行</p>
+<p class="list-item" data-source-page="10">每个任务必须等待前置任务完成后才能开始</p>
+<p class="list-item" data-source-page="10">前一个任务的输出自动成为下一个任务的上下文</p>
+<p class="list-item" data-source-page="10">适用于线性依赖的工作流程</p>
+<p data-source-page="10">代码示例：</p>
+<p data-source-page="10">代码示例</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from crewai import Crew, Agent, Task, Process
+
+# 定义三个Agent
+analyzer = Agent(role=&quot;数据分析师&quot;, goal=&quot;分析数据&quot;)
+designer = Agent(role=&quot;方案设计师&quot;, goal=&quot;设计方案&quot;)
+generator = Agent(role=&quot;内容生成器&quot;, goal=&quot;生成内容&quot;)
+
+# 定义三个任务，形成流水线
+analysis = Task(description=&quot;分析用户需求&quot;, agent=analyzer)
+design = Task(description=&quot;基于分析结果设计方案&quot;, agent=designer)
+generation = Task(description=&quot;基于设计方案生成内容&quot;, agent=generator)
+
+# 顺序执行模式
+sequential_crew = Crew(
+    agents=[analyzer, designer, generator],
+    tasks=[analysis, design, generation],
+    process=Process.sequential  # 严格的顺序执行
+)
+
+# 执行：analysis → design → generation
+result = sequential_crew.kickoff()</code></pre></div>
+<p data-source-page="11">执行流程：</p>
+<p data-source-page="11">执行流程</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Task 1 (分析)  →  完成  →  输出传递
+                          ↓
+Task 2 (设计)  →  完成  →  输出传递
+                          ↓
+Task 3 (生成)  →  完成  →  最终结果</code></pre></div>
+<aside class="callout" data-source-page="11"><b>补充说明</b><p>为什么Crew需要同时指定agents和tasks？ 你可能注意到，虽然每个Task已经指定了agent（如task = Task(agent=analyst)），但创建Crew时仍需要传入agents列表。这是因为：资源池管理：Crew需要知道有哪些Agent可用，统一管理它们的生命周期和资源 全局配置：Crew可以为所有Agent设置统一的配置（如LLM、memory、max_rpm等） Hierarchical模式：在层级模式下，Manager需要知道整个团队有哪些成员可以调配 简单理解：Task.agent指定&quot;谁来做这个任务&quot;，Crew.agents定义&quot;团队有哪些成员&quot;。</p></aside>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<h3 id="section-139" data-source-page="12">Hierarchical（层级模式）<a class="heading-link" href="#section-139" aria-label="链接至本节">#</a></h3>
+<p data-source-page="12">层级模式引入了一个Manager Agent来协调整个团队，这是一种更灵活、更智能的执行方式。</p>
+<aside class="callout" data-source-page="12"><b>重要</b><p>Manager的本质：Manager本质上是一个特殊的Agent，负责协调和管理其他Agent。它可以通过两种方式创建： 自动创建：通过manager_llm参数，CrewAI会自动创建一个Manager Agent 自定义：通过manager_agent参数，使用你自己定义的Manager Agent Manager Agent和普通Agent的区别在于职责：普通Agent负责执行具体任务，Manager Agent负责任务的规划、分配和监控。</p></aside>
+<p data-source-page="12">核心特点</p>
+<p class="list-item" data-source-page="12">引入Manager Agent作为协调者</p>
+<p class="list-item" data-source-page="12">Manager负责任务分解、分配和监控</p>
+<p class="list-item" data-source-page="12">支持动态任务分配和并行处理</p>
+<p class="list-item" data-source-page="12">其他Agent作为执行者，专注于各自的专业领域</p>
+<p data-source-page="12">工作机制：</p>
+<p data-source-page="12">在层级模式下，执行流程发生了本质变化：</p>
+<p class="list-item" data-source-page="12">Manager接管控制权：不再是简单的顺序执行，而是由Manager统一调度</p>
+<p data-source-page="12">Manager接管控制权</p>
+<p class="list-item" data-source-page="12">动态任务分解：Manager可以将复杂任务分解为多个子任务</p>
+<p data-source-page="12">动态任务分解</p>
+<p class="list-item" data-source-page="12">智能分配：Manager根据Agent的角色和能力，动态分配任务</p>
+<p data-source-page="12">智能分配</p>
+<p class="list-item" data-source-page="12">结果整合：Manager收集各个Agent的执行结果，进行整合和协调</p>
+<p data-source-page="12">结果整合</p>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<div class="code-block" data-source-page="13"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from crewai import Crew, Agent, Task, Process
+from langchain_openai import ChatOpenAI
+
+# 定义专业Agent（不需要定义Manager）
+researcher = Agent(
+    role=&quot;研究员&quot;,
+    goal=&quot;深入研究特定主题&quot;,
+    backstory=&quot;经验丰富的研究专家&quot;
+)
+
+analyst = Agent(
+    role=&quot;分析师&quot;,
+    goal=&quot;分析研究数据&quot;,
+    backstory=&quot;数据分析专家&quot;
+)
+
+writer = Agent(
+    role=&quot;写手&quot;,
+    goal=&quot;撰写专业报告&quot;,
+    backstory=&quot;专业技术写作者&quot;
+)
+
+# 定义任务（不需要指定具体的agent）
+research_task = Task(
+    description=&quot;研究人工智能最新发展&quot;,
+    expected_output=&quot;详细的研究报告&quot;
+)
+
+analysis_task = Task(
+    description=&quot;分析研究数据并提取关键洞察&quot;,
+    expected_output=&quot;数据分析结果&quot;
+)
+
+writing_task = Task(
+    description=&quot;撰写综合技术报告&quot;,
+    expected_output=&quot;完整的技术报告&quot;
+)
+
+# 层级执行模式
+hierarchical_crew = Crew(
+    agents=[researcher, analyst, writer],
+    tasks=[research_task, analysis_task, writing_task],
+    process=Process.hierarchical,
+    manager_llm=ChatOpenAI(model=&quot;gpt-4&quot;)  # Manager使用的LLM
+)
+
+# 执行：由Manager协调整个流程
+result = hierarchical_crew.kickoff()</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-14"></span>
+<div class="code-block" data-source-page="14"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Manager
+                    (协调者)
+                       ↓
+        ┌──────────────┼──────────────┐
+        ↓              ↓              ↓
+   Researcher      Analyst        Writer
+   (研究员)        (分析师)        (写手)
+        ↓              ↓              ↓
+   研究报告        分析结果        技术文档
+        └──────────────┼──────────────┘
+                       ↓
+                  Manager整合
+                       ↓
+                   最终结果</code></pre></div>
+<p data-source-page="14">关键差异：</p>
+<p data-source-page="14">关键差异</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="14"><table><thead><tr><th scope="col">维度</th><th scope="col">Sequential模式</th><th scope="col">Hierarchical模式</th></tr></thead><tbody><tr><td>控制方式</td><td>预定义顺序</td><td>Manager动态调度</td></tr><tr><td>Task分配</td><td>提前绑定Agent</td><td>Manager动态分配</td></tr><tr><td>执行方式</td><td>严格串行</td><td>可能并行</td></tr><tr><td>灵活性</td><td>固定流程</td><td>动态调整</td></tr><tr><td>适用场景</td><td>简单线性流程</td><td>复杂协调任务</td></tr></tbody></table></div>
+<p data-source-page="14">选择建议：</p>
+<p data-source-page="14">选择建议</p>
+<p class="list-item" data-source-page="14">优先选择Sequential：如果任务流程清晰、依赖关系明确</p>
+<p data-source-page="14">优先选择Sequential</p>
+<span class="source-page-anchor" id="pdf-page-15"></span>
+<p class="list-item" data-source-page="15">考虑Hierarchical：如果需要动态协调、并行处理或复杂决策</p>
+<p data-source-page="15">考虑Hierarchical</p>
+<p class="list-item" data-source-page="15">渐进升级：可以从Sequential开始，遇到瓶颈时再升级到Hierarchical</p>
+<h2 id="section-169" data-source-page="15">CrewAI执行机制详解<a class="heading-link" href="#section-169" aria-label="链接至本节">#</a></h2>
+<p data-source-page="15">数据传递机制</p>
+<p data-source-page="15">CrewAI提供多种数据传递方式：</p>
+<p data-source-page="15">直接传递：</p>
+<p data-source-page="15">直接传递</p>
+<div class="code-block" data-source-page="15"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 前置任务的输出直接作为后续任务的输入
+task_b = Task(
+    description=&quot;处理分析结果&quot;,
+    agent=processor,
+    context=[task_a]  # 自动获取task_a的输出
+)</code></pre></div>
+<p data-source-page="15">结构化传递：</p>
+<p data-source-page="15">结构化传递</p>
+<div class="code-block" data-source-page="15"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 通过特定字段传递数据
+task_c = Task(
+    description=&quot;生成报告&quot;,
+    agent=reporter,
+    context={
+        &quot;analysis_data&quot;: task_a.output,
+        &quot;processing_results&quot;: task_b.output
+    }
+)</code></pre></div>
+<p data-source-page="15">错误处理机制</p>
+<p data-source-page="15">CrewAI内置完善的错误处理体系，可以通过配置参数来控制异常情况下的行为：</p>
+<span class="source-page-anchor" id="pdf-page-16"></span>
+<div class="code-block" data-source-page="16"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 错误处理配置
+robust_crew = Crew(
+    agents=[agent1, agent2],
+    tasks=[task1, task2],
+    process=Process.sequential,
+    max_rpm=10,        # 速率限制：每分钟最多10次请求
+    max_retries=3,     # 最大重试次数：失败后最多重试3次
+    retry_delay=60     # 重试间隔：每次重试间隔60秒
+)</code></pre></div>
+<p data-source-page="16">参数详解：</p>
+<p data-source-page="16">参数详解</p>
+<p data-source-page="16">max_rpm（Rate Per Minute，每分钟请求数）：</p>
+<p data-source-page="16">max_rpm（Rate Per Minute，每分钟请求数）</p>
+<p class="list-item" data-source-page="16">作用：限制对LLM API的调用频率，防止超出API提供商的速率限制</p>
+<p data-source-page="16">作用</p>
+<p class="list-item" data-source-page="16">场景：当使用有速率限制的API时（如OpenAI的免费层级有RPM限制）</p>
+<p class="list-item" data-source-page="16">示例：max_rpm=10表示每分钟最多调用10次LLM API</p>
+<p data-source-page="16">示例</p>
+<p data-source-page="16">max_retries（最大重试次数）：</p>
+<p data-source-page="16">max_retries（最大重试次数）</p>
+<p class="list-item" data-source-page="16">作用：当任务执行失败时，自动重试的最大次数</p>
+<p class="list-item" data-source-page="16">示例：max_retries=3表示失败后会自动重试最多3次，加上首次执行共4次尝试</p>
+<p class="list-item" data-source-page="16">建议：一般设置2-3次，避免无限重试浪费资源</p>
+<p data-source-page="16">retry_delay（重试延迟，单位：秒）：</p>
+<p data-source-page="16">retry_delay（重试延迟，单位：秒）</p>
+<p class="list-item" data-source-page="16">作用：两次重试之间的等待时间</p>
+<p class="list-item" data-source-page="16">场景：给API服务恢复时间，避免立即重试导致连续失败</p>
+<p class="list-item" data-source-page="16">示例：retry_delay=60表示失败后等待60秒再重试</p>
+<p class="list-item" data-source-page="16">建议：根据错误类型调整，API限流建议60秒以上，网络问题可以短一些（10-30秒）</p>
+<span class="source-page-anchor" id="pdf-page-17"></span>
+<h2 id="section-201" data-source-page="17">日志与调试配置<a class="heading-link" href="#section-201" aria-label="链接至本节">#</a></h2>
+<p data-source-page="17">在开发和调试CrewAI应用时，详细的日志输出非常重要。CrewAI提供了verbose参数来控制日志的详细程度。</p>
+<p data-source-page="17">verbose参数详解</p>
+<p data-source-page="17">基本配置：</p>
+<p data-source-page="17">基本配置</p>
+<div class="code-block" data-source-page="17"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from crewai import Crew, Agent, Task, Process
+
+# 不同的verbose级别
+crew = Crew(
+    agents=[agent1, agent2],
+    tasks=[task1, task2],
+    process=Process.sequential,
+    verbose=True  # 或者 False, 0, 1, 2
+)</code></pre></div>
+<p data-source-page="17">verbose参数值说明：</p>
+<p data-source-page="17">verbose参数值说明</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="17"><table><thead><tr><th scope="col">参数值</th><th scope="col">含义</th><th scope="col">输出内容</th></tr></thead><tbody><tr><td>False 或 0</td><td>静默模式</td><td>只输出最终结果，不显示执行过程</td></tr><tr><td>True 或 1</td><td>标准模式</td><td>显示任务执行的关键步骤和结果</td></tr><tr><td>2</td><td>详细模式</td><td>显示完整的执行过程，包括工具调用、中间结果等</td></tr></tbody></table></div>
+<p data-source-page="17">不同模式的输出对比：</p>
+<p data-source-page="17">不同模式的输出对比</p>
+<p data-source-page="17">verbose=False（静默模式）：</p>
+<p data-source-page="17">verbose=False（静默模式）</p>
+<span class="source-page-anchor" id="pdf-page-18"></span>
+<div class="code-block" data-source-page="18"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">crew = Crew(
+    agents=[analyst],
+    tasks=[analysis_task],
+    verbose=False
+)
+result = crew.kickoff()
+# 输出：只有最终结果
+# &quot;数据分析完成：销售额增长15%&quot;</code></pre></div>
+<p data-source-page="18">verbose=True（标准模式）：</p>
+<p data-source-page="18">verbose=True（标准模式）</p>
+<div class="code-block" data-source-page="18"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">crew = Crew(
+    agents=[analyst],
+    tasks=[analysis_task],
+    verbose=True
+)
+result = crew.kickoff()
+# 输出：
+# &gt; Entering new CrewAgentExecutor chain...
+# &gt; Task: 分析销售数据
+# &gt; Agent: 数据分析师 正在工作...
+# &gt; Task完成：数据分析完成：销售额增长15%</code></pre></div>
+<p data-source-page="18">verbose=2（详细模式）：</p>
+<p data-source-page="18">verbose=2（详细模式）</p>
+<span class="source-page-anchor" id="pdf-page-19"></span>
+<div class="code-block" data-source-page="19"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">crew = Crew(
+    agents=[analyst],
+    tasks=[analysis_task],
+    verbose=2
+)
+result = crew.kickoff()
+# 输出：
+# &gt; Entering new CrewAgentExecutor chain...
+# &gt; Task: 分析销售数据
+# &gt; Agent: 数据分析师 正在工作...
+# &gt; 工具调用: data_analysis_tool
+#   输入: {&quot;data&quot;: &quot;sales_data.csv&quot;, &quot;metric&quot;: &quot;revenue&quot;}
+# &gt; 工具输出: {&quot;result&quot;: &quot;revenue_increased&quot;, &quot;percentage&quot;: 15}
+# &gt; Agent思考: 根据分析结果，销售额确实增长了...
+# &gt; 最终答案: 数据分析完成：销售额增长15%
+# &gt; Task完成</code></pre></div>
+<p data-source-page="19">使用建议：</p>
+<p data-source-page="19">使用建议</p>
+<p class="list-item" data-source-page="19">开发调试阶段：使用verbose=2 可以看到完整的执行流程 帮助定位问题和优化Prompt 理解Agent的决策过程</p>
+<p class="list-item" data-source-page="19">测试验证阶段：使用verbose=True 平衡信息量和可读性 关注关键步骤的执行情况 验证任务流程是否正确</p>
+<p class="list-item" data-source-page="19">生产环境：使用verbose=False 减少不必要的日志输出 提高执行效率 配合专业的日志系统使用</p>
+<p data-source-page="19">注意事项：</p>
+<p data-source-page="19">注意事项</p>
+<p class="list-item" data-source-page="19">verbose参数不影响程序的执行结果，只影响日志输出</p>
+<p class="list-item" data-source-page="19">详细模式会输出大量信息，可能影响控制台可读性</p>
+<p class="list-item" data-source-page="19">在生产环境建议关闭verbose，使用专门的日志系统记录关键信息</p>
+<p class="list-item" data-source-page="19">如果需要保存执行日志，可以使用output_log_file参数将日志输出到文件</p>
+<span class="source-page-anchor" id="pdf-page-20"></span>
+<h2 id="section-232" data-source-page="20">下一节预告<a class="heading-link" href="#section-232" aria-label="链接至本节">#</a></h2>
+<p data-source-page="20">掌握了CrewAI框架的理论基础和核心概念后，下一节我们将进入CrewAI实战进阶。 这将带你从理论学习走向真正的项目实战，构建能够解决实际业务问题的智能系统。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-151.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>实战：智能旅行规划Agent</strong><small>实战：智能旅行规划Agent</small></a><a class="chapter-neighbor next" href="lesson-153.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>CrewAI 最终实战：习题生成与考试评测系统</strong><small>CrewAI 实战</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5293#mid=105157" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">为什么需要CrewAI框架</a><a href="#section-2" class="toc-level-3">多Agent协作的根本挑战</a><a href="#section-19" class="toc-level-3">CrewAI的核心价值</a><a href="#section-28" class="toc-level-2">CrewAI核心概念</a><a href="#section-41" class="toc-level-3">Crew（团队）- 协作的组织单位</a><a href="#section-58" class="toc-level-3">Agent（智能体）- 执行单元</a><a href="#section-77" class="toc-level-3">Task（任务）- 工作单元</a><a href="#section-122" class="toc-level-2">Process（执行模式）</a><a href="#section-125" class="toc-level-3">Sequential（顺序模式）</a><a href="#section-139" class="toc-level-3">Hierarchical（层级模式）</a><a href="#section-169" class="toc-level-2">CrewAI执行机制详解</a><a href="#section-201" class="toc-level-2">日志与调试配置</a><a href="#section-232" class="toc-level-2">下一节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-152", "title": "CrewAI框架：构建多Agent协作系统", "stage": 6, "week": 12, "module": "CrewAI 实战", "minutes": 27, "pages": 20, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,1003 @@
+{
+  "id": "lesson-148",
+  "title": "实战：智能旅行规划Agent",
+  "code": "1-1",
+  "stage": 6,
+  "week": 11,
+  "week_title": "Agent：智能体架构",
+  "module": "实战：智能旅行规划Agent",
+  "type": "article",
+  "repo_path": "006-阶段六 【智能体】从单体到多体/001-第11周 Agent：智能体架构/003-实战：智能旅行规划Agent/006-图文-1-1-实战：智能旅行规划Agent.pdf",
+  "sha256": "98d3c94af164e3991aa93f1866d3dd3d93126a0bb76409e575ab135a33d2bcd1",
+  "pdf": "sources/pdf/lesson-148.pdf",
+  "pages": 9,
+  "source_url": "https://class.imooc.com/lesson/5291#mid=105153",
+  "minutes": 10,
+  "excerpt": "前面七节我们学习了Agent的理论、架构、能力和实现范式。现在，是时候把这些知识串起来，动手实现一个真正能用的Agent了。 本节我们将实现一个智能旅行规划Agent。你只需告诉它预算、时间和偏好，它就能自动生成一份完整的旅行方案——从目的地推荐到行程安排，从景点选择到预算分配。 这不是一个玩具项目",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 前面七节我们学习了Agent的理论、架构、能力和实现范式。现在，是时候把这些知识串起来，动手实现一个真正能用的Agent了。 本节我们将实现一个智能旅行规划Agent。你只需告诉它预算、时间和偏好，它就能自动生成一份完整的旅行方案——从目的地推荐到行程安排，从景点选择到预算分配。 这不是一个玩具项目。它融合了我们学过的所有核心能力： 四步决策流程（理解→检索→推理→生成） Chain of Thought推理 记忆系统（记住用户的旅行偏好） 混合实现范式（Code-driven框架 + Prompt-driven决策） 代码量不大（核心代码约300行），但麻雀虽小，五脏俱全。看完这个案例，你就能把前面的理论知识转化为实际的Agent开发能力。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "项目需求与功能设计",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "核心需求",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "作为一个智能旅行规划助手，Agent 需要接收用户的输入——预算范围、旅行天数、出发城市和旅行偏好；然后输出推荐的目的地、完整每日行程、预算分配方案和实用建议。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "进阶方面，它还需要记住用户的历史偏好（下次规划时自动参考），能够理解模糊需求（比如\"想去个不太热的地方\"），具备推理能力（“5月去哪里最合适？”/“预算不够怎么调整？”）。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h3",
+      "text": "功能拆解",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "根据前面学习的四步范式，将Agent拆分为：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Step 1: 需求理解与分析",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "解析用户输入的自然语言",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "提取关键信息（预算、天数、偏好）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "从记忆中读取用户历史偏好",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Step 2: 目的地检索与匹配",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "基于预算和偏好筛选候选目的地",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "考虑季节因素（5月适合去哪里？）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "排除不符合条件的选项",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Step 3: 行程规划推理（CoT）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "思考：如何合理分配天数？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "思考：景点之间的距离和交通？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "思考：预算如何分配到交通、住宿、餐饮？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "规划：生成完整的每日行程",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Step 4: 方案生成与记忆更新",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "生成易读的旅行方案",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "更新用户偏好记忆",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "提供个性化建议",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "技术架构设计",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "整体架构",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们采用混合实现范式：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Code-driven：控制主流程（四步顺序执行）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Prompt-driven：LLM负责推理和生成",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "核心模块",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. LLM调用模块——支持QWen API，提供统一调用接口，包含错误处理和重试机制。",
+      "page": 3,
+      "size": 17.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "2. 记忆管理模块——短期记忆保存当前对话上下文，长期记忆以JSON文件持久化存储用户画像，支持读取和更新。",
+      "page": 3,
+      "size": 17.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "3. 目的地知识库——简化版硬编码常见目的地数据，包含城市名、适合季节、主要景点、预算区间、标签等。",
+      "page": 3,
+      "size": 17.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "4. 推理引擎——实现Chain of Thought推理，生成可读的思考过程，基于推理结果生成行程。",
+      "page": 3,
+      "size": 17.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "项目结构与源码说明",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "项目目录结构",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "/travel_planner_agent/\n├── README.md                    # 完整的项目说明和使用指南\n├── requirements.txt             # Python依赖\n├── .env.example                 # 环境变量模板\n├── config.py                    # 配置文件（API密钥等）\n├── main.py                      # 主程序入口\n├── agent/\n│   ├── __init__.py\n│   ├── travel_agent.py         # Agent核心逻辑（四步流程）\n│   ├── llm_client.py           # LLM调用封装\n│   ├── memory_manager.py       # 记忆系统\n│   └── prompts.py              # Prompt模板\n├── data/\n│   ├── destinations.json       # 目的地知识库\n│   └── user_profiles/          # 用户画像存储目录\n│       └── user_example.json   # 示例用户画像\n└── utils/\n    ├── __init__.py\n    └── helpers.py              # 辅助函数",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "源码说明",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "本项目的完整源码位于：samples/chapter11/travel_planner_agent/",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心文件说明：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. travel_agent.py——实现四步决策流程，每步都有详细注释，展示如何组织Agent的主逻辑。",
+      "page": 5,
+      "size": 17.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "2. memory_manager.py——实现短期和长期记忆，演示如何持久化用户画像，包含记忆的读取、更新、保存逻辑。",
+      "page": 5,
+      "size": 17.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "3. llm_client.py——封装LLM调用，支持多种模型切换，提供错误处理和重试机制。",
+      "page": 5,
+      "size": 17.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "4. prompts.py——所有Prompt模板集中管理，包含需求理解、推理规划等各个步骤的Prompt，展示如何设计高质量的Prompt。",
+      "page": 5,
+      "size": 17.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "5. README.md——完整的项目介绍、安装和运行指南、代码逻辑详解（对应正文的四步流程）、扩展建议。",
+      "page": 5,
+      "size": 17.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "关键实现要点",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "如何实现Chain of Thought推理",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在Step 3（行程规划推理）中，我们让LLM显式地进行思考：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 核心思想：通过Prompt引导LLM进行分步推理\nreasoning_prompt = \"\"\"\n请按以下步骤思考如何规划行程：\n\nThought 1: 分析目的地特点和用户偏好的匹配度\nThought 2: 考虑{days}天的合理分配（每天不要太累）\nThought 3: 思考景点之间的距离和交通\nThought 4: 预算{budget}元如何分配（交通、住宿、餐饮、门票）\nThought 5: 综合以上因素，制定最优行程\n\n最后给出详细的每日行程安排。\n\"\"\"",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "详细实现请查看源码：agent/travel_agent.py 的 _plan_itinerary() 方法。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "如何设计记忆系统",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "采用简单但实用的方案：短期记忆保存在内存中，对话结束后清空；长期记忆以JSON文件持久化存储用户画像。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "code",
+      "text": "# 短期记忆：保存在内存中，对话结束后清空\nchat_history = [\n    {\"role\": \"user\", \"content\": \"我想去海边\"},\n    {\"role\": \"assistant\", \"content\": \"推荐三亚...\"}\n]\n\n# 长期记忆：保存为JSON文件，持久化存储\nuser_profile = {\n    \"user_id\": \"user_001\",\n    \"travel_style\": \"休闲度假\",  # 从历史对话中总结\n    \"budget_range\": \"5000-8000\",\n    \"preferred_destinations\": [\"海滨城市\", \"古城\"],\n    \"travel_history\": [\n        {\"date\": \"2024-05\", \"destination\": \"三亚\", \"satisfaction\": 5}\n    ]\n}",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "详细实现请查看源码：agent/memory_manager.py。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "agent/memory_manager.py",
+      "page": 6,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "如何选择实现范式",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "采用混合模式：Code-driven部分负责四步流程的顺序执行、记忆的读取和保存、异常处理；Prompt-driven部分负责需求理解（提取关键信息）、推理规划（CoT思考）、方案生成（自然语言输出）。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种混合方式既保证了流程的稳定性，又保留了LLM的灵活性。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "如何运行和测试",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "快速开始",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "# 1. 进入项目目录\ncd samples/chapter11/travel_planner_agent/\n\n# 2. 安装依赖\npip install -r requirements.txt\n\n# 3. 配置API密钥\n# 方式1（推荐）：设置系统环境变量\nexport DASHSCOPE_API_KEY=你的通义千问API密钥\n\n# 方式2：直接修改 config.py 文件\n# 在 config.py 中找到 DASHSCOPE_API_KEY = \"your-qwen-api-key\"\n# 将其改为你的实际API密钥\n\n# 4. 运行\npython main.py",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "bash"
+    },
+    {
+      "kind": "h3",
+      "text": "测试用例",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "运行后，尝试以下输入：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "测试1：基础需求",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户输入：我想5月份去旅游，预算5000元，喜欢海边，有5天时间\n\n1",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "测试2：模糊需求",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户输入：想找个不太热的地方，放松一下，不要太商业化\n\n1",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "测试3：预算限制",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户输入：3000元能去哪里玩3天？想看山\n\n1",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "观察Agent如何理解需求、推理规划、生成方案。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "单个Agent的能力终究有限。在复杂的现实场景中，往往需要多个Agent协同工作才能解决问题。接下来的第12章，我们将深入探讨Agent的未来发展方向——从当前的技术局限到通向AGI的可能路径，为你揭示智能体技术的演进蓝图和发展前景。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n旅行规划智能体 | Travel Planner Agent | /ˈtrævl ˈplænər ˈeɪdʒənt/ | 根据预算、时间和偏好自动规划旅行方案的 Agent\n行程规划 | Itinerary Planning | /aɪˈtɪnərəri ˈplænɪŋ/ | Agent将天数、预算和景点信息综合为每日行程的过程\n用户画像 | User Profile | /ˈjuːzər ˈproʊfaɪl/ | 记录用户旅行偏好和历史数据的持久化信息\n目的地知识库 | Destination Knowledge Base | / destɪˈneɪʃn ˈnɒlɪdʒ ˌ beɪs/ | 包含城市信息、景点、预算区间的结构化数据集\n混合范式 | Hybrid Paradigm | /ˈhaɪbrɪd ˈpærədaɪm/ | 代码定义流程+LLM负责推理生成的Agent 实现方式\n思维链推理 | CoT Reasoning | /siː oʊ tiː ˈriːzənɪŋ/ | Agent在行程规划中通过分步思考得出最优方案的机制",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "旅行规划智能体",
+          "Travel Planner Agent",
+          "/ˈtrævl ˈplænər ˈeɪdʒənt/",
+          "根据预算、时间和偏好自动规划旅行方案的 Agent"
+        ],
+        [
+          "行程规划",
+          "Itinerary Planning",
+          "/aɪˈtɪnərəri ˈplænɪŋ/",
+          "Agent将天数、预算和景点信息综合为每日行程的过程"
+        ],
+        [
+          "用户画像",
+          "User Profile",
+          "/ˈjuːzər ˈproʊfaɪl/",
+          "记录用户旅行偏好和历史数据的持久化信息"
+        ],
+        [
+          "目的地知识库",
+          "Destination Knowledge Base",
+          "/ destɪˈneɪʃn ˈnɒlɪdʒ ˌ beɪs/",
+          "包含城市信息、景点、预算区间的结构化数据集"
+        ],
+        [
+          "混合范式",
+          "Hybrid Paradigm",
+          "/ˈhaɪbrɪd ˈpærədaɪm/",
+          "代码定义流程+LLM负责推理生成的Agent 实现方式"
+        ],
+        [
+          "思维链推理",
+          "CoT Reasoning",
+          "/siː oʊ tiː ˈriːzənɪŋ/",
+          "Agent在行程规划中通过分步思考得出最优方案的机制"
+        ]
+      ],
+      "page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/464c0914520afed1b3fcc14c8dde9b51.png",
+      "width": 2052,
+      "height": 1664,
+      "page": 9
+    }
+  ],
+  "accounting": {
+    "source_chars": 4194,
+    "represented_chars": 4016,
+    "removed_chars": 178,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 1,
+    "removals": {
+      "export_metadata": 146,
+      "repeated_title": 32
+    }
+  },
+  "videos": [],
+  "order": 149,
+  "headings": [
+    {
+      "title": "项目需求与功能设计",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "核心需求",
+      "id": "section-2",
+      "level": 3
+    },
+    {
+      "title": "功能拆解",
+      "id": "section-5",
+      "level": 3
+    },
+    {
+      "title": "技术架构设计",
+      "id": "section-24",
+      "level": 2
+    },
+    {
+      "title": "核心模块",
+      "id": "section-29",
+      "level": 3
+    },
+    {
+      "title": "1. LLM调用模块——支持QWen API，提供统一调用接口，包含错误处理和重试机制。",
+      "id": "section-30",
+      "level": 2
+    },
+    {
+      "title": "2. 记忆管理模块——短期记忆保存当前对话上下文，长期记忆以JSON文件持久化存储用户画像，支持读取和更新。",
+      "id": "section-31",
+      "level": 2
+    },
+    {
+      "title": "3. 目的地知识库——简化版硬编码常见目的地数据，包含城市名、适合季节、主要景点、预算区间、标签等。",
+      "id": "section-32",
+      "level": 2
+    },
+    {
+      "title": "4. 推理引擎——实现Chain of Thought推理，生成可读的思考过程，基于推理结果生成行程。",
+      "id": "section-33",
+      "level": 2
+    },
+    {
+      "title": "项目结构与源码说明",
+      "id": "section-34",
+      "level": 2
+    },
+    {
+      "title": "项目目录结构",
+      "id": "section-35",
+      "level": 3
+    },
+    {
+      "title": "源码说明",
+      "id": "section-37",
+      "level": 3
+    },
+    {
+      "title": "1. travel_agent.py——实现四步决策流程，每步都有详细注释，展示如何组织Agent的主逻辑。",
+      "id": "section-40",
+      "level": 2
+    },
+    {
+      "title": "2. memory_manager.py——实现短期和长期记忆，演示如何持久化用户画像，包含记忆的读取、更新、保存逻辑。",
+      "id": "section-41",
+      "level": 2
+    },
+    {
+      "title": "3. llm_client.py——封装LLM调用，支持多种模型切换，提供错误处理和重试机制。",
+      "id": "section-42",
+      "level": 2
+    },
+    {
+      "title": "4. prompts.py——所有Prompt模板集中管理，包含需求理解、推理规划等各个步骤的Prompt，展示如何设计高质量的Prompt。",
+      "id": "section-43",
+      "level": 2
+    },
+    {
+      "title": "5. README.md——完整的项目介绍、安装和运行指南、代码逻辑详解（对应正文的四步流程）、扩展建议。",
+      "id": "section-44",
+      "level": 2
+    },
+    {
+      "title": "关键实现要点",
+      "id": "section-45",
+      "level": 2
+    },
+    {
+      "title": "如何实现Chain of Thought推理",
+      "id": "section-46",
+      "level": 3
+    },
+    {
+      "title": "如何设计记忆系统",
+      "id": "section-50",
+      "level": 3
+    },
+    {
+      "title": "如何选择实现范式",
+      "id": "section-55",
+      "level": 3
+    },
+    {
+      "title": "如何运行和测试",
+      "id": "section-58",
+      "level": 2
+    },
+    {
+      "title": "快速开始",
+      "id": "section-59",
+      "level": 3
+    },
+    {
+      "title": "测试用例",
+      "id": "section-61",
+      "level": 3
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-70",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-72",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-74",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "前面七节我们学习了Agent的理论、架构、能力和实现范式。现在，是时候把这些知识串起来，动手实现一个真正能用的Agent了。 本节我们将实现一个智能旅行规划Agent。你只需告诉它预算、时间和偏好，它就能自动生成一份完整的旅行方案——从目的地推荐到行程安排，从景点选择到预算分配。 这不是一个玩具项目。它融合了我们学过的所有核心能力： 四步决策流程（理解→检索→推理→生成） Chain of Thought推理 记忆系统（记住用户的旅行偏好） 混合实现范式（Code-driven框架 + Prompt-driven决策） 代码量不大（核心代码约300行），但麻雀虽小，五脏俱全。看完这个案例，你就能把前面的理论知识转化为实际的Agent开发能力。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "项目需求与功能设计"
+    },
+    {
+      "anchor": "section-2",
+      "text": "核心需求"
+    },
+    {
+      "anchor": "section-2",
+      "text": "作为一个智能旅行规划助手，Agent 需要接收用户的输入——预算范围、旅行天数、出发城市和旅行偏好；然后输出推荐的目的地、完整每日行程、预算分配方案和实用建议。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "进阶方面，它还需要记住用户的历史偏好（下次规划时自动参考），能够理解模糊需求（比如\"想去个不太热的地方\"），具备推理能力（“5月去哪里最合适？”/“预算不够怎么调整？”）。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "功能拆解"
+    },
+    {
+      "anchor": "section-5",
+      "text": "根据前面学习的四步范式，将Agent拆分为："
+    },
+    {
+      "anchor": "section-5",
+      "text": "Step 1: 需求理解与分析"
+    },
+    {
+      "anchor": "section-5",
+      "text": "解析用户输入的自然语言"
+    },
+    {
+      "anchor": "section-5",
+      "text": "提取关键信息（预算、天数、偏好）"
+    },
+    {
+      "anchor": "section-5",
+      "text": "从记忆中读取用户历史偏好"
+    },
+    {
+      "anchor": "section-5",
+      "text": "Step 2: 目的地检索与匹配"
+    },
+    {
+      "anchor": "section-5",
+      "text": "基于预算和偏好筛选候选目的地"
+    },
+    {
+      "anchor": "section-5",
+      "text": "考虑季节因素（5月适合去哪里？）"
+    },
+    {
+      "anchor": "section-5",
+      "text": "排除不符合条件的选项"
+    },
+    {
+      "anchor": "section-5",
+      "text": "Step 3: 行程规划推理（CoT）"
+    },
+    {
+      "anchor": "section-5",
+      "text": "思考：如何合理分配天数？"
+    },
+    {
+      "anchor": "section-5",
+      "text": "思考：景点之间的距离和交通？"
+    },
+    {
+      "anchor": "section-5",
+      "text": "思考：预算如何分配到交通、住宿、餐饮？"
+    },
+    {
+      "anchor": "section-5",
+      "text": "规划：生成完整的每日行程"
+    },
+    {
+      "anchor": "section-5",
+      "text": "Step 4: 方案生成与记忆更新"
+    },
+    {
+      "anchor": "section-5",
+      "text": "生成易读的旅行方案"
+    },
+    {
+      "anchor": "section-5",
+      "text": "更新用户偏好记忆"
+    },
+    {
+      "anchor": "section-5",
+      "text": "提供个性化建议"
+    },
+    {
+      "anchor": "section-24",
+      "text": "技术架构设计"
+    },
+    {
+      "anchor": "section-24",
+      "text": "整体架构"
+    },
+    {
+      "anchor": "section-24",
+      "text": "我们采用混合实现范式："
+    },
+    {
+      "anchor": "section-24",
+      "text": "Code-driven：控制主流程（四步顺序执行）"
+    },
+    {
+      "anchor": "section-24",
+      "text": "Prompt-driven：LLM负责推理和生成"
+    },
+    {
+      "anchor": "section-29",
+      "text": "核心模块"
+    },
+    {
+      "anchor": "section-30",
+      "text": "1. LLM调用模块——支持QWen API，提供统一调用接口，包含错误处理和重试机制。"
+    },
+    {
+      "anchor": "section-31",
+      "text": "2. 记忆管理模块——短期记忆保存当前对话上下文，长期记忆以JSON文件持久化存储用户画像，支持读取和更新。"
+    },
+    {
+      "anchor": "section-32",
+      "text": "3. 目的地知识库——简化版硬编码常见目的地数据，包含城市名、适合季节、主要景点、预算区间、标签等。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "4. 推理引擎——实现Chain of Thought推理，生成可读的思考过程，基于推理结果生成行程。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "项目结构与源码说明"
+    },
+    {
+      "anchor": "section-35",
+      "text": "项目目录结构"
+    },
+    {
+      "anchor": "section-35",
+      "text": "/travel_planner_agent/\n├── README.md                    # 完整的项目说明和使用指南\n├── requirements.txt             # Python依赖\n├── .env.example                 # 环境变量模板\n├── config.py                    # 配置文件（API密钥等）\n├── main.py                      # 主程序入口\n├── agent/\n│   ├── __init__.py\n│   ├── travel_agent.py         # Agent核心逻辑（四步流程）\n│   ├── llm_client.py           # LLM调用封装\n│   ├── memory_manager.py       # 记忆系统\n│   └── prompts.py              # Prompt模板\n├── data/\n│   ├── destinations.json       # 目的地知识库\n│   └── user_profiles/          # 用户画像存储目录\n│       └── user_example.json   # 示例用户画像\n└── utils/\n    ├── __init__.py\n    └── helpers.py              # 辅助函数"
+    },
+    {
+      "anchor": "section-37",
+      "text": "源码说明"
+    },
+    {
+      "anchor": "section-37",
+      "text": "本项目的完整源码位于：samples/chapter11/travel_planner_agent/"
+    },
+    {
+      "anchor": "section-37",
+      "text": "核心文件说明："
+    },
+    {
+      "anchor": "section-40",
+      "text": "1. travel_agent.py——实现四步决策流程，每步都有详细注释，展示如何组织Agent的主逻辑。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "2. memory_manager.py——实现短期和长期记忆，演示如何持久化用户画像，包含记忆的读取、更新、保存逻辑。"
+    },
+    {
+      "anchor": "section-42",
+      "text": "3. llm_client.py——封装LLM调用，支持多种模型切换，提供错误处理和重试机制。"
+    },
+    {
+      "anchor": "section-43",
+      "text": "4. prompts.py——所有Prompt模板集中管理，包含需求理解、推理规划等各个步骤的Prompt，展示如何设计高质量的Prompt。"
+    },
+    {
+      "anchor": "section-44",
+      "text": "5. README.md——完整的项目介绍、安装和运行指南、代码逻辑详解（对应正文的四步流程）、扩展建议。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "关键实现要点"
+    },
+    {
+      "anchor": "section-46",
+      "text": "如何实现Chain of Thought推理"
+    },
+    {
+      "anchor": "section-46",
+      "text": "在Step 3（行程规划推理）中，我们让LLM显式地进行思考："
+    },
+    {
+      "anchor": "section-46",
+      "text": "# 核心思想：通过Prompt引导LLM进行分步推理\nreasoning_prompt = \"\"\"\n请按以下步骤思考如何规划行程：\n\nThought 1: 分析目的地特点和用户偏好的匹配度\nThought 2: 考虑{days}天的合理分配（每天不要太累）\nThought 3: 思考景点之间的距离和交通\nThought 4: 预算{budget}元如何分配（交通、住宿、餐饮、门票）\nThought 5: 综合以上因素，制定最优行程\n\n最后给出详细的每日行程安排。\n\"\"\""
+    },
+    {
+      "anchor": "section-46",
+      "text": "详细实现请查看源码：agent/travel_agent.py 的 _plan_itinerary() 方法。"
+    },
+    {
+      "anchor": "section-50",
+      "text": "如何设计记忆系统"
+    },
+    {
+      "anchor": "section-50",
+      "text": "采用简单但实用的方案：短期记忆保存在内存中，对话结束后清空；长期记忆以JSON文件持久化存储用户画像。"
+    },
+    {
+      "anchor": "section-50",
+      "text": "# 短期记忆：保存在内存中，对话结束后清空\nchat_history = [\n    {\"role\": \"user\", \"content\": \"我想去海边\"},\n    {\"role\": \"assistant\", \"content\": \"推荐三亚...\"}\n]\n\n# 长期记忆：保存为JSON文件，持久化存储\nuser_profile = {\n    \"user_id\": \"user_001\",\n    \"travel_style\": \"休闲度假\",  # 从历史对话中总结\n    \"budget_range\": \"5000-8000\",\n    \"preferred_destinations\": [\"海滨城市\", \"古城\"],\n    \"travel_history\": [\n        {\"date\": \"2024-05\", \"destination\": \"三亚\", \"satisfaction\": 5}\n    ]\n}"
+    },
+    {
+      "anchor": "section-50",
+      "text": "详细实现请查看源码：agent/memory_manager.py。"
+    },
+    {
+      "anchor": "section-50",
+      "text": "agent/memory_manager.py"
+    },
+    {
+      "anchor": "section-55",
+      "text": "如何选择实现范式"
+    },
+    {
+      "anchor": "section-55",
+      "text": "采用混合模式：Code-driven部分负责四步流程的顺序执行、记忆的读取和保存、异常处理；Prompt-driven部分负责需求理解（提取关键信息）、推理规划（CoT思考）、方案生成（自然语言输出）。"
+    },
+    {
+      "anchor": "section-55",
+      "text": "这种混合方式既保证了流程的稳定性，又保留了LLM的灵活性。"
+    },
+    {
+      "anchor": "section-58",
+      "text": "如何运行和测试"
+    },
+    {
+      "anchor": "section-59",
+      "text": "快速开始"
+    },
+    {
+      "anchor": "section-59",
+      "text": "# 1. 进入项目目录\ncd samples/chapter11/travel_planner_agent/\n\n# 2. 安装依赖\npip install -r requirements.txt\n\n# 3. 配置API密钥\n# 方式1（推荐）：设置系统环境变量\nexport DASHSCOPE_API_KEY=你的通义千问API密钥\n\n# 方式2：直接修改 config.py 文件\n# 在 config.py 中找到 DASHSCOPE_API_KEY = \"your-qwen-api-key\"\n# 将其改为你的实际API密钥\n\n# 4. 运行\npython main.py"
+    },
+    {
+      "anchor": "section-61",
+      "text": "测试用例"
+    },
+    {
+      "anchor": "section-61",
+      "text": "运行后，尝试以下输入："
+    },
+    {
+      "anchor": "section-61",
+      "text": "测试1：基础需求"
+    },
+    {
+      "anchor": "section-61",
+      "text": "用户输入：我想5月份去旅游，预算5000元，喜欢海边，有5天时间\n\n1"
+    },
+    {
+      "anchor": "section-61",
+      "text": "测试2：模糊需求"
+    },
+    {
+      "anchor": "section-61",
+      "text": "用户输入：想找个不太热的地方，放松一下，不要太商业化\n\n1"
+    },
+    {
+      "anchor": "section-61",
+      "text": "测试3：预算限制"
+    },
+    {
+      "anchor": "section-61",
+      "text": "用户输入：3000元能去哪里玩3天？想看山\n\n1"
+    },
+    {
+      "anchor": "section-61",
+      "text": "观察Agent如何理解需求、推理规划、生成方案。"
+    },
+    {
+      "anchor": "section-70",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-70",
+      "text": "单个Agent的能力终究有限。在复杂的现实场景中，往往需要多个Agent协同工作才能解决问题。接下来的第12章，我们将深入探讨Agent的未来发展方向——从当前的技术局限到通向AGI的可能路径，为你揭示智能体技术的演进蓝图和发展前景。"
+    },
+    {
+      "anchor": "section-72",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-72",
+      "text": "中文 | English | 音标 | 说明\n旅行规划智能体 | Travel Planner Agent | /ˈtrævl ˈplænər ˈeɪdʒənt/ | 根据预算、时间和偏好自动规划旅行方案的 Agent\n行程规划 | Itinerary Planning | /aɪˈtɪnərəri ˈplænɪŋ/ | Agent将天数、预算和景点信息综合为每日行程的过程\n用户画像 | User Profile | /ˈjuːzər ˈproʊfaɪl/ | 记录用户旅行偏好和历史数据的持久化信息\n目的地知识库 | Destination Knowledge Base | / destɪˈneɪʃn ˈnɒlɪdʒ ˌ beɪs/ | 包含城市信息、景点、预算区间的结构化数据集\n混合范式 | Hybrid Paradigm | /ˈhaɪbrɪd ˈpærədaɪm/ | 代码定义流程+LLM负责推理生成的Agent 实现方式\n思维链推理 | CoT Reasoning | /siː oʊ tiː ˈriːzənɪŋ/ | Agent在行程规划中通过分步思考得出最优方案的机制"
+    },
+    {
+      "anchor": "section-74",
+      "text": "图片"
+    }
+  ]
+}

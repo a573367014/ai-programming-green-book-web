@@ -1,0 +1,655 @@
+{
+  "id": "lesson-108",
+  "title": "一次完整的调用流程",
+  "code": "1-3",
+  "stage": 3,
+  "week": 6,
+  "week_title": "Function Calling：工具调用机制",
+  "module": "Function Calling的本质",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/001-第6周 Function Calling：工具调用机制/001-Function Calling的本质/108-图文-1-3-一次完整的调用流程.pdf",
+  "sha256": "9182babdf726962826a0aadf70c890af0c3b14ce4259382ff2a80b40a95b4d3b",
+  "pdf": "sources/pdf/lesson-108.pdf",
+  "pages": 11,
+  "source_url": "https://class.imooc.com/lesson/5275#mid=104927",
+  "minutes": 13,
+  "excerpt": "上一节理清了 Function Calling 的角色分工。现在深入实际运行机制——从头到尾走一遍 LLM 怎么判断、怎么调用、怎么把工具结果整合成最终回答。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节理清了 Function Calling 的角色分工。现在深入实际运行机制——从头到尾走一遍 LLM 怎么判断、怎么调用、怎么把工具结果整合成最终回答。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "3.1 一次完整的调用流程",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "完整流程示例",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用一个具体例子走一遍全程。假设用户问\"明天成都会下雪吗？\"。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "工具定义",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 你定义可用的工具\ntools = [\n    {\n        \"type\": \"function\",\n        \"function\": {\n            \"name\": \"get_weather\",\n            \"description\": \"获取指定城市和日期的天气信息，支持查询温度、天气状况、降水等\",\n            \"parameters\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"city\": {\n                        \"type\": \"string\",\n                        \"description\": \"城市名称，如：成都、上海、深圳\"\n                    },\n                    \"date\": {\n                        \"type\": \"string\",\n                        \"description\": \"日期，支持格式：今天、明天、后天、2026-01-20\"\n                    }\n                },\n                \"required\": [\"city\", \"date\"]\n            }\n        }\n    }\n]",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "参数解析：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "name：函数名称，LLM会看到这个名字",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "description：功能描述，非常重要，LLM主要靠这个判断该用哪个工具函数",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "parameters：参数定义，遵循 JSON Schema 规范",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "首次调用LLM",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 构造请求\nmessages = [\n    {\"role\": \"user\", \"content\": \"明天成都会下雪吗？\"}\n]\n\n# 调用LLM（提供工具列表）\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=messages,\n    tools=tools  # ← 关键：tools参数是激活Function Calling的开关\n)\n\n# LLM的内部思考过程（简化）\n# 1. 分析用户意图：查询天气\n# 2. 检查工具列表：有get_weather可用\n# 3. 判断：需要调用工具\n# 4. 提取参数：city=\"成都\", date=\"明天\"",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM 返回的结构如下：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# response的结构\n{\n    \"id\": \"chatcmpl-xxx\",\n    \"choices\": [{\n        \"message\": {\n            \"role\": \"assistant\",\n            \"content\": null,  # ← 没有文本回答\n            \"tool_calls\": [   # ← 有工具调用\n                {\n                    \"id\": \"call_abc123\",\n                    \"type\": \"function\",\n                    \"function\": {\n                        \"name\": \"get_weather\",\n                        \"arguments\": '{\"city\": \"成都\", \"date\": \"明天\"}'\n                    }\n                }\n            ]\n        },\n        \"finish_reason\": \"tool_calls\"  # ← 表示需要调用工具\n    }]\n}",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "其中 content 为 null 说明 LLM 没有直接回答，而是要求调用工具；tool_calls 包含要调用的工具信息；arguments 是 JSON 字符串，需要解析。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "执行函数",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "import json\n\n# 从LLM的回复提取工具调用信息\ntool_call = response.choices[0].message.tool_calls[0]\nfunction_name = tool_call.function.name  # \"get_weather\"\narguments = json.loads(tool_call.function.arguments)  # {\"city\": \"成都\", \"date\": \"明天\"}\n\n# 实际执行函数\ndef get_weather(city, date):\n    \"\"\"\n    这里是你的实现\n    可以调用真实的天气API\n    \"\"\"\n    # 示例：调用天气API\n    api_result = weather_api.query(\n        city=city,\n        date=date\n    )\n    return {\n        \"city\": city,\n        \"date\": \"2026-01-16\",\n        \"weather\": \"多云\",\n        \"temperature\": \"-5℃ ~ 3℃\",\n        \"precipitation\": \"降雪概率：80%\",\n        \"tips\": \"明天可能有小雪，注意保暖\"\n    }\n\n# 执行调用\nfunction_result = get_weather(**arguments)\n\n# function_result = {\n#     \"city\": \"成都\",\n#     \"date\": \"2026-01-16\",\n#     \"weather\": \"多云\",\n#     \"temperature\": \"-5℃ ~ 3℃\",\n#     \"precipitation\": \"降雪概率：80%\",\n#     \"tips\": \"明天可能有小雪，注意保暖\"\n# }",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "二次调用LLM",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 把函数结果添加到对话历史\nmessages.append(response.choices[0].message)  # LLM的工具调用消息\nmessages.append({\n    \"role\": \"tool\",  # ← 表示这是工具返回的结果，不是LLM的回答\n    \"tool_call_id\": tool_call.id,\n    \"content\": json.dumps(function_result)\n})\n\n# 现在messages的结构：\n# [\n#     {\"role\": \"user\", \"content\": \"明天成都会下雪吗？\"},\n#     {\"role\": \"assistant\", \"tool_calls\": [...]},  # LLM说要调用工具\n#     {\"role\": \"tool\", \"content\": \"{...}\"}  # 工具返回的结果\n# ]\n\n# 再次调用LLM，让它整合结果生成回答\nfinal_response = client.chat.completions.create(\n    model=\"qwen3-max\",\n    messages=messages  # LLM会看到工具的返回结果\n)\n\n# LLM基于函数结果生成回答\nprint(final_response.choices[0].message.content)\n# \"明天成都可能会下雪，降雪概率达到80%。\n#  气温在-5℃到3℃之间，天气多云转雪。\n#  建议您出行时注意保暖，穿上厚外套，带好围巾手套。\"",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "完整流程图",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.2 工具描述是成败关键",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "工具描述的重要性",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM主要靠description来判断该不该用这个工具。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "写得好和写得差的区别很大，对比一下：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# Bad： 描述不清晰\n{\n    \"name\": \"query\",\n    \"description\": \"查询\",  # 太笼统，LLM不知道能查什么\n    \"parameters\": {...}\n}\n\n# Good：描述清晰\n{\n    \"name\": \"query_weather\",\n    \"description\": \"查询指定城市和日期的天气信息，包括温度、天气状况、风力、降水等。支持查询\n最近7天的天气预报。\",\n    \"parameters\": {...}\n}",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "好的描述有几个要点：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "说明工具的具体功能",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "具体功能",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "说明工具的适用场景",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "适用场景",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "说明工具的限制（如时间范围）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "限制",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "给出示例用法（可选）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例用法",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "参数设计",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "遵循JSON Schema规范",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"city\": {\n            \"type\": \"string\",\n            \"description\": \"城市名称\",\n            \"enum\": [\"成都\", \"上海\", \"深圳\"]  # 可选：限定可选值\n        },\n        \"date\": {\n            \"type\": \"string\",\n            \"description\": \"日期，格式：YYYY-MM-DD或今天/明天/后天\"\n        },\n        \"units\": {\n            \"type\": \"string\",\n            \"description\": \"温度单位\",\n            \"enum\": [\"celsius\", \"fahrenheit\"],\n            \"default\": \"celsius\"  # 默认值\n        }\n    },\n    \"required\": [\"city\", \"date\"]  # 必填参数\n}",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "json"
+    },
+    {
+      "kind": "h3",
+      "text": "错误处理",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM可能会犯错：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "选错工具",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户：\"帮我发邮件\"\nLLM误选：get_weather（错误）\n\n解决：完善工具描述，明确适用场景",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "参数提取错误",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 用户：\"查查魔都明天天气\"\n# LLM提取：city=\"魔都\"（错误，应该是\"上海\"）\n\n# 解决：在description中说明城市名称格式\n{\n    \"city\": {\n        \"type\": \"string\",\n        \"description\": \"城市标准名称，如：成都、上海（不要用别称）\"\n    }\n}",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "缺失必填参数",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 用户：\"明天天气\"（没说城市）\n# LLM可能无法提取city参数\n\n# 解决1：让LLM反问用户\nif 参数缺失:\n    return \"请问您要查询哪个城市的天气？\"\n\n# 解决2：设置默认值\n{\n    \"city\": {\n        \"type\": \"string\",\n        \"description\": \"城市名称，默认成都\",\n        \"default\": \"成都\"\n    }\n}",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "多轮工具调用",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "有些任务需要调用多次工具：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "“帮我查明天成都天气，如果会下雨就提醒我带伞”",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 流程：\n1. 第1次LLM调用 → 决定调用get_weather\n2. 执行get_weather → 获取天气数据\n3. 第2次LLM调用 → 判断是否下雨\n4. 如果下雨 → 决定调用set_reminder\n5. 执行set_reminder → 设置提醒\n6. 第3次LLM调用 → 生成最终回答",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "3.3 ■ 学点英语",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n工具调用字段 | tool calls _ | /tuːl kɔːlz/ | LLM返回的结构化字段，指示代码需要执行哪些工具函数\n完成原因 | finish reason _ | /ˈfɪnɪʃ rɪˈziːzən/ | LLM响应中的标志位，tool calls表示需要调用工具 _ 而非直接回答\nJSON模式 | JSON Schema | /ˈdʒeɪsɒn ˈskiːmə/ | 定义工具参数结构的规范，包括类型、必填、枚举等约束\n多轮工具调用 | Multi-turn Tool Calling | /ˈmʌlti tɜːn tuːl ˈkɔːlɪŋ/ | 依赖上一步结果逐步执行多次工具调用的流程模式",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "工具调用字段",
+          "tool calls _",
+          "/tuːl kɔːlz/",
+          "LLM返回的结构化字段，指示代码需要执行哪些工具函数"
+        ],
+        [
+          "完成原因",
+          "finish reason _",
+          "/ˈfɪnɪʃ rɪˈziːzən/",
+          "LLM响应中的标志位，tool calls表示需要调用工具 _ 而非直接回答"
+        ],
+        [
+          "JSON模式",
+          "JSON Schema",
+          "/ˈdʒeɪsɒn ˈskiːmə/",
+          "定义工具参数结构的规范，包括类型、必填、枚举等约束"
+        ],
+        [
+          "多轮工具调用",
+          "Multi-turn Tool Calling",
+          "/ˈmʌlti tɜːn tuːl ˈkɔːlɪŋ/",
+          "依赖上一步结果逐步执行多次工具调用的流程模式"
+        ]
+      ],
+      "page": 9
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 10,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/384ee38d3be2c110501c40e3843aca3b.png",
+      "width": 1102,
+      "height": 1578,
+      "page": 11
+    }
+  ],
+  "accounting": {
+    "source_chars": 5364,
+    "represented_chars": 5171,
+    "removed_chars": 193,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 1,
+    "removals": {
+      "export_metadata": 163,
+      "repeated_title": 30
+    }
+  },
+  "videos": [],
+  "order": 109,
+  "headings": [
+    {
+      "title": "3.1 一次完整的调用流程",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "3.2 工具描述是成败关键",
+      "id": "section-20",
+      "level": 2
+    },
+    {
+      "title": "参数设计",
+      "id": "section-34",
+      "level": 3
+    },
+    {
+      "title": "错误处理",
+      "id": "section-37",
+      "level": 3
+    },
+    {
+      "title": "多轮工具调用",
+      "id": "section-45",
+      "level": 3
+    },
+    {
+      "title": "3.3 ■ 学点英语",
+      "id": "section-49",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-51",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节理清了 Function Calling 的角色分工。现在深入实际运行机制——从头到尾走一遍 LLM 怎么判断、怎么调用、怎么把工具结果整合成最终回答。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "3.1 一次完整的调用流程"
+    },
+    {
+      "anchor": "section-1",
+      "text": "完整流程示例"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用一个具体例子走一遍全程。假设用户问\"明天成都会下雪吗？\"。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "工具定义"
+    },
+    {
+      "anchor": "section-1",
+      "text": "# 你定义可用的工具\ntools = [\n    {\n        \"type\": \"function\",\n        \"function\": {\n            \"name\": \"get_weather\",\n            \"description\": \"获取指定城市和日期的天气信息，支持查询温度、天气状况、降水等\",\n            \"parameters\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"city\": {\n                        \"type\": \"string\",\n                        \"description\": \"城市名称，如：成都、上海、深圳\"\n                    },\n                    \"date\": {\n                        \"type\": \"string\",\n                        \"description\": \"日期，支持格式：今天、明天、后天、2026-01-20\"\n                    }\n                },\n                \"required\": [\"city\", \"date\"]\n            }\n        }\n    }\n]"
+    },
+    {
+      "anchor": "section-1",
+      "text": "参数解析："
+    },
+    {
+      "anchor": "section-1",
+      "text": "name：函数名称，LLM会看到这个名字"
+    },
+    {
+      "anchor": "section-1",
+      "text": "description：功能描述，非常重要，LLM主要靠这个判断该用哪个工具函数"
+    },
+    {
+      "anchor": "section-1",
+      "text": "parameters：参数定义，遵循 JSON Schema 规范"
+    },
+    {
+      "anchor": "section-1",
+      "text": "首次调用LLM"
+    },
+    {
+      "anchor": "section-1",
+      "text": "# 构造请求\nmessages = [\n    {\"role\": \"user\", \"content\": \"明天成都会下雪吗？\"}\n]\n\n# 调用LLM（提供工具列表）\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=messages,\n    tools=tools  # ← 关键：tools参数是激活Function Calling的开关\n)\n\n# LLM的内部思考过程（简化）\n# 1. 分析用户意图：查询天气\n# 2. 检查工具列表：有get_weather可用\n# 3. 判断：需要调用工具\n# 4. 提取参数：city=\"成都\", date=\"明天\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "LLM 返回的结构如下："
+    },
+    {
+      "anchor": "section-1",
+      "text": "# response的结构\n{\n    \"id\": \"chatcmpl-xxx\",\n    \"choices\": [{\n        \"message\": {\n            \"role\": \"assistant\",\n            \"content\": null,  # ← 没有文本回答\n            \"tool_calls\": [   # ← 有工具调用\n                {\n                    \"id\": \"call_abc123\",\n                    \"type\": \"function\",\n                    \"function\": {\n                        \"name\": \"get_weather\",\n                        \"arguments\": '{\"city\": \"成都\", \"date\": \"明天\"}'\n                    }\n                }\n            ]\n        },\n        \"finish_reason\": \"tool_calls\"  # ← 表示需要调用工具\n    }]\n}"
+    },
+    {
+      "anchor": "section-1",
+      "text": "其中 content 为 null 说明 LLM 没有直接回答，而是要求调用工具；tool_calls 包含要调用的工具信息；arguments 是 JSON 字符串，需要解析。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "执行函数"
+    },
+    {
+      "anchor": "section-1",
+      "text": "import json\n\n# 从LLM的回复提取工具调用信息\ntool_call = response.choices[0].message.tool_calls[0]\nfunction_name = tool_call.function.name  # \"get_weather\"\narguments = json.loads(tool_call.function.arguments)  # {\"city\": \"成都\", \"date\": \"明天\"}\n\n# 实际执行函数\ndef get_weather(city, date):\n    \"\"\"\n    这里是你的实现\n    可以调用真实的天气API\n    \"\"\"\n    # 示例：调用天气API\n    api_result = weather_api.query(\n        city=city,\n        date=date\n    )\n    return {\n        \"city\": city,\n        \"date\": \"2026-01-16\",\n        \"weather\": \"多云\",\n        \"temperature\": \"-5℃ ~ 3℃\",\n        \"precipitation\": \"降雪概率：80%\",\n        \"tips\": \"明天可能有小雪，注意保暖\"\n    }\n\n# 执行调用\nfunction_result = get_weather(**arguments)\n\n# function_result = {\n#     \"city\": \"成都\",\n#     \"date\": \"2026-01-16\",\n#     \"weather\": \"多云\",\n#     \"temperature\": \"-5℃ ~ 3℃\",\n#     \"precipitation\": \"降雪概率：80%\",\n#     \"tips\": \"明天可能有小雪，注意保暖\"\n# }"
+    },
+    {
+      "anchor": "section-1",
+      "text": "二次调用LLM"
+    },
+    {
+      "anchor": "section-1",
+      "text": "# 把函数结果添加到对话历史\nmessages.append(response.choices[0].message)  # LLM的工具调用消息\nmessages.append({\n    \"role\": \"tool\",  # ← 表示这是工具返回的结果，不是LLM的回答\n    \"tool_call_id\": tool_call.id,\n    \"content\": json.dumps(function_result)\n})\n\n# 现在messages的结构：\n# [\n#     {\"role\": \"user\", \"content\": \"明天成都会下雪吗？\"},\n#     {\"role\": \"assistant\", \"tool_calls\": [...]},  # LLM说要调用工具\n#     {\"role\": \"tool\", \"content\": \"{...}\"}  # 工具返回的结果\n# ]\n\n# 再次调用LLM，让它整合结果生成回答\nfinal_response = client.chat.completions.create(\n    model=\"qwen3-max\",\n    messages=messages  # LLM会看到工具的返回结果\n)\n\n# LLM基于函数结果生成回答\nprint(final_response.choices[0].message.content)\n# \"明天成都可能会下雪，降雪概率达到80%。\n#  气温在-5℃到3℃之间，天气多云转雪。\n#  建议您出行时注意保暖，穿上厚外套，带好围巾手套。\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "完整流程图"
+    },
+    {
+      "anchor": "section-20",
+      "text": "3.2 工具描述是成败关键"
+    },
+    {
+      "anchor": "section-20",
+      "text": "工具描述的重要性"
+    },
+    {
+      "anchor": "section-20",
+      "text": "LLM主要靠description来判断该不该用这个工具。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "写得好和写得差的区别很大，对比一下："
+    },
+    {
+      "anchor": "section-20",
+      "text": "# Bad： 描述不清晰\n{\n    \"name\": \"query\",\n    \"description\": \"查询\",  # 太笼统，LLM不知道能查什么\n    \"parameters\": {...}\n}\n\n# Good：描述清晰\n{\n    \"name\": \"query_weather\",\n    \"description\": \"查询指定城市和日期的天气信息，包括温度、天气状况、风力、降水等。支持查询\n最近7天的天气预报。\",\n    \"parameters\": {...}\n}"
+    },
+    {
+      "anchor": "section-20",
+      "text": "好的描述有几个要点："
+    },
+    {
+      "anchor": "section-20",
+      "text": "说明工具的具体功能"
+    },
+    {
+      "anchor": "section-20",
+      "text": "具体功能"
+    },
+    {
+      "anchor": "section-20",
+      "text": "说明工具的适用场景"
+    },
+    {
+      "anchor": "section-20",
+      "text": "适用场景"
+    },
+    {
+      "anchor": "section-20",
+      "text": "说明工具的限制（如时间范围）"
+    },
+    {
+      "anchor": "section-20",
+      "text": "限制"
+    },
+    {
+      "anchor": "section-20",
+      "text": "给出示例用法（可选）"
+    },
+    {
+      "anchor": "section-20",
+      "text": "示例用法"
+    },
+    {
+      "anchor": "section-34",
+      "text": "参数设计"
+    },
+    {
+      "anchor": "section-34",
+      "text": "遵循JSON Schema规范"
+    },
+    {
+      "anchor": "section-34",
+      "text": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"city\": {\n            \"type\": \"string\",\n            \"description\": \"城市名称\",\n            \"enum\": [\"成都\", \"上海\", \"深圳\"]  # 可选：限定可选值\n        },\n        \"date\": {\n            \"type\": \"string\",\n            \"description\": \"日期，格式：YYYY-MM-DD或今天/明天/后天\"\n        },\n        \"units\": {\n            \"type\": \"string\",\n            \"description\": \"温度单位\",\n            \"enum\": [\"celsius\", \"fahrenheit\"],\n            \"default\": \"celsius\"  # 默认值\n        }\n    },\n    \"required\": [\"city\", \"date\"]  # 必填参数\n}"
+    },
+    {
+      "anchor": "section-37",
+      "text": "错误处理"
+    },
+    {
+      "anchor": "section-37",
+      "text": "LLM可能会犯错："
+    },
+    {
+      "anchor": "section-37",
+      "text": "选错工具"
+    },
+    {
+      "anchor": "section-37",
+      "text": "用户：\"帮我发邮件\"\nLLM误选：get_weather（错误）\n\n解决：完善工具描述，明确适用场景"
+    },
+    {
+      "anchor": "section-37",
+      "text": "参数提取错误"
+    },
+    {
+      "anchor": "section-37",
+      "text": "# 用户：\"查查魔都明天天气\"\n# LLM提取：city=\"魔都\"（错误，应该是\"上海\"）\n\n# 解决：在description中说明城市名称格式\n{\n    \"city\": {\n        \"type\": \"string\",\n        \"description\": \"城市标准名称，如：成都、上海（不要用别称）\"\n    }\n}"
+    },
+    {
+      "anchor": "section-37",
+      "text": "缺失必填参数"
+    },
+    {
+      "anchor": "section-37",
+      "text": "# 用户：\"明天天气\"（没说城市）\n# LLM可能无法提取city参数\n\n# 解决1：让LLM反问用户\nif 参数缺失:\n    return \"请问您要查询哪个城市的天气？\"\n\n# 解决2：设置默认值\n{\n    \"city\": {\n        \"type\": \"string\",\n        \"description\": \"城市名称，默认成都\",\n        \"default\": \"成都\"\n    }\n}"
+    },
+    {
+      "anchor": "section-45",
+      "text": "多轮工具调用"
+    },
+    {
+      "anchor": "section-45",
+      "text": "有些任务需要调用多次工具："
+    },
+    {
+      "anchor": "section-45",
+      "text": "“帮我查明天成都天气，如果会下雨就提醒我带伞”"
+    },
+    {
+      "anchor": "section-45",
+      "text": "# 流程：\n1. 第1次LLM调用 → 决定调用get_weather\n2. 执行get_weather → 获取天气数据\n3. 第2次LLM调用 → 判断是否下雨\n4. 如果下雨 → 决定调用set_reminder\n5. 执行set_reminder → 设置提醒\n6. 第3次LLM调用 → 生成最终回答"
+    },
+    {
+      "anchor": "section-49",
+      "text": "3.3 ■ 学点英语"
+    },
+    {
+      "anchor": "section-49",
+      "text": "中文 | English | 音标 | 说明\n工具调用字段 | tool calls _ | /tuːl kɔːlz/ | LLM返回的结构化字段，指示代码需要执行哪些工具函数\n完成原因 | finish reason _ | /ˈfɪnɪʃ rɪˈziːzən/ | LLM响应中的标志位，tool calls表示需要调用工具 _ 而非直接回答\nJSON模式 | JSON Schema | /ˈdʒeɪsɒn ˈskiːmə/ | 定义工具参数结构的规范，包括类型、必填、枚举等约束\n多轮工具调用 | Multi-turn Tool Calling | /ˈmʌlti tɜːn tuːl ˈkɔːlɪŋ/ | 依赖上一步结果逐步执行多次工具调用的流程模式"
+    },
+    {
+      "anchor": "section-51",
+      "text": "图片"
+    }
+  ]
+}

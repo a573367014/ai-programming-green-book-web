@@ -1,0 +1,18 @@
+--- PDF 第 1 页 ---
+1.
+来源: https://class.imooc.com/lesson/5254#mid=104949
+阶段: 阶段一: 【认知基石】理解大模型的本质与工作原理
+周: 第1周 语言模型是什么
+模块: 文字接龙的游戏
+课节: 练习 1-2 选择练习
+1.
+A
+The model's parameters are updated based on the newly generated word
+In the autoregressive generation process described in the chapter, after ChatGPT generates the
+word "today" in response to "How is the weather in Shanghai today?", what changes for the
+next prediction step? (延展题)
+B
+The word "today" is added to the context for the next prediction
+The vocabulary is reduced to exclude already-used words
+D
+The probability distribution is reset to uniform for the next step

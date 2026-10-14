@@ -1,0 +1,1541 @@
+{
+  "id": "lesson-096",
+  "title": "RAG核心原理（二）-检索生成与关键机制",
+  "code": "1-3",
+  "stage": 2,
+  "week": 5,
+  "week_title": "RAG：知识接入技术",
+  "module": "RAG核心原理",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/002-第5周 RAG：知识接入技术/005-RAG核心原理/096-图文-1-3-RAG核心原理（二）-检索生成与关键机制.pdf",
+  "sha256": "66eb4fb71585d2601888b4709e99f0165b9eecdae3fbc4881cd282ff3eb88c4e",
+  "pdf": "sources/pdf/lesson-096.pdf",
+  "pages": 13,
+  "source_url": "https://class.imooc.com/lesson/5271#mid=104915",
+  "minutes": 13,
+  "excerpt": "RAG系统需要把检索到的文档（比如\"年假天数规定\"“申请流程”“注意事项”）和用户问题（“我入职2年了，下周想请5天年假，来得及吗？”）整合成一个结构化的Prompt，然后交给AI来回答。",
+  "items": [
+    {
+      "kind": "h2",
+      "text": "3.1 上下文拼接：喂给AI的\"参考资料\"",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "RAG系统需要把检索到的文档（比如\"年假天数规定\"“申请流程”“注意事项”）和用户问题（“我入职2年了，下周想请5天年假，来得及吗？”）整合成一个结构化的Prompt，然后交给AI来回答。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个Prompt该怎么设计呢？",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "基本模板",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "你是一个专业的客服助手。请基于以下参考资料回答用户问题。\n\n【参考资料】\n文档1: 年假天数规定\n入职1年内：5天；1-3年：7天；3-5年：10天；5年以上：15天\n\n文档2: 年假申请流程\n登录OA系统 → 选择\"请假申请\" → 填写年假类型和时间 → 提交领导审批\n\n文档3: 申请注意事项\n需要提前3天申请；春节、国庆等重大节假日需提前1个月\n\n【用户问题】\n我入职2年了，下周想请5天年假，来得及吗？\n\n【回答要求】\n1. 基于参考资料回答，不要编造信息\n2. 如果参考资料中没有相关信息，明确告知用户\n3. 回答要准确、友好、自然",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "模板设计直接影响回答质量。对比两种模板：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Bad：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "资料：[一大堆文档堆砌]\n问题：我入职2年了，下周想请5天年假，来得及吗？\n\n1\n2",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI可能回答：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "不理解哪些是参考资料，哪些是问题",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "可能忽略关键信息",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "回答格式混乱",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Good：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "你是专业客服。基于【参考资料】回答【用户问题】，遵守【回答要求】。\n\n【参考资料】\n...（结构化呈现）\n\n【用户问题】\n...\n\n【回答要求】\n...（明确约束）",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI会：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "清楚角色定位（专业客服）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "明确信息边界（只用参考资料）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "遵守回答规范（准确、友好）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.2 生成阶段：AI的魔法时刻",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当AI收到完整的Prompt后，它会：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解用户意图",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从问题\"我入职2年了，下周想请5天年假，来得及吗？\"中提取关键信息：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "入职时长：2年",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "需要天数：5天",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "时间：下周",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "核心问题：来得及吗（时间是否允许）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从参考资料中定位答案",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "从文档1找到：入职2年 → 对应7天年假",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "从文档2了解：申请流程",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "从文档3确认：需提前3天申请",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "逻辑推理",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "7天年假 vs 需要5天 → 够用 ✓",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "下周出发 vs 提前3天 → 假设今天是周一，距下周一超过3天 → 来得及 ✓",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "生成回答",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "综合以上信息，生成自然流畅的回答：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "可以的，来得及！\n\n根据公司规定：\n您入职2年，有7天年假额度，请5天完全够用\n普通时段只需提前3天申请，下周去旅游符合要求\n\n建议您现在就登录OA系统提交申请：\n1. 选择\"请假申请\"\n2. 填写年假类型和日期（5天）\n3. 提交给直属领导审批\n\n祝您旅途愉快！",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "3.3 RAG的关键优势",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "经过这一节的讲解，我们可以总结出RAG的几个关键优势：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语义理解",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不依赖精确的关键词匹配，能理解问题的真实意图。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "例如：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“怎么请假” ≈ “假期申请流程” ≈ “如何提交休假申请”",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "RAG能识别这些表述在语义上是相同的",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "跨文档整合",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "能从多份文档中提取信息，综合回答。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "例如：\"年假够用吗？“需要结合\"天数规定”+“申请流程”+“个人入职时间”",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "个性化生成",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "基于用户的具体情况（入职2年、请5天、下周）生成定制化回答，而不是千篇一律的标准答案。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可追溯性",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可以标注答案来源于哪些文档，便于验证准确性，增强可信度。这一点很重要，这是RAG可以部分解决AI“幻觉”的关键能力，他可以给出他是基于哪些资料生成的答案，我们可以核查信息真实性。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "灵活扩展",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "添加新文档只需重新向量化并存入数据库，无需修改系统逻辑或重新训练模型。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.4 技术细节补充",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在理解了RAG的整体流程后，这里补充几个实际实现中容易被忽略但很重要的技术细节。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "文档切分（Chunking）：检索的其实不是完整文档",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "你可能会有个疑问：检索到文档后，是直接把整份文档发给AI，还是会提取其中的内容？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "*答案是：检索到的根本不是完整文档，而是文档的片段（Chunk）。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么要切分",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象一下，公司有一份50页的《员工手册》，里面包含：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第1-5页：入职流程",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第6-10页：薪资福利",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第11-15页：请假制度",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第16-20页：报销流程",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "…",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果用户问\"怎么申请年假？\"，真正相关的只有第11-15页的内容。但如果你把整份50页的手册都塞进Prompt：",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题1：Token超限",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "50页 ≈ 25000字",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "大部分模型上下文窗口有限",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "即使能塞下，成本也非常高",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题2：噪音太多",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "AI需要从50页中找到相关的5页",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "大量无关信息会干扰判断",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "回答质量下降",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题3：检索不精准",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "整份文档的向量是所有内容的\"平均语义\"",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "无法精确匹配到\"年假申请\"这个具体主题",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确的做法：离线切分",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在建立知识库时，就把文档切成小块：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "原始文档：《员工手册.pdf》（50页，25000字）\n          ↓ 切分\n\nChunk 1: \"入职流程：新员工需要...\"  (约200字)\nChunk 2: \"薪资发放：每月15日...\"    (约180字)\nChunk 3: \"年假天数：入职1年内...\"   (约150字)\nChunk 4: \"年假申请流程：登录OA...\"  (约220字)\nChunk 5: \"年假注意事项：需提前...\"  (约160字)\nChunk 6: \"报销流程：提交发票...\"    (约190字)\n...\nChunk 125: \"离职手续：需提前...\"    (约200字)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "每个Chunk：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "转换成向量",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "存入向量数据库",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "保留原始文本",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 第3点\"保留原始文本\"很重要 我们向AI提交的不能是向量，必须是文本。有时候我们需要追溯原始资料用来判断AI是否出现\"幻觉\"，这也需要能够看到Chunk的原始文字，人类是看不懂数字向量的。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h3",
+      "text": "检索时的实际流程",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "# 用户提问\nquestion = \"我怎么申请年假？\"\n\n# 检索相似的Chunk（不是完整文档）\ntop_chunks = vector_db.search(question, top_k=3)\n# 返回:\n# - Chunk 4: \"年假申请流程：登录OA系统 → 选择请假申请...\"\n# - Chunk 3: \"年假天数：入职1年内5天；1-3年7天...\"\n# - Chunk 5: \"年假注意事项：需提前3天申请...\"\n\n# 直接把这些Chunk的原始文本拼接到Prompt\nprompt = f\"\"\"\n【参考资料】\n{top_chunks[0].text}\n{top_chunks[1].text}\n{top_chunks[2].text}\n\n【用户问题】\n{question}\n\"\"\"",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "优势",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Token消耗少（3个Chunk约600字 vs 整份文档25000字）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "检索精准（直接匹配到相关片段）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "成本降低（Token少了40倍）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "常见的切分策略",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "table",
+      "text": "策略 | 适用场景 | Chunk大小\n按字符数切分 | 通用场景 | 200-500字\n按段落切分 | 结构化文档 | 自然段落\n按语义切分 | 技术文档 | 完整的概念单元\n滑动窗口 | 连续性强的内容 | 重叠50-100字",
+      "rows": [
+        [
+          "策略",
+          "适用场景",
+          "Chunk大小"
+        ],
+        [
+          "按字符数切分",
+          "通用场景",
+          "200-500字"
+        ],
+        [
+          "按段落切分",
+          "结构化文档",
+          "自然段落"
+        ],
+        [
+          "按语义切分",
+          "技术文档",
+          "完整的概念单元"
+        ],
+        [
+          "滑动窗口",
+          "连续性强的内容",
+          "重叠50-100字"
+        ]
+      ],
+      "page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "所以，流程图中的\"步骤3：提取相关片段\"并不是从完整文档中提取内容，而是从向量数据库中取出检索到的Chunk的原始文本。文档在存储时就已经切分好了。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "h3",
+      "text": "Chunk重叠",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为了避免重要信息被切断，相邻Chunk通常会有重叠：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Chunk 1: \"...年假天数规定：入职1年内5天；1-3年7天...\"\nChunk 2: \"...1-3年7天；3-5年10天。申请流程：登录OA系统...\" ← 重叠部分\n\n1\n2",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "3.5 元数据",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么是元数据",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "元数据（Metadata）字面意思是\"关于数据的数据\"。如果把文档内容比作一本书的正文，那元数据就是这本书的封面信息——书名、作者、出版日期、ISBN号等。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "在编程中，元数据无处不在：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "文件的元数据：文件名、大小、创建时间、修改时间",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "照片的元数据：拍摄时间、地点、相机型号、分辨率",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "数据库记录的元数据：创建人、创建时间、最后修改时间",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "元数据的作用是帮助我们组织、查找、过滤和管理数据本身。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "帮助我们组织、查找、过滤和管理数据本身",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在RAG系统中，每个Chunk除了保存文本内容，还会保存元数据：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "chunk = {\n    \"text\": \"年假申请流程：登录OA系统...\",\n    \"metadata\": {\n        \"source\": \"员工手册.pdf\",\n        \"page\": 12,\n        \"section\": \"请假制度\",\n        \"last_updated\": \"2024-01-15\"\n    }\n}",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "3.6 多路召回",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么是召回 \"召回\"（Recall）是搜索系统中的术语，意思是\"从海量数据中把相关的结果找回来\"。就像你在图书馆找书，\"召回\"就是从几万本书里把可能相关的书都拿出来的过程。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "\"多路\"则是指使用多种不同的方法来召回结果，然后把它们合并起来。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "多种不同的方法",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么需要多路召回？因为单一的检索方法都有局限性：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "单一的检索方法都有局限性",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "纯向量检索的问题：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户问：\"公司OA系统的网址是多少？\"\n\n向量检索结果：\n- \"OA系统使用指南...\"  （相似度0.82）\n- \"如何登录OA系统...\"  （相似度0.78）\n- \"OA系统常见问题...\"  （相似度0.75）\n\n但都没有直接包含网址！",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "向量检索擅长语义理解，但对精确信息（网址、电话号码、专有名词）可能找不准。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "精确信息",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "纯关键词检索的问题：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户问：\"怎么请假？\"\n\n关键词检索：搜索包含\"请假\"的文档\n- \"请假制度详细说明...\"  ✓\n- \"员工请假统计表...\"    × （不相关）\n- \"请假审批流程图...\"    ✓\n\n无法理解\"申请年假\"\"休息几天\"等同义表达",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键词检索擅长精确匹配，但不理解语义。",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "精确匹配",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语义",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "多路召回的解决方案：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "结合两种方法的优势：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户问：\"公司OA系统的网址是多少？\"\n\n# 路径1：向量检索（Top-5）\nvector_results = [\n    \"OA系统使用指南：登录地址为...\",\n    \"如何登录OA系统...\",\n    \"OA系统常见问题...\"\n]\n\n# 路径2：关键词检索（Top-5）\nkeyword_results = [\n    \"OA系统网址：https://oa.company.com\",  ← 精确命中！\n    \"内部系统网址汇总：OA系统...\",\n    \"网络资源：OA系统地址为...\"\n]\n\n# 合并去重\nall_results = vector_results + keyword_results\n# 结果：共8个候选文档（去重后）\n\n# 重新排序（Rerank）\n# 使用更精细的模型对这8个文档重新打分\nfinal_results = rerank(all_results, question)\n# 最终Top-3：\n# 1. \"OA系统网址：https://oa.company.com\"  (0.95)\n# 2. \"OA系统使用指南：登录地址为...\"      (0.88)\n# 3. \"内部系统网址汇总：OA系统...\"        (0.82)",
+      "page": 11,
+      "size": 9.75,
+      "end_page": 11,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "常见的召回路径组合",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 什么是 BM25？ BM25（Best Match 25）是一种经典的基于关键词的排序算法，由搜索引擎领域发展而来。它和向量检索不同： 向量检索：理解“语义”（例如“请假”和“年假申请”语义相近） BM25：关注“词频”（文档里关键词出现越多、在整个知识库里越稀有，得分越高）在多路召回中，BM25 常用来作为“精确匹配补充”：当用户问题包含关键专业名词或产品型号时，BM25 能准确抓取到包含这些词的文档。",
+      "page": 11,
+      "size": 11.25,
+      "end_page": 11
+    },
+    {
+      "kind": "code",
+      "text": "+-------------+\n|  用户问题    |\n+------+------+\n       |\n    +--+--+------+--------+\n    v     v      v        v\n  向量   关键词  BM25   时间过滤\n  检索   检索   检索   （最近更新）\n    |     |      |        |\n    +--+--+--+---+--------+\n       v     v\n    合并 + 去重\n       |\n       v\n    Rerank重排序\n       |\n       v\n    Top-K结果",
+      "page": 12,
+      "size": 9.75,
+      "end_page": 12,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是“多路召回”的核心思想：让不同的检索方法各显神通，最后综合决策。就像组建一个专家团队，每个专家擅长不同领域，共同给出最佳答案。",
+      "page": 12,
+      "size": 11.25,
+      "end_page": 12
+    },
+    {
+      "kind": "h2",
+      "text": "3.7 下节预告",
+      "page": 12,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在这一节中，我们多次提到“Embedding”——把文字转换成向量。但它到底是怎么工作的？",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么一段文字能变成一组数字？这些数字又是如何表达语义的？不同的 Embedding 模型（768维、1536维、3072维）该如何选择？",
+      "page": 12,
+      "size": 11.25,
+      "end_page": 12
+    },
+    {
+      "kind": "paragraph",
+      "text": "**下一节《Embedding：把文字变成向量》**将带你深入理解这项RAG的关键技术，从原理到实战，掌握如何选择和使用Embedding模型。",
+      "page": 12,
+      "size": 11.25,
+      "end_page": 12
+    },
+    {
+      "kind": "h2",
+      "text": "3.8 ■ 学点英语",
+      "page": 13,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n上下文拼接 | Context Assembly | /ˈkɑːntekst ə ˈsembli/ | 将检索到的文档和用户问题整合成结构化Prompt的过程\n多路召回 | Hybrid Search | /ˈhaɪbrɪd sɜːrtʃ/ | 同时使用多种检索方法（向量、关键词、BM25）后合并结果\n重排序 | Rerank | /riːˈræŋk/ | 对初步检索结果重新打分排序，提升最相关内容的位置\nBM25 | BM25 | /biː em twɛnti faɪv/ | 基于词频和逆文档频率的经典文本检索算法\n引文追溯 | Citation Tracking | /saɪˈteɪʃn ˈtrækɪŋ/ | 要求AI在回答中引用来源，确保答案可验证",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "上下文拼接",
+          "Context Assembly",
+          "/ˈkɑːntekst ə ˈsembli/",
+          "将检索到的文档和用户问题整合成结构化Prompt的过程"
+        ],
+        [
+          "多路召回",
+          "Hybrid Search",
+          "/ˈhaɪbrɪd sɜːrtʃ/",
+          "同时使用多种检索方法（向量、关键词、BM25）后合并结果"
+        ],
+        [
+          "重排序",
+          "Rerank",
+          "/riːˈræŋk/",
+          "对初步检索结果重新打分排序，提升最相关内容的位置"
+        ],
+        [
+          "BM25",
+          "BM25",
+          "/biː em twɛnti faɪv/",
+          "基于词频和逆文档频率的经典文本检索算法"
+        ],
+        [
+          "引文追溯",
+          "Citation Tracking",
+          "/saɪˈteɪʃn ˈtrækɪŋ/",
+          "要求AI在回答中引用来源，确保答案可验证"
+        ]
+      ],
+      "page": 13
+    }
+  ],
+  "accounting": {
+    "source_chars": 5637,
+    "represented_chars": 5392,
+    "removed_chars": 245,
+    "tables": 2,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 162,
+      "repeated_title": 52,
+      "code_line_number_artifact": 31
+    }
+  },
+  "videos": [],
+  "order": 97,
+  "headings": [
+    {
+      "title": "3.1 上下文拼接：喂给AI的\"参考资料\"",
+      "id": "section-0",
+      "level": 2
+    },
+    {
+      "title": "3.2 生成阶段：AI的魔法时刻",
+      "id": "section-18",
+      "level": 2
+    },
+    {
+      "title": "3.3 RAG的关键优势",
+      "id": "section-36",
+      "level": 2
+    },
+    {
+      "title": "3.4 技术细节补充",
+      "id": "section-52",
+      "level": 2
+    },
+    {
+      "title": "检索时的实际流程",
+      "id": "section-84",
+      "level": 3
+    },
+    {
+      "title": "常见的切分策略",
+      "id": "section-90",
+      "level": 3
+    },
+    {
+      "title": "Chunk重叠",
+      "id": "section-93",
+      "level": 3
+    },
+    {
+      "title": "3.5 元数据",
+      "id": "section-96",
+      "level": 2
+    },
+    {
+      "title": "3.6 多路召回",
+      "id": "section-107",
+      "level": 2
+    },
+    {
+      "title": "3.7 下节预告",
+      "id": "section-129",
+      "level": 2
+    },
+    {
+      "title": "3.8 ■ 学点英语",
+      "id": "section-133",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "section-0",
+      "text": "3.1 上下文拼接：喂给AI的\"参考资料\""
+    },
+    {
+      "anchor": "section-0",
+      "text": "RAG系统需要把检索到的文档（比如\"年假天数规定\"“申请流程”“注意事项”）和用户问题（“我入职2年了，下周想请5天年假，来得及吗？”）整合成一个结构化的Prompt，然后交给AI来回答。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "这个Prompt该怎么设计呢？"
+    },
+    {
+      "anchor": "section-0",
+      "text": "基本模板"
+    },
+    {
+      "anchor": "section-0",
+      "text": "你是一个专业的客服助手。请基于以下参考资料回答用户问题。\n\n【参考资料】\n文档1: 年假天数规定\n入职1年内：5天；1-3年：7天；3-5年：10天；5年以上：15天\n\n文档2: 年假申请流程\n登录OA系统 → 选择\"请假申请\" → 填写年假类型和时间 → 提交领导审批\n\n文档3: 申请注意事项\n需要提前3天申请；春节、国庆等重大节假日需提前1个月\n\n【用户问题】\n我入职2年了，下周想请5天年假，来得及吗？\n\n【回答要求】\n1. 基于参考资料回答，不要编造信息\n2. 如果参考资料中没有相关信息，明确告知用户\n3. 回答要准确、友好、自然"
+    },
+    {
+      "anchor": "section-0",
+      "text": "模板设计直接影响回答质量。对比两种模板："
+    },
+    {
+      "anchor": "section-0",
+      "text": "Bad："
+    },
+    {
+      "anchor": "section-0",
+      "text": "资料：[一大堆文档堆砌]\n问题：我入职2年了，下周想请5天年假，来得及吗？\n\n1\n2"
+    },
+    {
+      "anchor": "section-0",
+      "text": "AI可能回答："
+    },
+    {
+      "anchor": "section-0",
+      "text": "不理解哪些是参考资料，哪些是问题"
+    },
+    {
+      "anchor": "section-0",
+      "text": "可能忽略关键信息"
+    },
+    {
+      "anchor": "section-0",
+      "text": "回答格式混乱"
+    },
+    {
+      "anchor": "section-0",
+      "text": "Good："
+    },
+    {
+      "anchor": "section-0",
+      "text": "你是专业客服。基于【参考资料】回答【用户问题】，遵守【回答要求】。\n\n【参考资料】\n...（结构化呈现）\n\n【用户问题】\n...\n\n【回答要求】\n...（明确约束）"
+    },
+    {
+      "anchor": "section-0",
+      "text": "AI会："
+    },
+    {
+      "anchor": "section-0",
+      "text": "清楚角色定位（专业客服）"
+    },
+    {
+      "anchor": "section-0",
+      "text": "明确信息边界（只用参考资料）"
+    },
+    {
+      "anchor": "section-0",
+      "text": "遵守回答规范（准确、友好）"
+    },
+    {
+      "anchor": "section-18",
+      "text": "3.2 生成阶段：AI的魔法时刻"
+    },
+    {
+      "anchor": "section-18",
+      "text": "当AI收到完整的Prompt后，它会："
+    },
+    {
+      "anchor": "section-18",
+      "text": "理解用户意图"
+    },
+    {
+      "anchor": "section-18",
+      "text": "从问题\"我入职2年了，下周想请5天年假，来得及吗？\"中提取关键信息："
+    },
+    {
+      "anchor": "section-18",
+      "text": "入职时长：2年"
+    },
+    {
+      "anchor": "section-18",
+      "text": "需要天数：5天"
+    },
+    {
+      "anchor": "section-18",
+      "text": "时间：下周"
+    },
+    {
+      "anchor": "section-18",
+      "text": "核心问题：来得及吗（时间是否允许）"
+    },
+    {
+      "anchor": "section-18",
+      "text": "从参考资料中定位答案"
+    },
+    {
+      "anchor": "section-18",
+      "text": "从文档1找到：入职2年 → 对应7天年假"
+    },
+    {
+      "anchor": "section-18",
+      "text": "从文档2了解：申请流程"
+    },
+    {
+      "anchor": "section-18",
+      "text": "从文档3确认：需提前3天申请"
+    },
+    {
+      "anchor": "section-18",
+      "text": "逻辑推理"
+    },
+    {
+      "anchor": "section-18",
+      "text": "7天年假 vs 需要5天 → 够用 ✓"
+    },
+    {
+      "anchor": "section-18",
+      "text": "下周出发 vs 提前3天 → 假设今天是周一，距下周一超过3天 → 来得及 ✓"
+    },
+    {
+      "anchor": "section-18",
+      "text": "生成回答"
+    },
+    {
+      "anchor": "section-18",
+      "text": "综合以上信息，生成自然流畅的回答："
+    },
+    {
+      "anchor": "section-18",
+      "text": "可以的，来得及！\n\n根据公司规定：\n您入职2年，有7天年假额度，请5天完全够用\n普通时段只需提前3天申请，下周去旅游符合要求\n\n建议您现在就登录OA系统提交申请：\n1. 选择\"请假申请\"\n2. 填写年假类型和日期（5天）\n3. 提交给直属领导审批\n\n祝您旅途愉快！"
+    },
+    {
+      "anchor": "section-36",
+      "text": "3.3 RAG的关键优势"
+    },
+    {
+      "anchor": "section-36",
+      "text": "经过这一节的讲解，我们可以总结出RAG的几个关键优势："
+    },
+    {
+      "anchor": "section-36",
+      "text": "语义理解"
+    },
+    {
+      "anchor": "section-36",
+      "text": "不依赖精确的关键词匹配，能理解问题的真实意图。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "例如："
+    },
+    {
+      "anchor": "section-36",
+      "text": "“怎么请假” ≈ “假期申请流程” ≈ “如何提交休假申请”"
+    },
+    {
+      "anchor": "section-36",
+      "text": "RAG能识别这些表述在语义上是相同的"
+    },
+    {
+      "anchor": "section-36",
+      "text": "跨文档整合"
+    },
+    {
+      "anchor": "section-36",
+      "text": "能从多份文档中提取信息，综合回答。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "例如：\"年假够用吗？“需要结合\"天数规定”+“申请流程”+“个人入职时间”"
+    },
+    {
+      "anchor": "section-36",
+      "text": "个性化生成"
+    },
+    {
+      "anchor": "section-36",
+      "text": "基于用户的具体情况（入职2年、请5天、下周）生成定制化回答，而不是千篇一律的标准答案。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "可追溯性"
+    },
+    {
+      "anchor": "section-36",
+      "text": "可以标注答案来源于哪些文档，便于验证准确性，增强可信度。这一点很重要，这是RAG可以部分解决AI“幻觉”的关键能力，他可以给出他是基于哪些资料生成的答案，我们可以核查信息真实性。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "灵活扩展"
+    },
+    {
+      "anchor": "section-36",
+      "text": "添加新文档只需重新向量化并存入数据库，无需修改系统逻辑或重新训练模型。"
+    },
+    {
+      "anchor": "section-52",
+      "text": "3.4 技术细节补充"
+    },
+    {
+      "anchor": "section-52",
+      "text": "在理解了RAG的整体流程后，这里补充几个实际实现中容易被忽略但很重要的技术细节。"
+    },
+    {
+      "anchor": "section-52",
+      "text": "文档切分（Chunking）：检索的其实不是完整文档"
+    },
+    {
+      "anchor": "section-52",
+      "text": "你可能会有个疑问：检索到文档后，是直接把整份文档发给AI，还是会提取其中的内容？"
+    },
+    {
+      "anchor": "section-52",
+      "text": "*答案是：检索到的根本不是完整文档，而是文档的片段（Chunk）。"
+    },
+    {
+      "anchor": "section-52",
+      "text": "为什么要切分"
+    },
+    {
+      "anchor": "section-52",
+      "text": "想象一下，公司有一份50页的《员工手册》，里面包含："
+    },
+    {
+      "anchor": "section-52",
+      "text": "第1-5页：入职流程"
+    },
+    {
+      "anchor": "section-52",
+      "text": "第6-10页：薪资福利"
+    },
+    {
+      "anchor": "section-52",
+      "text": "第11-15页：请假制度"
+    },
+    {
+      "anchor": "section-52",
+      "text": "第16-20页：报销流程"
+    },
+    {
+      "anchor": "section-52",
+      "text": "…"
+    },
+    {
+      "anchor": "section-52",
+      "text": "如果用户问\"怎么申请年假？\"，真正相关的只有第11-15页的内容。但如果你把整份50页的手册都塞进Prompt："
+    },
+    {
+      "anchor": "section-52",
+      "text": "问题1：Token超限"
+    },
+    {
+      "anchor": "section-52",
+      "text": "50页 ≈ 25000字"
+    },
+    {
+      "anchor": "section-52",
+      "text": "大部分模型上下文窗口有限"
+    },
+    {
+      "anchor": "section-52",
+      "text": "即使能塞下，成本也非常高"
+    },
+    {
+      "anchor": "section-52",
+      "text": "问题2：噪音太多"
+    },
+    {
+      "anchor": "section-52",
+      "text": "AI需要从50页中找到相关的5页"
+    },
+    {
+      "anchor": "section-52",
+      "text": "大量无关信息会干扰判断"
+    },
+    {
+      "anchor": "section-52",
+      "text": "回答质量下降"
+    },
+    {
+      "anchor": "section-52",
+      "text": "问题3：检索不精准"
+    },
+    {
+      "anchor": "section-52",
+      "text": "整份文档的向量是所有内容的\"平均语义\""
+    },
+    {
+      "anchor": "section-52",
+      "text": "无法精确匹配到\"年假申请\"这个具体主题"
+    },
+    {
+      "anchor": "section-52",
+      "text": "正确的做法：离线切分"
+    },
+    {
+      "anchor": "section-52",
+      "text": "在建立知识库时，就把文档切成小块："
+    },
+    {
+      "anchor": "section-52",
+      "text": "原始文档：《员工手册.pdf》（50页，25000字）\n          ↓ 切分\n\nChunk 1: \"入职流程：新员工需要...\"  (约200字)\nChunk 2: \"薪资发放：每月15日...\"    (约180字)\nChunk 3: \"年假天数：入职1年内...\"   (约150字)\nChunk 4: \"年假申请流程：登录OA...\"  (约220字)\nChunk 5: \"年假注意事项：需提前...\"  (约160字)\nChunk 6: \"报销流程：提交发票...\"    (约190字)\n...\nChunk 125: \"离职手续：需提前...\"    (约200字)"
+    },
+    {
+      "anchor": "section-52",
+      "text": "每个Chunk："
+    },
+    {
+      "anchor": "section-52",
+      "text": "转换成向量"
+    },
+    {
+      "anchor": "section-52",
+      "text": "存入向量数据库"
+    },
+    {
+      "anchor": "section-52",
+      "text": "保留原始文本"
+    },
+    {
+      "anchor": "section-52",
+      "text": "第3点\"保留原始文本\"很重要 我们向AI提交的不能是向量，必须是文本。有时候我们需要追溯原始资料用来判断AI是否出现\"幻觉\"，这也需要能够看到Chunk的原始文字，人类是看不懂数字向量的。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "检索时的实际流程"
+    },
+    {
+      "anchor": "section-84",
+      "text": "# 用户提问\nquestion = \"我怎么申请年假？\"\n\n# 检索相似的Chunk（不是完整文档）\ntop_chunks = vector_db.search(question, top_k=3)\n# 返回:\n# - Chunk 4: \"年假申请流程：登录OA系统 → 选择请假申请...\"\n# - Chunk 3: \"年假天数：入职1年内5天；1-3年7天...\"\n# - Chunk 5: \"年假注意事项：需提前3天申请...\"\n\n# 直接把这些Chunk的原始文本拼接到Prompt\nprompt = f\"\"\"\n【参考资料】\n{top_chunks[0].text}\n{top_chunks[1].text}\n{top_chunks[2].text}\n\n【用户问题】\n{question}\n\"\"\""
+    },
+    {
+      "anchor": "section-84",
+      "text": "优势"
+    },
+    {
+      "anchor": "section-84",
+      "text": "Token消耗少（3个Chunk约600字 vs 整份文档25000字）"
+    },
+    {
+      "anchor": "section-84",
+      "text": "检索精准（直接匹配到相关片段）"
+    },
+    {
+      "anchor": "section-84",
+      "text": "成本降低（Token少了40倍）"
+    },
+    {
+      "anchor": "section-90",
+      "text": "常见的切分策略"
+    },
+    {
+      "anchor": "section-90",
+      "text": "策略 | 适用场景 | Chunk大小\n按字符数切分 | 通用场景 | 200-500字\n按段落切分 | 结构化文档 | 自然段落\n按语义切分 | 技术文档 | 完整的概念单元\n滑动窗口 | 连续性强的内容 | 重叠50-100字"
+    },
+    {
+      "anchor": "section-90",
+      "text": "所以，流程图中的\"步骤3：提取相关片段\"并不是从完整文档中提取内容，而是从向量数据库中取出检索到的Chunk的原始文本。文档在存储时就已经切分好了。"
+    },
+    {
+      "anchor": "section-93",
+      "text": "Chunk重叠"
+    },
+    {
+      "anchor": "section-93",
+      "text": "为了避免重要信息被切断，相邻Chunk通常会有重叠："
+    },
+    {
+      "anchor": "section-93",
+      "text": "Chunk 1: \"...年假天数规定：入职1年内5天；1-3年7天...\"\nChunk 2: \"...1-3年7天；3-5年10天。申请流程：登录OA系统...\" ← 重叠部分\n\n1\n2"
+    },
+    {
+      "anchor": "section-96",
+      "text": "3.5 元数据"
+    },
+    {
+      "anchor": "section-96",
+      "text": "什么是元数据"
+    },
+    {
+      "anchor": "section-96",
+      "text": "元数据（Metadata）字面意思是\"关于数据的数据\"。如果把文档内容比作一本书的正文，那元数据就是这本书的封面信息——书名、作者、出版日期、ISBN号等。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "在编程中，元数据无处不在："
+    },
+    {
+      "anchor": "section-96",
+      "text": "文件的元数据：文件名、大小、创建时间、修改时间"
+    },
+    {
+      "anchor": "section-96",
+      "text": "照片的元数据：拍摄时间、地点、相机型号、分辨率"
+    },
+    {
+      "anchor": "section-96",
+      "text": "数据库记录的元数据：创建人、创建时间、最后修改时间"
+    },
+    {
+      "anchor": "section-96",
+      "text": "元数据的作用是帮助我们组织、查找、过滤和管理数据本身。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "帮助我们组织、查找、过滤和管理数据本身"
+    },
+    {
+      "anchor": "section-96",
+      "text": "在RAG系统中，每个Chunk除了保存文本内容，还会保存元数据："
+    },
+    {
+      "anchor": "section-96",
+      "text": "chunk = {\n    \"text\": \"年假申请流程：登录OA系统...\",\n    \"metadata\": {\n        \"source\": \"员工手册.pdf\",\n        \"page\": 12,\n        \"section\": \"请假制度\",\n        \"last_updated\": \"2024-01-15\"\n    }\n}"
+    },
+    {
+      "anchor": "section-107",
+      "text": "3.6 多路召回"
+    },
+    {
+      "anchor": "section-107",
+      "text": "什么是召回 \"召回\"（Recall）是搜索系统中的术语，意思是\"从海量数据中把相关的结果找回来\"。就像你在图书馆找书，\"召回\"就是从几万本书里把可能相关的书都拿出来的过程。"
+    },
+    {
+      "anchor": "section-107",
+      "text": "\"多路\"则是指使用多种不同的方法来召回结果，然后把它们合并起来。"
+    },
+    {
+      "anchor": "section-107",
+      "text": "多种不同的方法"
+    },
+    {
+      "anchor": "section-107",
+      "text": "为什么需要多路召回？因为单一的检索方法都有局限性："
+    },
+    {
+      "anchor": "section-107",
+      "text": "单一的检索方法都有局限性"
+    },
+    {
+      "anchor": "section-107",
+      "text": "纯向量检索的问题："
+    },
+    {
+      "anchor": "section-107",
+      "text": "用户问：\"公司OA系统的网址是多少？\"\n\n向量检索结果：\n- \"OA系统使用指南...\"  （相似度0.82）\n- \"如何登录OA系统...\"  （相似度0.78）\n- \"OA系统常见问题...\"  （相似度0.75）\n\n但都没有直接包含网址！"
+    },
+    {
+      "anchor": "section-107",
+      "text": "向量检索擅长语义理解，但对精确信息（网址、电话号码、专有名词）可能找不准。"
+    },
+    {
+      "anchor": "section-107",
+      "text": "精确信息"
+    },
+    {
+      "anchor": "section-107",
+      "text": "纯关键词检索的问题："
+    },
+    {
+      "anchor": "section-107",
+      "text": "用户问：\"怎么请假？\"\n\n关键词检索：搜索包含\"请假\"的文档\n- \"请假制度详细说明...\"  ✓\n- \"员工请假统计表...\"    × （不相关）\n- \"请假审批流程图...\"    ✓\n\n无法理解\"申请年假\"\"休息几天\"等同义表达"
+    },
+    {
+      "anchor": "section-107",
+      "text": "关键词检索擅长精确匹配，但不理解语义。"
+    },
+    {
+      "anchor": "section-107",
+      "text": "精确匹配"
+    },
+    {
+      "anchor": "section-107",
+      "text": "语义"
+    },
+    {
+      "anchor": "section-107",
+      "text": "多路召回的解决方案："
+    },
+    {
+      "anchor": "section-107",
+      "text": "结合两种方法的优势："
+    },
+    {
+      "anchor": "section-107",
+      "text": "用户问：\"公司OA系统的网址是多少？\"\n\n# 路径1：向量检索（Top-5）\nvector_results = [\n    \"OA系统使用指南：登录地址为...\",\n    \"如何登录OA系统...\",\n    \"OA系统常见问题...\"\n]\n\n# 路径2：关键词检索（Top-5）\nkeyword_results = [\n    \"OA系统网址：https://oa.company.com\",  ← 精确命中！\n    \"内部系统网址汇总：OA系统...\",\n    \"网络资源：OA系统地址为...\"\n]\n\n# 合并去重\nall_results = vector_results + keyword_results\n# 结果：共8个候选文档（去重后）\n\n# 重新排序（Rerank）\n# 使用更精细的模型对这8个文档重新打分\nfinal_results = rerank(all_results, question)\n# 最终Top-3：\n# 1. \"OA系统网址：https://oa.company.com\"  (0.95)\n# 2. \"OA系统使用指南：登录地址为...\"      (0.88)\n# 3. \"内部系统网址汇总：OA系统...\"        (0.82)"
+    },
+    {
+      "anchor": "section-107",
+      "text": "常见的召回路径组合"
+    },
+    {
+      "anchor": "section-107",
+      "text": "什么是 BM25？ BM25（Best Match 25）是一种经典的基于关键词的排序算法，由搜索引擎领域发展而来。它和向量检索不同： 向量检索：理解“语义”（例如“请假”和“年假申请”语义相近） BM25：关注“词频”（文档里关键词出现越多、在整个知识库里越稀有，得分越高）在多路召回中，BM25 常用来作为“精确匹配补充”：当用户问题包含关键专业名词或产品型号时，BM25 能准确抓取到包含这些词的文档。"
+    },
+    {
+      "anchor": "section-107",
+      "text": "+-------------+\n|  用户问题    |\n+------+------+\n       |\n    +--+--+------+--------+\n    v     v      v        v\n  向量   关键词  BM25   时间过滤\n  检索   检索   检索   （最近更新）\n    |     |      |        |\n    +--+--+--+---+--------+\n       v     v\n    合并 + 去重\n       |\n       v\n    Rerank重排序\n       |\n       v\n    Top-K结果"
+    },
+    {
+      "anchor": "section-107",
+      "text": "这就是“多路召回”的核心思想：让不同的检索方法各显神通，最后综合决策。就像组建一个专家团队，每个专家擅长不同领域，共同给出最佳答案。"
+    },
+    {
+      "anchor": "section-129",
+      "text": "3.7 下节预告"
+    },
+    {
+      "anchor": "section-129",
+      "text": "在这一节中，我们多次提到“Embedding”——把文字转换成向量。但它到底是怎么工作的？"
+    },
+    {
+      "anchor": "section-129",
+      "text": "为什么一段文字能变成一组数字？这些数字又是如何表达语义的？不同的 Embedding 模型（768维、1536维、3072维）该如何选择？"
+    },
+    {
+      "anchor": "section-129",
+      "text": "**下一节《Embedding：把文字变成向量》**将带你深入理解这项RAG的关键技术，从原理到实战，掌握如何选择和使用Embedding模型。"
+    },
+    {
+      "anchor": "section-133",
+      "text": "3.8 ■ 学点英语"
+    },
+    {
+      "anchor": "section-133",
+      "text": "中文 | English | 音标 | 说明\n上下文拼接 | Context Assembly | /ˈkɑːntekst ə ˈsembli/ | 将检索到的文档和用户问题整合成结构化Prompt的过程\n多路召回 | Hybrid Search | /ˈhaɪbrɪd sɜːrtʃ/ | 同时使用多种检索方法（向量、关键词、BM25）后合并结果\n重排序 | Rerank | /riːˈræŋk/ | 对初步检索结果重新打分排序，提升最相关内容的位置\nBM25 | BM25 | /biː em twɛnti faɪv/ | 基于词频和逆文档频率的经典文本检索算法\n引文追溯 | Citation Tracking | /saɪˈteɪʃn ˈtrækɪŋ/ | 要求AI在回答中引用来源，确保答案可验证"
+    }
+  ]
+}

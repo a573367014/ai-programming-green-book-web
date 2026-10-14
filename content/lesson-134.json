@@ -1,0 +1,767 @@
+{
+  "id": "lesson-134",
+  "title": "为什么需要 Skill",
+  "code": "1-1",
+  "stage": 5,
+  "week": 10,
+  "week_title": "Skill：可复用技能封装",
+  "module": "Skill的获取与生态",
+  "type": "article",
+  "repo_path": "005-阶段五 【能力封装】可复用技能/001-第10周 Skill：可复用技能封装/001-Skill的获取与生态/001-图文-1-1-为什么需要 Skill.pdf",
+  "sha256": "27f413bb46d18c8ce9753aaeb320a799bdef49e68250e81f92b70772be83773a",
+  "pdf": "sources/pdf/lesson-134.pdf",
+  "pages": 7,
+  "source_url": "https://class.imooc.com/lesson/5286#mid=105133",
+  "minutes": 11,
+  "excerpt": "假设这个场景：你的团队正在构建一个企业级应用，需要 AI 助手帮忙做代码审查。但你发现一个问题：",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP]",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "阅读指南",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设这个场景：你的团队正在构建一个企业级应用，需要 AI 助手帮忙做代码审查。但你发现一个问题：",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "code",
+      "text": "资深工程师的代码审查流程：\n  1. 根据代码类型（API/数据库/前端）选择不同的审查策略\n  2. 检查是否符合团队的技术栈规范（Python 3.10+/FastAPI/PostgreSQL）\n  3. 评估安全风险（SQL注入/认证/数据验证）\n  4. 分析性能瓶颈（数据库查询/内存泄漏/并发问题）\n  5. 验证错误处理的完整性\n  6. 给出可落地的改进建议\n这是一套非常专业知识体系\n不是简单的\"检查清单\"",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题是：如何让 AI 掌握这套专业知识，像资深工程师一样思考和决策？ 这就是我们需要 Skill 的原因。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "不只是编程领域。金融分析师看财报有自己的一套判断逻辑，医生读病历有自己的一套诊断思路，教师备课有自己的一套教学设计方法——每个专业领域都有沉淀多年的隐性知识体系。而这些，是通用大模型天然不具备的。Skill 要解决的，正是这个问题。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "专业知识的缺失",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "看一个实际例子。你的团队需要 AI 帮忙审查一段数据库查询代码：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 需要审查的代码\ndef get_user_orders(user_id):\n    query = f\"SELECT * FROM orders WHERE user_id = {user_id}\"\n    return db.execute(query)",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "普通 AI（没有专业知识）的回答：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "AI: \"这段代码看起来没什么问题，可以正常查询订单。\"\n\n× 没有识别出 SQL 注入风险\n× 没有检查是否有索引优化\n× 没有考虑大数据量的分页问题\n× 没有验证用户权限",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "拥有专业知识的 AI 应该这样回答：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "严重安全风险：SQL 注入漏洞\n  问题：直接拼接用户输入到 SQL 语句\n  修复：使用参数化查询\n\n性能问题：可能查询大量数据\n  建议：添加分页限制，检查 user_id 是否有索引\n\n权限问题：未验证当前用户是否有权限查看这些订单\n  建议：添加权限校验逻辑\n\n改进建议：\ndef get_user_orders(user_id, current_user, page=1):\n    if not has_permission(current_user, user_id):\n        raise PermissionError()\n    query = \"SELECT * FROM orders WHERE user_id = ?\n             LIMIT ? OFFSET ?\"\n    return db.execute(query, [user_id, 20, (page-1)*20])",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "× 普通 AI：只能做表面检查，缺乏专业判断",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "✓ 专业 AI：掌握安全最佳实践、性能优化经验、架构设计原则",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "传统方案为什么不行",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "你大概会想：“那我写一个超长的提示词，把所有规范都说明清楚不就行了？”",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "方案：超长提示词",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "\"你是一个资深代码审查专家。审查代码时要注意：\n─────────────────────────────────────────────────────────\n 1. 安全：检查SQL注入、XSS、认证授权...（200字说明）\n 2. 性能：数据库索引、缓存策略、并发控制...（200字说明）\n 3. 架构：SOLID原则、设计模式、依赖注入...（200字说明）\n 4. 规范：Python 3.10+、类型注解、docstring...（200字）\n 5. 测试：单元测试、边界情况、异常处理...（200字说明）\n ...（总共2000+字的详细说明）\"\n─────────────────────────────────────────────────────────",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "但这个方案有几个问题：每次都加载所有内容会消耗大量 token，而且静态文本无法包含可执行的检查逻辑，更麻烦的是难以更新和维护——改一处就要重新复制粘贴。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "Skill 的思路",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在，看看 Agent Skill 是如何优雅地解决这些问题的。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent Skill",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Skill 的诞生背景",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2025年10月，Anthropic 公司发布了 Agent Skill，这是 AI 领域的一个重要突破。在此之前，AI Agent 的开发面临着一个核心挑战：如何让 AI 掌握专业领域的知识和规范。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统方式（超长提示词、MCP Server）都存在局限：只能传递“文字”或“工具”，但无法传递“决策逻辑”和“工作流程”。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h3",
+      "text": "Agent Skill 的突破性设计",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent Skill 解决了这个问题，它是一种将专业知识、工作流程和最佳实践封装成标准化模块的机制。关键特性：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "code",
+      "text": "1. 渐进式加载 (Efficient)\n   ─────────────────────────────────\n   只在需要时才加载相关内容\n   ✓ 减少 token 消耗\n   ✓ 保持快速响应\n\n2. 可组合 (Composable)\n   ─────────────────────────────────\n   AI 自动识别并协调多个 Skill\n   Skill 可以堆叠使用\n   ✓ 自动协调无需手动选择\n\n3. 跨平台 (Portable)\n   ─────────────────────────────────\n   同一格式在所有 Claude 产品中通用\n   ✓ Claude 应用 / API / Code\n   ✓ 写一次，随处使用\n\n4. 可执行 (Powerful)\n   ─────────────────────────────────\n   支持包含可执行代码\n   ✓ 复杂逻辑用代码实现更可靠\n   ✓ 提高任务执行的可靠性",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "开放标准与生态影响",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2025年12月，Anthropic 将 Agent Skill 公布为开放标准。这意味着任何 AI 平台都可以采用——不限于 Claude，其他平台也能使用，这推动了 AI 生态的标准化。Skill 可以跨平台复用，写一次就能随处使用，降低了学习和迁移的成本。同时，开放标准也促进了社区协作，最佳实践得以共享，AI 应用的开发速度也随之加快。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h3",
+      "text": "Skill 的物理形式",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent Skill 本质上就是一个 Markdown 文件 + 可选的资源文件：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "code-review/          # Skill 目录\n  ├─ SKILL.md       # 核心文件（包含指令、流程、规范）\n  ├─ checklist.md   # 额外的参考文档\n  └─ script.py      # 可执行的脚本（可选）",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI 只需读取这个 Markdown 文件，就能掌握完整的专业知识和工作流。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Skill 的使用体验",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在深入学习Skill前，我们先用同样的代码审查场景，看看用Skill 后的体验:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "以下是一个Skill，先大概熟悉下他的”长相“。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "SKILL.md\n\n---\nname: code-review\ndescription: 专业的代码审查助手,审查代码的安全性、性能、可读性和规范性\n---\n\n# 代码审查 Skill\n\n## 审查标准\n1. **安全检查**\n   - SQL 注入风险\n   - XSS 漏洞\n   - 敏感信息泄露\n\n2. **性能分析**\n   - 时间复杂度\n   - 空间复杂度\n   - 潜在性能瓶颈\n\n3. **代码质量**\n   - 可读性\n   - 命名规范\n   - 注释完整性\n\n4. **边界情况**\n   - 空值处理\n   - 异常处理\n   - 边界值测试",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "yaml"
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 这并不是一个优秀的Skill，只是为了便于你理解，所以它非常简单。真正的Skill多达上千字。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "使用效果",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "第1次使用\n─────────────────────────────────────────────────────────\n你: \"帮我审查这段代码\"\n    [粘贴代码]\n\nAI: (自动识别到需要 code-review Skill)\n    (加载审查标准)\n    \"我将从以下方面审查你的代码:\n     1. 安全性检查...\n     2. 性能分析...\n     3. 代码质量...\"\n\n    ✓ 自动应用完整的审查流程",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "第2次、第3次...第N次使用\n─────────────────────────────────────────────────────────\n你: \"审查一下这段代码\"\n\nAI: (自动激活 code-review Skill)\n    (每次都是相同的高标准审查)\n\n   ✓ 无需重复说明\n    ✓ 标准一致\n    ✓ 不占用对话上下文",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "效果解析",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这段演示体现了 Skill 的两个关键价值。第一次使用时，AI 不再需要你反复提示\"请按 XX 标准审查\"，而是自动识别场景并加载对应的专业知识。后续使用时，每次都是同样的高标准，不会因为对话轮次增多而降低审查质量，这些标准也不会占用用户的对话上下文。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h2",
+      "text": "在哪里使用 Skill",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "了解了 Skill 的价值后，下一个问题是：在哪里可以用到它？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Skill 最初是 Anthropic 为其 AI 编程工具 Claude Code 打造的一项功能。设计思路很明确：让 AI 在编程场景中能按需加载专业知识，而不是每次都要从零开始解释上下文。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "但 Skill 的魅力在于，它很快就不再局限于 Claude Code 了。由于 Anthropic 将其公布为开放标准，其他开发工具可以按照相同的格式实现兼容支持。到今天，越来越多的主流工具都接入了 Skill 生态：",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "list",
+      "text": "Qoder、Trae、Cursor、OpenClaw、Hermes、Codex",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Qoder",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Trae",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Cursor",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "OpenClaw",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Hermes",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Codex",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就意味着，你写的 SKILL.md 文件可以在不同工具间复用，不需要为每个平台重写一遍。写一次，到处能用。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将以 Qoder 为例，实际演示如何获取和安装一个 Skill。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n技能 | Skill | /skɪl/ | 将专业知识、工作流程和最佳实践封装成标准化模块的机制\n代理技能 | Agent Skill | /ˈeɪdʒənt skɪl/ | Skill的官方名称，强调其作为Agent能力扩展模块的定位\n技能核心文件 | SKILL.md | /skɪl ˈmɑːkdaʊn/ | Skill的核心Markdown文件，包含YAML元数据和详细指令正文\n渐进加载 | Progressive Loading | /prəˈɡresɪv ˈloʊdɪŋ/ | Skill只在需要时才加载相关内容的机制，减少token消耗",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "技能",
+          "Skill",
+          "/skɪl/",
+          "将专业知识、工作流程和最佳实践封装成标准化模块的机制"
+        ],
+        [
+          "代理技能",
+          "Agent Skill",
+          "/ˈeɪdʒənt skɪl/",
+          "Skill的官方名称，强调其作为Agent能力扩展模块的定位"
+        ],
+        [
+          "技能核心文件",
+          "SKILL.md",
+          "/skɪl ˈmɑːkdaʊn/",
+          "Skill的核心Markdown文件，包含YAML元数据和详细指令正文"
+        ],
+        [
+          "渐进加载",
+          "Progressive Loading",
+          "/prəˈɡresɪv ˈloʊdɪŋ/",
+          "Skill只在需要时才加载相关内容的机制，减少token消耗"
+        ]
+      ],
+      "page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "了解了 Skill 的价值和适用范围后，下一节我们来盘点 Skill 的获取途径——GitHub、腾讯 SkillHub、Qoder 技能市场、MiniMax 等主流生态各有何特点，并上手安装第一个 Skill。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    }
+  ],
+  "accounting": {
+    "source_chars": 4585,
+    "represented_chars": 4420,
+    "removed_chars": 165,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 139,
+      "repeated_title": 26
+    }
+  },
+  "videos": [],
+  "order": 135,
+  "headings": [
+    {
+      "title": "专业知识的缺失",
+      "id": "section-6",
+      "level": 2
+    },
+    {
+      "title": "传统方案为什么不行",
+      "id": "section-15",
+      "level": 2
+    },
+    {
+      "title": "Skill 的思路",
+      "id": "section-20",
+      "level": 2
+    },
+    {
+      "title": "Agent Skill 的突破性设计",
+      "id": "section-26",
+      "level": 3
+    },
+    {
+      "title": "开放标准与生态影响",
+      "id": "section-29",
+      "level": 3
+    },
+    {
+      "title": "Skill 的物理形式",
+      "id": "section-31",
+      "level": 3
+    },
+    {
+      "title": "Skill 的使用体验",
+      "id": "section-35",
+      "level": 3
+    },
+    {
+      "title": "在哪里使用 Skill",
+      "id": "section-45",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-58",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-60",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "阅读指南"
+    },
+    {
+      "anchor": "article-start",
+      "text": "假设这个场景：你的团队正在构建一个企业级应用，需要 AI 助手帮忙做代码审查。但你发现一个问题："
+    },
+    {
+      "anchor": "article-start",
+      "text": "资深工程师的代码审查流程：\n  1. 根据代码类型（API/数据库/前端）选择不同的审查策略\n  2. 检查是否符合团队的技术栈规范（Python 3.10+/FastAPI/PostgreSQL）\n  3. 评估安全风险（SQL注入/认证/数据验证）\n  4. 分析性能瓶颈（数据库查询/内存泄漏/并发问题）\n  5. 验证错误处理的完整性\n  6. 给出可落地的改进建议\n这是一套非常专业知识体系\n不是简单的\"检查清单\""
+    },
+    {
+      "anchor": "article-start",
+      "text": "问题是：如何让 AI 掌握这套专业知识，像资深工程师一样思考和决策？ 这就是我们需要 Skill 的原因。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "不只是编程领域。金融分析师看财报有自己的一套判断逻辑，医生读病历有自己的一套诊断思路，教师备课有自己的一套教学设计方法——每个专业领域都有沉淀多年的隐性知识体系。而这些，是通用大模型天然不具备的。Skill 要解决的，正是这个问题。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "专业知识的缺失"
+    },
+    {
+      "anchor": "section-6",
+      "text": "看一个实际例子。你的团队需要 AI 帮忙审查一段数据库查询代码："
+    },
+    {
+      "anchor": "section-6",
+      "text": "# 需要审查的代码\ndef get_user_orders(user_id):\n    query = f\"SELECT * FROM orders WHERE user_id = {user_id}\"\n    return db.execute(query)"
+    },
+    {
+      "anchor": "section-6",
+      "text": "普通 AI（没有专业知识）的回答："
+    },
+    {
+      "anchor": "section-6",
+      "text": "AI: \"这段代码看起来没什么问题，可以正常查询订单。\"\n\n× 没有识别出 SQL 注入风险\n× 没有检查是否有索引优化\n× 没有考虑大数据量的分页问题\n× 没有验证用户权限"
+    },
+    {
+      "anchor": "section-6",
+      "text": "拥有专业知识的 AI 应该这样回答："
+    },
+    {
+      "anchor": "section-6",
+      "text": "严重安全风险：SQL 注入漏洞\n  问题：直接拼接用户输入到 SQL 语句\n  修复：使用参数化查询\n\n性能问题：可能查询大量数据\n  建议：添加分页限制，检查 user_id 是否有索引\n\n权限问题：未验证当前用户是否有权限查看这些订单\n  建议：添加权限校验逻辑\n\n改进建议：\ndef get_user_orders(user_id, current_user, page=1):\n    if not has_permission(current_user, user_id):\n        raise PermissionError()\n    query = \"SELECT * FROM orders WHERE user_id = ?\n             LIMIT ? OFFSET ?\"\n    return db.execute(query, [user_id, 20, (page-1)*20])"
+    },
+    {
+      "anchor": "section-6",
+      "text": "× 普通 AI：只能做表面检查，缺乏专业判断"
+    },
+    {
+      "anchor": "section-6",
+      "text": "✓ 专业 AI：掌握安全最佳实践、性能优化经验、架构设计原则"
+    },
+    {
+      "anchor": "section-15",
+      "text": "传统方案为什么不行"
+    },
+    {
+      "anchor": "section-15",
+      "text": "你大概会想：“那我写一个超长的提示词，把所有规范都说明清楚不就行了？”"
+    },
+    {
+      "anchor": "section-15",
+      "text": "方案：超长提示词"
+    },
+    {
+      "anchor": "section-15",
+      "text": "\"你是一个资深代码审查专家。审查代码时要注意：\n─────────────────────────────────────────────────────────\n 1. 安全：检查SQL注入、XSS、认证授权...（200字说明）\n 2. 性能：数据库索引、缓存策略、并发控制...（200字说明）\n 3. 架构：SOLID原则、设计模式、依赖注入...（200字说明）\n 4. 规范：Python 3.10+、类型注解、docstring...（200字）\n 5. 测试：单元测试、边界情况、异常处理...（200字说明）\n ...（总共2000+字的详细说明）\"\n─────────────────────────────────────────────────────────"
+    },
+    {
+      "anchor": "section-15",
+      "text": "但这个方案有几个问题：每次都加载所有内容会消耗大量 token，而且静态文本无法包含可执行的检查逻辑，更麻烦的是难以更新和维护——改一处就要重新复制粘贴。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "Skill 的思路"
+    },
+    {
+      "anchor": "section-20",
+      "text": "现在，看看 Agent Skill 是如何优雅地解决这些问题的。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "Agent Skill"
+    },
+    {
+      "anchor": "section-20",
+      "text": "Skill 的诞生背景"
+    },
+    {
+      "anchor": "section-20",
+      "text": "2025年10月，Anthropic 公司发布了 Agent Skill，这是 AI 领域的一个重要突破。在此之前，AI Agent 的开发面临着一个核心挑战：如何让 AI 掌握专业领域的知识和规范。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "传统方式（超长提示词、MCP Server）都存在局限：只能传递“文字”或“工具”，但无法传递“决策逻辑”和“工作流程”。"
+    },
+    {
+      "anchor": "section-26",
+      "text": "Agent Skill 的突破性设计"
+    },
+    {
+      "anchor": "section-26",
+      "text": "Agent Skill 解决了这个问题，它是一种将专业知识、工作流程和最佳实践封装成标准化模块的机制。关键特性："
+    },
+    {
+      "anchor": "section-26",
+      "text": "1. 渐进式加载 (Efficient)\n   ─────────────────────────────────\n   只在需要时才加载相关内容\n   ✓ 减少 token 消耗\n   ✓ 保持快速响应\n\n2. 可组合 (Composable)\n   ─────────────────────────────────\n   AI 自动识别并协调多个 Skill\n   Skill 可以堆叠使用\n   ✓ 自动协调无需手动选择\n\n3. 跨平台 (Portable)\n   ─────────────────────────────────\n   同一格式在所有 Claude 产品中通用\n   ✓ Claude 应用 / API / Code\n   ✓ 写一次，随处使用\n\n4. 可执行 (Powerful)\n   ─────────────────────────────────\n   支持包含可执行代码\n   ✓ 复杂逻辑用代码实现更可靠\n   ✓ 提高任务执行的可靠性"
+    },
+    {
+      "anchor": "section-29",
+      "text": "开放标准与生态影响"
+    },
+    {
+      "anchor": "section-29",
+      "text": "2025年12月，Anthropic 将 Agent Skill 公布为开放标准。这意味着任何 AI 平台都可以采用——不限于 Claude，其他平台也能使用，这推动了 AI 生态的标准化。Skill 可以跨平台复用，写一次就能随处使用，降低了学习和迁移的成本。同时，开放标准也促进了社区协作，最佳实践得以共享，AI 应用的开发速度也随之加快。"
+    },
+    {
+      "anchor": "section-31",
+      "text": "Skill 的物理形式"
+    },
+    {
+      "anchor": "section-31",
+      "text": "Agent Skill 本质上就是一个 Markdown 文件 + 可选的资源文件："
+    },
+    {
+      "anchor": "section-31",
+      "text": "code-review/          # Skill 目录\n  ├─ SKILL.md       # 核心文件（包含指令、流程、规范）\n  ├─ checklist.md   # 额外的参考文档\n  └─ script.py      # 可执行的脚本（可选）"
+    },
+    {
+      "anchor": "section-31",
+      "text": "AI 只需读取这个 Markdown 文件，就能掌握完整的专业知识和工作流。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "Skill 的使用体验"
+    },
+    {
+      "anchor": "section-35",
+      "text": "在深入学习Skill前，我们先用同样的代码审查场景，看看用Skill 后的体验:"
+    },
+    {
+      "anchor": "section-35",
+      "text": "以下是一个Skill，先大概熟悉下他的”长相“。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "SKILL.md\n\n---\nname: code-review\ndescription: 专业的代码审查助手,审查代码的安全性、性能、可读性和规范性\n---\n\n# 代码审查 Skill\n\n## 审查标准\n1. **安全检查**\n   - SQL 注入风险\n   - XSS 漏洞\n   - 敏感信息泄露\n\n2. **性能分析**\n   - 时间复杂度\n   - 空间复杂度\n   - 潜在性能瓶颈\n\n3. **代码质量**\n   - 可读性\n   - 命名规范\n   - 注释完整性\n\n4. **边界情况**\n   - 空值处理\n   - 异常处理\n   - 边界值测试"
+    },
+    {
+      "anchor": "section-35",
+      "text": "这并不是一个优秀的Skill，只是为了便于你理解，所以它非常简单。真正的Skill多达上千字。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "使用效果"
+    },
+    {
+      "anchor": "section-35",
+      "text": "第1次使用\n─────────────────────────────────────────────────────────\n你: \"帮我审查这段代码\"\n    [粘贴代码]\n\nAI: (自动识别到需要 code-review Skill)\n    (加载审查标准)\n    \"我将从以下方面审查你的代码:\n     1. 安全性检查...\n     2. 性能分析...\n     3. 代码质量...\"\n\n    ✓ 自动应用完整的审查流程"
+    },
+    {
+      "anchor": "section-35",
+      "text": "第2次、第3次...第N次使用\n─────────────────────────────────────────────────────────\n你: \"审查一下这段代码\"\n\nAI: (自动激活 code-review Skill)\n    (每次都是相同的高标准审查)\n\n   ✓ 无需重复说明\n    ✓ 标准一致\n    ✓ 不占用对话上下文"
+    },
+    {
+      "anchor": "section-35",
+      "text": "效果解析"
+    },
+    {
+      "anchor": "section-35",
+      "text": "这段演示体现了 Skill 的两个关键价值。第一次使用时，AI 不再需要你反复提示\"请按 XX 标准审查\"，而是自动识别场景并加载对应的专业知识。后续使用时，每次都是同样的高标准，不会因为对话轮次增多而降低审查质量，这些标准也不会占用用户的对话上下文。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "在哪里使用 Skill"
+    },
+    {
+      "anchor": "section-45",
+      "text": "了解了 Skill 的价值后，下一个问题是：在哪里可以用到它？"
+    },
+    {
+      "anchor": "section-45",
+      "text": "Skill 最初是 Anthropic 为其 AI 编程工具 Claude Code 打造的一项功能。设计思路很明确：让 AI 在编程场景中能按需加载专业知识，而不是每次都要从零开始解释上下文。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "但 Skill 的魅力在于，它很快就不再局限于 Claude Code 了。由于 Anthropic 将其公布为开放标准，其他开发工具可以按照相同的格式实现兼容支持。到今天，越来越多的主流工具都接入了 Skill 生态："
+    },
+    {
+      "anchor": "section-45",
+      "text": "Qoder、Trae、Cursor、OpenClaw、Hermes、Codex"
+    },
+    {
+      "anchor": "section-45",
+      "text": "Qoder"
+    },
+    {
+      "anchor": "section-45",
+      "text": "Trae"
+    },
+    {
+      "anchor": "section-45",
+      "text": "Cursor"
+    },
+    {
+      "anchor": "section-45",
+      "text": "OpenClaw"
+    },
+    {
+      "anchor": "section-45",
+      "text": "Hermes"
+    },
+    {
+      "anchor": "section-45",
+      "text": "Codex"
+    },
+    {
+      "anchor": "section-45",
+      "text": "这就意味着，你写的 SKILL.md 文件可以在不同工具间复用，不需要为每个平台重写一遍。写一次，到处能用。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "下一节，我们将以 Qoder 为例，实际演示如何获取和安装一个 Skill。"
+    },
+    {
+      "anchor": "section-58",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-58",
+      "text": "中文 | English | 音标 | 说明\n技能 | Skill | /skɪl/ | 将专业知识、工作流程和最佳实践封装成标准化模块的机制\n代理技能 | Agent Skill | /ˈeɪdʒənt skɪl/ | Skill的官方名称，强调其作为Agent能力扩展模块的定位\n技能核心文件 | SKILL.md | /skɪl ˈmɑːkdaʊn/ | Skill的核心Markdown文件，包含YAML元数据和详细指令正文\n渐进加载 | Progressive Loading | /prəˈɡresɪv ˈloʊdɪŋ/ | Skill只在需要时才加载相关内容的机制，减少token消耗"
+    },
+    {
+      "anchor": "section-60",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-60",
+      "text": "了解了 Skill 的价值和适用范围后，下一节我们来盘点 Skill 的获取途径——GitHub、腾讯 SkillHub、Qoder 技能市场、MiniMax 等主流生态各有何特点，并上手安装第一个 Skill。"
+    }
+  ]
+}

@@ -1,0 +1,924 @@
+{
+  "id": "lesson-018",
+  "title": "文字接龙（四）-Token、幻觉与创造力",
+  "code": "1-6",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "文字接龙的游戏",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/003-文字接龙的游戏/018-图文-1-6-文字接龙（四）-Token、幻觉与创造力.pdf",
+  "sha256": "657cd144fd06d440468d18e23a480fac6d2907d325500f3742b523a660b314ee",
+  "pdf": "sources/pdf/lesson-018.pdf",
+  "pages": 5,
+  "source_url": "https://class.imooc.com/lesson/5254#mid=104876",
+  "minutes": 7,
+  "excerpt": "前面几节，我们了解了文字接龙、概率分布和自回归机制。 但还有两个重要的概念需要补充： ChatGPT预测的最小单位是什么？为什么每次回答都不一样？ 在这一节，我们将解答这些问题。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 前面几节，我们了解了文字接龙、概率分布和自回归机制。 但还有两个重要的概念需要补充： ChatGPT预测的最小单位是什么？为什么每次回答都不一样？ 在这一节，我们将解答这些问题。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "7.1 Token和Tokenization：文字接龙的\"最小单位\"",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里我需要稍微技术性地补充一点：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT预测的，准确说不是\"词\"，而是Token。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Token",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么是Tokenization（分词）？",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在文本输入到ChatGPT之前，会先被切分成一个个Token。这个过程叫做Tokenization（分词）。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么需要这样做？",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "首先，你要理解一个关键约束：计算机需要一个固定大小的词表。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "计算机需要一个固定大小的词表",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么意思？就是ChatGPT必须事先定好一个\"词汇表\"，比如包含20万个词。在预测下一个词时，只能从这20万个词里选，不能临时增加新词。但问题来了：",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果直接用\"词\"作为基本单位：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "中文常用词就有几万个，加上专业术语、人名地名，轻松上百万",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "英文单词更多，几十万个，加上各种变形（walk, walking, walked…）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "还有不断涌现的新词：“元宇宙”、“Vibe-Coding”、“直播带货”…",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果把所有词都放进词表：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "词表会非常大（几百万个）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "计算成本会爆炸（每次预测要算几百万个概率）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "还是会遇到新词（永远有没见过的词）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Token的解决方案",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不用\"词\"作为基本单位，而是用更小的\"token\"：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "把常用词保留为一个token（如\"今天\"、“the”）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "把不常用的词切分成几个token（如\"人工智能\" → “人工”+“智能”）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "把生僻词切得更碎（如\"ChatGPT\" → “Chat”+“G”+“PT”）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这样，用20万个token，可以组合出无限种词汇。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用20万个token，可以组合出无限种词汇",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Token是什么？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一个token可能是：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一个完整的中文词（如\"今天\"）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一个字（如\"真\"）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一个英文单词的一部分（如\"Token\"可能被切成\"Token\" + “ization”）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一个标点符号（如\",\" 或 “.”）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "具体例子",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "中文：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "\"今天天气真好\" → 切分成：[“今天”, “天气”, “真”, “好”] → 这是4个token",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "而英文可能是这样：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“Tokenization is important\" → 切分成：[“Token”, “ization”, \" is”, \" important\"] → 这是4个token（注意空格也算在token里）",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "Token与中英文词汇的换算大致关系：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "中文： 1个token ≈ 1个字",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "英文： 1个token ≈ 0.75个单词",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "词表大小随版本增长： 从 GPT-2/3 的 5万多个，到 GPT-4 的 10万多个，再到 GPT-4o 的 20万多个。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "更大的词表意味着：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "更精细的表示：能把常用词整个存储，不用切碎",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "更精细的表示",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "更高的效率：减少需要处理的token数量",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "更高的效率",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是token的智慧之处。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.2 为什么每次回答都不一样？",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为ChatGPT引入了随机性。它不是每次都选概率最高的词，而是按照概率分布随机抽样。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么要这样设计？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "更像人类：人类即使回答同一个问题，也会有不同的表达方式。随机性让AI的表达更生动、更自然。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "list",
+      "text": "创造力与准确性的平衡：完全确定性的回答太僵化，完全随机又太混乱。通过概率采样，在两者之间找到平衡。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个话题非常深刻，涉及到创造力的本质、智能与随机性的关系等问题。我们会在后续专门详细讨论Temperature和另一个重要参数Top-p，以及它们如何控制AI的\"创造力\"。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象下，如果ChatGPT对于同样的问题，每次回答都一字不差，那她就不配称为人工智能，她只是一个MySQL数据库。你只是在查询数据。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "7.3 冷知识与趣闻",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "冷知识： ChatGPT其实不懂数学",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "很多人以为ChatGPT很擅长数学，毕竟它能解方程、算概率。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但其实它不是在\"算\"，而是在\"猜\"。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "问：“23 + 47 = ？” ChatGPT的思路： 训练数据里见过很多\"23 + 47 = 70\" 预测：下一个词最可能是\"70\"",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "它不是真的在计算，只是记住了答案。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它可能连简单的计数都会错：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "问：“strawberry这个单词里有几个r？”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT可能答错。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为它不是在\"数字母\"，而是在预测。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "类似一个学生把所有题目和答案都背下来了，但并不理解数学原理——考试能过，换个题型就懵了。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不过，OpenAI很早就发现了这个问题，并找到了一个巧妙的解决方案：让ChatGPT学会“请外援”。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从GPT-4开始，ChatGPT可以调用外部工具——一个真正的计算器或Python代码执行环境。当遇到数学题时：",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "识别出这是个数学问题",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "调用Python执行真正的计算",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "把计算结果包装成自然语言返回",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "所以2024年你用ChatGPT算数学题，大概率不会出错——不是因为它“学会”了数学，而是因为它学会了调用工具。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "2026年的新一代大模型（如GPT-5.5、Qwen3-Max、Gemini 3.0）通过强化学习和推理增强，它们已经具备了较强的原生数学计算能力，不再完全依赖调用外部工具，而是能够在模型内部进行多步骤的逻辑推导和自我纠错。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "但核心原理没有变——它们仍然是在“预测”，只是通过更深的推理能力，让这种预测更加准确。对于特别复杂的数学问题，模型仍然会调用专业工具来保证100%的准确性。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "7.4 下一节预告",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在你知道了ChatGPT是如何玩文字接龙游戏的：一个词一个词地预测，每次选概率最高的。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但这里有个核心问题：什么是\"语言模型\"？为什么ChatGPT被称为\"大语言模型\"？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节我们将正式介绍：语言模型的概念和本质。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.5 ■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n词元 | Token | /ˈtoʊkən/ | 模型预测的最小文本单位，可以是词、词的一部分或标点\n分词 | Tokenization | / toʊkənaɪ ˌ ˈzeɪʃən/ | 将原始文本切分为Token序列的过程\n词表 | Vocabulary | /vəˈkæbjʊleri/ | 模型能识别的所有Token的集合，GPT-4o约20万个\n子词 | Subword | /ˈsʌbwɜːd/ | 比完整词更小的文本单元，通过组合子词Token可用固定词表表示无限词汇\n温度参数 | Temperature | /ˈtemprətʃər/ | 控制采样随机性的超参数，温度越高输出越多样、越具创造性\n嵌入 | Embedding | /ɪmˈbedɪŋ/ | 将离散的Token映射到连续向量空间的技术，使语义相近的词在空间中靠近\n自回归 | Autoregressive | /ɔːtoʊrɪˈɡresɪv/ | 模型依赖自身之前的输出作为后续输入、逐个预测下一个 Token的生成方式\n随机采样 | Random Sampling | /ˈrændəm ˈsæmplɪŋ/ | 按照概率分布随机选择下一个Token而不是每次都选最高概率者",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "词元",
+          "Token",
+          "/ˈtoʊkən/",
+          "模型预测的最小文本单位，可以是词、词的一部分或标点"
+        ],
+        [
+          "分词",
+          "Tokenization",
+          "/ toʊkənaɪ ˌ ˈzeɪʃən/",
+          "将原始文本切分为Token序列的过程"
+        ],
+        [
+          "词表",
+          "Vocabulary",
+          "/vəˈkæbjʊleri/",
+          "模型能识别的所有Token的集合，GPT-4o约20万个"
+        ],
+        [
+          "子词",
+          "Subword",
+          "/ˈsʌbwɜːd/",
+          "比完整词更小的文本单元，通过组合子词Token可用固定词表表示无限词汇"
+        ],
+        [
+          "温度参数",
+          "Temperature",
+          "/ˈtemprətʃər/",
+          "控制采样随机性的超参数，温度越高输出越多样、越具创造性"
+        ],
+        [
+          "嵌入",
+          "Embedding",
+          "/ɪmˈbedɪŋ/",
+          "将离散的Token映射到连续向量空间的技术，使语义相近的词在空间中靠近"
+        ],
+        [
+          "自回归",
+          "Autoregressive",
+          "/ɔːtoʊrɪˈɡresɪv/",
+          "模型依赖自身之前的输出作为后续输入、逐个预测下一个 Token的生成方式"
+        ],
+        [
+          "随机采样",
+          "Random Sampling",
+          "/ˈrændəm ˈsæmplɪŋ/",
+          "按照概率分布随机选择下一个Token而不是每次都选最高概率者"
+        ]
+      ],
+      "page": 5
+    }
+  ],
+  "accounting": {
+    "source_chars": 2975,
+    "represented_chars": 2777,
+    "removed_chars": 198,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 154,
+      "repeated_title": 44
+    }
+  },
+  "videos": [],
+  "order": 19,
+  "headings": [
+    {
+      "title": "7.1 Token和Tokenization：文字接龙的\"最小单位\"",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "Token的解决方案",
+      "id": "section-19",
+      "level": 3
+    },
+    {
+      "title": "7.2 为什么每次回答都不一样？",
+      "id": "section-47",
+      "level": 2
+    },
+    {
+      "title": "7.3 冷知识与趣闻",
+      "id": "section-54",
+      "level": 2
+    },
+    {
+      "title": "7.4 下一节预告",
+      "id": "section-73",
+      "level": 2
+    },
+    {
+      "title": "7.5 ■ 学点英语",
+      "id": "section-77",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "前面几节，我们了解了文字接龙、概率分布和自回归机制。 但还有两个重要的概念需要补充： ChatGPT预测的最小单位是什么？为什么每次回答都不一样？ 在这一节，我们将解答这些问题。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "7.1 Token和Tokenization：文字接龙的\"最小单位\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "这里我需要稍微技术性地补充一点："
+    },
+    {
+      "anchor": "section-1",
+      "text": "ChatGPT预测的，准确说不是\"词\"，而是Token。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Token"
+    },
+    {
+      "anchor": "section-1",
+      "text": "什么是Tokenization（分词）？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "在文本输入到ChatGPT之前，会先被切分成一个个Token。这个过程叫做Tokenization（分词）。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "为什么需要这样做？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "首先，你要理解一个关键约束：计算机需要一个固定大小的词表。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "计算机需要一个固定大小的词表"
+    },
+    {
+      "anchor": "section-1",
+      "text": "什么意思？就是ChatGPT必须事先定好一个\"词汇表\"，比如包含20万个词。在预测下一个词时，只能从这20万个词里选，不能临时增加新词。但问题来了："
+    },
+    {
+      "anchor": "section-1",
+      "text": "如果直接用\"词\"作为基本单位："
+    },
+    {
+      "anchor": "section-1",
+      "text": "中文常用词就有几万个，加上专业术语、人名地名，轻松上百万"
+    },
+    {
+      "anchor": "section-1",
+      "text": "英文单词更多，几十万个，加上各种变形（walk, walking, walked…）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "还有不断涌现的新词：“元宇宙”、“Vibe-Coding”、“直播带货”…"
+    },
+    {
+      "anchor": "section-1",
+      "text": "如果把所有词都放进词表："
+    },
+    {
+      "anchor": "section-1",
+      "text": "词表会非常大（几百万个）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "计算成本会爆炸（每次预测要算几百万个概率）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "还是会遇到新词（永远有没见过的词）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "Token的解决方案"
+    },
+    {
+      "anchor": "section-19",
+      "text": "不用\"词\"作为基本单位，而是用更小的\"token\"："
+    },
+    {
+      "anchor": "section-19",
+      "text": "把常用词保留为一个token（如\"今天\"、“the”）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "把不常用的词切分成几个token（如\"人工智能\" → “人工”+“智能”）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "把生僻词切得更碎（如\"ChatGPT\" → “Chat”+“G”+“PT”）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "这样，用20万个token，可以组合出无限种词汇。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "用20万个token，可以组合出无限种词汇"
+    },
+    {
+      "anchor": "section-19",
+      "text": "Token是什么？"
+    },
+    {
+      "anchor": "section-19",
+      "text": "一个token可能是："
+    },
+    {
+      "anchor": "section-19",
+      "text": "一个完整的中文词（如\"今天\"）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "一个字（如\"真\"）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "一个英文单词的一部分（如\"Token\"可能被切成\"Token\" + “ization”）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "一个标点符号（如\",\" 或 “.”）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "具体例子"
+    },
+    {
+      "anchor": "section-19",
+      "text": "中文："
+    },
+    {
+      "anchor": "section-19",
+      "text": "\"今天天气真好\" → 切分成：[“今天”, “天气”, “真”, “好”] → 这是4个token"
+    },
+    {
+      "anchor": "section-19",
+      "text": "而英文可能是这样："
+    },
+    {
+      "anchor": "section-19",
+      "text": "“Tokenization is important\" → 切分成：[“Token”, “ization”, \" is”, \" important\"] → 这是4个token（注意空格也算在token里）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "Token与中英文词汇的换算大致关系："
+    },
+    {
+      "anchor": "section-19",
+      "text": "中文： 1个token ≈ 1个字"
+    },
+    {
+      "anchor": "section-19",
+      "text": "英文： 1个token ≈ 0.75个单词"
+    },
+    {
+      "anchor": "section-19",
+      "text": "词表大小随版本增长： 从 GPT-2/3 的 5万多个，到 GPT-4 的 10万多个，再到 GPT-4o 的 20万多个。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "更大的词表意味着："
+    },
+    {
+      "anchor": "section-19",
+      "text": "更精细的表示：能把常用词整个存储，不用切碎"
+    },
+    {
+      "anchor": "section-19",
+      "text": "更精细的表示"
+    },
+    {
+      "anchor": "section-19",
+      "text": "更高的效率：减少需要处理的token数量"
+    },
+    {
+      "anchor": "section-19",
+      "text": "更高的效率"
+    },
+    {
+      "anchor": "section-19",
+      "text": "这就是token的智慧之处。"
+    },
+    {
+      "anchor": "section-47",
+      "text": "7.2 为什么每次回答都不一样？"
+    },
+    {
+      "anchor": "section-47",
+      "text": "因为ChatGPT引入了随机性。它不是每次都选概率最高的词，而是按照概率分布随机抽样。"
+    },
+    {
+      "anchor": "section-47",
+      "text": "为什么要这样设计？"
+    },
+    {
+      "anchor": "section-47",
+      "text": "更像人类：人类即使回答同一个问题，也会有不同的表达方式。随机性让AI的表达更生动、更自然。"
+    },
+    {
+      "anchor": "section-47",
+      "text": "创造力与准确性的平衡：完全确定性的回答太僵化，完全随机又太混乱。通过概率采样，在两者之间找到平衡。"
+    },
+    {
+      "anchor": "section-47",
+      "text": "这个话题非常深刻，涉及到创造力的本质、智能与随机性的关系等问题。我们会在后续专门详细讨论Temperature和另一个重要参数Top-p，以及它们如何控制AI的\"创造力\"。"
+    },
+    {
+      "anchor": "section-47",
+      "text": "想象下，如果ChatGPT对于同样的问题，每次回答都一字不差，那她就不配称为人工智能，她只是一个MySQL数据库。你只是在查询数据。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "7.3 冷知识与趣闻"
+    },
+    {
+      "anchor": "section-54",
+      "text": "冷知识： ChatGPT其实不懂数学"
+    },
+    {
+      "anchor": "section-54",
+      "text": "很多人以为ChatGPT很擅长数学，毕竟它能解方程、算概率。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "但其实它不是在\"算\"，而是在\"猜\"。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "问：“23 + 47 = ？” ChatGPT的思路： 训练数据里见过很多\"23 + 47 = 70\" 预测：下一个词最可能是\"70\""
+    },
+    {
+      "anchor": "section-54",
+      "text": "它不是真的在计算，只是记住了答案。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "它可能连简单的计数都会错："
+    },
+    {
+      "anchor": "section-54",
+      "text": "问：“strawberry这个单词里有几个r？”"
+    },
+    {
+      "anchor": "section-54",
+      "text": "ChatGPT可能答错。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "因为它不是在\"数字母\"，而是在预测。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "类似一个学生把所有题目和答案都背下来了，但并不理解数学原理——考试能过，换个题型就懵了。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "不过，OpenAI很早就发现了这个问题，并找到了一个巧妙的解决方案：让ChatGPT学会“请外援”。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "从GPT-4开始，ChatGPT可以调用外部工具——一个真正的计算器或Python代码执行环境。当遇到数学题时："
+    },
+    {
+      "anchor": "section-54",
+      "text": "识别出这是个数学问题"
+    },
+    {
+      "anchor": "section-54",
+      "text": "调用Python执行真正的计算"
+    },
+    {
+      "anchor": "section-54",
+      "text": "把计算结果包装成自然语言返回"
+    },
+    {
+      "anchor": "section-54",
+      "text": "所以2024年你用ChatGPT算数学题，大概率不会出错——不是因为它“学会”了数学，而是因为它学会了调用工具。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "2026年的新一代大模型（如GPT-5.5、Qwen3-Max、Gemini 3.0）通过强化学习和推理增强，它们已经具备了较强的原生数学计算能力，不再完全依赖调用外部工具，而是能够在模型内部进行多步骤的逻辑推导和自我纠错。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "但核心原理没有变——它们仍然是在“预测”，只是通过更深的推理能力，让这种预测更加准确。对于特别复杂的数学问题，模型仍然会调用专业工具来保证100%的准确性。"
+    },
+    {
+      "anchor": "section-73",
+      "text": "7.4 下一节预告"
+    },
+    {
+      "anchor": "section-73",
+      "text": "现在你知道了ChatGPT是如何玩文字接龙游戏的：一个词一个词地预测，每次选概率最高的。"
+    },
+    {
+      "anchor": "section-73",
+      "text": "但这里有个核心问题：什么是\"语言模型\"？为什么ChatGPT被称为\"大语言模型\"？"
+    },
+    {
+      "anchor": "section-73",
+      "text": "下一节我们将正式介绍：语言模型的概念和本质。"
+    },
+    {
+      "anchor": "section-77",
+      "text": "7.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-77",
+      "text": "中文 | English | 音标 | 说明\n词元 | Token | /ˈtoʊkən/ | 模型预测的最小文本单位，可以是词、词的一部分或标点\n分词 | Tokenization | / toʊkənaɪ ˌ ˈzeɪʃən/ | 将原始文本切分为Token序列的过程\n词表 | Vocabulary | /vəˈkæbjʊleri/ | 模型能识别的所有Token的集合，GPT-4o约20万个\n子词 | Subword | /ˈsʌbwɜːd/ | 比完整词更小的文本单元，通过组合子词Token可用固定词表表示无限词汇\n温度参数 | Temperature | /ˈtemprətʃər/ | 控制采样随机性的超参数，温度越高输出越多样、越具创造性\n嵌入 | Embedding | /ɪmˈbedɪŋ/ | 将离散的Token映射到连续向量空间的技术，使语义相近的词在空间中靠近\n自回归 | Autoregressive | /ɔːtoʊrɪˈɡresɪv/ | 模型依赖自身之前的输出作为后续输入、逐个预测下一个 Token的生成方式\n随机采样 | Random Sampling | /ˈrændəm ˈsæmplɪŋ/ | 按照概率分布随机选择下一个Token而不是每次都选最高概率者"
+    }
+  ]
+}

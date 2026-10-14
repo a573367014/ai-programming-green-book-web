@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>涌现能力（二）-为什么会涌现 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-062">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 3 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>涌现能力</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 063</span></div>
+<h1 class="lesson-title">涌现能力（二）-为什么会涌现</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>9 页原文</span><span>约 10 分钟阅读</span><span class="module-name">涌现能力</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-062.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-062.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上篇通过具体的例子，让你直观感受了涌现能力的震撼：算术、逻辑推理、代码生成、翻译、常识推理等能力，在大模型中&quot;突然出现&quot;。 中篇将深入探讨： 涌现的机制：为什么会产生涌现？ Scaling Laws：一个让&quot;赌&quot;涌现变得可预测的数学定律 这对AI发展意味着什么？ 下篇将讨论涌现的局限性、不可预测性，以及哲学思考。</p></aside>
+<h2 id="section-1" data-source-page="1">5.1 涌现曲线<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">研究者们绘制了能力与模型规模的曲线，发现了一个惊人的模式。</p>
+<p data-source-page="1">上图表明:**</p>
+<aside class="callout" data-source-page="1"><p>存在阈值: 算术能力:大约在130亿参数左右涌现 复杂推理:大约在500-1000亿参数涌现 代码能力:大约在100-300亿参数涌现 不同能力的阈值不同: 简单任务先涌现，复杂任务后涌现 涌现是突然的:不是平滑增长，而是有一个&quot;拐点&quot;</p></aside>
+<h2 id="section-5" data-source-page="1">5.2 为什么会涌现<a class="heading-link" href="#section-5" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">这是最令人着迷，也最令人不安的部分：我们不完全理解涌现为什么发生。</p>
+<p data-source-page="1">有几个理论假说:</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">假说1:隐式学习组合能力</p>
+<p data-source-page="2">模型学到了很多&quot;原子能力&quot;,当规模够大时，这些能力可以组合起来，产生新的&quot;复合能力&quot;。</p>
+<aside class="callout" data-source-page="2"><p>例子:算术能力的涌现 模型可能分别学到了: 能力A:识别数字符号 能力B:理解&quot;加&quot;这个词的语义 能力C:数字大小的概念 能力D:数值操作的模式 小模型:每个能力都很弱，无法组合 大模型:每个能力都够强，可以组合 → 涌现出&quot;算术&quot;</p></aside>
+<p data-source-page="2">假说2:跨越理解阈值</p>
+<p data-source-page="2">某些任务需要对概念有&quot;足够深&quot;的理解，达不到这个深度，就完全做不了。</p>
+<aside class="callout" data-source-page="2"><p>例子:逻辑推理 需要: 理解&quot;所有&quot;的含义(全称量词) 理解&quot;因为。…所以。…&quot;的逻辑关系 追踪多个命题之间的关系 如果理解深度只有50%: 可能看起来&quot;理解了&quot;,但推理时就错 如果理解深度达到85%:突然能够正确推理了 这个&quot;85%&quot;就是阈值</p></aside>
+<p data-source-page="2">小模型达不到阈值，大模型跨越了阈值，所以能力&quot;涌现&quot;。</p>
+<p data-source-page="2">假说3:记忆容量达到临界点</p>
+<p data-source-page="2">某些任务需要记住很多模式和例子，当记忆容量不够时，完全学不会。</p>
+<aside class="callout" data-source-page="2"><p>例子:代码生成 训练数据中有数百万个代码片段，涵盖: 各种编程范式 各种语法结构 各种算法模式… 小模型:记忆容量有限，只能记住一小部分模式 → 遇到新问题，无法找到合适的模式 → 失败 大模型:记忆容量大，能记住大部分模式 → 遇到新问题，能找到相似的模式并适配 → 成功</p></aside>
+<p data-source-page="2">假说4:涌现可能是幻觉</p>
+<p data-source-page="2">一些研究者认为，&quot;涌现&quot;可能部分是我们&quot;测量方式&quot;造成的幻觉。</p>
+<aside class="callout" data-source-page="2"><p>论点: 如果我们用&quot;准确率&quot;(0或1)来衡量，会看到&quot;突然涌现&quot; 如果我们用更细粒度的指标(比如&quot;部分正确度&quot;),可能看到的是平滑增长 例子: 小模型:“23 + 47 = 60” ← 准确率0%,但其实已经学到了&quot;加法&quot;的概念，只是算错了 大模型:“23 + 47 = 70” ← 准确率100% 如果用&quot;是否理解加法的概念&quot;来衡量，小模型可能已经部分理解了， 而不是&quot;完全不会&quot; → “突然会了”</p></aside>
+<p data-source-page="2">这个观点有一定道理，但不能完全解释所有的涌现现象。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">但真相可能是以上几个因素的综合:</p>
+<p class="list-item" data-source-page="3">某些能力确实是组合的</p>
+<p class="list-item" data-source-page="3">某些任务确实有理解阈值</p>
+<p class="list-item" data-source-page="3">某些涌现可能被我们的测量方式夸大了</p>
+<p data-source-page="3">无论原因是什么，大模型确实展现出了小模型没有的能力。</p>
+<h2 id="section-27" data-source-page="3">5.3 涌现的启示<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">涌现现象给了我们一个深刻的启示:</p>
+<p data-source-page="3">在深度学习中，规模不仅仅带来量的提升，还可能带来质的飞跃。</p>
+<p data-source-page="3">这被研究者们半开玩笑地总结为:大力出奇迹。这意味着什么?</p>
+<p data-source-page="3">启示1:不要低估规模的力量</p>
+<aside class="callout" data-source-page="3"><p>传统思维: “如果小模型做不好某个任务，那可能这个任务不适合这种方法” 涌现思维: “如果小模型做不好，可能只是模型还不够大。 继续扩大，可能会突然就做好了。”</p></aside>
+<p data-source-page="3">启示2:能力可能&quot;潜伏&quot;在小模型中</p>
+<aside class="callout" data-source-page="3"><p>小模型可能已经学到了某个能力的&quot;雏形&quot;, 只是还不足以表现出来。 当规模增大，这些&quot;雏形&quot;成熟了，能力就涌现了。</p></aside>
+<p data-source-page="3">启示3:我们可能还没有触及&quot;天花板&quot;</p>
+<aside class="callout" data-source-page="3"><p>GPT-3 (1750亿参数)涌现了很多能力 GPT-4 (参数未公开，可能5000-10000亿)涌现了更多能力如果继续扩大到1万亿、10万亿参数， 可能还会涌现出我们现在完全想不到的能力。</p></aside>
+<p data-source-page="3">但这也带来了一个问题。</p>
+<h2 id="section-38" data-source-page="3">5.4 令人不安的一面<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">涌现能力虽然令人惊叹，但也带来了一个问题:</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">我们无法预测哪些能力会涌现。</p>
+<p data-source-page="4">在训练GPT-3之前，OpenAI的研究者们并不知道它会涌现出算术能力、代码能力、多语言翻译能力。…</p>
+<p data-source-page="4">这些能力的出现，是惊喜，但也可能是惊吓。</p>
+<p class="list-item" data-source-page="4">好的能力会涌现，坏的能力也可能涌现</p>
+<aside class="callout" data-source-page="4"><p>好的涌现: 算术推理 代码生成 逻辑推理 坏的涌现可能: 生成更有说服力的虚假信息 学会欺骗(在某些情况下) 发现系统的安全漏洞并利用</p></aside>
+<p class="list-item" data-source-page="4">我们无法提前测试</p>
+<p data-source-page="4">因为涌现是突然的，我们无法在小模型上&quot;预见&quot;大模型会有什么能力。</p>
+<p data-source-page="4">如果训练一个超大模型，在训练完成之前，我们不知道它会涌现出什么能力。</p>
+<p class="list-item" data-source-page="4">对齐变得更困难</p>
+<p data-source-page="4">我们在RLHF中对齐的，是我们&quot;已知&quot;的能力和行为。</p>
+<p data-source-page="4">但如果模型涌现出新的能力，这些能力可能没有被充分对齐。</p>
+<p data-source-page="4">GPT-3训练完成后，研究者们发现它能生成代码。但RLHF主要针对的是回答问题、拒绝有害请求等。对于生成代码的行为规范，可能没有充分对齐。</p>
+<p data-source-page="4">这是AI安全研究的一个核心关切。</p>
+<h2 id="section-53" data-source-page="4">5.5 Scaling Laws<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">虽然我们不能预测哪些能力会在什么时候涌现，但研究者们发现，模型的性能与规模之间，存在某种数学关系。</p>
+<p data-source-page="4">这被称为&quot;Scaling Laws&quot;(缩放法则)。什么是Scaling Laws？</p>
+<p data-source-page="4">Scaling Laws，直译是&quot;扩展定律&quot;或&quot;缩放定律&quot;，指的是：当你改变系统的规模时，性能如何变化的规律。</p>
+<p data-source-page="4">在AI的语境里，具体指:</p>
+<p class="list-item" data-source-page="4">Scaling = 扩大规模（更多参数、更多数据、更多算力）</p>
+<p class="list-item" data-source-page="4">Laws = 定律（可预测的数学关系）</p>
+<p data-source-page="4">简单说：Scaling Laws告诉我们，模型越大，效果会按照什么规律变好。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">Scaling Laws告诉我们，模型越大，效果会按照什么规律变好。</p>
+<p data-source-page="5">2020年，OpenAI的研究人员发表了一篇论文，震动了整个AI界。</p>
+<p data-source-page="5">他们发现:模型性能与规模之间，存在可预测的数学关系。</p>
+<p data-source-page="5">模型性能与规模之间，存在可预测的数学关系</p>
+<p data-source-page="5">这不是说&quot;模型大一点，性能好一点&quot;这种模糊的直觉，而是一个精确的幂律公式:</p>
+<p data-source-page="5">幂律</p>
+<div class="math-line" data-source-page="5">L(N) ∝ N<sup>−α</sup><details class="formula-source"><summary>查看原文公式文本</summary><p>𝐿 ( 𝑁 ) ∝ 𝑁 − 𝛼 L(N)∝N −α · −α · ∝ · N</p></details></div>
+<p data-source-page="5">在此之前，大家都知道&quot;模型越大，效果越好&quot;,但不知道:</p>
+<p class="list-item" data-source-page="5">大多少才有用?</p>
+<p class="list-item" data-source-page="5">效果会好多少?</p>
+<p class="list-item" data-source-page="5">值不值得投入更多资源?</p>
+<p data-source-page="5">而Scaling Laws给出了答案:性能提升是可以预测的。</p>
+<p data-source-page="5">让我给你一些直观的数字:</p>
+<aside class="callout" data-source-page="5"><p>参数量增加10倍 → Loss降低约1.2倍 参数量增加100倍 → Loss降低约2.0倍 参数量增加1000倍→ Loss降低约3.4倍</p></aside>
+<p data-source-page="5">这意味着:</p>
+<p class="list-item" data-source-page="5">投入越来越大(参数量成倍增长)</p>
+<p class="list-item" data-source-page="5">但收益越来越小(Loss的绝对下降量递减)</p>
+<p data-source-page="5">既然收益越来越小，为什么还要继续耗费巨资增加参数量？</p>
+<p data-source-page="5">答案是人们期待大模型有新的能力能够涌现。</p>
+<p data-source-page="5">但还是有问题。</p>
+<p data-source-page="5">我们之前讨论过，涌现是不可预知的，那这样投入是否值得？</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">Scaling Laws给出了答案。</p>
+<p data-source-page="6">它的价值在于，让这个对能力涌现的赌注变得安全了:</p>
+<aside class="callout" data-source-page="6"><p>可预测的部分: Loss会按照公式稳定下降 → 即使不涌现，性能也会提升(只是提升有限) 不可预测的部分: 某个Loss阈值可能触发涌现 → 一旦涌现，能力会质变飞跃 而历史数据显示，Loss降到某些关键点时，涌现现象反复出现。</p></aside>
+<p data-source-page="6">Scaling Laws不能保证涌现，但能保证你在朝着涌现的方向前进。用对比说明:</p>
+<aside class="callout" data-source-page="6"><p>在Scaling Laws之前(2020年前): “我想造个更大的模型” “会更好吗?” → 不知道 &quot;好多少?&quot; →不知道 &quot;值得投入吗?&quot; → 不知道</p></aside>
+<p data-source-page="6">这是纯粹的赌博</p>
+<aside class="callout" data-source-page="6"><p>在Scaling Laws之后(2020年后): “我想把模型扩大100倍” “会更好吗?” → 确定会，Loss会降低2倍 &quot;会涌现新能力吗?&quot; → 不确定，但历史上都发生了 &quot;最坏情况?&quot; → Loss降2倍，性能稳定提升 &quot;最好情况?&quot; → 触发涌现，能力质变</p></aside>
+<p data-source-page="6">这是有保底的风险投资</p>
+<p data-source-page="6">这就是为什么OpenAI敢&quot;赌&quot;GPT-3:</p>
+<aside class="callout" data-source-page="6"><p>根据Scaling Laws计算: GPT-3的Loss会比GPT-2降低约30% 保底收益:性能稳定提升30% 期望收益:可能触发涌现(基于GPT-2的观察) 实际结果:不仅性能提升了，还涌现了代码、算术等能力</p></aside>
+<p data-source-page="6">他们赌的不是&quot;会不会涌现&quot;,而是&quot;Loss降低后，涌现的概率有多大&quot;。</p>
+<p data-source-page="6">这就是为什么从2018到2023，我们看到了GPT参数量在疯狂增长:</p>
+<aside class="callout" data-source-page="6"><p>2018年 GPT-1: 117M参数 (基准线) 2019年 GPT-2: 1.5B参数 ← 增长13倍 2020年 GPT-3: 175B参数 ← 增长117倍 2023年 GPT-4: 未公开 ← 规模进一步增长 2025年 GPT-5: 未公开 ← 已发布</p></aside>
+<p data-source-page="6">每一步，都是对Scaling Laws的验证。每一步，都带来了能力的跃升。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">这个Scaling Law会一直有效吗？还是在某个点会失效？</p>
+<p data-source-page="7">如果一直有效:</p>
+<p data-source-page="7">那么理论上，只要资源足够，我们就能造出越来越强大的AI，直到…… 直到什么? AGI(通用人工智能)?超越人类的智能?</p>
+<p data-source-page="7">如果会失效:</p>
+<p data-source-page="7">失效点在哪里? 是因为数据不够了? 还是因为这个范式本身到达了极限?</p>
+<p data-source-page="7">目前没人知道答案。</p>
+<p data-source-page="7">我们只能观察、实验，然后谨慎地向前。</p>
+<p data-source-page="7">但有一点是确定的:Scaling Laws给了整个AI领域一个清晰的方向——让模型变大，是一条可预测、可验证的通往更强智能的道路。</p>
+<h2 id="section-107" data-source-page="7">5.6 下节预告<a class="heading-link" href="#section-107" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">Scaling Laws告诉了我们&quot;让模型变大会怎样&quot;，但它没有回答一个问题：</p>
+<aside class="callout" data-source-page="7"><p>是不是所有能力都会通过扩大规模涌现出来？ 有没有什么能力是永远无法涌现的？ 涌现的边界在哪里？</p></aside>
+<p data-source-page="7">下篇将探讨涌现的边界，以及一些有趣的背后故事。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-111" data-source-page="8">5.7 ■ 学点英语<a class="heading-link" href="#section-111" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>规模法则</td><td>Scaling Laws</td><td>/ˈskeɪlɪŋ lɔːz/</td><td>模型性能与规模之间的幂律关系规律</td></tr><tr><td>幂律</td><td>Power Law</td><td>/ˈpaʊə® lɔː/</td><td>两个变量间成幂指数关系的函数形式</td></tr><tr><td>参数量</td><td>Parameter Count</td><td>/pəˈræmɪtə® kaʊnt/</td><td>模型中可学习权重的总数，衡量模型规模</td></tr><tr><td>算力</td><td>Compute</td><td>/kəmˈpjuːt/</td><td>训练所消耗的浮点运算量，通常以 FLOPs 计</td></tr><tr><td>损失</td><td>Loss</td><td>/lɒs/</td><td>模型预测与真实值之间的误差度量</td></tr><tr><td>非线性</td><td>Non-linearity</td><td>/ nɒn lɪnɪˈærəti/ ˌ</td><td>输入与输出不成比例变化的关系，是涌现的数学特征</td></tr><tr><td>拐点</td><td>Inflection Point</td><td>/ɪnˈflekʃn pɔɪnt/</td><td>曲线凹凸性转变之处，能力跃迁常在此发生</td></tr><tr><td>外推</td><td>Extrapolation</td><td>/ɪk stræpəˈleɪʃn/ ˌ</td><td>从已知范围向外预测未知范围的推理</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h2 id="section-113" data-source-page="9">图片<a class="heading-link" href="#section-113" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="9"><button class="figure-open" aria-label="放大查看第 9 页图示"><img src="../assets/figures/77ab86fb9662481ebc5773d6aa039cb1.png" width="1134" height="842" loading="lazy" alt="涌现能力（二）-为什么会涌现 · 原 PDF 第 9 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-061.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>扩展练习（1）</strong><small>涌现能力</small></a><a class="chapter-neighbor next" href="lesson-063.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-5</strong><small>涌现能力</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5261#mid=104894" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">5.1 涌现曲线</a><a href="#section-5" class="toc-level-2">5.2 为什么会涌现</a><a href="#section-27" class="toc-level-2">5.3 涌现的启示</a><a href="#section-38" class="toc-level-2">5.4 令人不安的一面</a><a href="#section-53" class="toc-level-2">5.5 Scaling Laws</a><a href="#section-107" class="toc-level-2">5.6 下节预告</a><a href="#section-111" class="toc-level-2">5.7 ■ 学点英语</a><a href="#section-113" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-062", "title": "涌现能力（二）-为什么会涌现", "stage": 1, "week": 3, "module": "涌现能力", "minutes": 10, "pages": 9, "type": "article"}</script>
+</body></html>

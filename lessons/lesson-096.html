@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>RAG核心原理（二）-检索生成与关键机制 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-096">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 5 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>RAG核心原理</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 097</span></div>
+<h1 class="lesson-title">RAG核心原理（二）-检索生成与关键机制</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>13 页原文</span><span>约 13 分钟阅读</span><span class="module-name">RAG核心原理</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-096.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-096.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<h2 id="section-0" data-source-page="1">3.1 上下文拼接：喂给AI的&quot;参考资料&quot;<a class="heading-link" href="#section-0" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">RAG系统需要把检索到的文档（比如&quot;年假天数规定&quot;“申请流程”“注意事项”）和用户问题（“我入职2年了，下周想请5天年假，来得及吗？”）整合成一个结构化的Prompt，然后交给AI来回答。</p>
+<p data-source-page="1">这个Prompt该怎么设计呢？</p>
+<p data-source-page="1">基本模板</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">你是一个专业的客服助手。请基于以下参考资料回答用户问题。
+
+【参考资料】
+文档1: 年假天数规定
+入职1年内：5天；1-3年：7天；3-5年：10天；5年以上：15天
+
+文档2: 年假申请流程
+登录OA系统 → 选择&quot;请假申请&quot; → 填写年假类型和时间 → 提交领导审批
+
+文档3: 申请注意事项
+需要提前3天申请；春节、国庆等重大节假日需提前1个月
+
+【用户问题】
+我入职2年了，下周想请5天年假，来得及吗？
+
+【回答要求】
+1. 基于参考资料回答，不要编造信息
+2. 如果参考资料中没有相关信息，明确告知用户
+3. 回答要准确、友好、自然</code></pre></div>
+<p data-source-page="2">模板设计直接影响回答质量。对比两种模板：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">Bad：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">资料：[一大堆文档堆砌]
+问题：我入职2年了，下周想请5天年假，来得及吗？
+
+1
+2</code></pre></div>
+<p data-source-page="3">AI可能回答：</p>
+<p class="list-item" data-source-page="3">不理解哪些是参考资料，哪些是问题</p>
+<p class="list-item" data-source-page="3">可能忽略关键信息</p>
+<p class="list-item" data-source-page="3">回答格式混乱</p>
+<p data-source-page="3">Good：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">你是专业客服。基于【参考资料】回答【用户问题】，遵守【回答要求】。
+
+【参考资料】
+...（结构化呈现）
+
+【用户问题】
+...
+
+【回答要求】
+...（明确约束）</code></pre></div>
+<p data-source-page="3">AI会：</p>
+<p class="list-item" data-source-page="3">清楚角色定位（专业客服）</p>
+<p class="list-item" data-source-page="3">明确信息边界（只用参考资料）</p>
+<p class="list-item" data-source-page="3">遵守回答规范（准确、友好）</p>
+<h2 id="section-18" data-source-page="3">3.2 生成阶段：AI的魔法时刻<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">当AI收到完整的Prompt后，它会：</p>
+<p data-source-page="3">理解用户意图</p>
+<p data-source-page="3">从问题&quot;我入职2年了，下周想请5天年假，来得及吗？&quot;中提取关键信息：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p class="list-item" data-source-page="4">入职时长：2年</p>
+<p class="list-item" data-source-page="4">需要天数：5天</p>
+<p class="list-item" data-source-page="4">时间：下周</p>
+<p class="list-item" data-source-page="4">核心问题：来得及吗（时间是否允许）</p>
+<p data-source-page="4">从参考资料中定位答案</p>
+<p class="list-item" data-source-page="4">从文档1找到：入职2年 → 对应7天年假</p>
+<p class="list-item" data-source-page="4">从文档2了解：申请流程</p>
+<p class="list-item" data-source-page="4">从文档3确认：需提前3天申请</p>
+<p data-source-page="4">逻辑推理</p>
+<p class="list-item" data-source-page="4">7天年假 vs 需要5天 → 够用 ✓</p>
+<p class="list-item" data-source-page="4">下周出发 vs 提前3天 → 假设今天是周一，距下周一超过3天 → 来得及 ✓</p>
+<p data-source-page="4">生成回答</p>
+<p data-source-page="4">综合以上信息，生成自然流畅的回答：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">可以的，来得及！
+
+根据公司规定：
+您入职2年，有7天年假额度，请5天完全够用
+普通时段只需提前3天申请，下周去旅游符合要求
+
+建议您现在就登录OA系统提交申请：
+1. 选择&quot;请假申请&quot;
+2. 填写年假类型和日期（5天）
+3. 提交给直属领导审批
+
+祝您旅途愉快！</code></pre></div>
+<h2 id="section-36" data-source-page="4">3.3 RAG的关键优势<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">经过这一节的讲解，我们可以总结出RAG的几个关键优势：</p>
+<p data-source-page="4">语义理解</p>
+<p data-source-page="4">不依赖精确的关键词匹配，能理解问题的真实意图。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">例如：</p>
+<p class="list-item" data-source-page="5">“怎么请假” ≈ “假期申请流程” ≈ “如何提交休假申请”</p>
+<p class="list-item" data-source-page="5">RAG能识别这些表述在语义上是相同的</p>
+<p data-source-page="5">跨文档整合</p>
+<p data-source-page="5">能从多份文档中提取信息，综合回答。</p>
+<p data-source-page="5">例如：&quot;年假够用吗？“需要结合&quot;天数规定”+“申请流程”+“个人入职时间”</p>
+<p data-source-page="5">个性化生成</p>
+<p data-source-page="5">基于用户的具体情况（入职2年、请5天、下周）生成定制化回答，而不是千篇一律的标准答案。</p>
+<p data-source-page="5">可追溯性</p>
+<p data-source-page="5">可以标注答案来源于哪些文档，便于验证准确性，增强可信度。这一点很重要，这是RAG可以部分解决AI“幻觉”的关键能力，他可以给出他是基于哪些资料生成的答案，我们可以核查信息真实性。</p>
+<p data-source-page="5">灵活扩展</p>
+<p data-source-page="5">添加新文档只需重新向量化并存入数据库，无需修改系统逻辑或重新训练模型。</p>
+<h2 id="section-52" data-source-page="5">3.4 技术细节补充<a class="heading-link" href="#section-52" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">在理解了RAG的整体流程后，这里补充几个实际实现中容易被忽略但很重要的技术细节。</p>
+<p data-source-page="5">文档切分（Chunking）：检索的其实不是完整文档</p>
+<p data-source-page="5">你可能会有个疑问：检索到文档后，是直接把整份文档发给AI，还是会提取其中的内容？</p>
+<p data-source-page="5">*答案是：检索到的根本不是完整文档，而是文档的片段（Chunk）。</p>
+<p data-source-page="5">为什么要切分</p>
+<p data-source-page="5">想象一下，公司有一份50页的《员工手册》，里面包含：</p>
+<p class="list-item" data-source-page="5">第1-5页：入职流程</p>
+<p class="list-item" data-source-page="5">第6-10页：薪资福利</p>
+<p class="list-item" data-source-page="5">第11-15页：请假制度</p>
+<p class="list-item" data-source-page="5">第16-20页：报销流程</p>
+<p class="list-item" data-source-page="5">…</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">如果用户问&quot;怎么申请年假？&quot;，真正相关的只有第11-15页的内容。但如果你把整份50页的手册都塞进Prompt：</p>
+<p data-source-page="6">问题1：Token超限</p>
+<p class="list-item" data-source-page="6">50页 ≈ 25000字</p>
+<p class="list-item" data-source-page="6">大部分模型上下文窗口有限</p>
+<p class="list-item" data-source-page="6">即使能塞下，成本也非常高</p>
+<p data-source-page="6">问题2：噪音太多</p>
+<p class="list-item" data-source-page="6">AI需要从50页中找到相关的5页</p>
+<p class="list-item" data-source-page="6">大量无关信息会干扰判断</p>
+<p class="list-item" data-source-page="6">回答质量下降</p>
+<p data-source-page="6">问题3：检索不精准</p>
+<p class="list-item" data-source-page="6">整份文档的向量是所有内容的&quot;平均语义&quot;</p>
+<p class="list-item" data-source-page="6">无法精确匹配到&quot;年假申请&quot;这个具体主题</p>
+<p data-source-page="6">正确的做法：离线切分</p>
+<p data-source-page="6">在建立知识库时，就把文档切成小块：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">原始文档：《员工手册.pdf》（50页，25000字）
+          ↓ 切分
+
+Chunk 1: &quot;入职流程：新员工需要...&quot;  (约200字)
+Chunk 2: &quot;薪资发放：每月15日...&quot;    (约180字)
+Chunk 3: &quot;年假天数：入职1年内...&quot;   (约150字)
+Chunk 4: &quot;年假申请流程：登录OA...&quot;  (约220字)
+Chunk 5: &quot;年假注意事项：需提前...&quot;  (约160字)
+Chunk 6: &quot;报销流程：提交发票...&quot;    (约190字)
+...
+Chunk 125: &quot;离职手续：需提前...&quot;    (约200字)</code></pre></div>
+<p data-source-page="6">每个Chunk：</p>
+<p class="list-item" data-source-page="6">转换成向量</p>
+<p class="list-item" data-source-page="6">存入向量数据库</p>
+<p class="list-item" data-source-page="6">保留原始文本</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<aside class="callout" data-source-page="7"><b>阅读提示</b><p>第3点&quot;保留原始文本&quot;很重要 我们向AI提交的不能是向量，必须是文本。有时候我们需要追溯原始资料用来判断AI是否出现&quot;幻觉&quot;，这也需要能够看到Chunk的原始文字，人类是看不懂数字向量的。</p></aside>
+<h3 id="section-84" data-source-page="7">检索时的实际流程<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 用户提问
+question = &quot;我怎么申请年假？&quot;
+
+# 检索相似的Chunk（不是完整文档）
+top_chunks = vector_db.search(question, top_k=3)
+# 返回:
+# - Chunk 4: &quot;年假申请流程：登录OA系统 → 选择请假申请...&quot;
+# - Chunk 3: &quot;年假天数：入职1年内5天；1-3年7天...&quot;
+# - Chunk 5: &quot;年假注意事项：需提前3天申请...&quot;
+
+# 直接把这些Chunk的原始文本拼接到Prompt
+prompt = f&quot;&quot;&quot;
+【参考资料】
+{top_chunks[0].text}
+{top_chunks[1].text}
+{top_chunks[2].text}
+
+【用户问题】
+{question}
+&quot;&quot;&quot;</code></pre></div>
+<p data-source-page="7">优势</p>
+<p class="list-item" data-source-page="7">Token消耗少（3个Chunk约600字 vs 整份文档25000字）</p>
+<p class="list-item" data-source-page="7">检索精准（直接匹配到相关片段）</p>
+<p class="list-item" data-source-page="7">成本降低（Token少了40倍）</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h3 id="section-90" data-source-page="8">常见的切分策略<a class="heading-link" href="#section-90" aria-label="链接至本节">#</a></h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">策略</th><th scope="col">适用场景</th><th scope="col">Chunk大小</th></tr></thead><tbody><tr><td>按字符数切分</td><td>通用场景</td><td>200-500字</td></tr><tr><td>按段落切分</td><td>结构化文档</td><td>自然段落</td></tr><tr><td>按语义切分</td><td>技术文档</td><td>完整的概念单元</td></tr><tr><td>滑动窗口</td><td>连续性强的内容</td><td>重叠50-100字</td></tr></tbody></table></div>
+<p data-source-page="8">所以，流程图中的&quot;步骤3：提取相关片段&quot;并不是从完整文档中提取内容，而是从向量数据库中取出检索到的Chunk的原始文本。文档在存储时就已经切分好了。</p>
+<h3 id="section-93" data-source-page="8">Chunk重叠<a class="heading-link" href="#section-93" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">为了避免重要信息被切断，相邻Chunk通常会有重叠：</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Chunk 1: &quot;...年假天数规定：入职1年内5天；1-3年7天...&quot;
+Chunk 2: &quot;...1-3年7天；3-5年10天。申请流程：登录OA系统...&quot; ← 重叠部分
+
+1
+2</code></pre></div>
+<h2 id="section-96" data-source-page="8">3.5 元数据<a class="heading-link" href="#section-96" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">什么是元数据</p>
+<p data-source-page="8">元数据（Metadata）字面意思是&quot;关于数据的数据&quot;。如果把文档内容比作一本书的正文，那元数据就是这本书的封面信息——书名、作者、出版日期、ISBN号等。</p>
+<p data-source-page="8">在编程中，元数据无处不在：</p>
+<p class="list-item" data-source-page="8">文件的元数据：文件名、大小、创建时间、修改时间</p>
+<p class="list-item" data-source-page="8">照片的元数据：拍摄时间、地点、相机型号、分辨率</p>
+<p class="list-item" data-source-page="8">数据库记录的元数据：创建人、创建时间、最后修改时间</p>
+<p data-source-page="8">元数据的作用是帮助我们组织、查找、过滤和管理数据本身。</p>
+<p data-source-page="8">帮助我们组织、查找、过滤和管理数据本身</p>
+<p data-source-page="8">在RAG系统中，每个Chunk除了保存文本内容，还会保存元数据：</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">chunk = {
+    &quot;text&quot;: &quot;年假申请流程：登录OA系统...&quot;,
+    &quot;metadata&quot;: {
+        &quot;source&quot;: &quot;员工手册.pdf&quot;,
+        &quot;page&quot;: 12,
+        &quot;section&quot;: &quot;请假制度&quot;,
+        &quot;last_updated&quot;: &quot;2024-01-15&quot;
+    }
+}</code></pre></div>
+<h2 id="section-107" data-source-page="9">3.6 多路召回<a class="heading-link" href="#section-107" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">什么是召回 &quot;召回&quot;（Recall）是搜索系统中的术语，意思是&quot;从海量数据中把相关的结果找回来&quot;。就像你在图书馆找书，&quot;召回&quot;就是从几万本书里把可能相关的书都拿出来的过程。</p>
+<p data-source-page="9">&quot;多路&quot;则是指使用多种不同的方法来召回结果，然后把它们合并起来。</p>
+<p data-source-page="9">多种不同的方法</p>
+<p data-source-page="9">为什么需要多路召回？因为单一的检索方法都有局限性：</p>
+<p data-source-page="9">单一的检索方法都有局限性</p>
+<p class="list-item" data-source-page="9">纯向量检索的问题：</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户问：&quot;公司OA系统的网址是多少？&quot;
+
+向量检索结果：
+- &quot;OA系统使用指南...&quot;  （相似度0.82）
+- &quot;如何登录OA系统...&quot;  （相似度0.78）
+- &quot;OA系统常见问题...&quot;  （相似度0.75）
+
+但都没有直接包含网址！</code></pre></div>
+<p data-source-page="9">向量检索擅长语义理解，但对精确信息（网址、电话号码、专有名词）可能找不准。</p>
+<p data-source-page="9">精确信息</p>
+<p class="list-item" data-source-page="9">纯关键词检索的问题：</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户问：&quot;怎么请假？&quot;
+
+关键词检索：搜索包含&quot;请假&quot;的文档
+- &quot;请假制度详细说明...&quot;  ✓
+- &quot;员工请假统计表...&quot;    × （不相关）
+- &quot;请假审批流程图...&quot;    ✓
+
+无法理解&quot;申请年假&quot;&quot;休息几天&quot;等同义表达</code></pre></div>
+<p data-source-page="10">关键词检索擅长精确匹配，但不理解语义。</p>
+<p data-source-page="10">精确匹配</p>
+<p data-source-page="10">语义</p>
+<p class="list-item" data-source-page="10">多路召回的解决方案：</p>
+<p data-source-page="10">结合两种方法的优势：</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户问：&quot;公司OA系统的网址是多少？&quot;
+
+# 路径1：向量检索（Top-5）
+vector_results = [
+    &quot;OA系统使用指南：登录地址为...&quot;,
+    &quot;如何登录OA系统...&quot;,
+    &quot;OA系统常见问题...&quot;
+]
+
+# 路径2：关键词检索（Top-5）
+keyword_results = [
+    &quot;OA系统网址：https://oa.company.com&quot;,  ← 精确命中！
+    &quot;内部系统网址汇总：OA系统...&quot;,
+    &quot;网络资源：OA系统地址为...&quot;
+]
+
+# 合并去重
+all_results = vector_results + keyword_results
+# 结果：共8个候选文档（去重后）
+
+# 重新排序（Rerank）
+# 使用更精细的模型对这8个文档重新打分
+final_results = rerank(all_results, question)
+# 最终Top-3：
+# 1. &quot;OA系统网址：https://oa.company.com&quot;  (0.95)
+# 2. &quot;OA系统使用指南：登录地址为...&quot;      (0.88)
+# 3. &quot;内部系统网址汇总：OA系统...&quot;        (0.82)</code></pre></div>
+<p data-source-page="11">常见的召回路径组合</p>
+<aside class="callout" data-source-page="11"><b>阅读提示</b><p>什么是 BM25？ BM25（Best Match 25）是一种经典的基于关键词的排序算法，由搜索引擎领域发展而来。它和向量检索不同： 向量检索：理解“语义”（例如“请假”和“年假申请”语义相近） BM25：关注“词频”（文档里关键词出现越多、在整个知识库里越稀有，得分越高）在多路召回中，BM25 常用来作为“精确匹配补充”：当用户问题包含关键专业名词或产品型号时，BM25 能准确抓取到包含这些词的文档。</p></aside>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<div class="code-block" data-source-page="12"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">+-------------+
+|  用户问题    |
++------+------+
+       |
+    +--+--+------+--------+
+    v     v      v        v
+  向量   关键词  BM25   时间过滤
+  检索   检索   检索   （最近更新）
+    |     |      |        |
+    +--+--+--+---+--------+
+       v     v
+    合并 + 去重
+       |
+       v
+    Rerank重排序
+       |
+       v
+    Top-K结果</code></pre></div>
+<p data-source-page="12">这就是“多路召回”的核心思想：让不同的检索方法各显神通，最后综合决策。就像组建一个专家团队，每个专家擅长不同领域，共同给出最佳答案。</p>
+<h2 id="section-129" data-source-page="12">3.7 下节预告<a class="heading-link" href="#section-129" aria-label="链接至本节">#</a></h2>
+<p data-source-page="12">在这一节中，我们多次提到“Embedding”——把文字转换成向量。但它到底是怎么工作的？</p>
+<p data-source-page="12">为什么一段文字能变成一组数字？这些数字又是如何表达语义的？不同的 Embedding 模型（768维、1536维、3072维）该如何选择？</p>
+<p data-source-page="12"><strong>下一节《Embedding：把文字变成向量》</strong>将带你深入理解这项RAG的关键技术，从原理到实战，掌握如何选择和使用Embedding模型。</p>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<h2 id="section-133" data-source-page="13">3.8 ■ 学点英语<a class="heading-link" href="#section-133" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="13"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>上下文拼接</td><td>Context Assembly</td><td>/ˈkɑːntekst ə ˈsembli/</td><td>将检索到的文档和用户问题整合成结构化Prompt的过程</td></tr><tr><td>多路召回</td><td>Hybrid Search</td><td>/ˈhaɪbrɪd sɜːrtʃ/</td><td>同时使用多种检索方法（向量、关键词、BM25）后合并结果</td></tr><tr><td>重排序</td><td>Rerank</td><td>/riːˈræŋk/</td><td>对初步检索结果重新打分排序，提升最相关内容的位置</td></tr><tr><td>BM25</td><td>BM25</td><td>/biː em twɛnti faɪv/</td><td>基于词频和逆文档频率的经典文本检索算法</td></tr><tr><td>引文追溯</td><td>Citation Tracking</td><td>/saɪˈteɪʃn ˈtrækɪŋ/</td><td>要求AI在回答中引用来源，确保答案可验证</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-095.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>RAG核心原理（一）-工作流程与语义搜索</strong><small>RAG核心原理</small></a><a class="chapter-neighbor next" href="lesson-097.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Embedding：把文字变成向量</strong><small>RAG核心原理</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5271#mid=104915" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-0" class="toc-level-2">3.1 上下文拼接：喂给AI的&quot;参考资料&quot;</a><a href="#section-18" class="toc-level-2">3.2 生成阶段：AI的魔法时刻</a><a href="#section-36" class="toc-level-2">3.3 RAG的关键优势</a><a href="#section-52" class="toc-level-2">3.4 技术细节补充</a><a href="#section-84" class="toc-level-3">检索时的实际流程</a><a href="#section-90" class="toc-level-3">常见的切分策略</a><a href="#section-93" class="toc-level-3">Chunk重叠</a><a href="#section-96" class="toc-level-2">3.5 元数据</a><a href="#section-107" class="toc-level-2">3.6 多路召回</a><a href="#section-129" class="toc-level-2">3.7 下节预告</a><a href="#section-133" class="toc-level-2">3.8 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-096", "title": "RAG核心原理（二）-检索生成与关键机制", "stage": 2, "week": 5, "module": "RAG核心原理", "minutes": 13, "pages": 13, "type": "article"}</script>
+</body></html>

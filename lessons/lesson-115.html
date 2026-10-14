@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Tools 详解 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-115">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 7 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Tools、Prompts详解</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 116</span></div>
+<h1 class="lesson-title">Tools 详解</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>6 页原文</span><span>约 10 分钟阅读</span><span class="module-name">Tools、Prompts详解</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-115.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-115.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节学习了 Resources 的实战技巧，它让 AI 能够读取结构化的数据。本节学习MCP 的三大核心能力之一：Tools，让 AI 不仅能读数据，还能执行操作。</p></aside>
+<h2 id="section-1" data-source-page="1">5.1 Tools：让 AI 动起来<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<h3 id="section-2" data-source-page="1">Resources vs Tools：读与写<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">上一节学习了 Resources，它是只读的：</p>
+<p data-source-page="1">只读</p>
+<p data-source-page="1">但很多时候，AI 需要执行操作：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户需求的演进：
+
+✓ &quot;让我看看用户表的结构&quot;
+   → Resources 可以解决
+   → 读取预先准备好的 schema Resource（固定的表结构文档）
+
+× &quot;帮我查询所有注册时间在2024年的用户&quot;
+   → Resources 不适合做
+   → 原因：这需要&quot;动态查询&quot;数据库
+   → 虽然是只读，但数据是&quot;实时生成&quot;的，不是预先存在的文件
+   → 解决：需要 Tool 来执行 SQL 查询
+
+× &quot;帮我发送一封感谢邮件给所有VIP用户&quot;
+   → Resources 不适合做
+   → 这是写操作，有副作用</code></pre></div>
+<aside class="callout" data-source-page="2"><p>补充说明：Resources vs Tools 的&quot;只读&quot;区别 Resources 的&quot;只读&quot;：读取预先存在的固定数据 这就像读取一个文件（如 schema.json 或 sample_data.json），数据本身是静态的，不需要在读取时进行额外的逻辑计算。 Tools 的&quot;查询&quot;：执行动态操作生成数据 例如执行 SQL 语句 SELECT *FROM users WHERE ...，虽然这可能也是&quot;只读&quot;的操作，但数据是根据查询条件&quot;动态计算&quot;出来的。每次查询条件不同，返回的结果就会发生变化。</p></aside>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">这就是 Tools 要解决的问题。</p>
+<p data-source-page="3">Tools 的核心特征</p>
+<p data-source-page="3">Tools 是 MCP 中赋予 AI 「行动力」的核心组件。与静态的 Resources 不同，它们本质上是可执行的函数，能够执行动态操作，并可能产生副作用（如写入数据库或调用外部 API）。在实际交互中，由LLM 根据用户意图自主决定调用哪个 Tool 以及传递具体的参数。</p>
+<p data-source-page="3">常见的 Tools 示例包括： • 搜索文档内容 (search_docs tool) • 执行数据库查询 (query_database tool) • 调用 API (call_API tool) • 发送邮件 (send_email tool)</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="3"><table><thead><tr><th scope="col">维度</th><th scope="col">Resources</th><th scope="col">Tools</th></tr></thead><tbody><tr><td>本质</td><td>数据源</td><td>函数</td></tr><tr><td>操作</td><td>只读</td><td>可读可写</td></tr><tr><td>内容</td><td>静态信息</td><td>动态执行</td></tr><tr><td>选择方式</td><td>LLM 看 description</td><td>LLM 看 description + parameters</td></tr><tr><td>副作用</td><td>无</td><td>可能有</td></tr></tbody></table></div>
+<h3 id="section-13" data-source-page="3">如何判断用 Resources 还是 Tools<a class="heading-link" href="#section-13" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">这是很多人的困惑：为什么有些场景似乎两者都能用？</p>
+<p data-source-page="3">为什么有些场景似乎两者都能用？</p>
+<p data-source-page="3">核心判断标准：数据是「静态元数据」还是「动态业务数据」</p>
+<p data-source-page="3">这种区分并不是看是否需要调用函数（因为两者内部都可以调用函数），而是看查询的数据性质：</p>
+<p class="list-item" data-source-page="3">Resources 适用于那些相对固定、可枚举的元数据（如表结构、系统配置、静态文档）。它就像是一张「地图」，告诉 AI 这里的地形如何。 • Tools 适用于那些频繁变化、需要实时计算的业务数据（如实时库存、用户信息查询、发送邮件）。它就像是一把「瑞士军刀」，让 AI 能根据当前情况采取行动。</p>
+<p data-source-page="3">可以通过几个典型场景来对比：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">场景</th><th scope="col">推荐方案</th><th scope="col">理由</th></tr></thead><tbody><tr><td>查看用户表的字段定义</td><td>Resource</td><td>表结构是相对固定的「元数据」</td></tr><tr><td>查询 2024 年注册的用户</td><td>Tool</td><td>业务数据查询，结果随参数动态生成</td></tr><tr><td>获取上海此时此刻的天气</td><td>Tool</td><td>实时数据，且涉及外部 API 调用</td></tr><tr><td>查阅系统的 API 认证文档</td><td>Resource</td><td>静态文档，内容预先存在</td></tr></tbody></table></div>
+<p data-source-page="4">原则 如果数据是「固定的、用来描述系统的（Schema、文档）」，用 Resource；如果数据是「动态的、属于业务逻辑的（订单、天气、操作）」，用 Tool。</p>
+<h3 id="section-22" data-source-page="4">Tools 工作流程<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">上一节用 Resources 让 AI 读取静态的API文档，现在用 Tools 让 AI 执行具体操作（比如测试接口）。</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">场景1：测试登录接口（用 Tools）
+════════════════════════
+用户：&quot;帮我测试一下登录接口，用户名 test，密码 123456&quot;
+  ↓
+1. LLM 看到 Tools 列表
+2. 选择 &quot;test_api_endpoint&quot; Tool
+3. 传参数：{&quot;endpoint&quot;: &quot;/auth/login&quot;, &quot;method&quot;: &quot;POST&quot;, &quot;data&quot;: {&quot;username&quot;: &quot;test&quot;, 
+&quot;password&quot;: &quot;123456&quot;}}
+4. MCP Server 执行 API 调用
+5. 返回结果：&quot;返回 200 OK, token: eyJhbGc...&quot;
+→ 有副作用：调用了外部API，可能创建了session</code></pre></div>
+<p data-source-page="4">完整流程图</p>
+<h2 id="section-26" data-source-page="4">5.2 Tools 的协同与安全<a class="heading-link" href="#section-26" aria-label="链接至本节">#</a></h2>
+<h3 id="section-27" data-source-page="4">Resource + Tool 组合使用的威力<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">在真实的项目中，Resources 和 Tools 往往是形影不离的。Resources 负责提供背景知识（Context），而 Tools 负责执行具体动作（Action）。</p>
+<p data-source-page="4">示例：智能数据库助手（伪代码）</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">class DatabaseMCPServer:
+    def list_resources(self):
+        # ▸ 暴露表结构（Resource）
+        return [{&quot;uri&quot;: &quot;db://schema/orders&quot;, &quot;description&quot;: &quot;订单表结构&quot;}]
+
+    def list_tools(self):
+        # ▸ 提供查询能力（Tool）
+        return [{
+            &quot;name&quot;: &quot;query_sql&quot;,
+            &quot;description&quot;: &quot;执行 SQL 查询&quot;,
+            &quot;inputSchema&quot;: {&quot;type&quot;: &quot;object&quot;, &quot;properties&quot;: {&quot;sql&quot;: {&quot;type&quot;: &quot;string&quot;}}}
+        }]
+
+    def call_tool(self, name, args):
+        # 执行查询逻辑...
+        pass</code></pre></div>
+<p data-source-page="5">这种组合的威力在于：当用户问「分析 2024 年订单」时，AI 会先去读取 Resource 搞清楚 orders 表有哪些字段，然后基于这些知识，精准地构造出 SQL 语句去调用 Tool。这种「先看说明书，再上手操作」的模式，极大地提高了 AI 的准确度。</p>
+<h3 id="section-32" data-source-page="5">Tool 的权限控制<a class="heading-link" href="#section-32" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">由于 Tools 具有「副作用」，权限控制就成了系统的护城河。</p>
+<aside class="callout" data-source-page="5"><b>补充说明</b><p>「副作用」是什么意思？ 在编程里，一个函数如果只是读取数据、计算并返回结果，它不会改变外部世界的任何东西——这叫「没有副作用」。但如果一个函数写入了数据库、发送了邮件、删除了文件、调用了外部 API……它就在改变外部世界的状态，这就叫「有副作用」。 打个比方：去图书馆查一本书（读操作）不会改变图书馆的藏书；但如果在书上写字、把书撕掉一页、或者把书寄给朋友（写操作），图书馆就被改变了。Tools 能做后者——所以必须给它配上严格的权限关卡。</p></aside>
+<p data-source-page="5">这种分层防御确保了 AI 在获得行动力的同时，不会变成失控的洪水猛兽。通过一段精简的逻辑来观察这种「安全关卡」是如何工作的：</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def call_tool(name, arguments):
+    # ▸ 1. 语法拦截：检查并过滤高危 SQL（如 DROP/DELETE）
+    if is_dangerous(arguments.get(&quot;sql&quot;, &quot;&quot;)):
+        return &quot;拒绝执行：检测到高危指令&quot;
+
+    # ▸ 2. 身份校验：验证当前用户是否有权访问目标资源
+    if not has_access(user_identity, arguments.get(&quot;table&quot;)):
+        return &quot;拒绝执行：权限不足&quot;
+
+    # ▸ 3. 业务执行：双重检查通过后，才执行真正的逻辑
+    return perform_logic(name, arguments)</code></pre></div>
+<p data-source-page="6">可以看到，在执行Tools函数时，可以进行各种检测，只有安全的操作才能被执行。</p>
+<h2 id="section-38" data-source-page="6">5.3 下一节预告<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">Tools 让 AI 拥有了执行操作的能力，但用户的每次需求都需要&quot;从零开始&quot;描述。下一节将介绍 MCP 的第三大核心能力——Prompts（预制的使用模板），它能把常见的操作流程标准化，让用户不再重复描述需求，也让 AI 的输出更加一致可控。</p>
+<h2 id="section-40" data-source-page="6">5.4 ■ 学点英语<a class="heading-link" href="#section-40" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>读写分离</td><td>Read-Write Separation</td><td>/riːd raɪt sepəˈreɪʃn/ ˌ</td><td>Resources只读与Tools可执行的职责划分设计</td></tr><tr><td>三层检查</td><td>Three-Layer Check</td><td>/θriː ˈleɪər tʃek/</td><td>语法拦截→身份校验→业务执行的Tool安全检查架构</td></tr><tr><td>参数校验</td><td>Input Validation</td><td>/ˈɪnpʊt vælɪˈdeɪʃn/ ˌ</td><td>对Tool参数进行类型、范围和格式的合法性检查</td></tr><tr><td>副作用操作</td><td>Side Effect Operation</td><td>/saɪd ɪˈfekt ɑːpə ˌ ˈreɪʃn/</td><td>有状态变更或外部影响的写操作，需额外安全控制</td></tr></tbody></table></div>
+<h2 id="section-42" data-source-page="6">图片<a class="heading-link" href="#section-42" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">![](115-图文-1-1-Tools 详解.assets/img-001.png)</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-114.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Resources 实战</strong><small>Resources概念与实战</small></a><a class="chapter-neighbor next" href="lesson-116.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Prompts 详解</strong><small>Tools、Prompts详解</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5280#mid=104934" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">5.1 Tools：让 AI 动起来</a><a href="#section-2" class="toc-level-3">Resources vs Tools：读与写</a><a href="#section-13" class="toc-level-3">如何判断用 Resources 还是 Tools</a><a href="#section-22" class="toc-level-3">Tools 工作流程</a><a href="#section-26" class="toc-level-2">5.2 Tools 的协同与安全</a><a href="#section-27" class="toc-level-3">Resource + Tool 组合使用的威力</a><a href="#section-32" class="toc-level-3">Tool 的权限控制</a><a href="#section-38" class="toc-level-2">5.3 下一节预告</a><a href="#section-40" class="toc-level-2">5.4 ■ 学点英语</a><a href="#section-42" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-115", "title": "Tools 详解", "stage": 3, "week": 7, "module": "Tools、Prompts详解", "minutes": 10, "pages": 6, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>传输与生命周期 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-119">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 7 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>MCP通信协议与实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 120</span></div>
+<h1 class="lesson-title">传输与生命周期</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 9 分钟阅读</span><span class="module-name">MCP通信协议与实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-119.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-119.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节深入了解了 JSON-RPC 协议的消息格式和错误码。本节探讨这些消息如何在实际中传输，以及 MCP Server 从启动到关闭的完整生命周期。</p></aside>
+<h2 id="section-1" data-source-page="1">9.1 传输层选择<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">JSON-RPC 定义了消息格式，但没有规定怎么传输。MCP 支持三种传输方式：</p>
+<h3 id="section-3" data-source-page="1">stdio（标准输入输出）<a class="heading-link" href="#section-3" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">原理： 通过进程的标准输入输出（stdin/stdout）传输 JSON 消息。</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">┌─────────────────┐         ┌─────────────────┐
+│  AI 应用                      MCP Server
+│  (Client)                    (独立进程)
+│
+│  写入 stdin  ──→  ─ JSON ─→│  读取 stdin
+│  读取 stdout ←──  ←─ JSON ─│  写入 stdout
+└─────────────────┘         └─────────────────┘</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<aside class="callout" data-source-page="2"><p>什么是 stdio？ stdio 是「标准输入输出」（Standard Input/Output）的缩写。在计算机世界里，每个运行的程序默认都有三个通道：接收指令的 stdin（标准输入）、输出结果的 stdout（标准输出）以及报告错误的 stderr（标准错误）。MCP 利用这些天然存在的通道进行数据交换，就像两个人在用纸条（JSON 消息）通过门缝（stdin/stdout）互相传递信息。</p></aside>
+<p data-source-page="2">典型场景：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Client 启动 Server 进程
+$ node mcp-server.js
+
+# Server 通过 stdin 接收消息，通过 stdout 返回结果</code></pre></div>
+<p data-source-page="2">stdio 的实现简单，任何语言都支持。它的进程隔离机制天然安全，适合本地工具。缺点是只能一问一答的单向传输，不适合 Web 场景。</p>
+<p data-source-page="2">这是MCP 最常用的方式 — Claude Desktop 就是用 stdio 启动 MCP Server。</p>
+<h3 id="section-11" data-source-page="2">SSE 传输层（基于 HTTP 的混合模式）<a class="heading-link" href="#section-11" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">很多同学会混淆：MCP 是支持 HTTP 还是支持 SSE？ 答案是：它使用了一种「混合模式」，官方称为SSE Transport。</p>
+<p data-source-page="2">原理： 由于传统的 HTTP 是严格的「一问一答」，服务端无法主动说话。因此，基于网络传输的 MCP并没有单独使用 HTTP，而是将两种技术缝合在了一起：</p>
+<p class="list-item" data-source-page="2">指令上行（Client → → Server）：使用标准的 HTTP POST 请求。</p>
+<p class="list-item" data-source-page="2">通知下行（Server → → Client）：使用 SSE（Server-Sent Events）建立的长连接通道。</p>
+<p data-source-page="2">为什么不直接用传统 HTTP？</p>
+<p data-source-page="2">传统的 HTTP 是「不问不答」模式。但 MCP 协议要求服务端能主动通知客户端（比如：资源更新了、任务处理完了）。如果只用传统 HTTP，服务端无法主动「敲客户端的门」。</p>
+<p data-source-page="2">它不是两种模式，而是一种基于 HTTP 协议栈实现的双向方案。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">┌─────────────────┐         ┌─────────────────┐
+│    Web 应用                   MCP Server
+│    (Client)                  (HTTP 服务)
+│
+│  1. POST 发指令 ── JSON ─▶  处理请求
+│  2. 响应 (OK)   ◀─ JSON ──  处理结果
+│
+│  3. SSE 长连接  ◀── 推送 ──  主动通知
+└─────────────────┘         └─────────────────┘</code></pre></div>
+<p data-source-page="3">请求示例：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">POST /rpc HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+
+{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;method&quot;: &quot;resources/list&quot;
+}</code></pre></div>
+<p data-source-page="3">SSE 推送示例：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">event: notification
+data: {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;resources/updated&quot;,&quot;params&quot;:{...}}
+
+1
+2</code></pre></div>
+<p data-source-page="3">SSE 的传输方式适合 Web 集成，Server 可以主动推送通知，而且用 HTTP 工具做调试很方便。缺点是必须运行 HTTP 服务，比 stdio 模式复杂一些。</p>
+<p data-source-page="3">适用场景： 浏览器插件、Web 应用集成 MCP。</p>
+<p data-source-page="3">适用场景：</p>
+<h3 id="section-27" data-source-page="3">WebSocket<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">原理： 全双工通信，Client 和 Server 可以随时互发消息。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">┌─────────────────┐         ┌─────────────────┐
+│  实时应用           WS连接     MCP Server
+│  (Client)       ◄───────►   (WebSocket)
+│
+│  双向实时消息     ◄───────►
+└─────────────────┘         └─────────────────┘</code></pre></div>
+<p data-source-page="4">WebSocket 能实现真正的双向通信，延迟低，适合实时场景。缺点是实现较为复杂，需要保持长连接。</p>
+<p data-source-page="4">适用场景： 需要实时交互的协作应用、流式响应。WebSocket并不罕见，你使用的大部分网页版聊天程序都使用的WebSocket技术。</p>
+<h3 id="section-32" data-source-page="4">三种方式对比<a class="heading-link" href="#section-32" aria-label="链接至本节">#</a></h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">传输方式</th><th scope="col">实现难度</th><th scope="col">双向通信</th><th scope="col">适用场景</th></tr></thead><tbody><tr><td>stdio</td><td>★ 简单</td><td>全双工</td><td>本地工具、命令行应用</td></tr><tr><td>SSE Transport</td><td>★★ 中等</td><td>半双工(混合)</td><td>Web 应用、浏览器插件</td></tr><tr><td>WebSocket</td><td>★★★ 复杂</td><td>全双工</td><td>实时协作、流式交互</td></tr></tbody></table></div>
+<p data-source-page="4">选择哪种传输方式要看场景：本地工具用 stdio，Web 服务用 HTTP+SSE，实时推送则用WebSocket。</p>
+<h2 id="section-35" data-source-page="4">9.2 MCP Server 生命周期<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">一个 MCP Server 从启动到关闭，主要经历三个核心阶段。我们没必要纠结于每一个繁琐的字段，只需把握住最关键的「握手」与「交互」逻辑。</p>
+<p data-source-page="4">当 Client 启动 Server 后，第一件事就是交换彼此的「名片」和「技能清单」。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-38" data-source-page="5">1. Client 发送请求：<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;method&quot;: &quot;initialize&quot;,
+  &quot;params&quot;: {
+    &quot;protocolVersion&quot;: &quot;2024-11-05&quot;, // 协议版本
+    &quot;capabilities&quot;: { &quot;roots&quot;: {...}, &quot;sampling&quot;: {...} } // Client 能做什么
+  }
+}</code></pre></div>
+<h2 id="section-40" data-source-page="5">2. Server 返回响应：<a class="heading-link" href="#section-40" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;result&quot;: {
+    &quot;protocolVersion&quot;: &quot;2024-11-05&quot;,
+    &quot;capabilities&quot;: { &quot;resources&quot;: {}, &quot;tools&quot;: {}, &quot;prompts&quot;: {} }, // Server 能提供什么
+    &quot;serverInfo&quot;: { &quot;name&quot;: &quot;my-server&quot;, &quot;version&quot;: &quot;1.0.0&quot; }
+  }
+}</code></pre></div>
+<aside class="callout" data-source-page="5"><p>核心逻辑： 这一步决定了双方「能不能聊到一块去」。如果协议版本不匹配，或者 Server 声明不支持 Tools，那么后续的工具调用就无从谈起。</p></aside>
+<p data-source-page="5">握手成功后，双方进入高效协作模式。主要有两种对话方式：</p>
+<p class="list-item" data-source-page="5">请求-响应（双向）：Client 主动出击。例如「请帮我读取这个 Resource」或「请执行这个Tool」。Client 发出 id，Server 必须带回相同的 id。</p>
+<p class="list-item" data-source-page="5">通知（单向）：任何一方都可以发送。例如 Server 告诉 Client「资源列表更新了」，或者 Client告诉 Server「用户取消了操作」。通知没有 id，不需要对方回复。</p>
+<p data-source-page="5">当 AI 应用退出时，会向 Server 发送取消通知。Server 接收到后，会像一位得体的管家一样：停止接受新任务、释放数据库连接、关闭文件句柄，最后安全退出进程。</p>
+<p data-source-page="5">完整生命周期示意图：</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<h2 id="section-48" data-source-page="6">9.3 下一节预告<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">到这里，MCP 的底层通信协议已经梳理了一遍，从 JSON-RPC 的消息机制到各种传输层的选择。接下来进入实战环节——从零开发一个「游戏装备计算助手」，从定义工具到处理调用的全流程都会试一遍。</p>
+<h2 id="section-50" data-source-page="6">9.4 ■ 学点英语<a class="heading-link" href="#section-50" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>标准输入输出</td><td>stdio (Standard I/O)</td><td>/ˈstændərd aɪ oʊ/</td><td>通过进程stdin/stdout传输JSON-RPC消息的本地传输方式</td></tr><tr><td>服务器推送事件</td><td>SSE (Server-Sent Events)</td><td>/ˈsɜːrvər sent ɪ ˈvents/</td><td>HTTP长连接下Server主动推送数据的远程传输技术</td></tr><tr><td>初始化握手</td><td>Initialization Handshake</td><td>/ɪ nɪʃəlaɪˈzeɪʃn ˌ ˈhændʃeɪk/</td><td>Client和Server交换协议版本和能力声明的连接建立阶段</td></tr><tr><td>优雅关闭</td><td>Graceful Shutdown</td><td>/ˈɡreɪsfl ˈʃʌtdaʊn/</td><td>Server收到关闭通知后释放资源安全退出的过程</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-52" data-source-page="7">图片<a class="heading-link" href="#section-52" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="7"><button class="figure-open" aria-label="放大查看第 7 页图示"><img src="../assets/figures/0e55db48ceefe2ac647118e5875dacea.png" width="1120" height="1540" loading="lazy" alt="传输与生命周期 · 原 PDF 第 7 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-118.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>MCP 通信协议</strong><small>MCP通信协议与实战</small></a><a class="chapter-neighbor next" href="lesson-120.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>需求分析与流程</strong><small>MCP通信协议与实战</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5281#mid=104938" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">9.1 传输层选择</a><a href="#section-3" class="toc-level-3">stdio（标准输入输出）</a><a href="#section-11" class="toc-level-3">SSE 传输层（基于 HTTP 的混合模式）</a><a href="#section-27" class="toc-level-3">WebSocket</a><a href="#section-32" class="toc-level-3">三种方式对比</a><a href="#section-35" class="toc-level-2">9.2 MCP Server 生命周期</a><a href="#section-38" class="toc-level-2">1. Client 发送请求：</a><a href="#section-40" class="toc-level-2">2. Server 返回响应：</a><a href="#section-48" class="toc-level-2">9.3 下一节预告</a><a href="#section-50" class="toc-level-2">9.4 ■ 学点英语</a><a href="#section-52" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-119", "title": "传输与生命周期", "stage": 3, "week": 7, "module": "MCP通信协议与实战", "minutes": 9, "pages": 7, "type": "article"}</script>
+</body></html>

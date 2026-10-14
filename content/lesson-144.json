@@ -1,0 +1,1141 @@
+{
+  "id": "lesson-144",
+  "title": "执行：能力实现详解",
+  "code": "1-2",
+  "stage": 6,
+  "week": 11,
+  "week_title": "Agent：智能体架构",
+  "module": "Agent 的核心架构剖析",
+  "type": "article",
+  "repo_path": "006-阶段六 【智能体】从单体到多体/001-第11周 Agent：智能体架构/002-Agent 的核心架构剖析/010-图文-1-2-执行：能力实现详解.pdf",
+  "sha256": "34545ffe842bf5d499fdf00a354a945247a5ddea2ea0d7a7ca198f07b6303ef6",
+  "pdf": "sources/pdf/lesson-144.pdf",
+  "pages": 16,
+  "source_url": "https://class.imooc.com/lesson/5290#mid=105150",
+  "minutes": 18,
+  "excerpt": "上一节我们从宏观视角了解了Agent的整体架构: 循环流程:Perceive → Think →Act → Observe 模块分工:感知层、规划层、推理层、行动层、记忆系统 两者的映射关系 但知道架构还不够。就像你看了大脑的解剖图，知道额叶负责决策、海马体负责记忆，但这些区域具体是怎么工作的?本节",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们从宏观视角了解了Agent的整体架构: 循环流程:Perceive → Think →Act → Observe 模块分工:感知层、规划层、推理层、行动层、记忆系统 两者的映射关系 但知道架构还不够。就像你看了大脑的解剖图，知道额叶负责决策、海马体负责记忆，但这些区域具体是怎么工作的?本节我们就来深入三大核心能力: 感知层:如何将混乱的输入(用户说话、工具返回、环境信息)整合成LLM可理解的统一上下文? 规划层:如何将高层目标(“帮我写周报”)拆解为可执行的子任务序列? 行动层:如何准确执行规划的每个步骤，调用工具并处理结果?",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "感知层：从混乱到清晰",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "感知层的核心问题",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第3节我们已经知道，感知层负责将用户输入、工具返回、环境状态、历史记忆这四类输入整合成LLM可理解的文本。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "但这里有个关键问题:为什么要整合和组装，而不是直接解析?",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么要整合和组装，而不是直接解析?",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "真实场景：天气查询 Agent 的感知过程",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设用户说:“明天杭州天气怎么样?”",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "传统程序的处理方式",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "# 硬编码的规则\ndef parse_weather_query(text):\n    if \"明天\" in text:\n        date = get_tomorrow()\n    if \"杭州\" in text:\n        city = \"杭州\"\n\n    return get_weather(city, date)",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统程序有几个问题：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "只能处理固定模板",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "无法理解\"后天\"、“大后天”",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "无法处理\"西湖那边\"、\"我老家\"等模糊表达",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Agent 的感知方式：上下文组装",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent 不直接解析，而是将所有相关信息组装成一个完整的上下文,交给 LLM 理解:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def perceive(user_input, context):\n    \"\"\"\n    感知层:组装完整的上下文信息\n    \"\"\"\n    # ▸ 第 1 步:收集系统信息\n    system_info = {\n        \"current_time\": \"2024年12月9日 14:30\",\n        \"user_location\": \"上海\"  # 从用户配置中获取\n    }\n\n    # ▸ 第 2 步:检索历史记忆\n    history = context.get(\"conversation_history\", [])\n\n    # ▸ 第 3 步:列出可用工具\n    available_tools = [\n        {\n            \"name\": \"get_weather\",\n            \"description\": \"获取指定城市和日期的天气信息\",\n            \"parameters\": {\n                \"city\": \"城市名称\",\n                \"date\": \"日期(格式:YYYY-MM-DD)\"\n            }\n        }\n    ]\n\n    # ▸ 第 4 步:组装成 LLM 可理解的 Prompt\n    prompt = f\"\"\"\n## 系统信息\n当前时间: {system_info['current_time']}\n用户位置: {system_info['user_location']}\n\n## 对话历史\n{format_history(history)}\n\n## 可用工具\n{format_tools(available_tools)}\n\n## 用户请求\n{user_input}\n\n请理解用户意图,决定是否需要调用工具。\n\"\"\"\n    return prompt",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "感知层做的是信息整合,而不是意图识别。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "信息整合",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "意图识别",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "传统程序:先识别意图(“这是天气查询”),再调用功能",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统程序",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Agent:把所有信息交给 LLM,让 LLM 自己理解和决策",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是为什么 Agent 能处理复杂、模糊的输入——理解能力来自 LLM,而不是硬编码的规则。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "多模态感知",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在，Agent 的感知能力扩展到了多模态:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户上传一张图片 + 文字:\"这是什么动物?\"\n\n      多模态感知层的处理流程\n══════════════════════════════════\n1. 图像 → 通过 Qwen/Gemini 理解\n2. 文字 → 提取用户意图\n3. 组合 → 形成统一的上下文\n4. 输出 → 交给推理层决策",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例代码:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例代码",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def multimodal_perceive(image, text, context):\n    \"\"\"\n    多模态感知:处理图像 + 文字输入\n    \"\"\"\n    # ▸ 调用视觉模型理解图像\n    image_description = vision_model.analyze(image)\n    # 返回: \"图片中是一只橘色的猫,正在睡觉\"\n\n    # ▸ 组装完整上下文\n    prompt = f\"\"\"\n## 图像理解\n{image_description}\n\n## 用户问题\n{text}\n\n请回答用户的问题。\n\"\"\"\n\n    return prompt",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种方式的优势:无需为每种输入类型单独编写解析逻辑,LLM 自动理解多模态信息。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "规划层：从目标到路径",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "规划能力的核心来源：LLM的推理",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第3节我们知道了规划层负责将高层目标拆解为子任务序列。但一个关键问题被忽略了——谁在做规划，规划能力从哪来？答案是：LLM本身。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent的规划能力不是预先编写的算法，而是通过Prompt引导LLM进行任务拆解。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 传统程序:硬编码的规划逻辑\ndef plan_travel():\n    steps = [\n        \"查询天气\",\n        \"订票\",\n        \"订酒店\"\n    ]\n    return steps\n\n# Agent:让LLM自己规划\ndef plan_with_llm(goal, context):\n    prompt = f\"\"\"\n你是一个任务规划专家。\n\n用户目标:{goal}\n可用工具:{context['tools']}\n\n请将目标拆解为具体的执行步骤,每步说明:\n1. 要做什么\n2. 调用哪个工具\n3. 预期结果\n\n以JSON格式返回。\n\"\"\"\n\n    plan = llm.generate(prompt)\n    return parse_json(plan)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "code",
+      "text": "规划不是算法,而是LLM的能力\n═════════════════════════════════════════\n● 传统程序:if-else预设所有可能路径\n● Agent:LLM根据目标动态生成执行计划\n\n为什么LLM能规划?\n→ 训练数据中见过大量任务分解案例\n→ 理解任务之间的依赖关系\n→ 能推理\"先做什么,后做什么\"",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "两种规划方式的LLM实现对比",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第3节提到了Plan-then-Execute和ReAct两种策略。但它们的本质区别在于给LLM的Prompt不同:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Plan-then-Execute：一次性生成完整计划",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "def plan_then_execute(goal, context):\n    # ▸ 关键:Prompt要求LLM\"一次性生成全部步骤\"\n    prompt = f\"\"\"\n目标:{goal}\n\n请生成**完整的执行计划**,列出所有步骤:\n- 步骤1: [具体操作]\n- 步骤2: [具体操作]\n- 步骤3: [具体操作]\n\n计划生成后,按顺序执行即可。\n\"\"\"\n\n    plan = llm.generate(prompt)  # LLM输出完整计划\n\n    # 按计划执行\n    for step in plan:\n        execute(step)",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM的角色:一次性推理出所有步骤，类似于\"先想好再行动\"。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM的角色",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "ReAct：每步都让LLM重新推理",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "def react_planning(goal):\n    state = {\"goal\": goal, \"done\": False, \"history\": []}\n\n    while not state['done']:\n        # ▸ 关键：每步都重新调用LLM\n        prompt = f\"\"\"\n目标: {state['goal']}\n已执行: {state['history']}\n请决定下一步行动...\n\"\"\"\n        response = llm.generate(prompt)\n\n        if response.need_tool:\n            result = execute_tool(response.tool, response.params)\n            state['history'].append(result)\n        else:\n            return response.answer",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM的角色:每一步都基于最新情况重新推理，类似于“边做边想”。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "混合规划：让LLM自己选择策略",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第3节讲了混合规划的分层思想。但更高级的做法是:让LLM自己决定用哪种策略。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让LLM自己决定用哪种策略",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "class HybridPlanner:\n    \"\"\"\n    混合规划器:根据任务类型选择策略\n    \"\"\"\n    def plan(self, task, context):\n        # ▸ 第 1 层:规则引擎。如果能自己判断，就不用麻烦LLM了，浪费钱\n        if self.rule_engine.can_handle(task):\n            return self.rule_engine.execute(task)\n\n        # ▸ 第 2 层:判断任务复杂度。不再手写规则内的，问LLM让他判断\n        complexity = self.llm.classify_task(task)\n\n        if complexity == \"simple\":\n            # 一次性规划\n            return self.plan_then_execute(task, context)\n        else:\n            # ReAct 动态规划\n            return self.react_planning(task, context)",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "真实案例：LangGraph 的规划实现",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第9章我们详细学习了 LangGraph 框架。现在回过头来看，LangGraph 其实就是将我们刚才讨论的两种规划策略通过状态图的方式实现了:",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "code",
+      "text": "LangGraph 如何体现规划能力?\n═════════════════════════════════════\n● 节点(Node):封装 LLM 推理\n  - 每个节点都可以调用 LLM\n  - 让 LLM 决定下一步做什么\n\n● 边(Edge):实现两种规划\n  - 固定边 → Plan-then-Execute\n  - 条件边 → ReAct(动态规划)\n\n● 状态(State):传递规划上下文\n  - 保存中间结果\n  - LLM 根据历史状态调整策略",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LangGraph 的**条件边(conditional_edges)**就是让 LLM 在执行过程中重新规划:",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 回顾第9章的条件分支示例\ndef should_continue(state):\n    \"\"\"\n    关键:这里调用 LLM 判断是否继续\n    → 这就是 ReAct 的动态规划\n    \"\"\"\n    decision = llm.analyze(state['current_result'])\n\n    if decision == \"需要更多信息\":\n        return \"continue\"  # 继续执行\n    else:\n        return \"finish\"    # 完成任务\n\n# 添加条件边\nworkflow.add_conditional_edges(\n    \"analyze\",\n    should_continue,  # ← LLM 每次都重新决策\n    {\n        \"continue\": \"retrieve_more\",\n        \"finish\": \"generate_answer\"\n    }\n)",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "与本节规划策略的对应:",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "与本节规划策略的对应",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "规划策略 → LangGraph 实现\n═══════════════════════════════════════\nPlan-then-Execute:\n● 用固定的 add_edge() 串联节点\n● LLM 只在起点生成完整计划\n\nReAct:\n● 用 add_conditional_edges()\n● 每个节点都可以让 LLM 重新决策\n\n混合规划:\n● 简单任务:固定流程(add_edge)\n● 复杂任务:动态判断(conditional_edges)",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "行动层：从计划到执行",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "前面我们讲了感知如何整合信息、规划如何拆解任务。但有了计划后，谁来执行?",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "谁来执行?",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "答案就是:行动层(Action Layer)。",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "行动层(Action Layer)",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "行动层的核心职责",
+      "page": 11,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "行动层是 Agent 与外部世界的接口，它负责:",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "与规划层的区别:",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "与规划层的区别",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "规划层:决定“调用哪个工具”和“传什么参数”（思考）",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "行动层:真正去执行这个调用（行动）",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "class ActionLayer:\n    \"\"\"\n    行动层:执行工具调用\n    \"\"\"\n    def execute(self, tool_call):\n        # ▸ 第 1 步:校验工具是否存在\n        if tool_name not in self.tools:\n            return error(\"工具不存在\")\n\n        # ▸ 第 2 步:校验参数（类型、必需性）\n        validated_params = validate(tool_params)\n\n        # ▸ 第 3 步:执行工具\n        try:\n            result = tool.run(**validated_params)\n            return success(result)\n        except Exception as e:\n            # ▸ 第 4 步:错误处理与重试\n            return handle_error(e)",
+      "page": 11,
+      "size": 9.75,
+      "end_page": 11,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "三大能力的协同：完整闭环",
+      "page": 12,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在我们已经学习了感知、规划、行动三大能力。但它们如何协同工作，形成闭环?",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它们如何协同工作，形成闭环?",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "闭环工作流程",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "感知层每次都会包含上一轮的 Observation",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "规划层根据最新信息重新决策",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "行动层执行后立即返回结果",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "循环直到 LLM 判断任务完成",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "完整示例：日志分析 Agent",
+      "page": 12,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个 Agent 接收应用的错误日志，自动诊断问题根因并给出修复建议。例如收到一段数据库连接失败的日志，它会先感知日志内容，规划排查步骤（检查连接配置 → 验证网络 → 分析错误码），然后调用工具去读取相关配置文件和运行状态，最后基于收集到的信息给出结论。",
+      "page": 12,
+      "size": 11.25,
+      "end_page": 12
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心实现：",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心实现",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "class LogAnalysisAgent:\n    def run(self, user_input):\n        \"\"\"主循环：感知 → 规划 → 行动 → 观察\"\"\"\n        for i in range(max_iterations):\n            # ▸ 第 1 步：感知（整合上下文）\n            context = self._perceive(user_input)\n\n            # ▸ 第 2 步：规划（LLM 决策）\n            decision = self._plan(context)\n\n            # ▸ 第 3 步：判断是否需要行动\n            if decision['type'] == 'final_answer':\n                return decision['answer']\n\n            # ▸ 第 4 步：行动（执行工具）\n            observation = self._act(decision)\n\n            # ▸ 第 5 步：记录到历史\n            self.history.append({...})",
+      "page": 12,
+      "size": 9.75,
+      "end_page": 12,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "完整代码：详见 samples/chapter11/log_agent/ 目录：",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "log_agent/\n├── log_agent.py          # 完整的 Agent 实现（感知层、规划层、行动层）\n├── sample_logs/          # 示例日志文件\n│   ├── app_error.log     #   - 数据库连接错误示例\n│   └── API_error.log     #   - API 验证错误示例\n└── README.md             # 详细的运行指南和代码讲解",
+      "page": 13,
+      "size": 9.75,
+      "end_page": 13,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "下节预告",
+      "page": 13,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在你已经完整了解了 Agent 的三大核心能力——感知如何整合信息、规划如何拆解任务、行动如何执行工具。",
+      "page": 13,
+      "size": 11.25,
+      "end_page": 13
+    },
+    {
+      "kind": "paragraph",
+      "text": "但问题来了：Agent 如何\"记住\"过去的经验？ 如果每次都从零开始，Agent 就无法积累知识、学习经验。",
+      "page": 13,
+      "size": 11.25,
+      "end_page": 13
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将深入探讨 Agent 的记忆系统——从短期记忆到长期记忆，从工作记忆到情景记忆，你会看到，记忆系统如何让 Agent 从\"工具\"升级为\"助手\"。",
+      "page": 13,
+      "size": 11.25,
+      "end_page": 13
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 13,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n上下文组装 | Context Assembly | /ˈkɒntekst əˈsembli/ | 感知层将多源信息整合为完整Prompt的过程\n先规划后执行 | Plan-then-Execute | /plæn ðen ˈeksɪkjuːt/ | 先生成完整计划再逐步执行的规划策略\n交错规划 | Interleaved Planning | / ɪntərˈliːvd ˈplænɪŋ/ ˌ | 每执行一步后根据结果重新规划的ReAct策略\n混合规划 | Hybrid Planning | /ˈhaɪbrɪd ˈplænɪŋ/ | 规则引擎+LLM分层结合，平衡效率与灵活性\n行动层 | Action Layer | /ˈækʃn ˈleɪər/ | 将LLM决策转化为实际工具调用的执行模块\n多模态感知 | Multimodal Perception | / mʌltiˈmoʊdl pər ˌ ˈsepʃn/ | Agent处理图像、语音等非文本输入的能力",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "上下文组装",
+          "Context Assembly",
+          "/ˈkɒntekst əˈsembli/",
+          "感知层将多源信息整合为完整Prompt的过程"
+        ],
+        [
+          "先规划后执行",
+          "Plan-then-Execute",
+          "/plæn ðen ˈeksɪkjuːt/",
+          "先生成完整计划再逐步执行的规划策略"
+        ],
+        [
+          "交错规划",
+          "Interleaved Planning",
+          "/ ɪntərˈliːvd ˈplænɪŋ/ ˌ",
+          "每执行一步后根据结果重新规划的ReAct策略"
+        ],
+        [
+          "混合规划",
+          "Hybrid Planning",
+          "/ˈhaɪbrɪd ˈplænɪŋ/",
+          "规则引擎+LLM分层结合，平衡效率与灵活性"
+        ],
+        [
+          "行动层",
+          "Action Layer",
+          "/ˈækʃn ˈleɪər/",
+          "将LLM决策转化为实际工具调用的执行模块"
+        ],
+        [
+          "多模态感知",
+          "Multimodal Perception",
+          "/ mʌltiˈmoʊdl pər ˌ ˈsepʃn/",
+          "Agent处理图像、语音等非文本输入的能力"
+        ]
+      ],
+      "page": 13
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 14,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/7e675b5896bb4edc0ff6da27de169cc0.png",
+      "width": 792,
+      "height": 1696,
+      "page": 15
+    }
+  ],
+  "accounting": {
+    "source_chars": 7741,
+    "represented_chars": 7578,
+    "removed_chars": 163,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 2,
+    "removals": {
+      "export_metadata": 141,
+      "repeated_title": 22
+    }
+  },
+  "videos": [],
+  "order": 145,
+  "headings": [
+    {
+      "title": "感知层：从混乱到清晰",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "真实场景：天气查询 Agent 的感知过程",
+      "id": "section-6",
+      "level": 3
+    },
+    {
+      "title": "传统程序的处理方式",
+      "id": "section-8",
+      "level": 3
+    },
+    {
+      "title": "Agent 的感知方式：上下文组装",
+      "id": "section-14",
+      "level": 3
+    },
+    {
+      "title": "多模态感知",
+      "id": "section-24",
+      "level": 3
+    },
+    {
+      "title": "规划层：从目标到路径",
+      "id": "section-31",
+      "level": 2
+    },
+    {
+      "title": "规划能力的核心来源：LLM的推理",
+      "id": "section-32",
+      "level": 3
+    },
+    {
+      "title": "两种规划方式的LLM实现对比",
+      "id": "section-37",
+      "level": 3
+    },
+    {
+      "title": "Plan-then-Execute：一次性生成完整计划",
+      "id": "section-39",
+      "level": 3
+    },
+    {
+      "title": "ReAct：每步都让LLM重新推理",
+      "id": "section-43",
+      "level": 3
+    },
+    {
+      "title": "混合规划：让LLM自己选择策略",
+      "id": "section-46",
+      "level": 3
+    },
+    {
+      "title": "真实案例：LangGraph 的规划实现",
+      "id": "section-50",
+      "level": 2
+    },
+    {
+      "title": "行动层：从计划到执行",
+      "id": "section-58",
+      "level": 2
+    },
+    {
+      "title": "行动层的核心职责",
+      "id": "section-63",
+      "level": 3
+    },
+    {
+      "title": "三大能力的协同：完整闭环",
+      "id": "section-70",
+      "level": 2
+    },
+    {
+      "title": "完整示例：日志分析 Agent",
+      "id": "section-78",
+      "level": 3
+    },
+    {
+      "title": "下节预告",
+      "id": "section-85",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-89",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-91",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们从宏观视角了解了Agent的整体架构: 循环流程:Perceive → Think →Act → Observe 模块分工:感知层、规划层、推理层、行动层、记忆系统 两者的映射关系 但知道架构还不够。就像你看了大脑的解剖图，知道额叶负责决策、海马体负责记忆，但这些区域具体是怎么工作的?本节我们就来深入三大核心能力: 感知层:如何将混乱的输入(用户说话、工具返回、环境信息)整合成LLM可理解的统一上下文? 规划层:如何将高层目标(“帮我写周报”)拆解为可执行的子任务序列? 行动层:如何准确执行规划的每个步骤，调用工具并处理结果?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "感知层：从混乱到清晰"
+    },
+    {
+      "anchor": "section-1",
+      "text": "感知层的核心问题"
+    },
+    {
+      "anchor": "section-1",
+      "text": "第3节我们已经知道，感知层负责将用户输入、工具返回、环境状态、历史记忆这四类输入整合成LLM可理解的文本。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "但这里有个关键问题:为什么要整合和组装，而不是直接解析?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "为什么要整合和组装，而不是直接解析?"
+    },
+    {
+      "anchor": "section-6",
+      "text": "真实场景：天气查询 Agent 的感知过程"
+    },
+    {
+      "anchor": "section-6",
+      "text": "假设用户说:“明天杭州天气怎么样?”"
+    },
+    {
+      "anchor": "section-8",
+      "text": "传统程序的处理方式"
+    },
+    {
+      "anchor": "section-8",
+      "text": "# 硬编码的规则\ndef parse_weather_query(text):\n    if \"明天\" in text:\n        date = get_tomorrow()\n    if \"杭州\" in text:\n        city = \"杭州\"\n\n    return get_weather(city, date)"
+    },
+    {
+      "anchor": "section-8",
+      "text": "传统程序有几个问题："
+    },
+    {
+      "anchor": "section-8",
+      "text": "只能处理固定模板"
+    },
+    {
+      "anchor": "section-8",
+      "text": "无法理解\"后天\"、“大后天”"
+    },
+    {
+      "anchor": "section-8",
+      "text": "无法处理\"西湖那边\"、\"我老家\"等模糊表达"
+    },
+    {
+      "anchor": "section-14",
+      "text": "Agent 的感知方式：上下文组装"
+    },
+    {
+      "anchor": "section-14",
+      "text": "Agent 不直接解析，而是将所有相关信息组装成一个完整的上下文,交给 LLM 理解:"
+    },
+    {
+      "anchor": "section-14",
+      "text": "def perceive(user_input, context):\n    \"\"\"\n    感知层:组装完整的上下文信息\n    \"\"\"\n    # ▸ 第 1 步:收集系统信息\n    system_info = {\n        \"current_time\": \"2024年12月9日 14:30\",\n        \"user_location\": \"上海\"  # 从用户配置中获取\n    }\n\n    # ▸ 第 2 步:检索历史记忆\n    history = context.get(\"conversation_history\", [])\n\n    # ▸ 第 3 步:列出可用工具\n    available_tools = [\n        {\n            \"name\": \"get_weather\",\n            \"description\": \"获取指定城市和日期的天气信息\",\n            \"parameters\": {\n                \"city\": \"城市名称\",\n                \"date\": \"日期(格式:YYYY-MM-DD)\"\n            }\n        }\n    ]\n\n    # ▸ 第 4 步:组装成 LLM 可理解的 Prompt\n    prompt = f\"\"\"\n## 系统信息\n当前时间: {system_info['current_time']}\n用户位置: {system_info['user_location']}\n\n## 对话历史\n{format_history(history)}\n\n## 可用工具\n{format_tools(available_tools)}\n\n## 用户请求\n{user_input}\n\n请理解用户意图,决定是否需要调用工具。\n\"\"\"\n    return prompt"
+    },
+    {
+      "anchor": "section-14",
+      "text": "感知层做的是信息整合,而不是意图识别。"
+    },
+    {
+      "anchor": "section-14",
+      "text": "信息整合"
+    },
+    {
+      "anchor": "section-14",
+      "text": "意图识别"
+    },
+    {
+      "anchor": "section-14",
+      "text": "传统程序:先识别意图(“这是天气查询”),再调用功能"
+    },
+    {
+      "anchor": "section-14",
+      "text": "传统程序"
+    },
+    {
+      "anchor": "section-14",
+      "text": "Agent:把所有信息交给 LLM,让 LLM 自己理解和决策"
+    },
+    {
+      "anchor": "section-14",
+      "text": "这就是为什么 Agent 能处理复杂、模糊的输入——理解能力来自 LLM,而不是硬编码的规则。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "多模态感知"
+    },
+    {
+      "anchor": "section-24",
+      "text": "现在，Agent 的感知能力扩展到了多模态:"
+    },
+    {
+      "anchor": "section-24",
+      "text": "用户上传一张图片 + 文字:\"这是什么动物?\"\n\n      多模态感知层的处理流程\n══════════════════════════════════\n1. 图像 → 通过 Qwen/Gemini 理解\n2. 文字 → 提取用户意图\n3. 组合 → 形成统一的上下文\n4. 输出 → 交给推理层决策"
+    },
+    {
+      "anchor": "section-24",
+      "text": "示例代码:"
+    },
+    {
+      "anchor": "section-24",
+      "text": "示例代码"
+    },
+    {
+      "anchor": "section-24",
+      "text": "def multimodal_perceive(image, text, context):\n    \"\"\"\n    多模态感知:处理图像 + 文字输入\n    \"\"\"\n    # ▸ 调用视觉模型理解图像\n    image_description = vision_model.analyze(image)\n    # 返回: \"图片中是一只橘色的猫,正在睡觉\"\n\n    # ▸ 组装完整上下文\n    prompt = f\"\"\"\n## 图像理解\n{image_description}\n\n## 用户问题\n{text}\n\n请回答用户的问题。\n\"\"\"\n\n    return prompt"
+    },
+    {
+      "anchor": "section-24",
+      "text": "这种方式的优势:无需为每种输入类型单独编写解析逻辑,LLM 自动理解多模态信息。"
+    },
+    {
+      "anchor": "section-31",
+      "text": "规划层：从目标到路径"
+    },
+    {
+      "anchor": "section-32",
+      "text": "规划能力的核心来源：LLM的推理"
+    },
+    {
+      "anchor": "section-32",
+      "text": "第3节我们知道了规划层负责将高层目标拆解为子任务序列。但一个关键问题被忽略了——谁在做规划，规划能力从哪来？答案是：LLM本身。"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Agent的规划能力不是预先编写的算法，而是通过Prompt引导LLM进行任务拆解。"
+    },
+    {
+      "anchor": "section-32",
+      "text": "# 传统程序:硬编码的规划逻辑\ndef plan_travel():\n    steps = [\n        \"查询天气\",\n        \"订票\",\n        \"订酒店\"\n    ]\n    return steps\n\n# Agent:让LLM自己规划\ndef plan_with_llm(goal, context):\n    prompt = f\"\"\"\n你是一个任务规划专家。\n\n用户目标:{goal}\n可用工具:{context['tools']}\n\n请将目标拆解为具体的执行步骤,每步说明:\n1. 要做什么\n2. 调用哪个工具\n3. 预期结果\n\n以JSON格式返回。\n\"\"\"\n\n    plan = llm.generate(prompt)\n    return parse_json(plan)"
+    },
+    {
+      "anchor": "section-32",
+      "text": "规划不是算法,而是LLM的能力\n═════════════════════════════════════════\n● 传统程序:if-else预设所有可能路径\n● Agent:LLM根据目标动态生成执行计划\n\n为什么LLM能规划?\n→ 训练数据中见过大量任务分解案例\n→ 理解任务之间的依赖关系\n→ 能推理\"先做什么,后做什么\""
+    },
+    {
+      "anchor": "section-37",
+      "text": "两种规划方式的LLM实现对比"
+    },
+    {
+      "anchor": "section-37",
+      "text": "第3节提到了Plan-then-Execute和ReAct两种策略。但它们的本质区别在于给LLM的Prompt不同:"
+    },
+    {
+      "anchor": "section-39",
+      "text": "Plan-then-Execute：一次性生成完整计划"
+    },
+    {
+      "anchor": "section-39",
+      "text": "def plan_then_execute(goal, context):\n    # ▸ 关键:Prompt要求LLM\"一次性生成全部步骤\"\n    prompt = f\"\"\"\n目标:{goal}\n\n请生成**完整的执行计划**,列出所有步骤:\n- 步骤1: [具体操作]\n- 步骤2: [具体操作]\n- 步骤3: [具体操作]\n\n计划生成后,按顺序执行即可。\n\"\"\"\n\n    plan = llm.generate(prompt)  # LLM输出完整计划\n\n    # 按计划执行\n    for step in plan:\n        execute(step)"
+    },
+    {
+      "anchor": "section-39",
+      "text": "LLM的角色:一次性推理出所有步骤，类似于\"先想好再行动\"。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "LLM的角色"
+    },
+    {
+      "anchor": "section-43",
+      "text": "ReAct：每步都让LLM重新推理"
+    },
+    {
+      "anchor": "section-43",
+      "text": "def react_planning(goal):\n    state = {\"goal\": goal, \"done\": False, \"history\": []}\n\n    while not state['done']:\n        # ▸ 关键：每步都重新调用LLM\n        prompt = f\"\"\"\n目标: {state['goal']}\n已执行: {state['history']}\n请决定下一步行动...\n\"\"\"\n        response = llm.generate(prompt)\n\n        if response.need_tool:\n            result = execute_tool(response.tool, response.params)\n            state['history'].append(result)\n        else:\n            return response.answer"
+    },
+    {
+      "anchor": "section-43",
+      "text": "LLM的角色:每一步都基于最新情况重新推理，类似于“边做边想”。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "混合规划：让LLM自己选择策略"
+    },
+    {
+      "anchor": "section-46",
+      "text": "第3节讲了混合规划的分层思想。但更高级的做法是:让LLM自己决定用哪种策略。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "让LLM自己决定用哪种策略"
+    },
+    {
+      "anchor": "section-46",
+      "text": "class HybridPlanner:\n    \"\"\"\n    混合规划器:根据任务类型选择策略\n    \"\"\"\n    def plan(self, task, context):\n        # ▸ 第 1 层:规则引擎。如果能自己判断，就不用麻烦LLM了，浪费钱\n        if self.rule_engine.can_handle(task):\n            return self.rule_engine.execute(task)\n\n        # ▸ 第 2 层:判断任务复杂度。不再手写规则内的，问LLM让他判断\n        complexity = self.llm.classify_task(task)\n\n        if complexity == \"simple\":\n            # 一次性规划\n            return self.plan_then_execute(task, context)\n        else:\n            # ReAct 动态规划\n            return self.react_planning(task, context)"
+    },
+    {
+      "anchor": "section-50",
+      "text": "真实案例：LangGraph 的规划实现"
+    },
+    {
+      "anchor": "section-50",
+      "text": "第9章我们详细学习了 LangGraph 框架。现在回过头来看，LangGraph 其实就是将我们刚才讨论的两种规划策略通过状态图的方式实现了:"
+    },
+    {
+      "anchor": "section-50",
+      "text": "LangGraph 如何体现规划能力?\n═════════════════════════════════════\n● 节点(Node):封装 LLM 推理\n  - 每个节点都可以调用 LLM\n  - 让 LLM 决定下一步做什么\n\n● 边(Edge):实现两种规划\n  - 固定边 → Plan-then-Execute\n  - 条件边 → ReAct(动态规划)\n\n● 状态(State):传递规划上下文\n  - 保存中间结果\n  - LLM 根据历史状态调整策略"
+    },
+    {
+      "anchor": "section-50",
+      "text": "LangGraph 的**条件边(conditional_edges)**就是让 LLM 在执行过程中重新规划:"
+    },
+    {
+      "anchor": "section-50",
+      "text": "# 回顾第9章的条件分支示例\ndef should_continue(state):\n    \"\"\"\n    关键:这里调用 LLM 判断是否继续\n    → 这就是 ReAct 的动态规划\n    \"\"\"\n    decision = llm.analyze(state['current_result'])\n\n    if decision == \"需要更多信息\":\n        return \"continue\"  # 继续执行\n    else:\n        return \"finish\"    # 完成任务\n\n# 添加条件边\nworkflow.add_conditional_edges(\n    \"analyze\",\n    should_continue,  # ← LLM 每次都重新决策\n    {\n        \"continue\": \"retrieve_more\",\n        \"finish\": \"generate_answer\"\n    }\n)"
+    },
+    {
+      "anchor": "section-50",
+      "text": "与本节规划策略的对应:"
+    },
+    {
+      "anchor": "section-50",
+      "text": "与本节规划策略的对应"
+    },
+    {
+      "anchor": "section-50",
+      "text": "规划策略 → LangGraph 实现\n═══════════════════════════════════════\nPlan-then-Execute:\n● 用固定的 add_edge() 串联节点\n● LLM 只在起点生成完整计划\n\nReAct:\n● 用 add_conditional_edges()\n● 每个节点都可以让 LLM 重新决策\n\n混合规划:\n● 简单任务:固定流程(add_edge)\n● 复杂任务:动态判断(conditional_edges)"
+    },
+    {
+      "anchor": "section-58",
+      "text": "行动层：从计划到执行"
+    },
+    {
+      "anchor": "section-58",
+      "text": "前面我们讲了感知如何整合信息、规划如何拆解任务。但有了计划后，谁来执行?"
+    },
+    {
+      "anchor": "section-58",
+      "text": "谁来执行?"
+    },
+    {
+      "anchor": "section-58",
+      "text": "答案就是:行动层(Action Layer)。"
+    },
+    {
+      "anchor": "section-58",
+      "text": "行动层(Action Layer)"
+    },
+    {
+      "anchor": "section-63",
+      "text": "行动层的核心职责"
+    },
+    {
+      "anchor": "section-63",
+      "text": "行动层是 Agent 与外部世界的接口，它负责:"
+    },
+    {
+      "anchor": "section-63",
+      "text": "与规划层的区别:"
+    },
+    {
+      "anchor": "section-63",
+      "text": "与规划层的区别"
+    },
+    {
+      "anchor": "section-63",
+      "text": "规划层:决定“调用哪个工具”和“传什么参数”（思考）"
+    },
+    {
+      "anchor": "section-63",
+      "text": "行动层:真正去执行这个调用（行动）"
+    },
+    {
+      "anchor": "section-63",
+      "text": "class ActionLayer:\n    \"\"\"\n    行动层:执行工具调用\n    \"\"\"\n    def execute(self, tool_call):\n        # ▸ 第 1 步:校验工具是否存在\n        if tool_name not in self.tools:\n            return error(\"工具不存在\")\n\n        # ▸ 第 2 步:校验参数（类型、必需性）\n        validated_params = validate(tool_params)\n\n        # ▸ 第 3 步:执行工具\n        try:\n            result = tool.run(**validated_params)\n            return success(result)\n        except Exception as e:\n            # ▸ 第 4 步:错误处理与重试\n            return handle_error(e)"
+    },
+    {
+      "anchor": "section-70",
+      "text": "三大能力的协同：完整闭环"
+    },
+    {
+      "anchor": "section-70",
+      "text": "现在我们已经学习了感知、规划、行动三大能力。但它们如何协同工作，形成闭环?"
+    },
+    {
+      "anchor": "section-70",
+      "text": "它们如何协同工作，形成闭环?"
+    },
+    {
+      "anchor": "section-70",
+      "text": "闭环工作流程"
+    },
+    {
+      "anchor": "section-70",
+      "text": "感知层每次都会包含上一轮的 Observation"
+    },
+    {
+      "anchor": "section-70",
+      "text": "规划层根据最新信息重新决策"
+    },
+    {
+      "anchor": "section-70",
+      "text": "行动层执行后立即返回结果"
+    },
+    {
+      "anchor": "section-70",
+      "text": "循环直到 LLM 判断任务完成"
+    },
+    {
+      "anchor": "section-78",
+      "text": "完整示例：日志分析 Agent"
+    },
+    {
+      "anchor": "section-78",
+      "text": "这个 Agent 接收应用的错误日志，自动诊断问题根因并给出修复建议。例如收到一段数据库连接失败的日志，它会先感知日志内容，规划排查步骤（检查连接配置 → 验证网络 → 分析错误码），然后调用工具去读取相关配置文件和运行状态，最后基于收集到的信息给出结论。"
+    },
+    {
+      "anchor": "section-78",
+      "text": "核心实现："
+    },
+    {
+      "anchor": "section-78",
+      "text": "核心实现"
+    },
+    {
+      "anchor": "section-78",
+      "text": "class LogAnalysisAgent:\n    def run(self, user_input):\n        \"\"\"主循环：感知 → 规划 → 行动 → 观察\"\"\"\n        for i in range(max_iterations):\n            # ▸ 第 1 步：感知（整合上下文）\n            context = self._perceive(user_input)\n\n            # ▸ 第 2 步：规划（LLM 决策）\n            decision = self._plan(context)\n\n            # ▸ 第 3 步：判断是否需要行动\n            if decision['type'] == 'final_answer':\n                return decision['answer']\n\n            # ▸ 第 4 步：行动（执行工具）\n            observation = self._act(decision)\n\n            # ▸ 第 5 步：记录到历史\n            self.history.append({...})"
+    },
+    {
+      "anchor": "section-78",
+      "text": "完整代码：详见 samples/chapter11/log_agent/ 目录："
+    },
+    {
+      "anchor": "section-78",
+      "text": "log_agent/\n├── log_agent.py          # 完整的 Agent 实现（感知层、规划层、行动层）\n├── sample_logs/          # 示例日志文件\n│   ├── app_error.log     #   - 数据库连接错误示例\n│   └── API_error.log     #   - API 验证错误示例\n└── README.md             # 详细的运行指南和代码讲解"
+    },
+    {
+      "anchor": "section-85",
+      "text": "下节预告"
+    },
+    {
+      "anchor": "section-85",
+      "text": "现在你已经完整了解了 Agent 的三大核心能力——感知如何整合信息、规划如何拆解任务、行动如何执行工具。"
+    },
+    {
+      "anchor": "section-85",
+      "text": "但问题来了：Agent 如何\"记住\"过去的经验？ 如果每次都从零开始，Agent 就无法积累知识、学习经验。"
+    },
+    {
+      "anchor": "section-85",
+      "text": "下一节，我们将深入探讨 Agent 的记忆系统——从短期记忆到长期记忆，从工作记忆到情景记忆，你会看到，记忆系统如何让 Agent 从\"工具\"升级为\"助手\"。"
+    },
+    {
+      "anchor": "section-89",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-89",
+      "text": "中文 | English | 音标 | 说明\n上下文组装 | Context Assembly | /ˈkɒntekst əˈsembli/ | 感知层将多源信息整合为完整Prompt的过程\n先规划后执行 | Plan-then-Execute | /plæn ðen ˈeksɪkjuːt/ | 先生成完整计划再逐步执行的规划策略\n交错规划 | Interleaved Planning | / ɪntərˈliːvd ˈplænɪŋ/ ˌ | 每执行一步后根据结果重新规划的ReAct策略\n混合规划 | Hybrid Planning | /ˈhaɪbrɪd ˈplænɪŋ/ | 规则引擎+LLM分层结合，平衡效率与灵活性\n行动层 | Action Layer | /ˈækʃn ˈleɪər/ | 将LLM决策转化为实际工具调用的执行模块\n多模态感知 | Multimodal Perception | / mʌltiˈmoʊdl pər ˌ ˈsepʃn/ | Agent处理图像、语音等非文本输入的能力"
+    },
+    {
+      "anchor": "section-91",
+      "text": "图片"
+    }
+  ]
+}

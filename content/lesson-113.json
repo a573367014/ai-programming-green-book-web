@@ -1,0 +1,534 @@
+{
+  "id": "lesson-113",
+  "title": "Resources 概念",
+  "code": "1-1",
+  "stage": 3,
+  "week": 7,
+  "week_title": "MCP：模型上下文协议",
+  "module": "Resources概念与实战",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/002-第7周 MCP：模型上下文协议/005-Resources概念与实战/113-图文-1-1-Resources 概念.pdf",
+  "sha256": "24def6d5a4660c52093ec2d516b584ff367978d688f30f0e7be0f57662c3e8dc",
+  "pdf": "sources/pdf/lesson-113.pdf",
+  "pages": 7,
+  "source_url": "https://class.imooc.com/lesson/5279#mid=104932",
+  "minutes": 10,
+  "excerpt": "上一节了解了 MCP 的三大核心能力：Resources、Tools 和 Prompts。本节深入探讨 Resources 的工作原理。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节了解了 MCP 的三大核心能力：Resources、Tools 和 Prompts。本节深入探讨 Resources 的工作原理。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "3.1 Resources 要解决什么问题",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "之前讨论过 RAG——LLM 本身的知识是有限的，涉及企业商业机密、个人隐私的数据，可以通过 RAG接入来补充。MCP Server 从某种意义上讲，也是一种 LLM 知识缺陷的解决方案，类似 RAG，但有本质的不同。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "quote",
+      "text": "顺带一提，Qoder 的设置里可以一键安装 MCP，不妨现在就配置几个体验一下，后续也会讨论如何在 Qoder 中使用官方提供的 MCP。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h3",
+      "text": "一个真实的例子",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设在开发一个 AI 应用，它接入了一个「项目 API 文档」MCP Server。这个项目有 4 个模块的 API文档：",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "code",
+      "text": "authentication.md  → 用户认证相关API（登录、注册、登出、Token刷新）\nuser_profile.md    → 用户资料API（获取信息、修改头像、更新昵称、密码修改）\npayment.md         → 支付相关API（创建订单、查询状态、退款处理、支付回调）\nnotification.md    → 通知推送API（发送消息、订阅设置、历史记录、已读标记）",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在问 AI：**\"如何实现用户登录功能？需要调用什么接口？\" 在没有 Resources 机制之前，面临一个两难选择：",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "code",
+      "text": "# 方式1: 把所有API文档内容塞进 Prompt\nprompt = f\"\"\"\nAPI文档:\n{认证API文档}   # 12KB\n{资料API文档}   # 10KB\n{支付API文档}   # 15KB\n{通知API文档}   # 8KB\n\n用户问题: 如何实现用户登录?\n\"\"\"\n# 调用 LLM\nresponse = llm.chat(prompt)\n\n# 问题: 浪费了 45KB tokens,实际只需要「认证API文档」（12KB）\n\n#  方式2: 用 Function Calling 提供搜索工具\ntools = [{\n    \"name\": \"search_api_docs\",\n    \"description\": \"搜索API文档内容\",\n    \"parameters\": {\"query\": {\"type\": \"string\"}}\n}]\n# 问题: 这种工具本质上只是\"关键词搜索\"，LLM 必须自己想搜索词，命中质量不稳定\n#      搜索结果通常是若干相关片段，而不是一份结构清晰、可以整体阅读和复用的接口文档",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "两种方式各有短板：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "方式1：简单但浪费——45KB 全塞进去，实际只需要 12KB；",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "方式2：依赖搜索工具，但 LLM 不知道有哪些具体的文档模块，构造的查询很难精准。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "Function Calling 本身没问题，问题是缺少一种机制让 LLM 知道「有哪些数据源」——需要对数据源给出详细的说明，帮助 LLM 做决策。 MCP 为这个问题提供了一个专门的机制：Resources。它的核心思路是——在真正读取内容之前，先把每个数据源的\"名字\"和\"简介\"列出来，让 LLM 先在\"资源级别\"做选择，再去读取具体内容。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "3.2 Resources 如何帮助 AI 找到相关文档",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是 Resources 最核心的问题，一步步来拆解。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "关键机制",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Resources 不是神奇地「知道」该读哪个文档，而是通过 description 让 LLM 理解每个资源的内容。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面是 MCP Server 暴露 Resources 时的一个典型结构：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# ✓ MCP Server 暴露结构化的 Resources\nresources = [\n    {\n        \"uri\": \"file://docs/authentication.md\",\n        \"name\": \"用户认证API文档\",\n        \"description\": \"用户认证相关的API接口，包括：用户登录（账号密码/手机验证码）、用户注\n册、登出、Token刷新和续期机制\"\n    },\n    {\n        \"uri\": \"file://docs/user_profile.md\",\n        \"name\": \"用户资料API文档\",\n        \"description\": \"用户资料管理API，包括：获取用户信息、修改头像、更新昵称、修改密码、\n账号设置等功能接口\"\n    },\n    {\n        \"uri\": \"file://docs/payment.md\",\n        \"name\": \"支付API文档\",\n        \"description\": \"支付相关API，包括：创建支付订单、查询支付状态、退款处理、支付回调通\n知处理等接口\"\n    },\n    {\n        \"uri\": \"file://docs/notification.md\",\n        \"name\": \"通知推送API文档\",\n        \"description\": \"消息通知API，包括：发送站内消息、推送通知、订阅设置、历史记录查询、\n消息已读标记等功能\"\n    }\n]",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM 只要看这些结构化的 description，就能大致知道有哪些候选资源可以选。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "工作流程:\n\n1. MCP Server 提供 Resources 列表(包含 description)\n   ↓\n2. AI 应用把列表传给 LLM\n   ↓\n3. LLM 阅读所有 description,理解每个资源是什么\n   ↓\n4. LLM 根据用户问题，判断哪个资源最相关\n   ↓\n5. AI 应用请求 Server 读取被选中的 Resource，Server 执行文件读取后返回内容\n   ↓\n6. LLM 基于内容生成回答",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "注意这个流程中一个容易误解的地方：MCP Server 并不是远程服务器。在这个例子里，它就是一个跑在本地的进程——四个 API 文档就躺在项目目录的 docs/ 文件夹里，MCP Server 只是知道它们在哪、能在需要的时候把它们读出来。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 进程是什么？ 把它理解成电脑上正在运行的一个程序就行。你打开的微信、浏览器，每个都是一个独立的进程。MCP Server 本质上也是这样一个程序——只不过它不弹窗口，只在后台等着 AI 的指令。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP 也支持另一种形态：Server 连接远程服务（比如麦当劳的 MCP 下单服务，数据在麦当劳那边）。但协议是完全一样的——不管数据在哪，LLM 看到的都是同一套「列清单 → 选资源 → 读内容」的流程。先吃透本地数据这种最简单的情况，后面的变体自然能触类旁通。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h3",
+      "text": "具体示例",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "用户问题: \"如何实现用户登录功能？需要调用什么接口？\"\n\nLLM 的思考过程:\n\n1. 看到 4 个 Resources（注意：只有 name 和 description，没有实际内容）:\n   - \"用户认证API文档\" - description 提到 \"用户登录（账号密码/手机验证码）、注册、登出、\nToken刷新\"\n   - \"用户资料API文档\" - description 说的是 \"获取用户信息、修改头像、更新昵称、修改密码\"\n   - \"支付API文档\" - description 说的是 \"创建支付订单、查询支付状态、退款处理\"\n   - \"通知推送API文档\" - description 说的是 \"发送站内消息、推送通知、订阅设置\"\n\n2. LLM 分析:\n   用户问的是\"用户登录功能\" → 最匹配的是 \"用户认证API文档\"\n\n3. LLM 告诉 AI 应用:\n   \"请读取 file://docs/authentication.md 这个 Resource\"\n\n4. AI 应用把请求转给 MCP Server，由 Server 从本地 docs/ 目录加载 authentication.md\n（12KB），返回给 AI 应用\n\n5. AI 应用把文件内容传给 LLM\n   （现在 LLM 才看到完整的认证API文档）\n\n6. LLM 在这12KB的文档中找到相关接口，回复用户:\n   \"要实现用户登录功能，需要调用认证API中的登录接口：\n\n   POST /api/auth/login\n   请求参数：\n   - username: 用户名/手机号\n   - password: 密码（需前端加密）\n   - login_type: 登录方式（'password' 或 'sms'）\n\n   返回数据包含 access_token 和 refresh_token，\n   access_token 用于后续API调用，有效期2小时。..\"",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "重点：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第1步：LLM 只看到 4 个 description（几百字），不是完整内容",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第1步",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第4步：为什么 AI 应用不能自己读文件，必须通过 Server？这是 MCP 安全模型的核心设计——本章后续会详细展开。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "list",
+      "text": "第5步：LLM 才看到选中的那个 Resource 的完整内容（12KB）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第5步",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "节省：另外3个文档的内容没有被加载（节省了约33KB tokens）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "节省",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "合理大小：单个文档12KB左右，在LLM的处理范围内",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "合理大小",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "语义匹配：“用户登录” 和 “用户认证API” 有明显的语义关联，LLM能准确选择",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.3 下一节预告",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解了 Resources 的概念和核心机制后，下一节将进入实战环节，通过两个具体示例来展示 Resources的两种实现方式：固定写死和动态生成，还会深入讲解如何编写高质量的 description 来提升资源匹配精度。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "3.4 ■ 学点英语",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n按需加载 | On-Demand Loading | /ɑːn dɪˈmænd ˈloʊdɪŋ/ | LLM先浏览Resource描述，确认需要时才读取完整内容的机制\n精确浏览 | Exact Browsing | /ɪɡˈzækt ˈbraʊzɪŋ/ | 像翻目录一样手动选择资源的精准获取模式\n资源标识符 | Resource URI | /ˈriːsɔːrs juːɑːrˈaɪ/ | 唯一标识MCP中某个资源的自定义URI地址\n语义模糊搜索 | Semantic Fuzzy Search | /sɪˈmæntɪk ˈfʌzi sɜːrtʃ/ | RAG中通过向量化自动匹配语义相似内容的方式",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "按需加载",
+          "On-Demand Loading",
+          "/ɑːn dɪˈmænd ˈloʊdɪŋ/",
+          "LLM先浏览Resource描述，确认需要时才读取完整内容的机制"
+        ],
+        [
+          "精确浏览",
+          "Exact Browsing",
+          "/ɪɡˈzækt ˈbraʊzɪŋ/",
+          "像翻目录一样手动选择资源的精准获取模式"
+        ],
+        [
+          "资源标识符",
+          "Resource URI",
+          "/ˈriːsɔːrs juːɑːrˈaɪ/",
+          "唯一标识MCP中某个资源的自定义URI地址"
+        ],
+        [
+          "语义模糊搜索",
+          "Semantic Fuzzy Search",
+          "/sɪˈmæntɪk ˈfʌzi sɜːrtʃ/",
+          "RAG中通过向量化自动匹配语义相似内容的方式"
+        ]
+      ],
+      "page": 7
+    }
+  ],
+  "accounting": {
+    "source_chars": 4389,
+    "represented_chars": 4201,
+    "removed_chars": 188,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 152,
+      "repeated_title": 36
+    }
+  },
+  "videos": [],
+  "order": 114,
+  "headings": [
+    {
+      "title": "3.1 Resources 要解决什么问题",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "一个真实的例子",
+      "id": "section-4",
+      "level": 3
+    },
+    {
+      "title": "3.2 Resources 如何帮助 AI 找到相关文档",
+      "id": "section-13",
+      "level": 2
+    },
+    {
+      "title": "关键机制",
+      "id": "section-15",
+      "level": 3
+    },
+    {
+      "title": "具体示例",
+      "id": "section-24",
+      "level": 3
+    },
+    {
+      "title": "3.3 下一节预告",
+      "id": "section-37",
+      "level": 2
+    },
+    {
+      "title": "3.4 ■ 学点英语",
+      "id": "section-39",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节了解了 MCP 的三大核心能力：Resources、Tools 和 Prompts。本节深入探讨 Resources 的工作原理。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "3.1 Resources 要解决什么问题"
+    },
+    {
+      "anchor": "section-1",
+      "text": "之前讨论过 RAG——LLM 本身的知识是有限的，涉及企业商业机密、个人隐私的数据，可以通过 RAG接入来补充。MCP Server 从某种意义上讲，也是一种 LLM 知识缺陷的解决方案，类似 RAG，但有本质的不同。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "顺带一提，Qoder 的设置里可以一键安装 MCP，不妨现在就配置几个体验一下，后续也会讨论如何在 Qoder 中使用官方提供的 MCP。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "一个真实的例子"
+    },
+    {
+      "anchor": "section-4",
+      "text": "假设在开发一个 AI 应用，它接入了一个「项目 API 文档」MCP Server。这个项目有 4 个模块的 API文档："
+    },
+    {
+      "anchor": "section-4",
+      "text": "authentication.md  → 用户认证相关API（登录、注册、登出、Token刷新）\nuser_profile.md    → 用户资料API（获取信息、修改头像、更新昵称、密码修改）\npayment.md         → 支付相关API（创建订单、查询状态、退款处理、支付回调）\nnotification.md    → 通知推送API（发送消息、订阅设置、历史记录、已读标记）"
+    },
+    {
+      "anchor": "section-4",
+      "text": "现在问 AI：**\"如何实现用户登录功能？需要调用什么接口？\" 在没有 Resources 机制之前，面临一个两难选择："
+    },
+    {
+      "anchor": "section-4",
+      "text": "# 方式1: 把所有API文档内容塞进 Prompt\nprompt = f\"\"\"\nAPI文档:\n{认证API文档}   # 12KB\n{资料API文档}   # 10KB\n{支付API文档}   # 15KB\n{通知API文档}   # 8KB\n\n用户问题: 如何实现用户登录?\n\"\"\"\n# 调用 LLM\nresponse = llm.chat(prompt)\n\n# 问题: 浪费了 45KB tokens,实际只需要「认证API文档」（12KB）\n\n#  方式2: 用 Function Calling 提供搜索工具\ntools = [{\n    \"name\": \"search_api_docs\",\n    \"description\": \"搜索API文档内容\",\n    \"parameters\": {\"query\": {\"type\": \"string\"}}\n}]\n# 问题: 这种工具本质上只是\"关键词搜索\"，LLM 必须自己想搜索词，命中质量不稳定\n#      搜索结果通常是若干相关片段，而不是一份结构清晰、可以整体阅读和复用的接口文档"
+    },
+    {
+      "anchor": "section-4",
+      "text": "两种方式各有短板："
+    },
+    {
+      "anchor": "section-4",
+      "text": "方式1：简单但浪费——45KB 全塞进去，实际只需要 12KB；"
+    },
+    {
+      "anchor": "section-4",
+      "text": "方式2：依赖搜索工具，但 LLM 不知道有哪些具体的文档模块，构造的查询很难精准。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Function Calling 本身没问题，问题是缺少一种机制让 LLM 知道「有哪些数据源」——需要对数据源给出详细的说明，帮助 LLM 做决策。 MCP 为这个问题提供了一个专门的机制：Resources。它的核心思路是——在真正读取内容之前，先把每个数据源的\"名字\"和\"简介\"列出来，让 LLM 先在\"资源级别\"做选择，再去读取具体内容。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "3.2 Resources 如何帮助 AI 找到相关文档"
+    },
+    {
+      "anchor": "section-13",
+      "text": "这是 Resources 最核心的问题，一步步来拆解。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "关键机制"
+    },
+    {
+      "anchor": "section-15",
+      "text": "Resources 不是神奇地「知道」该读哪个文档，而是通过 description 让 LLM 理解每个资源的内容。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "下面是 MCP Server 暴露 Resources 时的一个典型结构："
+    },
+    {
+      "anchor": "section-15",
+      "text": "# ✓ MCP Server 暴露结构化的 Resources\nresources = [\n    {\n        \"uri\": \"file://docs/authentication.md\",\n        \"name\": \"用户认证API文档\",\n        \"description\": \"用户认证相关的API接口，包括：用户登录（账号密码/手机验证码）、用户注\n册、登出、Token刷新和续期机制\"\n    },\n    {\n        \"uri\": \"file://docs/user_profile.md\",\n        \"name\": \"用户资料API文档\",\n        \"description\": \"用户资料管理API，包括：获取用户信息、修改头像、更新昵称、修改密码、\n账号设置等功能接口\"\n    },\n    {\n        \"uri\": \"file://docs/payment.md\",\n        \"name\": \"支付API文档\",\n        \"description\": \"支付相关API，包括：创建支付订单、查询支付状态、退款处理、支付回调通\n知处理等接口\"\n    },\n    {\n        \"uri\": \"file://docs/notification.md\",\n        \"name\": \"通知推送API文档\",\n        \"description\": \"消息通知API，包括：发送站内消息、推送通知、订阅设置、历史记录查询、\n消息已读标记等功能\"\n    }\n]"
+    },
+    {
+      "anchor": "section-15",
+      "text": "LLM 只要看这些结构化的 description，就能大致知道有哪些候选资源可以选。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "工作流程:\n\n1. MCP Server 提供 Resources 列表(包含 description)\n   ↓\n2. AI 应用把列表传给 LLM\n   ↓\n3. LLM 阅读所有 description,理解每个资源是什么\n   ↓\n4. LLM 根据用户问题，判断哪个资源最相关\n   ↓\n5. AI 应用请求 Server 读取被选中的 Resource，Server 执行文件读取后返回内容\n   ↓\n6. LLM 基于内容生成回答"
+    },
+    {
+      "anchor": "section-15",
+      "text": "注意这个流程中一个容易误解的地方：MCP Server 并不是远程服务器。在这个例子里，它就是一个跑在本地的进程——四个 API 文档就躺在项目目录的 docs/ 文件夹里，MCP Server 只是知道它们在哪、能在需要的时候把它们读出来。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "进程是什么？ 把它理解成电脑上正在运行的一个程序就行。你打开的微信、浏览器，每个都是一个独立的进程。MCP Server 本质上也是这样一个程序——只不过它不弹窗口，只在后台等着 AI 的指令。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "MCP 也支持另一种形态：Server 连接远程服务（比如麦当劳的 MCP 下单服务，数据在麦当劳那边）。但协议是完全一样的——不管数据在哪，LLM 看到的都是同一套「列清单 → 选资源 → 读内容」的流程。先吃透本地数据这种最简单的情况，后面的变体自然能触类旁通。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "具体示例"
+    },
+    {
+      "anchor": "section-24",
+      "text": "用户问题: \"如何实现用户登录功能？需要调用什么接口？\"\n\nLLM 的思考过程:\n\n1. 看到 4 个 Resources（注意：只有 name 和 description，没有实际内容）:\n   - \"用户认证API文档\" - description 提到 \"用户登录（账号密码/手机验证码）、注册、登出、\nToken刷新\"\n   - \"用户资料API文档\" - description 说的是 \"获取用户信息、修改头像、更新昵称、修改密码\"\n   - \"支付API文档\" - description 说的是 \"创建支付订单、查询支付状态、退款处理\"\n   - \"通知推送API文档\" - description 说的是 \"发送站内消息、推送通知、订阅设置\"\n\n2. LLM 分析:\n   用户问的是\"用户登录功能\" → 最匹配的是 \"用户认证API文档\"\n\n3. LLM 告诉 AI 应用:\n   \"请读取 file://docs/authentication.md 这个 Resource\"\n\n4. AI 应用把请求转给 MCP Server，由 Server 从本地 docs/ 目录加载 authentication.md\n（12KB），返回给 AI 应用\n\n5. AI 应用把文件内容传给 LLM\n   （现在 LLM 才看到完整的认证API文档）\n\n6. LLM 在这12KB的文档中找到相关接口，回复用户:\n   \"要实现用户登录功能，需要调用认证API中的登录接口：\n\n   POST /api/auth/login\n   请求参数：\n   - username: 用户名/手机号\n   - password: 密码（需前端加密）\n   - login_type: 登录方式（'password' 或 'sms'）\n\n   返回数据包含 access_token 和 refresh_token，\n   access_token 用于后续API调用，有效期2小时。..\""
+    },
+    {
+      "anchor": "section-24",
+      "text": "重点："
+    },
+    {
+      "anchor": "section-24",
+      "text": "第1步：LLM 只看到 4 个 description（几百字），不是完整内容"
+    },
+    {
+      "anchor": "section-24",
+      "text": "第1步"
+    },
+    {
+      "anchor": "section-24",
+      "text": "第4步：为什么 AI 应用不能自己读文件，必须通过 Server？这是 MCP 安全模型的核心设计——本章后续会详细展开。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "第5步：LLM 才看到选中的那个 Resource 的完整内容（12KB）"
+    },
+    {
+      "anchor": "section-24",
+      "text": "第5步"
+    },
+    {
+      "anchor": "section-24",
+      "text": "节省：另外3个文档的内容没有被加载（节省了约33KB tokens）"
+    },
+    {
+      "anchor": "section-24",
+      "text": "节省"
+    },
+    {
+      "anchor": "section-24",
+      "text": "合理大小：单个文档12KB左右，在LLM的处理范围内"
+    },
+    {
+      "anchor": "section-24",
+      "text": "合理大小"
+    },
+    {
+      "anchor": "section-24",
+      "text": "语义匹配：“用户登录” 和 “用户认证API” 有明显的语义关联，LLM能准确选择"
+    },
+    {
+      "anchor": "section-37",
+      "text": "3.3 下一节预告"
+    },
+    {
+      "anchor": "section-37",
+      "text": "理解了 Resources 的概念和核心机制后，下一节将进入实战环节，通过两个具体示例来展示 Resources的两种实现方式：固定写死和动态生成，还会深入讲解如何编写高质量的 description 来提升资源匹配精度。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "3.4 ■ 学点英语"
+    },
+    {
+      "anchor": "section-39",
+      "text": "中文 | English | 音标 | 说明\n按需加载 | On-Demand Loading | /ɑːn dɪˈmænd ˈloʊdɪŋ/ | LLM先浏览Resource描述，确认需要时才读取完整内容的机制\n精确浏览 | Exact Browsing | /ɪɡˈzækt ˈbraʊzɪŋ/ | 像翻目录一样手动选择资源的精准获取模式\n资源标识符 | Resource URI | /ˈriːsɔːrs juːɑːrˈaɪ/ | 唯一标识MCP中某个资源的自定义URI地址\n语义模糊搜索 | Semantic Fuzzy Search | /sɪˈmæntɪk ˈfʌzi sɜːrtʃ/ | RAG中通过向量化自动匹配语义相似内容的方式"
+    }
+  ]
+}

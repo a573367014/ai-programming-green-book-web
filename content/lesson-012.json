@@ -1,0 +1,66 @@
+{
+  "id": "lesson-012",
+  "title": "选择练习 · 1-8",
+  "code": "1-8",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "ChatGPT的本质",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/002-ChatGPT的本质/012-练习-1-8-选择练习.pdf",
+  "sha256": "0279b2d6be664b8bc4471a8dbf81d782c933a4bb7f598eb4c67ccb422c0bc1a1",
+  "pdf": "sources/pdf/lesson-012.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5253#mid=104948",
+  "minutes": 1,
+  "excerpt": "训练过程中，参数从随机值逐步演化为特定数值。这些参数最终存储的是什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "训练过程中，参数从随机值逐步演化为特定数值。这些参数最终存储的是什么？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 训练数据中每个句子的完整副本 B. 统计规律和语义关联 C. 所有互联网知识的原始文本 D. 每次用户对话的独立记忆",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 270,
+    "represented_chars": 105,
+    "removed_chars": 165,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 165
+    }
+  },
+  "videos": [],
+  "order": 13,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "训练过程中，参数从随机值逐步演化为特定数值。这些参数最终存储的是什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 训练数据中每个句子的完整副本 B. 统计规律和语义关联 C. 所有互联网知识的原始文本 D. 每次用户对话的独立记忆"
+    }
+  ]
+}

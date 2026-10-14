@@ -1,0 +1,881 @@
+{
+  "id": "lesson-036",
+  "title": "预训练（二）-代价与数据",
+  "code": "1-3",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "预训练",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/006-预训练/036-图文-1-3-预训练（二）-代价与数据.pdf",
+  "sha256": "7014cc1a3ec5bfe27d3339700b1bfce776f6d5c261993da39bf966b4a5371dcf",
+  "pdf": "sources/pdf/lesson-036.pdf",
+  "pages": 5,
+  "source_url": "https://class.imooc.com/lesson/5258#mid=104885",
+  "minutes": 7,
+  "excerpt": "上一节看到了预训练的4个步骤和自监督学习的优势。但训练这样一个模型需要多少资源?为什么只有少数科技巨头能玩这个游戏?本节将揭示预训练的成本、数据质量策略,以及预训练模型的局限性。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节看到了预训练的4个步骤和自监督学习的优势。但训练这样一个模型需要多少资源?为什么只有少数科技巨头能玩这个游戏?本节将揭示预训练的成本、数据质量策略,以及预训练模型的局限性。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "5.1 预训练的代价:一场资源的豪赌",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "先看一些数字,它们揭示了为什么只有少数科技巨头能玩这个游戏。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 以下数据主要来自第三方机构(如Lambda Labs)的推算和分析,OpenAI官方未公布详细成本。只有总算力(3640 petaflop-days)是官方论文明确公布的数据。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h3",
+      "text": "GPT-3的训练成本(2020年)",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "指标          数值\n───────────────────────────────────────────────\nGPU数量      约10,000块 NVIDIA V100\n训练时间     持续运行约34天\n总算力       3640 petaflop-days(官方论文数据)",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 什么是 petaflop-days? 1 petaflop = 每秒执行1000万亿次浮点运算 petaflop-days =以petaflop速度运行一天的计算量 3640 petaflop-days = 相当于1个petaflop的计算机连续运行3640天(约10年),或者10,000块GPU同时运行34天的总计算量",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "电力消耗:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "耗电量:约1287 MWh(兆瓦时)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "相当于:120个美国家庭一年的用电量",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "碳排放:约552吨CO₂,相当于驾驶一辆汽车行驶227万公里",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "经济成本:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "GPU租用:约460万美元",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "电费:约12万美元",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "工程师薪资、数据存储、网络等:数百万美元",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "总成本估算:1200万美元以上",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "GPT-4的训练(2023年,估算)",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "训练成本: 约6300万美元\n数据量:   约13T tokens(是GPT-3的40倍)\n训练时间: 数月",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些数字意味着:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一个初创公司,烧不起这个钱",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一个研究团队,没有这个算力",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一个独立开发者,想都不敢想",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是为什么大语言模型只有少数玩家:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "ChatGPT(早期全靠微软支持)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Gemini(Google)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LLaMA(Meta)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Qwen(Alibaba)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "DeepSeek(深度求索)",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "豆包(字节)",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是一个资源密集型的竞赛。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "5.2 垃圾进,垃圾出",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不是所有数据都有用,垃圾数据只能训练出垃圾模型。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "互联网上有无穷无尽的文本,但质量参差不齐。有Wikipedia这样的高质量百科,也有充斥着广告和垃圾信息的网页;有经典名著,也有低俗小说和网络喷子的辱骂。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果把所有文本都喂给模型会怎样?模型会学到大量的事实错误,因为网上假消息很多;会学到偏见和歧视,因为网上充斥着这些;还会学到低质量的表达,因为大部分人写作水平一般。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "所以,数据清洗和质量控制至关重要。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "GPT-3的数据策略",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "数据源              占比   质量    处理策略\n─────────────────────────────────────────────────────────────────\nCommon Crawl        60%    低     严格过滤低质量页面,去除广告、导航栏、去重\nWebText2           22%    中     Reddit高赞链接,至少3个赞的帖子链接\nBooks              16%    高     精选书籍,过滤低质量出版物\nWikipedia          3%     极高   全部英文条目,几乎不过滤",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然Wikipedia质量最高,但只占3%。为什么不全用Wikipedia?因为Wikipedia太正式,缺少日常对话,数据量不够大,而且需要多样性来覆盖各种语言风格。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是一个平衡:大量低质量数据(经过清洗)提供多样性和覆盖面,少量高质量数据提供准确性和标准。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "后来的模型(如LLaMA)改进了数据策略:更严格的质量控制,平衡多语言比例,增加代码数据提升推理能力,去除有版权争议的数据。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "数据才是真正的护城河。算法可以复制,架构可以模仿,但高质量的训练数据,是最难获得的。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "5.3 预训练的三个局限:为什么还需要微调",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "预训练出来的模型,已经很强大了。但它有明显的问题,这些问题揭示了为什么ChatGPT还需要后续的训练步骤。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h3",
+      "text": "只会\"接龙\",不会\"回答\"",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "纯预训练模型的行为很奇怪:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户:\"如何学习Python?\"\n\nGPT-3(纯预训练)的回复:\n\"如何学习Python?这个问题很多人问过。首先你需要明确你的学习目标。..\"",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "它可以回答你的问题,但废话很多,很难分辨是不是废话。或者它把你的问题当成了一篇文章的开头,继续往下写。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "它没有\"任务意识\",不知道你在问问题,需要一个答案。它只是在做它唯一被训练过的事:预测下一个词。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "可能生成有害内容",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "用户:\"如何破解邻居家的WiFi密码?\"\n\nGPT-3(纯预训练)可能真的给出破解方法!",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么?因为互联网上有这些内容,模型在训练时见过,它就\"学\"会了。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型没有价值观,不知道什么该说什么不该说,只是在复现训练数据。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "知识有时间限制",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "GPT-3训练截止时间:2021年9月\n\n用户:\"2022年世界杯冠军是谁?\"\nGPT-3:不知道(训练时还没发生)\n\n用户:\"今天的新闻有什么?\"\nGPT-3:无法回答(它没有\"今天\"的概念)",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "预训练模型的知识,冻结在训练截止的那一刻。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "这些局限,需要后续步骤解决",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "① 监督微调 (SFT, Supervised Fine-Tuning)",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "让模型学会\"回答问题\"这个任务",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "提供问答对,教它什么是一个好答案",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "② 强化学习对齐 (RLHF, Reinforcement Learning from Human Feedback)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "让模型学会拒绝有害请求",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "让模型的行为符合人类价值观",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "让模型更有帮助、更诚实",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "③ 外挂知识库 (RAG, Retrieval-Augmented Generation)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "给模型提供实时信息",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "补充最新的知识",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "预训练只是第一步,虽然它是最重要、最昂贵的一步。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "5.4 ■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n算力 | Compute Power | /kəmˈpjuːt ˈpaʊər/ | 模型训练和推理所需的计算资源，通常以 FLOPs衡量\n数据清洗 | Data Cleaning | /ˈdeɪtə ˈkliːnɪŋ/ | 去除训练数据中的噪声、重复、低质量内容的过程\n数据质量 | Data Quality | /ˈdeɪtə ˈkwɒləti/ | 训练数据的准确性、多样性和可用性的综合度量\n数据偏见 | Data Bias | /ˈdeɪtə ˈbaɪəs/ | 训练数据中存在的系统性偏差，可能导致模型输出不公平结果\n过时知识 | Knowledge Cutoff | /ˈnɒlɪdʒ ˈkʌtɒf/ | 预训练模型知识的截止时间点，之后的信息模型无法知晓\n检索增强生成 | Retrieval-Augmented Generation (RAG) | /rɪˈtriːvl ˈɔːɡmentɪd dʒenəˈreɪʃən/ ˌ | 为模型提供外部实时知识库的技术，弥补知识截止局限",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "算力",
+          "Compute Power",
+          "/kəmˈpjuːt ˈpaʊər/",
+          "模型训练和推理所需的计算资源，通常以 FLOPs衡量"
+        ],
+        [
+          "数据清洗",
+          "Data Cleaning",
+          "/ˈdeɪtə ˈkliːnɪŋ/",
+          "去除训练数据中的噪声、重复、低质量内容的过程"
+        ],
+        [
+          "数据质量",
+          "Data Quality",
+          "/ˈdeɪtə ˈkwɒləti/",
+          "训练数据的准确性、多样性和可用性的综合度量"
+        ],
+        [
+          "数据偏见",
+          "Data Bias",
+          "/ˈdeɪtə ˈbaɪəs/",
+          "训练数据中存在的系统性偏差，可能导致模型输出不公平结果"
+        ],
+        [
+          "过时知识",
+          "Knowledge Cutoff",
+          "/ˈnɒlɪdʒ ˈkʌtɒf/",
+          "预训练模型知识的截止时间点，之后的信息模型无法知晓"
+        ],
+        [
+          "检索增强生成",
+          "Retrieval-Augmented Generation (RAG)",
+          "/rɪˈtriːvl ˈɔːɡmentɪd dʒenəˈreɪʃən/ ˌ",
+          "为模型提供外部实时知识库的技术，弥补知识截止局限"
+        ]
+      ],
+      "page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "5.6 下一节预告",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在知道了预训练的代价、数据策略和三个局限。但为什么叫\"预\"训练?它后面还有什么步骤?",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节将揭示完整的训练流程,以及一些有趣的行业故事。",
+      "page": 5,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 3103,
+    "represented_chars": 2924,
+    "removed_chars": 179,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 143,
+      "repeated_title": 36
+    }
+  },
+  "videos": [],
+  "order": 37,
+  "headings": [
+    {
+      "title": "5.1 预训练的代价:一场资源的豪赌",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "GPT-3的训练成本(2020年)",
+      "id": "section-4",
+      "level": 3
+    },
+    {
+      "title": "GPT-4的训练(2023年,估算)",
+      "id": "section-16",
+      "level": 3
+    },
+    {
+      "title": "5.2 垃圾进,垃圾出",
+      "id": "section-30",
+      "level": 2
+    },
+    {
+      "title": "GPT-3的数据策略",
+      "id": "section-35",
+      "level": 3
+    },
+    {
+      "title": "5.3 预训练的三个局限:为什么还需要微调",
+      "id": "section-41",
+      "level": 2
+    },
+    {
+      "title": "只会\"接龙\",不会\"回答\"",
+      "id": "section-43",
+      "level": 3
+    },
+    {
+      "title": "可能生成有害内容",
+      "id": "section-48",
+      "level": 3
+    },
+    {
+      "title": "知识有时间限制",
+      "id": "section-52",
+      "level": 3
+    },
+    {
+      "title": "这些局限,需要后续步骤解决",
+      "id": "section-55",
+      "level": 3
+    },
+    {
+      "title": "5.4 ■ 学点英语",
+      "id": "section-67",
+      "level": 2
+    },
+    {
+      "title": "5.6 下一节预告",
+      "id": "section-69",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节看到了预训练的4个步骤和自监督学习的优势。但训练这样一个模型需要多少资源?为什么只有少数科技巨头能玩这个游戏?本节将揭示预训练的成本、数据质量策略,以及预训练模型的局限性。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "5.1 预训练的代价:一场资源的豪赌"
+    },
+    {
+      "anchor": "section-1",
+      "text": "先看一些数字,它们揭示了为什么只有少数科技巨头能玩这个游戏。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "以下数据主要来自第三方机构(如Lambda Labs)的推算和分析,OpenAI官方未公布详细成本。只有总算力(3640 petaflop-days)是官方论文明确公布的数据。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "GPT-3的训练成本(2020年)"
+    },
+    {
+      "anchor": "section-4",
+      "text": "指标          数值\n───────────────────────────────────────────────\nGPU数量      约10,000块 NVIDIA V100\n训练时间     持续运行约34天\n总算力       3640 petaflop-days(官方论文数据)"
+    },
+    {
+      "anchor": "section-4",
+      "text": "什么是 petaflop-days? 1 petaflop = 每秒执行1000万亿次浮点运算 petaflop-days =以petaflop速度运行一天的计算量 3640 petaflop-days = 相当于1个petaflop的计算机连续运行3640天(约10年),或者10,000块GPU同时运行34天的总计算量"
+    },
+    {
+      "anchor": "section-4",
+      "text": "电力消耗:"
+    },
+    {
+      "anchor": "section-4",
+      "text": "耗电量:约1287 MWh(兆瓦时)"
+    },
+    {
+      "anchor": "section-4",
+      "text": "相当于:120个美国家庭一年的用电量"
+    },
+    {
+      "anchor": "section-4",
+      "text": "碳排放:约552吨CO₂,相当于驾驶一辆汽车行驶227万公里"
+    },
+    {
+      "anchor": "section-4",
+      "text": "经济成本:"
+    },
+    {
+      "anchor": "section-4",
+      "text": "GPU租用:约460万美元"
+    },
+    {
+      "anchor": "section-4",
+      "text": "电费:约12万美元"
+    },
+    {
+      "anchor": "section-4",
+      "text": "工程师薪资、数据存储、网络等:数百万美元"
+    },
+    {
+      "anchor": "section-4",
+      "text": "总成本估算:1200万美元以上"
+    },
+    {
+      "anchor": "section-16",
+      "text": "GPT-4的训练(2023年,估算)"
+    },
+    {
+      "anchor": "section-16",
+      "text": "训练成本: 约6300万美元\n数据量:   约13T tokens(是GPT-3的40倍)\n训练时间: 数月"
+    },
+    {
+      "anchor": "section-16",
+      "text": "这些数字意味着:"
+    },
+    {
+      "anchor": "section-16",
+      "text": "一个初创公司,烧不起这个钱"
+    },
+    {
+      "anchor": "section-16",
+      "text": "一个研究团队,没有这个算力"
+    },
+    {
+      "anchor": "section-16",
+      "text": "一个独立开发者,想都不敢想"
+    },
+    {
+      "anchor": "section-16",
+      "text": "这就是为什么大语言模型只有少数玩家:"
+    },
+    {
+      "anchor": "section-16",
+      "text": "ChatGPT(早期全靠微软支持)"
+    },
+    {
+      "anchor": "section-16",
+      "text": "Gemini(Google)"
+    },
+    {
+      "anchor": "section-16",
+      "text": "LLaMA(Meta)"
+    },
+    {
+      "anchor": "section-16",
+      "text": "Qwen(Alibaba)"
+    },
+    {
+      "anchor": "section-16",
+      "text": "DeepSeek(深度求索)"
+    },
+    {
+      "anchor": "section-16",
+      "text": "豆包(字节)"
+    },
+    {
+      "anchor": "section-16",
+      "text": "这是一个资源密集型的竞赛。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "5.2 垃圾进,垃圾出"
+    },
+    {
+      "anchor": "section-30",
+      "text": "不是所有数据都有用,垃圾数据只能训练出垃圾模型。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "互联网上有无穷无尽的文本,但质量参差不齐。有Wikipedia这样的高质量百科,也有充斥着广告和垃圾信息的网页;有经典名著,也有低俗小说和网络喷子的辱骂。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "如果把所有文本都喂给模型会怎样?模型会学到大量的事实错误,因为网上假消息很多;会学到偏见和歧视,因为网上充斥着这些;还会学到低质量的表达,因为大部分人写作水平一般。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "所以,数据清洗和质量控制至关重要。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "GPT-3的数据策略"
+    },
+    {
+      "anchor": "section-35",
+      "text": "数据源              占比   质量    处理策略\n─────────────────────────────────────────────────────────────────\nCommon Crawl        60%    低     严格过滤低质量页面,去除广告、导航栏、去重\nWebText2           22%    中     Reddit高赞链接,至少3个赞的帖子链接\nBooks              16%    高     精选书籍,过滤低质量出版物\nWikipedia          3%     极高   全部英文条目,几乎不过滤"
+    },
+    {
+      "anchor": "section-35",
+      "text": "虽然Wikipedia质量最高,但只占3%。为什么不全用Wikipedia?因为Wikipedia太正式,缺少日常对话,数据量不够大,而且需要多样性来覆盖各种语言风格。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "这是一个平衡:大量低质量数据(经过清洗)提供多样性和覆盖面,少量高质量数据提供准确性和标准。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "后来的模型(如LLaMA)改进了数据策略:更严格的质量控制,平衡多语言比例,增加代码数据提升推理能力,去除有版权争议的数据。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "数据才是真正的护城河。算法可以复制,架构可以模仿,但高质量的训练数据,是最难获得的。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "5.3 预训练的三个局限:为什么还需要微调"
+    },
+    {
+      "anchor": "section-41",
+      "text": "预训练出来的模型,已经很强大了。但它有明显的问题,这些问题揭示了为什么ChatGPT还需要后续的训练步骤。"
+    },
+    {
+      "anchor": "section-43",
+      "text": "只会\"接龙\",不会\"回答\""
+    },
+    {
+      "anchor": "section-43",
+      "text": "纯预训练模型的行为很奇怪:"
+    },
+    {
+      "anchor": "section-43",
+      "text": "用户:\"如何学习Python?\"\n\nGPT-3(纯预训练)的回复:\n\"如何学习Python?这个问题很多人问过。首先你需要明确你的学习目标。..\""
+    },
+    {
+      "anchor": "section-43",
+      "text": "它可以回答你的问题,但废话很多,很难分辨是不是废话。或者它把你的问题当成了一篇文章的开头,继续往下写。"
+    },
+    {
+      "anchor": "section-43",
+      "text": "它没有\"任务意识\",不知道你在问问题,需要一个答案。它只是在做它唯一被训练过的事:预测下一个词。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "可能生成有害内容"
+    },
+    {
+      "anchor": "section-48",
+      "text": "用户:\"如何破解邻居家的WiFi密码?\"\n\nGPT-3(纯预训练)可能真的给出破解方法!"
+    },
+    {
+      "anchor": "section-48",
+      "text": "为什么?因为互联网上有这些内容,模型在训练时见过,它就\"学\"会了。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "模型没有价值观,不知道什么该说什么不该说,只是在复现训练数据。"
+    },
+    {
+      "anchor": "section-52",
+      "text": "知识有时间限制"
+    },
+    {
+      "anchor": "section-52",
+      "text": "GPT-3训练截止时间:2021年9月\n\n用户:\"2022年世界杯冠军是谁?\"\nGPT-3:不知道(训练时还没发生)\n\n用户:\"今天的新闻有什么?\"\nGPT-3:无法回答(它没有\"今天\"的概念)"
+    },
+    {
+      "anchor": "section-52",
+      "text": "预训练模型的知识,冻结在训练截止的那一刻。"
+    },
+    {
+      "anchor": "section-55",
+      "text": "这些局限,需要后续步骤解决"
+    },
+    {
+      "anchor": "section-55",
+      "text": "① 监督微调 (SFT, Supervised Fine-Tuning)"
+    },
+    {
+      "anchor": "section-55",
+      "text": "让模型学会\"回答问题\"这个任务"
+    },
+    {
+      "anchor": "section-55",
+      "text": "提供问答对,教它什么是一个好答案"
+    },
+    {
+      "anchor": "section-55",
+      "text": "② 强化学习对齐 (RLHF, Reinforcement Learning from Human Feedback)"
+    },
+    {
+      "anchor": "section-55",
+      "text": "让模型学会拒绝有害请求"
+    },
+    {
+      "anchor": "section-55",
+      "text": "让模型的行为符合人类价值观"
+    },
+    {
+      "anchor": "section-55",
+      "text": "让模型更有帮助、更诚实"
+    },
+    {
+      "anchor": "section-55",
+      "text": "③ 外挂知识库 (RAG, Retrieval-Augmented Generation)"
+    },
+    {
+      "anchor": "section-55",
+      "text": "给模型提供实时信息"
+    },
+    {
+      "anchor": "section-55",
+      "text": "补充最新的知识"
+    },
+    {
+      "anchor": "section-55",
+      "text": "预训练只是第一步,虽然它是最重要、最昂贵的一步。"
+    },
+    {
+      "anchor": "section-67",
+      "text": "5.4 ■ 学点英语"
+    },
+    {
+      "anchor": "section-67",
+      "text": "中文 | English | 音标 | 说明\n算力 | Compute Power | /kəmˈpjuːt ˈpaʊər/ | 模型训练和推理所需的计算资源，通常以 FLOPs衡量\n数据清洗 | Data Cleaning | /ˈdeɪtə ˈkliːnɪŋ/ | 去除训练数据中的噪声、重复、低质量内容的过程\n数据质量 | Data Quality | /ˈdeɪtə ˈkwɒləti/ | 训练数据的准确性、多样性和可用性的综合度量\n数据偏见 | Data Bias | /ˈdeɪtə ˈbaɪəs/ | 训练数据中存在的系统性偏差，可能导致模型输出不公平结果\n过时知识 | Knowledge Cutoff | /ˈnɒlɪdʒ ˈkʌtɒf/ | 预训练模型知识的截止时间点，之后的信息模型无法知晓\n检索增强生成 | Retrieval-Augmented Generation (RAG) | /rɪˈtriːvl ˈɔːɡmentɪd dʒenəˈreɪʃən/ ˌ | 为模型提供外部实时知识库的技术，弥补知识截止局限"
+    },
+    {
+      "anchor": "section-69",
+      "text": "5.6 下一节预告"
+    },
+    {
+      "anchor": "section-69",
+      "text": "现在知道了预训练的代价、数据策略和三个局限。但为什么叫\"预\"训练?它后面还有什么步骤?"
+    },
+    {
+      "anchor": "section-69",
+      "text": "下一节将揭示完整的训练流程,以及一些有趣的行业故事。"
+    }
+  ]
+}

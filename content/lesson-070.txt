@@ -1,0 +1,92 @@
+--- PDF 第 1 页 ---
+1
+来源: https://class.imooc.com/lesson/5262#mid=104982
+阶段: 阶段一: 【认知基石】理解大模型的本质与工作原理
+周: 第3周 语言模型的进阶能力
+模块: Context Learning
+课节: 图文 1-3 扩展练习（1）
+1-3 扩展练习（1）
+1
+题型: 判断题 难度: 中等
+题干: 如果告诉模型一种新发明的化学元素及其性质，再让它推理这个元素的其他性质——这属于情境
+学习能"学到真正新知识"的典型证据。 (延展题)
+正确答案: 错误
+解析: 情境学习学到的是"模式"而非"知识"——模型只是记住了你输入的内容，并在此基础上拼贴相似模
+式。它没有把这个新元素真正纳入自己的知识结构，无法像化学家那样从原子结构推理其反应性。这也
+是情境学习最常被误解的一点：它看起来像学习，但本质上是"条件化生成"。真正想把知识注入模型，
+需要微调或 RAG。
+2
+题型: 简答题 难度: 困难
+题干: 在一个"用户客服工单自动分类"的工业场景中，你会选择情境学习还是监督微调？请给出你的选
+择、推理过程和两种方案的取舍权衡。 (思维题)
+参考答案:
+● 决策取决于"任务是否稳定、调用量是否巨大、对准确率的敏感程度" ● 如果是初期的快速原型、类别
+还在频繁调整、日调用量有限——优先用情境学习：Few-Shot 几个高质量例子即可启动，迭代成本几
+乎为零 ● 如果分类体系稳定、日调用量巨大、每次多花的 Token 费用会累积成大额成本、且业务对准
+确率要求 90%+——值得投入监督微调：一次性训练成本高，但推理时上下文短、响应快、准确率高 ●
+两者并不互斥，常见的工程路径是：用情境学习快速验证任务可行性和样例分布，收集一批真实数据后
+
+
+--- PDF 第 2 页 ---
+再做一次监督微调固化能力 ● 还可以采用混合策略：用小模型做监督微调处理高频分类，用大模型 +
+情境学习兜底罕见类别，既控制了成本又保留了灵活性
+3
+题型: 阅读理解题 难度: 困难
+题干: Read the following passage and answer the questions below. (延展题)
+阅读材料:
+In 2020, Brown et al. published “Language Models are Few-Shot Learners” (GPT-3
+paper). The paper states: “Recent work has demonstrated substantial gains on many NLP
+tasks and benchmarks by pre-training on a large corpus of text followed by fine-tuning on
+a specific task. While typically task-agnostic in architecture, this method still requires task-
+specific fine-tuning datasets of thousands or tens of thousands of examples. By contrast,
+humans can generally perform a new language task from only a few examples or from
+simple instructions – something which current NLP systems still largely struggle to do.
+Here we show that scaling up language models greatly improves task-agnostic, few-shot
+performance, sometimes even reaching competitiveness with prior state-of-the-art fine-
+tuning approaches. Specifically, we train GPT-3… and test its performance in the few-shot
+setting. For all tasks, GPT-3 is applied without any gradient updates or fine-tuning, with
+tasks and few-shot demonstrations specified purely via text interaction with the model.”
+题目1:
+题型: 单选题
+题干: According to the passage, which of the following best summarizes the key
+methodological novelty demonstrated by GPT-3 in the few-shot setting?
+选项A: GPT-3 achieves strong performance by applying gradient updates to a task-specific
+subset of its parameters during inference. 选项B: GPT-3 requires tens of thousands of labeled
+examples per task but trains much faster than prior models. 选项C: GPT-3 performs new tasks
+without any gradient updates or fine-tuning, using only text-based task descriptions and a few
+demonstrations in the prompt. 选项D: GPT-3 outperforms all fine-tuned baselines on every
+NLP benchmark tested.
+正确答案: C
+
+
+--- PDF 第 3 页 ---
+解析: 材料原文明确写道"without any gradient updates or fine-tuning"并且"tasks and few-shot
+demonstrations specified purely via text interaction with the model"，这正是情境学习的核心特
+征：参数不动、纯粹用提示词与示例触发任务。选项A 直接与原文矛盾；选项B 描述的是传统微调范
+式，原文恰恰是以之为对照来凸显 GPT-3 的不同；选项D 过强，原文的限定是"sometimes even
+reaching competitiveness"，远达不到"超过所有微调基线"的说法。
+题目2:
+题型: 判断题
+题干: The passage implies that before GPT-3, achieving strong performance on a new NLP task
+typically required collecting and labeling a task-specific dataset of thousands to tens of
+thousands of examples.
+正确答案: 正确
+解析: 原文明确提到"still requires task-specific fine-tuning datasets of thousands or tens of
+thousands of examples"，这正是 GPT-3 之前主流范式的写照：任何新任务都需要从零收集数据集。
+而 GPT-3 证明，当模型规模足够大时，只需在 Prompt 里放几个示例就能让模型执行新任务，这是范
+式转移的关键点也是本节讨论的情境学习能力的源头。
+4
+题干: 你是一家AI创业公司的技术负责人。公司核心产品是"智能工单分类系统"，每天需要将数万条电商
+用户工单自动分类到"退款/退货/物流/投诉/咨询"等20个类别中。团队面临一个架构选择——使用大模
+型的 In-Context Learning（在Prompt中放入类示例）来做分类，还是收集一批标注数据做 SFT 微
+调。请设计一套方案。 (设计题)
+○ ICL 方案适用边界：任务类别还在频繁调整、初期数据量不足、日调用量有限时优先选择 ICL。核心代
+价是每次调用都要在 Prompt 中注入示例，Token 消耗高、响应慢、且随着类别增加 Prompt 长度接近
+窗口上限 ○ SFT 方案适用边界：分类体系已稳定、日调用量大、对延迟敏感时优先选择 SFT。核心代价
+是需要收集数千条标注数据、训练和部署成本高，但推理时 Prompt 短、响应快、准确率通常更高 ○ 预
+算有限时的推荐方案：先用 ICL 快速验证可行性，在 Prompt 中放每类 3-5 个高质量示例，运行 1-2
+周收集真实分布数据。同时用这些数据筛选高频类别，为 SFT 准备标注集 ○ 渐进迁移路径：阶段一（0-
+1月）纯 ICL 验证业务可行性；阶段二（1-2月）对 Top-5 高频类别训练 SFT 小模型（如 7B 级）分
+流，低频类别继续保持 ICL；阶段三（2-3月）根据 SFT 效果逐步扩大覆盖范围，ICL 降级为兜底方案处
+理长尾和新增类别 ○ 核心权衡：ICL 的灵活性 vs SFT 的经济性——没有绝对更好的方案，取决于业务
+阶段和预算。混合架构（ICL+SFT 双通道）是工业界最常见的做法，结合了两者的优势

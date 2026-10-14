@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Google A2A协议：Agent间通信标准 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-150">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-6">智能体</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 12 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>多Agent协作：从个体到群体智能</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 151</span></div>
+<h1 class="lesson-title">Google A2A协议：Agent间通信标准</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>9 页原文</span><span>约 13 分钟阅读</span><span class="module-name">多Agent协作：从个体到群体智能</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-150.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-150.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>在上一节中，我们探讨了多Agent协作的四种主要模式。但无论采用哪种协作模式，都有一个核心问题需要解决：Agent之间如何高效、可靠地通信？ 想象这样一个场景：你正在构建一个多Agent内容创作系统。Manager Agent需要将任务分配给Researcher Agent和Writer Agent，但它们使用不同的数据格式、通信协议，甚至运行在不同的平台上。如果没有统一的通信标准，每增加一个Agent，就需要为其与其他所有Agent建立专用的通信通道——这显然是不可扩展的。 这就是Google在2024年11月发布Agent-to-Agent Protocol（A2A协议）要解决的问题。A2A试图为Agent间通信建立类似HTTP之于Web的统一标准。</p></aside>
+<h2 id="section-1" data-source-page="1">通信的核心挑战<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">在多Agent系统中，通信看似简单（不就是发消息吗？），实则面临三大核心挑战：</p>
+<p data-source-page="1">信息格式不统一：不同Agent可能使用不同的信息格式（JSON、YAML、自然语言等）。如果没有统一标准，每两个Agent之间都需要一个&quot;翻译器&quot;，N个Agent需要N×(N-1)个翻译器，这显然无法扩展。</p>
+<p data-source-page="1">上下文传递不完整：Agent间传递信息时需要平衡——传递太少可能导致错误决策，传递太多又会浪费Token资源。关键信息包括任务描述、当前进度、历史决策和相关背景。</p>
+<p data-source-page="1">异常处理机制缺失：当Agent处理失败时，缺乏标准化的错误通知、重试策略和任务转移机制，这会影响系统的可靠性和容错能力。</p>
+<p data-source-page="1">这些挑战都需要通过标准化的通信协议来解决。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-7" data-source-page="2">A2A的三层设计<a class="heading-link" href="#section-7" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">A2A协议借鉴了OSI网络协议的分层思想，把Agent通信拆成三层来解决：</p>
+<p data-source-page="2">为什么要分三层？</p>
+<p data-source-page="2">用快递类比：</p>
+<p class="list-item" data-source-page="2">第1层（数据模型层）：快递单上写什么内容（收件人、地址、物品）</p>
+<p data-source-page="2">第1层（数据模型层）</p>
+<p class="list-item" data-source-page="2">第2层（操作层）：快递公司能提供什么服务（寄件、查询、取消）</p>
+<p data-source-page="2">第2层（操作层）</p>
+<p class="list-item" data-source-page="2">第3层（协议绑定层）：用什么方式寄送（必须支持顺丰，可选支持京东、邮政）</p>
+<p data-source-page="2">第3层（协议绑定层）</p>
+<p data-source-page="2">关键设计思想：</p>
+<p data-source-page="2">关键设计思想</p>
+<p data-source-page="2">想象市面上有100个Agent，它们可能用不同语言（Python、Go、Java）、不同框架（LangChain、CrewAI、AutoGen）开发。如果没有统一标准：</p>
+<p class="list-item" data-source-page="2">Agent A只会gRPC</p>
+<p class="list-item" data-source-page="2">Agent B只会HTTP</p>
+<p class="list-item" data-source-page="2">Agent C只会WebSocket → 它们无法互相通信！</p>
+<p data-source-page="2">它们无法互相通信！</p>
+<p data-source-page="2">A2A的解决方案：强制所有Agent至少支持JSON-RPC 2.0，这样保证了&quot;最小公约数&quot;——任意两个Agent都能通过JSON-RPC通信。在此基础上，你可以选择额外支持gRPC（追求性能）或HTTP/REST（方便Web集成），但这些是&quot;锦上添花&quot;。</p>
+<p data-source-page="2">举个实际例子：</p>
+<p data-source-page="2">举个实际例子</p>
+<p data-source-page="2">假设Agent A要委托Agent B写一篇文章：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">第1层：构造数据
+task = {
+  &quot;id&quot;: &quot;task_123&quot;,
+  &quot;description&quot;: &quot;写一篇关于AI的文章&quot;
+}
+
+第2层：调用操作
+agent_b.send_message(task, message)
+
+第3层：选择协议（JSON-RPC必须支持）
+通过JSON-RPC发送 → POST /rpc {...}
+（如果Agent B还支持gRPC，也可以这样调用）
+或通过gRPC发送 → A2AService.SendMessage(...)
+或通过HTTP发送 → POST /tasks/task_123/messages {...}</code></pre></div>
+<p data-source-page="3">三层分离让Agent可以跨平台、跨协议互操作——但JSON-RPC是所有Agent必须实现的&quot;通用语言&quot;。</p>
+<h2 id="section-30" data-source-page="3">A2A的核心协作模式<a class="heading-link" href="#section-30" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">定义Agent之间如何配合完成任务：</p>
+<h2 id="section-32" data-source-page="3">1. Request-Response（请求-响应）：一问一答<a class="heading-link" href="#section-32" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">用餐厅点菜类比：</p>
+<p class="list-item" data-source-page="3">你（Agent A）问服务员：“今天有什么特色菜？”</p>
+<p class="list-item" data-source-page="3">服务员（Agent B）回答：“有宫保鸡丁和鱼香肉丝”</p>
+<p class="list-item" data-source-page="3">特点：针对具体问题，得到具体答案，一轮对话结束</p>
+<p data-source-page="3">特点</p>
+<h2 id="section-38" data-source-page="3">2. Delegation（委托）：交付目标<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">用外包项目类比：</p>
+<p class="list-item" data-source-page="3">你（Agent A）对乙方说：“帮我设计一个企业官网，要求现代简洁”</p>
+<p class="list-item" data-source-page="3">乙方（Agent B）自己决定：用什么技术栈、几个页面、配色方案。…</p>
+<p class="list-item" data-source-page="3">完成后乙方主动交付成果</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p class="list-item" data-source-page="4">特点：只说目标，不管过程，对方全权负责</p>
+<h2 id="section-44" data-source-page="4">3. Collaboration（协作）：平等协商<a class="heading-link" href="#section-44" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">用团队开会类比：</p>
+<p class="list-item" data-source-page="4">多个同事（Agent A、B、C）一起讨论方案</p>
+<p class="list-item" data-source-page="4">你提一个想法，我补充细节，他指出问题</p>
+<p class="list-item" data-source-page="4">反复交流直到达成共识</p>
+<p class="list-item" data-source-page="4">特点：平等关系，互相依赖，共同决策</p>
+<p data-source-page="4">核心区别：</p>
+<p data-source-page="4">核心区别</p>
+<p class="list-item" data-source-page="4">Request-Response：问&quot;怎么做&quot;，得到答案</p>
+<p class="list-item" data-source-page="4">Delegation：说&quot;做什么&quot;，等待成果</p>
+<p class="list-item" data-source-page="4">Collaboration：大家一起&quot;商量怎么做&quot;</p>
+<h2 id="section-55" data-source-page="4">完整通信流程剖析<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">让我们通过一张完整的图，看看两个Agent基于A2A协议通信的全过程：</p>
+<p data-source-page="4">你可以清楚地看到：</p>
+<p data-source-page="4">发送请求（(1)(2)(3)(4)）：</p>
+<p data-source-page="4">发送请求（(1)(2)(3)(4)）</p>
+<p class="list-item" data-source-page="4">Agent A: 应用层发起任务(1) → 消息层封装JSON → 传输层发送到队列(2)</p>
+<p class="list-item" data-source-page="4">Agent B: 传输层从队列获取(3) → 消息层解析 → 应用层执行(4)</p>
+<p data-source-page="4">返回响应（(5)(6)(7)）：</p>
+<p data-source-page="4">返回响应（(5)(6)(7)）</p>
+<p class="list-item" data-source-page="4">Agent B: 应用层生成结果 → 消息层封装 → 传输层发送到队列(5)</p>
+<p class="list-item" data-source-page="4">Agent A: 传输层接收(6) → 消息层解析 → 应用层处理(7)</p>
+<p data-source-page="4">每一步都严格遵循三层架构，这就是A2A协议的优雅之处。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-67" data-source-page="5">Agent Card：Agent的数字身份证<a class="heading-link" href="#section-67" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">在多Agent系统中，有一个基础问题：Agent如何发现彼此并知道对方能做什么？</p>
+<p data-source-page="5">想象一个场景：你的系统里有10个Agent，新来的Agent想找一个能做&quot;数据分析&quot;的Agent协作。如果没有统一的发现机制，它只能逐个尝试，效率极低。</p>
+<h3 id="section-70" data-source-page="5">Agent Card是什么<a class="heading-link" href="#section-70" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">Agent Card本质上是一个JSON格式的描述文档，就像Agent的&quot;数字名片&quot;。它包含了Agent的核心信息：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;agentId&quot;: &quot;agent_data_analyst&quot;,
+  &quot;name&quot;: &quot;数据分析专家&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;capabilities&quot;: [
+    {
+      &quot;skill&quot;: &quot;数据清洗&quot;,
+      &quot;inputFormat&quot;: [&quot;csv&quot;, &quot;json&quot;],
+      &quot;outputFormat&quot;: [&quot;cleaned_data&quot;]
+    },
+    {
+      &quot;skill&quot;: &quot;趋势分析&quot;,
+      &quot;inputFormat&quot;: [&quot;time_series_data&quot;],
+      &quot;outputFormat&quot;: [&quot;trend_report&quot;, &quot;visualization&quot;]
+    }
+  ],
+  &quot;endpoint&quot;: &quot;https://agent-service.com/analyst&quot;,
+  &quot;authentication&quot;: {
+    &quot;type&quot;: &quot;API_KEY&quot;,
+    &quot;required&quot;: true
+  },
+  &quot;metadata&quot;: {
+    &quot;description&quot;: &quot;专业的数据分析Agent，擅长处理时间序列数据&quot;,
+    &quot;tags&quot;: [&quot;数据&quot;, &quot;分析&quot;, &quot;可视化&quot;]
+  }
+}</code></pre></div>
+<p data-source-page="5">Agent Card的核心字段</p>
+<p class="list-item" data-source-page="5">agentId：Agent的唯一标识</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p class="list-item" data-source-page="6">capabilities：Agent能做什么，每个能力包含输入/输出格式</p>
+<p class="list-item" data-source-page="6">endpoint：如何联系这个Agent</p>
+<p class="list-item" data-source-page="6">authentication：需要什么样的认证方式</p>
+<p class="list-item" data-source-page="6">metadata：描述性信息，便于搜索和理解</p>
+<h2 id="section-79" data-source-page="6">Agent发现机制<a class="heading-link" href="#section-79" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">有了Agent Card这张&quot;数字名片&quot;，下一个问题是：Agent如何找到彼此？</p>
+<p data-source-page="6">在传统的微服务架构中，我们有服务注册中心（如Eureka、Consul）来管理服务发现。在多Agent系统中，也需要类似的机制——Agent注册中心。</p>
+<p data-source-page="6">发现流程如下：</p>
+<p data-source-page="6">发现流程如下</p>
+<p data-source-page="6">这个流程解决了几个关键问题：</p>
+<p class="list-item" data-source-page="6">动态发现：新Agent无需事先知道所有其他Agent的地址，通过注册中心动态查询</p>
+<p class="list-item" data-source-page="6">能力匹配：根据Agent Card的capabilities字段，精确找到具备所需能力的Agent</p>
+<p class="list-item" data-source-page="6">负载均衡：如果多个Agent具备相同能力，可以根据负载、地理位置等因素选择最优的</p>
+<p data-source-page="6">通过Agent Card和注册中心，系统实现了服务发现的能力——Agent可以动态地找到合作伙伴，而不需要硬编码依赖关系。这使得多Agent系统具备了真正的可扩展性。</p>
+<h2 id="section-89" data-source-page="6">错误处理：让系统更健壮<a class="heading-link" href="#section-89" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">在分布式的多Agent系统中，错误是常态而非异常。网络可能中断、Agent可能崩溃、任务可能超时——系统必须优雅地处理这些情况。</p>
+<h3 id="section-91" data-source-page="6">标准化错误消息<a class="heading-link" href="#section-91" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">A2A协议定义了统一的错误消息格式：</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;messageType&quot;: &quot;error&quot;,
+  &quot;payload&quot;: {
+    &quot;errorCode&quot;: &quot;TIMEOUT&quot;,
+    &quot;errorMessage&quot;: &quot;Agent未在规定时间内响应&quot;,
+    &quot;originalMessageId&quot;: &quot;msg_001&quot;,
+    &quot;timestamp&quot;: &quot;2025-12-07T11:00:00Z&quot;,
+    &quot;retryable&quot;: true,
+    &quot;suggestedAction&quot;: &quot;retry_after_5_seconds&quot;
+  }
+}</code></pre></div>
+<p data-source-page="7">常见错误类型</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">错误类型</th><th scope="col">含义</th><th scope="col">是否可重试</th></tr></thead><tbody><tr><td>TIMEOUT</td><td>超时未响应</td><td>✓</td></tr><tr><td>AGENT NOT FOUND _ _</td><td>目标Agent不存在</td><td>✗</td></tr><tr><td>INVALID MESSAGE _</td><td>消息格式错误</td><td>✗</td></tr><tr><td>CAPABILITY NOT SUPPORTED _ _</td><td>Agent不支持该能力</td><td>✗</td></tr><tr><td>INTERNAL ERROR _</td><td>Agent内部错误</td><td>✓</td></tr><tr><td>RESOURCE EXHAUSTED _</td><td>资源耗尽（队列满等）</td><td>✓</td></tr></tbody></table></div>
+<p data-source-page="7">A2A建议采用指数退避策略：</p>
+<p data-source-page="7">指数退避</p>
+<aside class="callout" data-source-page="7"><p>什么是指数退避？ 指数退避是一种智能重试策略，核心思想是：每次重试的间隔时间按指数规律增长。 设计原理： 避免在网络拥塞或系统过载时，大量重试请求雪上加霜 给系统充分的恢复时间逐步探测系统是否恢复正常</p></aside>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">第1次重试：等待 1秒     # 初始试探
+第2次重试：等待 2秒     # 稍作等待
+第3次重试：等待 4秒     # 给系统更多恢复时间
+第4次重试：等待 8秒     # 持续观察系统状态
+...</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<p data-source-page="8">这避免了在系统压力大时，大量重试进一步加重负担。</p>
+<h3 id="section-101" data-source-page="8">错误处理实例<a class="heading-link" href="#section-101" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">// Manager收到Researcher的错误消息
+{
+  &quot;messageType&quot;: &quot;error&quot;,
+  &quot;sender&quot;: &quot;agent_researcher&quot;,
+  &quot;receiver&quot;: &quot;agent_manager&quot;,
+  &quot;payload&quot;: {
+    &quot;errorCode&quot;: &quot;RESOURCE_EXHAUSTED&quot;,
+    &quot;errorMessage&quot;: &quot;API调用超出配额限制&quot;,
+    &quot;retryable&quot;: true,
+    &quot;retryAfter&quot;: 3600  // 1小时后重试
+  }
+}
+
+// Manager的处理策略
+if (error.retryable &amp;&amp; retryCount &lt; 3) {
+    // 等待指定时间后重试
+    await sleep(error.retryAfter);
+    retry();
+} else {
+    // 降级处理：使用备用Agent或返回部分结果
+    fallback();
+}</code></pre></div>
+<p data-source-page="8">通过标准化的错误处理，系统可以自动应对各种异常情况，大大提升了可靠性。</p>
+<h2 id="section-104" data-source-page="8">A2A协议的价值<a class="heading-link" href="#section-104" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">为什么需要像A2A这样的标准协议？</p>
+<p data-source-page="8">互操作性：不同厂商、不同框架开发的Agent可以互通。就像HTTP让不同的浏览器和服务器能通信一样。</p>
+<p data-source-page="8">可观测性：统一的消息格式便于监控、日志、调试。你可以清楚地看到每个Agent的工作状态、任务流转过程。</p>
+<p data-source-page="8">可扩展性：新增Agent只需遵循协议，无需修改现有Agent。系统可以从3个Agent扩展到30个、300个。</p>
+<p data-source-page="8">错误处理：标准化的错误消息格式，便于统一处理异常、重试、降级。</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<p data-source-page="9">错误处理</p>
+<p data-source-page="9">当然，A2A协议还在演进中，很多细节仍在讨论。但其核心思想——通过标准化通信协议降低多Agent系统复杂度——已经被业界广泛认可。</p>
+<h2 id="section-112" data-source-page="9">下一节预告<a class="heading-link" href="#section-112" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">理解了多Agent协作模式和通信标准，你可能迫不及待想动手实践了。下一节，我们将介绍专门为多Agent协作设计的CrewAI框架，带你从零开始构建完整的多Agent协作系统，包括团队编排、任务管理、能力增强等核心内容。</p>
+<h2 id="section-114" data-source-page="9">图片<a class="heading-link" href="#section-114" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">![](015-图文-1-2-Google A2A协议：Agent间通信标准.assets/img-001.png)</p>
+<p data-source-page="9">![](015-图文-1-2-Google A2A协议：Agent间通信标准.assets/img-002.png)</p>
+<p data-source-page="9">![](015-图文-1-2-Google A2A协议：Agent间通信标准.assets/img-003.png)</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-149.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>多 Agent 协作：从个体到群体智能</strong><small>多Agent协作：从个体到群体智能</small></a><a class="chapter-neighbor next" href="lesson-151.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>实战：智能旅行规划Agent</strong><small>实战：智能旅行规划Agent</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5292#mid=105156" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">通信的核心挑战</a><a href="#section-7" class="toc-level-2">A2A的三层设计</a><a href="#section-30" class="toc-level-2">A2A的核心协作模式</a><a href="#section-32" class="toc-level-2">1. Request-Response（请求-响应）：一问一答</a><a href="#section-38" class="toc-level-2">2. Delegation（委托）：交付目标</a><a href="#section-44" class="toc-level-2">3. Collaboration（协作）：平等协商</a><a href="#section-55" class="toc-level-2">完整通信流程剖析</a><a href="#section-67" class="toc-level-2">Agent Card：Agent的数字身份证</a><a href="#section-70" class="toc-level-3">Agent Card是什么</a><a href="#section-79" class="toc-level-2">Agent发现机制</a><a href="#section-89" class="toc-level-2">错误处理：让系统更健壮</a><a href="#section-91" class="toc-level-3">标准化错误消息</a><a href="#section-101" class="toc-level-3">错误处理实例</a><a href="#section-104" class="toc-level-2">A2A协议的价值</a><a href="#section-112" class="toc-level-2">下一节预告</a><a href="#section-114" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-150", "title": "Google A2A协议：Agent间通信标准", "stage": 6, "week": 12, "module": "多Agent协作：从个体到群体智能", "minutes": 13, "pages": 9, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Resources + Tools + Prompts 组合 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-117">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 7 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Tools、Prompts详解</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 118</span></div>
+<h1 class="lesson-title">Resources + Tools + Prompts 组合</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>9 页原文</span><span>约 15 分钟阅读</span><span class="module-name">Tools、Prompts详解</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-117.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-117.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面三节分别学习了 Resources、Tools 和 Prompts 各自的用法。本节通过一个完整的智能客服系统场景，展示三者如何在实际项目中协同工作。</p></aside>
+<h2 id="section-1" data-source-page="1">7.1 Resources + Tools + Prompts 组合使用<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">实际上，这三者可以混合使用：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">【MCP Server】
+        +-------------------------+
+        |
+        |  1. Resources (读)
+        |     +- 数据源列表
+        |
+        |  2. Tools (写)
+        |     +- 可执行操作
+        |
+        |  3. Prompts (模板)
+        |     +- 使用指南
+        |
+        +-------------------------+
+                    ↓
+            统一的 MCP 协议
+                    ↓
+              AI 应用 (Client)</code></pre></div>
+<h3 id="section-4" data-source-page="2">场景1：智能客服系统<a class="heading-link" href="#section-4" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">一个客服 MCP Server，能查询订单、处理退款、发送通知。</p>
+<p data-source-page="2">下面是它的完整设计——注重函数名和每层职责，不展开实现细节：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">class CustomerServiceMCPServer:
+    &quot;&quot;&quot;
+    智能客服 MCP Server：
+    通过三层接口（Resources / Tools / Prompts）把客服能力暴露给 AI 应用
+    &quot;&quot;&quot;
+
+    # ═══════════════════════════════════════
+    #  Resources：只读知识库
+    #  AI 调用 list_resources() 拿到列表，
+    #  再按需 read_resource(uri) 获取具体内容
+    # ═══════════════════════════════════════
+    def list_resources(self):
+        return [
+            {&quot;uri&quot;: &quot;kb://faq&quot;,     &quot;description&quot;: &quot;常见问题标准答案&quot;},
+            {&quot;uri&quot;: &quot;kb://policy&quot;,  &quot;description&quot;: &quot;退换货政策（时效/条件/流程）&quot;},
+            {&quot;uri&quot;: &quot;kb://contact&quot;, &quot;description&quot;: &quot;客服联系方式&quot;}
+        ]
+
+    # ═══════════════════════════════════════
+    #  Tools：可执行操作（有副作用）
+    #  AI 调用 list_tools() 拿到列表，
+    #  再按需 call_tool(name, args) 触发实际操作
+    # ═══════════════════════════════════════
+    def list_tools(self):
+        return [
+            {&quot;name&quot;: &quot;query_order&quot;,       &quot;description&quot;: &quot;按订单号查询状态、金额、物流&quot;},
+            {&quot;name&quot;: &quot;process_refund&quot;,    &quot;description&quot;: &quot;发起退款，修改订单状态为已退款&quot;},
+            {&quot;name&quot;: &quot;send_notification&quot;, &quot;description&quot;: &quot;向用户发送短信/邮件通知&quot;}
+        ]
+
+    # ═══════════════════════════════════════
+    #  Prompts：预制工作流模板
+    #  把 Resource + Tool 组合成固定流程，
+    #  每个 Prompt 内含操作指引——告诉 AI 该先后做什么
+    # ═══════════════════════════════════════
+    def list_prompts(self):
+        return [
+            {&quot;name&quot;: &quot;handle_refund_request&quot;, &quot;description&quot;: &quot;退款处理全流程&quot;},
+            {&quot;name&quot;: &quot;order_inquiry&quot;,         &quot;description&quot;: &quot;订单查询与物流追踪&quot;},
+            {&quot;name&quot;: &quot;complaint_handling&quot;,    &quot;description&quot;: &quot;投诉受理与升级&quot;}
+        ]</code></pre></div>
+<p data-source-page="3">光看接口定义有点抽象，跟着一个真实请求走一遍，立刻就能明白三层是怎么协作的。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h3 id="section-9" data-source-page="4">一个退款请求的完整旅程<a class="heading-link" href="#section-9" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">光看接口定义有点抽象。下面跟着一个真实退款请求，看它是怎么在三方之间流转的。</p>
+<p data-source-page="4">这三个角色的职责先明确一下：LLM 是大脑——负责理解用户意图、做判断、决定下一步该调什么；AI应用 是调度者——LLM 决定之后，AI 应用通过协议向 MCP Server 发请求、收回结果、喂给 LLM，它自己不碰磁盘也不执行具体的业务操作；MCP Server 是执行者——负责提供 Resources / Tools /Prompts 的能力列表，并且在被 AI 应用调用时，真正执行实际操作（读文件、查数据库、发短信、退款处理等）。LLM 从不直接调 MCP Server，每一步都是 LLM 决策、AI 应用调度、MCP Server 执行。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户：「我要退货，订单号 12345」
+  │
+  ▼
+
+━━━ 第一步：意图识别 → 匹配 Prompt ━━━━━━━━━━━━━━━━━━━━━━
+  │
+  │  【AI 应用】 收到用户文字
+  │            · 自己没有理解能力——AI 应用只是一段程序代码，看不懂自然语言
+  │            · 只能把「我要退货，订单号 12345」原封不动转发给 LLM
+  │
+  ▼
+  【LLM】 收到文字，开始理解：
+        · 关键词「退货」→ 这是一个退款请求
+        · 关键词「订单号 12345」→ 需要处理具体订单
+        · 结论：需要走退款处理流程
+
+        但 LLM 不知道这个 MCP Server 注册了哪些能力——
+        有没有退款相关的 Prompt？可以用哪些 Tool？能查阅哪些 Resource？
+        LLM 必须通过 MCP Server 暴露的接口列表才能知道答案。
+        → 先查 Prompt 模板：指示 AI 应用调 list_prompts()
+  │
+  │  list_prompts()
+  ▼
+  【MCP Server】 返回注册的全部 Prompt：
+        · **handle_refund_request** — 退款处理全流程
+        · **order_inquiry**         — 订单查询与物流追踪
+        · **complaint_handling**    — 投诉受理与升级
+  │
+  │  返回 Prompt 列表
+  ▼
+  【LLM】 逐一比对每个 Prompt 的描述文字——做的是语义匹配，不是精确关键词匹配：
+        ·「退款处理全流程」→ 和用户说的「退货」语义最接近
+        ·「订单查询」      → 用户没说要查订单，排除
+        ·「投诉处理」      → 用户没说要投诉，排除
+        → 选定 **handle_refund_request**
+        → 指示 AI 应用：拿这个 Prompt 内嵌的操作指引
+  │
+  ▼
+
+━━━ 第二步：获取操作指引 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  │
+  │  get_prompt(&quot;handle_refund_request&quot;)
+  ▼
+  【MCP Server】 Prompt 不仅是个名字，内部预置了完整的操作流程——
+        先做什么、后做什么、每一步调哪个接口，全都写好了：
+        ·
+        ·  **1. query_order(12345)**
+        ·     → 确认订单存在，拿到金额和状态
+        ·  **2. 读 kb://policy Resource**
+        ·     → 获取退换货政策，判断是否可退
+        ·  **3. process_refund(order_id, amount)**
+        ·     → 执行退款
+        ·  **4. send_notification(user, msg)**
+        ·     → 发短信告知用户退款结果
+        ·
+  │
+  │  返回操作指引
+  ▼
+  【LLM】 拿到指引，LLM 才知道具体该怎么走
+        → 指示 AI 应用：「按指引，从第一步开始执行」
+  │
+  ▼
+
+━━━ 第三步：按指引逐步执行 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ── Step 1：查订单 ──
+
+  【LLM】 决定：需要先看这个 MCP Server 提供了哪些 Tool
+        → 指示 AI 应用：调 list_tools()
+  │
+  │  list_tools()
+  ▼
+  【MCP Server】 返回：query_order、process_refund、send_notification
+  │
+  │  返回 Tool 列表
+  ▼
+  【LLM】 在列表中找到 **query_order**，决定用订单号 12345 查询
+        · 需要确认：订单是否存在？金额多少？什么时候签收的？
+        · 这些信息决定了后续能不能退款
+        → 指示 AI 应用：call_tool(&quot;query_order&quot;, 12345)
+  │
+  │  call_tool(&quot;query_order&quot;, 12345)
+  ▼
+  【MCP Server】 查询数据库，返回：
+        订单 ¥299，状态「已签收」，签收 3 天前
+  │
+  │  返回查询结果
+  ▼
+  【LLM】 拿到订单数据
+
+  ── Step 2：读政策 ──
+
+  【LLM】 决定：光有订单数据不够，还需要知道退货规则
+        · 什么条件下能退？几天之内有效？
+        · 不知道规则就没法判断能不能退
+        → 指示 AI 应用：read_resource(&quot;kb://policy&quot;)
+  │
+  │  read_resource(&quot;kb://policy&quot;)
+  ▼
+  【MCP Server】 返回政策内容：「签收 7 天内可无理由退货」
+  │
+  │  返回政策内容
+  ▼
+  【LLM】 拿到退货政策
+
+  ── Step 3：判断 + 执行退款 ──
+
+  【LLM】 现在手里有两组数据，可以做出判断了：
+        · 订单签收日期 = 3 天前
+        · 退货政策     = 签收 7 天内可退
+        ·
+        这一步只有 LLM 能做——MCP Server 只负责提供数据和执行指令，
+        不参与任何决策，推理和判断完全是 LLM 的事。
+        → 推理：3 天 &lt; 7 天 → **符合退货条件，可以退款**
+        → 指示 AI 应用：call_tool(&quot;process_refund&quot;,
+                                 order_id=12345,
+                                 amount=299)
+  │
+  │  call_tool(&quot;process_refund&quot;, order_id=12345, amount=299)
+  ▼
+  【MCP Server】 执行退款操作，修改订单状态
+        → 退款成功，款项 3-5 个工作日到账
+  │
+  │  返回退款结果
+  ▼
+  【LLM】 退款成功
+
+  ── Step 4：通知用户 ──
+
+  【LLM】 决定：退款已经成功，但用户还不知道
+        · 不能悄悄退款不吭声，用户需要知道处理结果
+        → 指示 AI 应用：call_tool(&quot;send_notification&quot;,
+                          user=&quot;138****&quot;,
+                          msg=&quot;退款 ¥299 已处理&quot;)
+  │
+  │  call_tool(&quot;send_notification&quot;, ...)
+  ▼
+  【MCP Server】 发送短信 → 短信已送达
+  │
+  │  返回发送结果
+  ▼
+  【LLM】 通知已送达
+  │
+  ▼
+
+━━━ 最终回复 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  │
+  ▼
+  【LLM】 不是简单地把前面的结果拼接起来——
+        LLM 要把每一步的信息组织成用户能看懂的自然语言：
+        · 订单 12345 查到了
+        · 退货政策判断通过了
+        · 退款已执行成功
+        · 短信已发送
+        →
+        「您的订单 12345 已成功退款 ¥299，
+          款项预计 3-5 个工作日到账，请留意短信通知。」
+  │
+  ▼
+回复用户</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<p data-source-page="8">回顾整个流程，每走一步的模式都一样：LLM 想清楚下一步该做什么 → 告诉 AI 应用去调哪个接口 →AI 应用调 MCP Server 拿到数据或触发操作 → 把结果拿回给 LLM → LLM 看了结果再想下一步。LLM全程不动手但每一步都是它决策的，AI 应用负责编排调度——在 LLM 和 MCP Server 之间传递请求和结果，MCP Server 是真正动手的那个——被调用时执行实际操作（读文件、查数据库、退款处理、发短信等），然后把结果返回。</p>
+<h2 id="section-14" data-source-page="8">7.2 下一节预告<a class="heading-link" href="#section-14" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">到这里，已经集齐了 MCP 的三张核心「王牌」：让 AI 能读数据的 Resources，让 AI 动起来的Tools，以及让流程标准化的 Prompts。这些能力是如何在 AI 应用与后端服务之间精准传递，并保持跨平台、跨语言的丝滑协作的呢？下一节将揭开 MCP 通信协议与架构的神秘面纱，深入 JSON-RPC 的底层逻辑，看透这场高效协作背后的技术真相。</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h2 id="section-16" data-source-page="9">7.3 ■ 学点英语<a class="heading-link" href="#section-16" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="9"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>智能编排</td><td>Intelligent Orchestration</td><td>/ɪnˈtelɪdʒənt ɔːrkɪ ˌ ˈstreɪʃn/</td><td>LLM智能决策+AI应用调度编排的协作模式</td></tr><tr><td>逐步骤决策</td><td>Step-by-Step Decision</td><td>/step baɪ step dɪ ˈsɪʒn/</td><td>LLM每步基于上一步结果动态决策下一步的机制</td></tr><tr><td>信息整合</td><td>Information Synthesis</td><td>/ ɪnfərˈmeɪʃn ˌ ˈsɪnθəsɪs/</td><td>LLM将Server返回的多步数据整合为连贯自然语言的能力</td></tr><tr><td>安全闸门</td><td>Security Gate</td><td>/sɪˈkjʊrəti ɡeɪt/</td><td>AI应用在编排过程中插入的权限校验和安全拦截机制</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-116.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Prompts 详解</strong><small>Tools、Prompts详解</small></a><a class="chapter-neighbor next" href="lesson-118.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>MCP 通信协议</strong><small>MCP通信协议与实战</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5280#mid=104936" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">7.1 Resources + Tools + Prompts 组合使用</a><a href="#section-4" class="toc-level-3">场景1：智能客服系统</a><a href="#section-9" class="toc-level-3">一个退款请求的完整旅程</a><a href="#section-14" class="toc-level-2">7.2 下一节预告</a><a href="#section-16" class="toc-level-2">7.3 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-117", "title": "Resources + Tools + Prompts 组合", "stage": 3, "week": 7, "module": "Tools、Prompts详解", "minutes": 15, "pages": 9, "type": "article"}</script>
+</body></html>

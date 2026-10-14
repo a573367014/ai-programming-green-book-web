@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>推理模式：Agent如何思考 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-146">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-6">智能体</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 11 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Agent 的核心架构剖析</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 147</span></div>
+<h1 class="lesson-title">推理模式：Agent如何思考</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>13 页原文</span><span>约 13 分钟阅读</span><span class="module-name">Agent 的核心架构剖析</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-146.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-146.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面几节，我们已经了解了Agent的整体架构、感知能力、规划能力和记忆系统。但有一个核心问题始终没有正面回答: Agent是如何&quot;思考&quot;的? 当Agent面对一个问题时，它在大脑(LLM)中经历了什么过程?为什么有时能给出完美答案，有时却会犯低级错误?</p></aside>
+<h2 id="section-1" data-source-page="1">推理与感知-规划-执行的关系<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">推理在Agent的&quot;感知-规划-执行&quot;循环中处于什么位置？</p>
+<p data-source-page="1">答案是:推理贯穿整个循环的每一步。</p>
+<p data-source-page="1">推理贯穿整个循环的每一步</p>
+<p class="list-item" data-source-page="1">1</p>
+<p class="list-item" data-source-page="1">2</p>
+<p class="list-item" data-source-page="1">3</p>
+<p class="list-item" data-source-page="1">4</p>
+<p class="list-item" data-source-page="1">5</p>
+<p class="list-item" data-source-page="1">6</p>
+<p class="list-item" data-source-page="1">7</p>
+<p class="list-item" data-source-page="1">8</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p class="list-item" data-source-page="2">9</p>
+<p data-source-page="2">具体来说:</p>
+<p data-source-page="2">具体来说</p>
+<p class="list-item" data-source-page="2">感知阶段的推理: “用户说’帮我订票’→ 推理出这是预订需求 → 需要询问目的地和时间”</p>
+<p class="list-item" data-source-page="2">规划阶段的推理: “要订票 → 需要先查天气 → 再选交通工具 → 最后预订” (这是CoT推理)</p>
+<p class="list-item" data-source-page="2">执行阶段的推理: “调用天气API失败 → 推理出可能网络问题 → 决定重试还是换备用API” (这是Self-Reflection)</p>
+<p data-source-page="2">所以，推理不是独立的一步，而是Agent在每个决策点都要用到的核心能力。</p>
+<p data-source-page="2">推理不是独立的一步，而是Agent在每个决策点都要用到的核心能力</p>
+<p data-source-page="2">本节我们聚焦的是:Agent在这些决策点使用的推理模式(CoT、ToT、ReAct等)有什么特点，如何选择和组合使用。</p>
+<h2 id="section-22" data-source-page="2">Agent推理的核心挑战<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">在第1章第10节，我们学习了Chain-of-Thought(思维链)的基础原理——通过&quot;让我们一步步思考&quot;引导LLM展示推理过程，能让准确率从17%提升到78%。</p>
+<p data-source-page="2">但Agent面临的推理场景远比单次问答复杂:</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">单次问答(第1章场景):
+用户提问 → LLM推理 → 给出答案 → 结束
+
+Agent场景(本章关注点):
+用户目标 → 多轮推理决策 → 调用工具 → 观察结果
+         ↑                            |
+         └────────── 循环往复 ─────────┘</code></pre></div>
+<p data-source-page="2">Agent推理的三大特殊性:</p>
+<p data-source-page="2">Agent推理的三大特殊性</p>
+<p class="list-item" data-source-page="2">动态性:每一轮的推理都基于上一轮的观察结果</p>
+<p data-source-page="2">动态性</p>
+<p class="list-item" data-source-page="2">工具依赖:需要决策何时调用哪个工具</p>
+<p data-source-page="2">工具依赖</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p class="list-item" data-source-page="3">多轮性:可能需要5-10轮推理才能完成任务</p>
+<p data-source-page="3">多轮性</p>
+<p data-source-page="3">这就需要更强大的推理模式。</p>
+<h2 id="section-35" data-source-page="3">CoT在Agent中的特殊应用<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">第1章我们学过，CoT有两种形式:Zero-Shot(“让我们一步步思考”)和Few-Shot(给推理示例)。但在讲Agent中的CoT应用之前，我们必须先扔掉一个常见的误解。</p>
+<h3 id="section-37" data-source-page="3">CoT的本质:不是&quot;思考&quot;,而是&quot;生成文本&quot;<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">很多人看到CoT的例子后，会认为:LLM真的在“思考”。但事实是:LLM只是在生成一段看起来像推理过程的文本。</p>
+<p data-source-page="3">当你给LLM这样的Prompt:</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">问题:小明有3个苹果,又买2个,他现在有几个苹果?
+
+让我们一步步思考:</code></pre></div>
+<p data-source-page="3">LLM会生成这样的文本:</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">小明最开始有3个苹果
+他又买2个
+所以总数是 3 + 2 = 5
+答案:5个苹果</code></pre></div>
+<p data-source-page="3">看起来LLM像是一个人一样在“思考”， 但其实不是。LLM只是在生成文本，他根本不知道这是连续的思维过程。具体来说：</p>
+<p class="list-item" data-source-page="3">LLM并没有真的在&quot;计算&quot; 3+2</p>
+<p class="list-item" data-source-page="3">LLM只是在训练数据中见过大量“问题→推理步骤→答案”的样本</p>
+<p class="list-item" data-source-page="3">它学会了这种文本模式,所以能生成类似的输出</p>
+<p data-source-page="3">文本模式</p>
+<h3 id="section-48" data-source-page="3">回顾：CoT如何让LLM生成&quot;推理步骤&quot;<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">Zero-Shot CoT:只需加一句引导词Zero-Shot CoT</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 不用CoT
+prompt = &quot;小明有3个苹果,又买2个,他现在有几个?&quot;
+response = llm.invoke(prompt)
+# 输出:“5个” (直接给答案,但可能出错)
+
+# 使用CoT
+prompt = &quot;&quot;&quot;
+小明有3个苹果,又买2个,他现在有几个?
+
+让我们一步步思考:
+&quot;&quot;&quot;
+response = llm.invoke(prompt)
+# 输出:“步骤1:...步骤2:...答案:5个” (生成了推理步骤)</code></pre></div>
+<p data-source-page="4">为什么有效</p>
+<p class="list-item" data-source-page="4">训练数据中有大量“让我们一步步思考”后面跟着详细推理的样本</p>
+<p class="list-item" data-source-page="4">LLM学会了:看到这句话 → 应该生成步骤式的回答</p>
+<p data-source-page="4">Few-Shot CoT:给几个示例</p>
+<p data-source-page="4">Few-Shot CoT</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">prompt = &quot;&quot;&quot;
+示例1:
+问题:小红有5个橘子,吃掉2个,还剩几个?
+推理:
+- 最开始:5个
+- 吃掉2个:减去2个
+- 计算:5 - 2 = 3
+答案:3个
+
+示例2:
+问题:小明有3支笔,又买2支,现在有几支?
+推理:
+- 最开始:3支
+- 又买2支:增加2支
+- 计算:3 + 2 = 5
+答案:5支
+
+现在轮到你:
+问题:小明有3个苹果,又买2个,他现在有几个?
+&quot;&quot;&quot;
+response = llm.invoke(prompt)
+# LLM会模仿示例的格式,生成类似的推理步骤</code></pre></div>
+<p data-source-page="5">CoT的核心原理在于生成文本模式，而非真正的逻辑推理。</p>
+<h3 id="section-58" data-source-page="5">CoT在Agent中的应用:任务规划<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">现在我们来看，CoT在Agent系统中是如何应用的。Agent中的CoT主要用于任务规划阶段,而不是执行阶段。</p>
+<p data-source-page="5">用户问：</p>
+<aside class="callout" data-source-page="5"><p>帮我查一下明天杭州和上海的天气，推荐一个适合旅游的城市。</p></aside>
+<p data-source-page="5">Agent 在规划阶段把用户问题包装成 CoT 风格的 Prompt，发给 LLM：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户问题：帮我查一下明天杭州和上海的天气，推荐一个适合旅游的城市。
+
+请制定一个任务执行计划，一步步分析需要做什么：</code></pre></div>
+<p data-source-page="5">LLM 收到后，生成如下计划文本：</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<aside class="callout" data-source-page="6"><p>步骤1：理解需求 用户问了两个城市的天气 需要比较后给出推荐 步骤2：分解子任务 子任务1：查询杭州天气 子任务2：查询上海天气 子任务3：对比分析 子任务4：给出推荐 步骤3：选择工具 需要用 get_weather 工具查询天气 查询两次（杭州和上海）</p></aside>
+<p data-source-page="6">注意：</p>
+<p data-source-page="6">注意</p>
+<p class="list-item" data-source-page="6">这里的“步骤1、步骤2、步骤3”是 LLM 生成的文本</p>
+<p data-source-page="6">生成的文本</p>
+<p class="list-item" data-source-page="6">这是一个计划，不是真实执行</p>
+<p class="list-item" data-source-page="6">真实执行是后面的事（会用到 ReAct 模式，后面章节会讲）</p>
+<h2 id="section-72" data-source-page="6">Tree-of-Thought:Agent的多路径探索<a class="heading-link" href="#section-72" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">在Agent系统中，经常遇到需要尝试多个工具或多种方案的场景。这时单路径的CoT就不够用了，需要Tree-of-Thought(思维树)来探索最优解。</p>
+<h3 id="section-74" data-source-page="6">ToT的Agent应用场景<a class="heading-link" href="#section-74" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">场景1:多工具选择</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户:帮我分析一下公司这个月的销售数据,找出top5产品,
+    并生成一份可视化报告发给老板
+
+[第1层:选择数据源工具]
+  选项1:read_excel读取本地文件
+  选项2:query_database查询数据库
+  选项3:call_api调用销售系统API
+
+  评估:用户说&quot;这个月&quot;,需要实时数据 → 选API
+
+[第2层:选择分析工具]
+  选项A:直接用pandas计算
+  选项B:调用数据分析服务
+  选项C:用SQL聚合
+
+  评估:数据量不大,本地处理即可 → 选pandas
+
+[第3层:选择可视化工具]
+  格式1:generate_chart生成静态图
+  格式2:create_dashboard生成交互式看板
+  格式3:直接返回表格
+
+  评估:给老板看,需要专业呈现 → 选交互式看板
+
+[第4层:选择发送方式]
+  方式1:send_email发邮件
+  方式2:upload_to_drive上传到共享盘
+  方式3:post_to_slack发到工作群
+
+  评估:用户说&quot;发给老板&quot;,正式场合 → 选邮件
+
+最终方案:API取数 → pandas分析 → 交互看板 → 邮件发送</code></pre></div>
+<p data-source-page="7">场景2:异常处理策略</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">工具调用失败时,探索多种补救方案:
+
+[第1轮:天气API调用失败]
+  方案1:重试3次
+  方案2:切换备用API
+  方案3:使用缓存数据
+
+  评估:备用API可能也失败 → 选重试
+
+[第2轮:重试仍失败]
+  方案A:返回错误给用户
+  方案B:用历史天气数据估算
+  方案C:改用网页爬取
+
+  评估:历史数据不准确 → 选网页爬取
+
+最终路径:重试 → 网页爬取 → 成功获取数据</code></pre></div>
+<h3 id="section-79" data-source-page="8">CoT与ToT的实现原理区别<a class="heading-link" href="#section-79" aria-label="链接至本节">#</a></h3>
+<h3 id="section-80" data-source-page="8">CoT的实现:Prompt层面的引导<a class="heading-link" href="#section-80" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">CoT本质上非常简单，只是在Prompt中加入引导词:</p>
+<p data-source-page="8">在Prompt中加入引导词</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Zero-Shot CoT:
+用户问题 + &quot;让我们一步步思考&quot;
+  ↓
+单次LLM调用
+  ↓
+LLM自动生成:步骤1→步骤2→步骤3→答案
+
+Few-Shot CoT:
+示例1(问题→推理→答案) + 示例2 + 用户问题
+  ↓
+单次LLM调用
+  ↓
+LLM模仿示例格式输出推理过程</code></pre></div>
+<p data-source-page="8">关键特点:</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<p data-source-page="9">关键特点</p>
+<p class="list-item" data-source-page="9">单路径:LLM只生成一条推理链</p>
+<p class="list-item" data-source-page="9">单次调用:整个过程只需1次API调用</p>
+<p data-source-page="9">单次调用</p>
+<p class="list-item" data-source-page="9">无需算法:纯Prompt技巧，任何支持对话的LLM都能用</p>
+<p data-source-page="9">无需算法</p>
+<h3 id="section-91" data-source-page="9">ToT的实现:需要搜索算法控制<a class="heading-link" href="#section-91" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">ToT复杂得多，需要外部程序控制的树搜索算法，所以我们不推荐手工实现ToT。这里我们只简单介绍下ToT的关键核心技术:</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">核心流程:
+1. 生成层:让LLM为同一问题生成多个不同的初步想法
+2. 评估层:让LLM或设计评估函数给每个想法打分
+3. 选择层:用搜索算法选择最优的几个分支继续扩展
+4. 递归层:对选中的想法继续步骤1-3,构建多层决策树
+5. 最终选择:从所有路径中选出得分最高的完整方案</code></pre></div>
+<p data-source-page="9">需要的关键算法:</p>
+<p data-source-page="9">需要的关键算法</p>
+<p class="list-item" data-source-page="9">广度优先搜索(BFS):每层探索所有可能再筛选</p>
+<p data-source-page="9">广度优先搜索(BFS)</p>
+<p class="list-item" data-source-page="9">深度优先搜索(DFS):沿一条路径探索到底再回溯</p>
+<p data-source-page="9">深度优先搜索(DFS)</p>
+<p class="list-item" data-source-page="9">蒙特卡洛树搜索(MCTS):结合随机采样和价值评估</p>
+<p data-source-page="9">蒙特卡洛树搜索(MCTS)</p>
+<p class="list-item" data-source-page="9">剪枝算法:避免组合爆炸，只保留最有希望的k个分支</p>
+<p data-source-page="9">剪枝算法</p>
+<p class="list-item" data-source-page="9">树状结构:每层生成3-5个分支，探索不同可能性</p>
+<p data-source-page="9">树状结构</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<p class="list-item" data-source-page="10">多次调用:每个节点都要调用LLM(可能10-30次)</p>
+<p data-source-page="10">多次调用</p>
+<p class="list-item" data-source-page="10">需要评估:每个想法都要打分，判断优劣</p>
+<p data-source-page="10">需要评估</p>
+<p class="list-item" data-source-page="10">算法复杂:需要实现完整的树搜索框架</p>
+<p data-source-page="10">算法复杂</p>
+<p data-source-page="10">如果你需要在Agent系统中使用ToT,推荐LangGraph。官方文档提供完整的ToT教程和示例代码。</p>
+<p data-source-page="10">最佳实践:</p>
+<p data-source-page="10">最佳实践</p>
+<p class="list-item" data-source-page="10">生产环境优先选择LangGraph实现:官方支持、生态成熟</p>
+<p data-source-page="10">生产环境优先选择LangGraph实现</p>
+<p class="list-item" data-source-page="10">成本考量:ToT的多次LLM调用成本较高，评估是否真的需要</p>
+<p data-source-page="10">成本考量</p>
+<p class="list-item" data-source-page="10">适用场景:只在关键决策点(如多工具选择、复杂规划)使用ToT</p>
+<p data-source-page="10">适用场景</p>
+<p class="list-item" data-source-page="10">大多数情况:CoT配合Self-Reflection（下节讲解）就足够了</p>
+<p data-source-page="10">大多数情况</p>
+<h2 id="section-123" data-source-page="10">Self-Reflection:Agent的自我修正<a class="heading-link" href="#section-123" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">Agent需要反思的原因</p>
+<p data-source-page="10">Agent的工具调用和多轮交互尤其容易出错:</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户:帮我订明天去杭州的高铁票。
+
+Agent(没有反思):
+调用:book_train(&quot;明天&quot;, &quot;杭州&quot;)
+结果:失败 - 缺少出发城市参数
+
+Agent(有反思):
+反思:要订票需要出发城市,用户没提供,我应该先询问。
+行动:询问用户出发城市</code></pre></div>
+<h3 id="section-127" data-source-page="11">Agent反思的三个阶段<a class="heading-link" href="#section-127" aria-label="链接至本节">#</a></h3>
+<p data-source-page="11">在调用工具前，Agent先反思:</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户:帮我查一下明天杭州的天气,如果不下雨就订票。
+
+Agent:
+我要调用get_weather工具,参数是:
+- 城市:杭州
+- 日期:明天
+
+反思:等等,&quot;明天&quot;不是标准日期格式,API可能无法识别。
+
+修正:先转换为&quot;2024-12-10&quot;,再调用工具。</code></pre></div>
+<p data-source-page="11">工具调用后，检查结果是否合理:</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Agent调用:get_weather(&quot;杭州&quot;, &quot;2024-12-10&quot;)
+返回:{&quot;weather&quot;: &quot;晴天&quot;, &quot;temperature&quot;: &quot;5-15度&quot;}
+
+反思:天气不错,可以订票。但用户没说从哪里出发,
+不能直接调用book_train。
+
+修正:先询问用户出发城市。</code></pre></div>
+<p data-source-page="11">在给出最终答案前，检查逻辑是否合理:</p>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<div class="code-block" data-source-page="12"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户补充:从上海出发。
+
+Agent已订票:上海 → 杭州,12月10日,G7533次
+
+Agent初步答案:已为您订好明天的票,上海到杭州。
+
+反思:等等,我还没告诉用户天气情况,
+这是用户决策的重要依据。
+
+修正:明天杭州晴天5-15度,已为您订好上海到杭州的G7533次列车。</code></pre></div>
+<p data-source-page="12">成本权衡</p>
+<p data-source-page="12">Agent中的反思需要谨慎使用:</p>
+<p class="list-item" data-source-page="12">成本增加:每次反思都是额外的LLM调用</p>
+<p data-source-page="12">成本增加</p>
+<p class="list-item" data-source-page="12">延迟增加:用户等待时间更长</p>
+<p data-source-page="12">延迟增加</p>
+<p class="list-item" data-source-page="12">过度反思:可能陷入&quot;纠结循环&quot;</p>
+<p data-source-page="12">过度反思</p>
+<p data-source-page="12">Agent最佳实践:</p>
+<p data-source-page="12">Agent最佳实践</p>
+<p class="list-item" data-source-page="12">关键步骤才反思(工具调用、最终答案)</p>
+<p class="list-item" data-source-page="12">设置反思上限(最多3次) 异常触发反思(正常情况不反思)</p>
+<h2 id="section-146" data-source-page="12">下一节预告<a class="heading-link" href="#section-146" aria-label="链接至本节">#</a></h2>
+<p data-source-page="12">理解了Agent的推理模式后，你可能会迫不及待地想动手实现一个自己的Agent。但这时会面临一个关键选择：是从零手写代码，还是使用现成框架？用单体架构简单直接，还是模块化设计更易扩展？接下来，我们将对比Agent的各种实现范式，帮你根据实际场景做出最适合的技术选型。</p>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<h2 id="section-148" data-source-page="13">■ 学点英语<a class="heading-link" href="#section-148" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="13"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>思维链</td><td>Chain-of-Thought (CoT)</td><td>/tʃeɪn əv θɔːt/</td><td>通过一步步推理展示LLM决策过程的 Prompt技巧</td></tr><tr><td>思维树</td><td>Tree-of-Thought (ToT)</td><td>/triː əv θɔːt/</td><td>探索多条推理路径并选择最优解的搜索框架</td></tr><tr><td>自我反思</td><td>Self-Reflection</td><td>/self rɪˈflekʃn/</td><td>Agent在关键节点自行检查并修正决策的机制</td></tr><tr><td>广度优先搜索</td><td>BFS (Breadth-First Search)</td><td>/bredθ fɜːrst sɜːrtʃ/</td><td>ToT中每层探索所有可能再筛选的搜索算法</td></tr><tr><td>深度优先搜索</td><td>DFS (Depth-First Search)</td><td>/depθ fɜːrst sɜːrtʃ/</td><td>ToT中沿一条路径探索到底再回溯的搜索算法</td></tr><tr><td>蒙特卡洛树搜索</td><td>MCTS (Monte Carlo Tree Search)</td><td>/em siː tiː es/</td><td>结合随机采样和价值评估的树搜索算法</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-145.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>记忆系统：让Agent拥有经验</strong><small>Agent 的核心架构剖析</small></a><a class="chapter-neighbor next" href="lesson-147.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Agent 的实现范式对比</strong><small>Agent 的核心架构剖析</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5290#mid=105152" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">推理与感知-规划-执行的关系</a><a href="#section-22" class="toc-level-2">Agent推理的核心挑战</a><a href="#section-35" class="toc-level-2">CoT在Agent中的特殊应用</a><a href="#section-37" class="toc-level-3">CoT的本质:不是&quot;思考&quot;,而是&quot;生成文本&quot;</a><a href="#section-48" class="toc-level-3">回顾：CoT如何让LLM生成&quot;推理步骤&quot;</a><a href="#section-58" class="toc-level-3">CoT在Agent中的应用:任务规划</a><a href="#section-72" class="toc-level-2">Tree-of-Thought:Agent的多路径探索</a><a href="#section-74" class="toc-level-3">ToT的Agent应用场景</a><a href="#section-79" class="toc-level-3">CoT与ToT的实现原理区别</a><a href="#section-80" class="toc-level-3">CoT的实现:Prompt层面的引导</a><a href="#section-91" class="toc-level-3">ToT的实现:需要搜索算法控制</a><a href="#section-123" class="toc-level-2">Self-Reflection:Agent的自我修正</a><a href="#section-127" class="toc-level-3">Agent反思的三个阶段</a><a href="#section-146" class="toc-level-2">下一节预告</a><a href="#section-148" class="toc-level-2">■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-146", "title": "推理模式：Agent如何思考", "stage": 6, "week": 11, "module": "Agent 的核心架构剖析", "minutes": 13, "pages": 13, "type": "article"}</script>
+</body></html>

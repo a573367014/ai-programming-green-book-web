@@ -1,0 +1,19 @@
+--- PDF 第 1 页 ---
+1. In the formula 参数新值 = 参数旧值 - 学习率 × 梯度, why does
+subtracting the product of learning rate and
+gradient guarantee the
+来源: https://class.imooc.com/lesson/5253#mid=104947
+阶段: 阶段一: 【认知基石】理解大模型的本质与工作原理
+周: 第1周 语言模型是什么
+模块: ChatGPT的本质
+课节: 练习 1-6 选择练习
+1. 
+In the formula 参数新值 = 参数旧值 - 学习率 × 梯度, why does subtracting the product of
+learning rate and gradient guarantee the parameter moves in the direction that reduces loss?
+(复习题)
+A. Because the gradient is always positive, so subtracting it always decreases the parameter,
+thus reducing loss B. Because the minus sign ensures that regardless of whether the gradient is
+positive or negative, the parameter moves in the direction that reduces loss C. Because the
+learning rate is always positive, multiplying it with any gradient yields a positive value, and
+subtracting a positive value decreases the parameter D. Because the gradient represents the
+correct direction for adjustment, and the subtraction cancels out the gradient's effect

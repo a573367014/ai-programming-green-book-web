@@ -1,0 +1,66 @@
+{
+  "id": "lesson-045",
+  "title": "选择练习 · 1-5",
+  "code": "1-5",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "监督微调",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/007-监督微调/045-练习-1-5-选择练习.pdf",
+  "sha256": "2c49b6564c6164f8b9b90f3a070abf43a7d7a4628c90e7bc0d7e7d2622703fe1",
+  "pdf": "sources/pdf/lesson-045.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5259#mid=104967",
+  "minutes": 1,
+  "excerpt": "监督微调的数据量（数万条问答对）远小于预训练（3000亿Token），主要原因是什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "监督微调的数据量（数万条问答对）远小于预训练（3000亿Token），主要原因是什么？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 监督微调的数据需要通过API获取，数量受限 B. 预训练已经建立了语言能力，监督微调只是教会模型新的使用方式 C. 问答对数据比互联网文本难收集100万倍 D. 监督微调不需要学习语言，只需要学习数学",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 323,
+    "represented_chars": 155,
+    "removed_chars": 168,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 168
+    }
+  },
+  "videos": [],
+  "order": 46,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "监督微调的数据量（数万条问答对）远小于预训练（3000亿Token），主要原因是什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 监督微调的数据需要通过API获取，数量受限 B. 预训练已经建立了语言能力，监督微调只是教会模型新的使用方式 C. 问答对数据比互联网文本难收集100万倍 D. 监督微调不需要学习语言，只需要学习数学"
+    }
+  ]
+}

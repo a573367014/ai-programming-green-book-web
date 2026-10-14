@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>文字接龙（一）-游戏 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-013">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>文字接龙的游戏</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 014</span></div>
+<h1 class="lesson-title">文字接龙（一）-游戏</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 5 分钟阅读</span><span class="module-name">文字接龙的游戏</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-013.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-013.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>在上一节，我试图让你理解ChatGPT本质上是一个函数——一个有1750亿个参数的、从海量数据中训练出来的函数。但这只是形式上的理解。现在，让我们进入更核心的问题：这个函数到底在计算什么？ 当你打开ChatGPT的对话框，输入一个问题，按下回车键，在那短短几秒钟内，这个有着1750亿参数的庞然大物，究竟在做什么？ 答案简单到令人惊讶，简单到我第一次听说时都有些不敢相信：它在不断地预测下一个词。 仅此而已。</p></aside>
+<aside class="callout" data-source-page="1"><b>注意</b><p>注意，本章第1节我们讨论的是参数的具体值是怎么&quot;训练&quot;出来的；而这一节我们讨论的是，参数训练好后，她是怎么工作的？这个思维一定要转变一下。</p></aside>
+<h2 id="section-2" data-source-page="1">4.1 文字接龙<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">贪吃蛇游戏</p>
+<p data-source-page="1">让我先带你回到童年。你一定玩过&quot;贪吃蛇&quot;这个游戏吧？ 吃之前：</p>
+<p data-source-page="1">吃之后：</p>
+<p data-source-page="1">这个游戏的规则极其简单：每次吃到食物，食物就变成蛇身的一部分，蛇身不断变长。就这样一个接一个，蛇越来越长。</p>
+<p data-source-page="1">ChatGPT在做的事情，本质上也是贪吃蛇游戏。</p>
+<p data-source-page="1">ChatGPT在做的事情，本质上也是贪吃蛇游戏但与贪吃蛇不同，ChatGPT玩的是文字版的贪吃蛇——每预测出一个新词（“吃到食物”），就把它加到已生成的文本中（“变成蛇身的一部分”），然后继续预测下一个词。就像这样：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">所以，ChatGPT并不是一次将答案全部生成好，而是不断的预测下一个词，最终形成一个完整的答案，并回复给你。</p>
+<p data-source-page="2">这个机制叫做自回归，我们会在后面详细讲解。</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">自回归</code></pre></div>
+<h2 id="section-12" data-source-page="2">4.2 一个实际的例子：看看它是怎么&quot;接龙&quot;的<a class="heading-link" href="#section-12" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">让我给你演示一个具体的过程，让你看看ChatGPT内部到底在发生什么。</p>
+<p data-source-page="2">假设你问它：&quot;今天上海的天气怎么样？&quot;</p>
+<p data-source-page="2">&quot;今天上海的天气怎么样？&quot;</p>
+<p data-source-page="2">在你看来，这只是一个简单的问题。但在ChatGPT内部，一场复杂的概率计算已经开始了。</p>
+<p data-source-page="2">ChatGPT会先&quot;看&quot;你的问题，然后开始一个词一个词地预测答案。</p>
+<p data-source-page="2">一个词一个词地预测</p>
+<p class="list-item" data-source-page="2">第一步：计算第一个回答词的概率</p>
+<p data-source-page="2">在&quot;今天上海的天气怎么样？&quot;这个问题之后，第一个回答词是什么？</p>
+<p data-source-page="2">ChatGPT有一个自己的&quot;词表&quot;。她会扫描这个词表，为每一个词计算一个概率。</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="2"><table><thead><tr><th scope="col">候选词</th><th scope="col">概率</th><th scope="col">备注</th></tr></thead><tbody><tr><td>今天</td><td>25%</td><td>最可能</td></tr><tr><td>上海</td><td>20%</td><td></td></tr><tr><td>目前</td><td>15%</td><td></td></tr><tr><td>现在</td><td>12%</td><td></td></tr><tr><td>根据</td><td>10%</td><td></td></tr><tr><td>天气</td><td>8%</td><td></td></tr><tr><td>…</td><td>…</td><td>其他数万个token的概率都很低，接近0</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">这个概率分布，就是数千亿个参数共同计算出来的结果。每个参数都在这个计算中发挥作用，最终汇聚成这个概率列表。</p>
+<aside class="callout" data-source-page="3"><b>补充说明</b><p>GPT系列词表大小： GPT-2/GPT-3: 50,257 词 GPT-3.5/GPT-4: 100,256 词 GPT-4o:200,064 词</p></aside>
+<p class="list-item" data-source-page="3">第二步：选择一个词</p>
+<p data-source-page="3">ChatGPT根据这个概率分布，选择了&quot;今天&quot;这个词（最可能的那个）。现在我们有了：</p>
+<aside class="callout" data-source-page="3"><p>问题：今天上海的天气怎么样？ 回答：今天</p></aside>
+<p class="list-item" data-source-page="3">第三步：重复这个过程</p>
+<p data-source-page="3">现在，ChatGPT再次计算。注意，这次的上下文变了，它看到的是：</p>
+<aside class="callout" data-source-page="3"><p>问题：今天上海的天气怎么样？ 已生成：今天</p></aside>
+<p data-source-page="3">在这个新的上下文之后，下一个词的概率分布：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="3"><table><thead><tr><th scope="col">候选词</th><th scope="col">概率</th><th scope="col">备注</th></tr></thead><tbody><tr><td>上海</td><td>40%</td><td>压倒性优势</td></tr><tr><td>的</td><td>25%</td><td></td></tr><tr><td>天气</td><td>18%</td><td></td></tr><tr><td>相当</td><td>10%</td><td></td></tr><tr><td>比较</td><td>5%</td><td></td></tr><tr><td>…</td><td>…</td><td></td></tr></tbody></table></div>
+<p data-source-page="3">选择&quot;上海&quot;，得到：</p>
+<aside class="callout" data-source-page="3"><p>问题：今天上海的天气怎么样？ 回答：今天上海</p></aside>
+<p class="list-item" data-source-page="3">第四步：继续接下去</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">再次计算概率：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">候选词</th><th scope="col">概率</th></tr></thead><tbody><tr><td>的</td><td>45%</td></tr><tr><td>天气</td><td>30%</td></tr><tr><td>比较</td><td>12%</td></tr><tr><td>相对</td><td>8%</td></tr><tr><td>…</td><td>…</td></tr></tbody></table></div>
+<p data-source-page="4">选择&quot;的&quot;，得到：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">问题：今天上海的天气怎么样？
+回答：今天上海的
+
+1
+2</code></pre></div>
+<p class="list-item" data-source-page="4">第五步到第N步…</p>
+<p data-source-page="4">就这样，一个词一个词地接下去：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">今天上海的天气
+今天上海的天气相当
+今天上海的天气相当不错
+今天上海的天气相当不错，
+今天上海的天气相当不错，温度
+今天上海的天气相当不错，温度在
+今天上海的天气相当不错，温度在20
+今天上海的天气相当不错，温度在20度
+今天上海的天气相当不错，温度在20度左右
+今天上海的天气相当不错，温度在20度左右，适合
+今天上海的天气相当不错，温度在20度左右，适合户外
+今天上海的天气相当不错，温度在20度左右，适合户外活动。</code></pre></div>
+<p data-source-page="4">每一步，都是在根据问题+已生成的回答，计算所有可能的下一个词的概率，然后选择一个。</p>
+<p data-source-page="4">这就是文字接龙。一个看似简单，实则精妙的过程。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-45" data-source-page="5">4.3 ■ 学点英语<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>自回归</td><td>Autoregressive</td><td>/ ɔːtoʊrɪˈɡresɪv/ ˌ</td><td>每次基于已生成序列预测下一个词，逐步构建完整输出的生成方式</td></tr><tr><td>概率分布</td><td>Probability Distribution</td><td>/ prɑːbəˈbɪləti dɪstrɪ ˌ ˌ ˈbjuːʃən/</td><td>模型为所有候选词计算出的概率列表，总和为1</td></tr><tr><td>词表</td><td>Vocabulary</td><td>/vəˈkæbjəleri/</td><td>模型能识别和生成的所有词的集合</td></tr><tr><td>上下文</td><td>Context</td><td>/ˈkɑːntekst/</td><td>模型预测下一个词时参考的已生成文本</td></tr><tr><td>采样</td><td>Sampling</td><td>/ˈsæmplɪŋ/</td><td>根据概率分布从候选词中选择一个词的过程</td></tr></tbody></table></div>
+<h2 id="section-47" data-source-page="5">图片<a class="heading-link" href="#section-47" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="5"><button class="figure-open" aria-label="放大查看第 5 页图示"><img src="../assets/figures/743d1bf7c7b7284ccf3429765b8022f5.png" width="1252" height="654" loading="lazy" alt="文字接龙（一）-游戏 · 原 PDF 第 5 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<figure data-source-page="6"><button class="figure-open" aria-label="放大查看第 6 页图示"><img src="../assets/figures/917263b5c858ceaa2cd8b2a6dadca79a.png" width="1242" height="582" loading="lazy" alt="文字接龙（一）-游戏 · 原 PDF 第 6 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<figure data-source-page="7"><button class="figure-open" aria-label="放大查看第 7 页图示"><img src="../assets/figures/1bbeeac3ae14f4e17667a7de2bc7d237.png" width="1684" height="1786" loading="lazy" alt="文字接龙（一）-游戏 · 原 PDF 第 7 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-012.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-8</strong><small>ChatGPT的本质</small></a><a class="chapter-neighbor next" href="lesson-014.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-2</strong><small>文字接龙的游戏</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5254#mid=104873" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-2" class="toc-level-2">4.1 文字接龙</a><a href="#section-12" class="toc-level-2">4.2 一个实际的例子：看看它是怎么&quot;接龙&quot;的</a><a href="#section-45" class="toc-level-2">4.3 ■ 学点英语</a><a href="#section-47" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-013", "title": "文字接龙（一）-游戏", "stage": 1, "week": 1, "module": "文字接龙的游戏", "minutes": 5, "pages": 7, "type": "article"}</script>
+</body></html>

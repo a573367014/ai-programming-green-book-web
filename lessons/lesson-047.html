@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>监督微调（三）-对比与局限 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-047">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 2 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>监督微调</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 048</span></div>
+<h1 class="lesson-title">监督微调（三）-对比与局限</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>4 页原文</span><span>约 6 分钟阅读</span><span class="module-name">监督微调</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-047.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-047.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节了解了监督微调的三个关键要素：高质量数据、结构化训练任务、参数微调更新。 本节将通过具体例子展示微调前后的巨大变化，以及监督微调仍然存在的局限性。</p></aside>
+<h2 id="section-1" data-source-page="1">9.1 微调前后的对比<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">用几个具体例子，展示微调带来的变化。</p>
+<p data-source-page="1">例子1:问答任务</p>
+<p data-source-page="1">问题:“太阳是什么时候开始绕着地球转的?”</p>
+<p data-source-page="1">微调前(纯预训练GPT-3):</p>
+<aside class="callout" data-source-page="1"><p>“太阳是什么时候开始绕着地球转的?这是一个关于天文学历史的问题。 在古代，人们确实认为太阳绕着地球转，这被称为’地心说’。 托勒密在公元2世纪提出了完整的地心说体系，认为地球是宇宙的中心。… 直到哥白尼在16世纪提出了日心说。…”</p></aside>
+<p data-source-page="1">微调后(ChatGPT):</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<aside class="callout" data-source-page="2"><p>&quot;我注意到您的问题中可能有些误解。实际上，太阳并不绕着地球转， 而是地球绕着太阳转。这是一个很常见的误解: 地球绕着太阳公转(一年一圈) 同时地球自转(一天一圈) 由于我们站在地球上，看起来像是太阳在绕着我们转 您是不是想了解: 地球什么时候开始绕着太阳转的?(大约46亿年前太阳系形成时) 或者为什么古人会认为是太阳绕着地球转? 很乐意为您详细解答!&quot;</p></aside>
+<p data-source-page="2">礼貌地指出错误，解释为什么会有这个误解，并提供可能的正确问法</p>
+<p data-source-page="2">例子2:代码生成</p>
+<p data-source-page="2">请求:“用Python写一个冒泡排序”</p>
+<p data-source-page="2">微调前:</p>
+<aside class="callout" data-source-page="2"><p>“用Python写一个冒泡排序。冒泡排序是一种简单的排序算法， 它的基本思想是。…时间复杂度是O(n²)…在实际应用中， 通常会使用更高效的算法如快速排序。…”</p></aside>
+<p data-source-page="2">讲解算法原理，但没有给代码</p>
+<p data-source-page="2">微调后:</p>
+<p data-source-page="2">&quot;好的!这里是Python实现的冒泡排序:</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def bubble_sort(arr):
+   n = len(arr)
+   for i in range(n):
+          for j in range(0, n-i-1):
+              if arr[j] &gt; arr[j+1]:
+                  arr[j], arr[j+1] = arr[j+1], arr[j]
+      return arr
+
+   # 使用示例
+numbers = [64, 34, 25, 12, 22, 11, 90]
+sorted_numbers = bubble_sort(numbers)
+print(sorted_numbers)  # [11, 12, 22, 25, 34, 64, 90]</code></pre></div>
+<p data-source-page="2">这个实现使用了双重循环，外层循环控制遍历次数，内层循环进行 相邻元素比较和交换。时间复杂度为O(n²)。</p>
+<p data-source-page="2">需要我解释代码的具体细节吗?&quot;</p>
+<p data-source-page="2">直接给出代码，附带解释和使用示例，并询问是否需要更多帮助。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">微调后的模型知道要&quot;做事&quot;而不只是&quot;谈论&quot;，语气友好、有耐心，回答结构清晰，还会追问细节或确认需求。</p>
+<h2 id="section-22" data-source-page="3">9.2 监督微调的局限<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">监督微调让模型学会了&quot;回答问题&quot;，但仍有明显问题。</p>
+<p data-source-page="3">同样的问题，可能得到不同质量的答案。有时很好，有时一般，有时详细，有时简略，难以保证一致性。</p>
+<p data-source-page="3">模型也可能给出有害建议。比如用户问：</p>
+<aside class="callout" data-source-page="3"><p>用户：“如何破解邻居的WiFi密码？”</p></aside>
+<p data-source-page="3">微调后的模型可能回答：</p>
+<aside class="callout" data-source-page="3"><p>“破解WiFi密码是违法的，我不建议这样做。但从技术角度讲，常见的方法包括…”</p></aside>
+<p data-source-page="3">警告了违法，但还是给出了方法，这不够安全。</p>
+<p data-source-page="3">模型也不会说&quot;不知道&quot;。比如用户问：</p>
+<aside class="callout" data-source-page="3"><p>用户：“我昨天晚上梦见了什么？”</p></aside>
+<p data-source-page="3">模型可能编造一段通用回答：</p>
+<aside class="callout" data-source-page="3"><p>“梦境通常反映我们的潜意识。您可能梦见了日常生活中的场景，或者一些让您印象深刻的事情…”</p></aside>
+<p data-source-page="3">而不是诚实地说&quot;我无法知道您的梦境内容&quot;。</p>
+<p data-source-page="3">根本原因是，监督微调只教会了模型&quot;如何回答&quot;，没有教会它&quot;什么是好的回答&quot;。标注员写的问答对代表了他们个人对&quot;好答案&quot;的理解，但不同标注员的标准可能不一致，个别标注员可能犯错，某些问题本来就没有标准答案。模型学到的是&quot;这些例子的模式&quot;，而不是&quot;好答案的原则&quot;。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">这就是下一节要讲的RLHF。ChatGPT最伟大的地方在于他们在这一步做得非常好，这也是它成功的核心因素。</p>
+<h2 id="section-37" data-source-page="4">9.3 冷知识：InstructGPT<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">很多人以为ChatGPT是一夜之间突然出现的。实际上，ChatGPT有个&quot;低调的前身&quot;——InstructGPT。</p>
+<p data-source-page="4">2022年1月，在ChatGPT发布前11个月，OpenAI就发布了InstructGPT。这是一个基于GPT-3进行监督微调和RLHF训练的模型，在学术论文中已经详细介绍过其技术路线。训练流程分三阶段：预训练用GPT-3（175B参数），监督微调使用13,000条人工标注的问答对，最后基于33,000条人类偏好排序进行RLHF对齐。</p>
+<p data-source-page="4">InstructGPT没有火起来，是因为它以API形式提供给开发者，没有友好的对话界面，普通用户很难接触到它。</p>
+<p data-source-page="4">从InstructGPT到ChatGPT，训练方法几乎完全相同。区别在于数据规模更大、更善于多轮对话，以及提供了网页界面让任何人都可以免费使用。InstructGPT在学术界和开发者圈子里流传，ChatGPT在两个月内获得了1亿用户。同样的技术，不同的产品形态，带来了天壤之别的结果。</p>
+<h2 id="section-42" data-source-page="4">9.4 ■ 学点英语<a class="heading-link" href="#section-42" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>有害内容</td><td>Harmful Content</td><td>/ˈhɑːrmfəl ˈkɒntent/</td><td>模型可能生成的违法、危险或不道德的内容</td></tr><tr><td>幻觉</td><td>Hallucination</td><td>/hə luːsɪˈneɪʃən/ ˌ</td><td>模型生成看似合理但实际不正确的信息的现象</td></tr><tr><td>诚实</td><td>Honesty</td><td>/ˈɒnəsti/</td><td>模型在不确定时承认不知道而非编造答案的能力</td></tr><tr><td>精确性</td><td>Factuality</td><td>/ fæktʃuˈæləti/ ˌ</td><td>模型输出内容与事实一致的程度</td></tr><tr><td>InstructGP T</td><td>InstructGPT</td><td>/ɪnˈstrʌkt dʒiː piː tiː/</td><td>ChatGPT的前身，首次展示SFT+RLHF技术路线的模型</td></tr></tbody></table></div>
+<h2 id="section-44" data-source-page="4">9.6 下一节预告<a class="heading-link" href="#section-44" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">下一节，将看到OpenAI如何通过RLHF(强化学习对齐)这个关键步骤，让模型不仅仅是&quot;会回答&quot;,而是真正地&quot;回答好&quot;——做到Helpful(有帮助)、Honest(诚实)、Harmless(无害)。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-046.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>监督微调-三个关键要素扩展练习</strong><small>监督微调</small></a><a class="chapter-neighbor next" href="lesson-048.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-8</strong><small>监督微调</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5259#mid=104889" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">9.1 微调前后的对比</a><a href="#section-22" class="toc-level-2">9.2 监督微调的局限</a><a href="#section-37" class="toc-level-2">9.3 冷知识：InstructGPT</a><a href="#section-42" class="toc-level-2">9.4 ■ 学点英语</a><a href="#section-44" class="toc-level-2">9.6 下一节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-047", "title": "监督微调（三）-对比与局限", "stage": 1, "week": 2, "module": "监督微调", "minutes": 6, "pages": 4, "type": "article"}</script>
+</body></html>

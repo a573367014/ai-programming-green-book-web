@@ -1,0 +1,55 @@
+{
+  "id": "lesson-053",
+  "title": "RLHF（二）-RLHF的三个步骤",
+  "code": "1-4",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "RLHF",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/008-RLHF/053-图文-1-4-RLHF（二）-RLHF的三个步骤.pdf",
+  "sha256": "94543ee802c0be7ae3a5ea1691cb5659bf84b476a09eaefef62fdc369ca67a2b",
+  "pdf": "sources/pdf/lesson-053.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5260#mid=104891",
+  "minutes": 1,
+  "excerpt": "训练一个专门的\"评分模型\"——奖励模型(Reward Model)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "训练一个专门的\"评分模型\"——奖励模型(Reward Model)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么该说，什么不该说，以及如何既坚守原则又帮助用户",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 220,
+    "represented_chars": 58,
+    "removed_chars": 162,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 162
+    }
+  },
+  "videos": [],
+  "order": 54,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "训练一个专门的\"评分模型\"——奖励模型(Reward Model)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "什么该说，什么不该说，以及如何既坚守原则又帮助用户"
+    }
+  ]
+}

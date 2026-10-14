@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>实战：智能旅行规划Agent · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-148">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-6">智能体</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 11 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>实战：智能旅行规划Agent</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 149</span></div>
+<h1 class="lesson-title">实战：智能旅行规划Agent</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>9 页原文</span><span>约 10 分钟阅读</span><span class="module-name">实战：智能旅行规划Agent</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-148.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-148.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面七节我们学习了Agent的理论、架构、能力和实现范式。现在，是时候把这些知识串起来，动手实现一个真正能用的Agent了。 本节我们将实现一个智能旅行规划Agent。你只需告诉它预算、时间和偏好，它就能自动生成一份完整的旅行方案——从目的地推荐到行程安排，从景点选择到预算分配。 这不是一个玩具项目。它融合了我们学过的所有核心能力： 四步决策流程（理解→检索→推理→生成） Chain of Thought推理 记忆系统（记住用户的旅行偏好） 混合实现范式（Code-driven框架 + Prompt-driven决策） 代码量不大（核心代码约300行），但麻雀虽小，五脏俱全。看完这个案例，你就能把前面的理论知识转化为实际的Agent开发能力。</p></aside>
+<h2 id="section-1" data-source-page="1">项目需求与功能设计<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<h3 id="section-2" data-source-page="1">核心需求<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">作为一个智能旅行规划助手，Agent 需要接收用户的输入——预算范围、旅行天数、出发城市和旅行偏好；然后输出推荐的目的地、完整每日行程、预算分配方案和实用建议。</p>
+<p data-source-page="1">进阶方面，它还需要记住用户的历史偏好（下次规划时自动参考），能够理解模糊需求（比如&quot;想去个不太热的地方&quot;），具备推理能力（“5月去哪里最合适？”/“预算不够怎么调整？”）。</p>
+<h3 id="section-5" data-source-page="1">功能拆解<a class="heading-link" href="#section-5" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">根据前面学习的四步范式，将Agent拆分为：</p>
+<p data-source-page="1">Step 1: 需求理解与分析</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p class="list-item" data-source-page="2">解析用户输入的自然语言</p>
+<p class="list-item" data-source-page="2">提取关键信息（预算、天数、偏好）</p>
+<p class="list-item" data-source-page="2">从记忆中读取用户历史偏好</p>
+<p data-source-page="2">Step 2: 目的地检索与匹配</p>
+<p class="list-item" data-source-page="2">基于预算和偏好筛选候选目的地</p>
+<p class="list-item" data-source-page="2">考虑季节因素（5月适合去哪里？）</p>
+<p class="list-item" data-source-page="2">排除不符合条件的选项</p>
+<p data-source-page="2">Step 3: 行程规划推理（CoT）</p>
+<p class="list-item" data-source-page="2">思考：如何合理分配天数？</p>
+<p class="list-item" data-source-page="2">思考：景点之间的距离和交通？</p>
+<p class="list-item" data-source-page="2">思考：预算如何分配到交通、住宿、餐饮？</p>
+<p class="list-item" data-source-page="2">规划：生成完整的每日行程</p>
+<p data-source-page="2">Step 4: 方案生成与记忆更新</p>
+<p class="list-item" data-source-page="2">生成易读的旅行方案</p>
+<p class="list-item" data-source-page="2">更新用户偏好记忆</p>
+<p class="list-item" data-source-page="2">提供个性化建议</p>
+<h2 id="section-24" data-source-page="2">技术架构设计<a class="heading-link" href="#section-24" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">整体架构</p>
+<p data-source-page="2">我们采用混合实现范式：</p>
+<p class="list-item" data-source-page="2">Code-driven：控制主流程（四步顺序执行）</p>
+<p class="list-item" data-source-page="2">Prompt-driven：LLM负责推理和生成</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h3 id="section-29" data-source-page="3">核心模块<a class="heading-link" href="#section-29" aria-label="链接至本节">#</a></h3>
+<h2 id="section-30" data-source-page="3">1. LLM调用模块——支持QWen API，提供统一调用接口，包含错误处理和重试机制。<a class="heading-link" href="#section-30" aria-label="链接至本节">#</a></h2>
+<h2 id="section-31" data-source-page="3">2. 记忆管理模块——短期记忆保存当前对话上下文，长期记忆以JSON文件持久化存储用户画像，支持读取和更新。<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h2>
+<h2 id="section-32" data-source-page="3">3. 目的地知识库——简化版硬编码常见目的地数据，包含城市名、适合季节、主要景点、预算区间、标签等。<a class="heading-link" href="#section-32" aria-label="链接至本节">#</a></h2>
+<h2 id="section-33" data-source-page="3">4. 推理引擎——实现Chain of Thought推理，生成可读的思考过程，基于推理结果生成行程。<a class="heading-link" href="#section-33" aria-label="链接至本节">#</a></h2>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-34" data-source-page="4">项目结构与源码说明<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h2>
+<h3 id="section-35" data-source-page="4">项目目录结构<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">/travel_planner_agent/
+├── README.md                    # 完整的项目说明和使用指南
+├── requirements.txt             # Python依赖
+├── .env.example                 # 环境变量模板
+├── config.py                    # 配置文件（API密钥等）
+├── main.py                      # 主程序入口
+├── agent/
+│   ├── __init__.py
+│   ├── travel_agent.py         # Agent核心逻辑（四步流程）
+│   ├── llm_client.py           # LLM调用封装
+│   ├── memory_manager.py       # 记忆系统
+│   └── prompts.py              # Prompt模板
+├── data/
+│   ├── destinations.json       # 目的地知识库
+│   └── user_profiles/          # 用户画像存储目录
+│       └── user_example.json   # 示例用户画像
+└── utils/
+    ├── __init__.py
+    └── helpers.py              # 辅助函数</code></pre></div>
+<h3 id="section-37" data-source-page="4">源码说明<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">本项目的完整源码位于：samples/chapter11/travel_planner_agent/</p>
+<p data-source-page="4">核心文件说明：</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-40" data-source-page="5">1. travel_agent.py——实现四步决策流程，每步都有详细注释，展示如何组织Agent的主逻辑。<a class="heading-link" href="#section-40" aria-label="链接至本节">#</a></h2>
+<h2 id="section-41" data-source-page="5">2. memory_manager.py——实现短期和长期记忆，演示如何持久化用户画像，包含记忆的读取、更新、保存逻辑。<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h2>
+<h2 id="section-42" data-source-page="5">3. llm_client.py——封装LLM调用，支持多种模型切换，提供错误处理和重试机制。<a class="heading-link" href="#section-42" aria-label="链接至本节">#</a></h2>
+<h2 id="section-43" data-source-page="5">4. prompts.py——所有Prompt模板集中管理，包含需求理解、推理规划等各个步骤的Prompt，展示如何设计高质量的Prompt。<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h2>
+<h2 id="section-44" data-source-page="5">5. README.md——完整的项目介绍、安装和运行指南、代码逻辑详解（对应正文的四步流程）、扩展建议。<a class="heading-link" href="#section-44" aria-label="链接至本节">#</a></h2>
+<h2 id="section-45" data-source-page="5">关键实现要点<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h2>
+<h3 id="section-46" data-source-page="5">如何实现Chain of Thought推理<a class="heading-link" href="#section-46" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">在Step 3（行程规划推理）中，我们让LLM显式地进行思考：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 核心思想：通过Prompt引导LLM进行分步推理
+reasoning_prompt = &quot;&quot;&quot;
+请按以下步骤思考如何规划行程：
+
+Thought 1: 分析目的地特点和用户偏好的匹配度
+Thought 2: 考虑{days}天的合理分配（每天不要太累）
+Thought 3: 思考景点之间的距离和交通
+Thought 4: 预算{budget}元如何分配（交通、住宿、餐饮、门票）
+Thought 5: 综合以上因素，制定最优行程
+
+最后给出详细的每日行程安排。
+&quot;&quot;&quot;</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">详细实现请查看源码：agent/travel_agent.py 的 _plan_itinerary() 方法。</p>
+<h3 id="section-50" data-source-page="6">如何设计记忆系统<a class="heading-link" href="#section-50" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">采用简单但实用的方案：短期记忆保存在内存中，对话结束后清空；长期记忆以JSON文件持久化存储用户画像。</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 短期记忆：保存在内存中，对话结束后清空
+chat_history = [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;我想去海边&quot;},
+    {&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;推荐三亚...&quot;}
+]
+
+# 长期记忆：保存为JSON文件，持久化存储
+user_profile = {
+    &quot;user_id&quot;: &quot;user_001&quot;,
+    &quot;travel_style&quot;: &quot;休闲度假&quot;,  # 从历史对话中总结
+    &quot;budget_range&quot;: &quot;5000-8000&quot;,
+    &quot;preferred_destinations&quot;: [&quot;海滨城市&quot;, &quot;古城&quot;],
+    &quot;travel_history&quot;: [
+        {&quot;date&quot;: &quot;2024-05&quot;, &quot;destination&quot;: &quot;三亚&quot;, &quot;satisfaction&quot;: 5}
+    ]
+}</code></pre></div>
+<p data-source-page="6">详细实现请查看源码：agent/memory_manager.py。</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">agent/memory_manager.py</code></pre></div>
+<h3 id="section-55" data-source-page="6">如何选择实现范式<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">采用混合模式：Code-driven部分负责四步流程的顺序执行、记忆的读取和保存、异常处理；Prompt-driven部分负责需求理解（提取关键信息）、推理规划（CoT思考）、方案生成（自然语言输出）。</p>
+<p data-source-page="6">这种混合方式既保证了流程的稳定性，又保留了LLM的灵活性。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-58" data-source-page="7">如何运行和测试<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h2>
+<h3 id="section-59" data-source-page="7">快速开始<a class="heading-link" href="#section-59" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>BASH</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-bash"># 1. 进入项目目录
+cd samples/chapter11/travel_planner_agent/
+
+# 2. 安装依赖
+pip install -r requirements.txt
+
+# 3. 配置API密钥
+# 方式1（推荐）：设置系统环境变量
+export DASHSCOPE_API_KEY=你的通义千问API密钥
+
+# 方式2：直接修改 config.py 文件
+# 在 config.py 中找到 DASHSCOPE_API_KEY = &quot;your-qwen-api-key&quot;
+# 将其改为你的实际API密钥
+
+# 4. 运行
+python main.py</code></pre></div>
+<h3 id="section-61" data-source-page="7">测试用例<a class="heading-link" href="#section-61" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">运行后，尝试以下输入：</p>
+<p data-source-page="7">测试1：基础需求</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户输入：我想5月份去旅游，预算5000元，喜欢海边，有5天时间
+
+1</code></pre></div>
+<p data-source-page="7">测试2：模糊需求</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户输入：想找个不太热的地方，放松一下，不要太商业化
+
+1</code></pre></div>
+<p data-source-page="7">测试3：预算限制</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户输入：3000元能去哪里玩3天？想看山
+
+1</code></pre></div>
+<p data-source-page="8">观察Agent如何理解需求、推理规划、生成方案。</p>
+<h2 id="section-70" data-source-page="8">下一节预告<a class="heading-link" href="#section-70" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">单个Agent的能力终究有限。在复杂的现实场景中，往往需要多个Agent协同工作才能解决问题。接下来的第12章，我们将深入探讨Agent的未来发展方向——从当前的技术局限到通向AGI的可能路径，为你揭示智能体技术的演进蓝图和发展前景。</p>
+<h2 id="section-72" data-source-page="8">■ 学点英语<a class="heading-link" href="#section-72" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>旅行规划智能体</td><td>Travel Planner Agent</td><td>/ˈtrævl ˈplænər ˈeɪdʒənt/</td><td>根据预算、时间和偏好自动规划旅行方案的 Agent</td></tr><tr><td>行程规划</td><td>Itinerary Planning</td><td>/aɪˈtɪnərəri ˈplænɪŋ/</td><td>Agent将天数、预算和景点信息综合为每日行程的过程</td></tr><tr><td>用户画像</td><td>User Profile</td><td>/ˈjuːzər ˈproʊfaɪl/</td><td>记录用户旅行偏好和历史数据的持久化信息</td></tr><tr><td>目的地知识库</td><td>Destination Knowledge Base</td><td>/ destɪˈneɪʃn ˈnɒlɪdʒ ˌ beɪs/</td><td>包含城市信息、景点、预算区间的结构化数据集</td></tr><tr><td>混合范式</td><td>Hybrid Paradigm</td><td>/ˈhaɪbrɪd ˈpærədaɪm/</td><td>代码定义流程+LLM负责推理生成的Agent 实现方式</td></tr><tr><td>思维链推理</td><td>CoT Reasoning</td><td>/siː oʊ tiː ˈriːzənɪŋ/</td><td>Agent在行程规划中通过分步思考得出最优方案的机制</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h2 id="section-74" data-source-page="9">图片<a class="heading-link" href="#section-74" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="9"><button class="figure-open" aria-label="放大查看第 9 页图示"><img src="../assets/figures/464c0914520afed1b3fcc14c8dde9b51.png" width="2052" height="1664" loading="lazy" alt="实战：智能旅行规划Agent · 原 PDF 第 9 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-147.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Agent 的实现范式对比</strong><small>Agent 的核心架构剖析</small></a><a class="chapter-neighbor next" href="lesson-149.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>多 Agent 协作：从个体到群体智能</strong><small>多Agent协作：从个体到群体智能</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5291#mid=105153" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">项目需求与功能设计</a><a href="#section-2" class="toc-level-3">核心需求</a><a href="#section-5" class="toc-level-3">功能拆解</a><a href="#section-24" class="toc-level-2">技术架构设计</a><a href="#section-29" class="toc-level-3">核心模块</a><a href="#section-30" class="toc-level-2">1. LLM调用模块——支持QWen API，提供统一调用接口，包含错误处理和重试机制。</a><a href="#section-31" class="toc-level-2">2. 记忆管理模块——短期记忆保存当前对话上下文，长期记忆以JSON文件持久化存储用户画像，支持读取和更新。</a><a href="#section-32" class="toc-level-2">3. 目的地知识库——简化版硬编码常见目的地数据，包含城市名、适合季节、主要景点、预算区间、标签等。</a><a href="#section-33" class="toc-level-2">4. 推理引擎——实现Chain of Thought推理，生成可读的思考过程，基于推理结果生成行程。</a><a href="#section-34" class="toc-level-2">项目结构与源码说明</a><a href="#section-35" class="toc-level-3">项目目录结构</a><a href="#section-37" class="toc-level-3">源码说明</a><a href="#section-40" class="toc-level-2">1. travel_agent.py——实现四步决策流程，每步都有详细注释，展示如何组织Agent的主逻辑。</a><a href="#section-41" class="toc-level-2">2. memory_manager.py——实现短期和长期记忆，演示如何持久化用户画像，包含记忆的读取、更新、保存逻辑。</a><a href="#section-42" class="toc-level-2">3. llm_client.py——封装LLM调用，支持多种模型切换，提供错误处理和重试机制。</a><a href="#section-43" class="toc-level-2">4. prompts.py——所有Prompt模板集中管理，包含需求理解、推理规划等各个步骤的Prompt，展示如何设计高质量的Prompt。</a><a href="#section-44" class="toc-level-2">5. README.md——完整的项目介绍、安装和运行指南、代码逻辑详解（对应正文的四步流程）、扩展建议。</a><a href="#section-45" class="toc-level-2">关键实现要点</a><a href="#section-46" class="toc-level-3">如何实现Chain of Thought推理</a><a href="#section-50" class="toc-level-3">如何设计记忆系统</a><a href="#section-55" class="toc-level-3">如何选择实现范式</a><a href="#section-58" class="toc-level-2">如何运行和测试</a><a href="#section-59" class="toc-level-3">快速开始</a><a href="#section-61" class="toc-level-3">测试用例</a><a href="#section-70" class="toc-level-2">下一节预告</a><a href="#section-72" class="toc-level-2">■ 学点英语</a><a href="#section-74" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-148", "title": "实战：智能旅行规划Agent", "stage": 6, "week": 11, "module": "实战：智能旅行规划Agent", "minutes": 10, "pages": 9, "type": "article"}</script>
+</body></html>

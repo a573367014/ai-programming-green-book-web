@@ -1,0 +1,2218 @@
+{
+  "documents": 159,
+  "pages": 956,
+  "videos": 3,
+  "reading_pages": 160,
+  "tables": 138,
+  "image_occurrences": 53,
+  "full_images": 45,
+  "text_spans_fully_accounted": true,
+  "source_commit": "457ac44642eb952f6f5f29681ac50a53cf946dbc",
+  "per_document": [
+    {
+      "id": "lesson-001",
+      "pages": 1,
+      "source_chars": 383,
+      "represented_chars": 208,
+      "removed_chars": 175,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 141,
+        "repeated_title": 34
+      }
+    },
+    {
+      "id": "lesson-002",
+      "pages": 2,
+      "source_chars": 933,
+      "represented_chars": 802,
+      "removed_chars": 131,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 119,
+        "repeated_title": 12
+      }
+    },
+    {
+      "id": "lesson-003",
+      "pages": 10,
+      "source_chars": 4979,
+      "represented_chars": 4836,
+      "removed_chars": 143,
+      "tables": 0,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 125,
+        "repeated_title": 18
+      }
+    },
+    {
+      "id": "lesson-004",
+      "pages": 20,
+      "source_chars": 7395,
+      "represented_chars": 7180,
+      "removed_chars": 215,
+      "tables": 1,
+      "images": 13,
+      "image_occurrences": 15,
+      "removals": {
+        "export_metadata": 161,
+        "repeated_title": 54
+      }
+    },
+    {
+      "id": "lesson-005",
+      "pages": 7,
+      "source_chars": 4203,
+      "represented_chars": 4042,
+      "removed_chars": 161,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 137,
+        "repeated_title": 24
+      }
+    },
+    {
+      "id": "lesson-006",
+      "pages": 1,
+      "source_chars": 329,
+      "represented_chars": 159,
+      "removed_chars": 170,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 170
+      }
+    },
+    {
+      "id": "lesson-007",
+      "pages": 1,
+      "source_chars": 328,
+      "represented_chars": 153,
+      "removed_chars": 175,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 175
+      }
+    },
+    {
+      "id": "lesson-008",
+      "pages": 1,
+      "source_chars": 648,
+      "represented_chars": 522,
+      "removed_chars": 126,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 123,
+        "repeated_title": 3
+      }
+    },
+    {
+      "id": "lesson-009",
+      "pages": 11,
+      "source_chars": 5487,
+      "represented_chars": 5346,
+      "removed_chars": 141,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 127,
+        "repeated_title": 14
+      }
+    },
+    {
+      "id": "lesson-010",
+      "pages": 1,
+      "source_chars": 963,
+      "represented_chars": 726,
+      "removed_chars": 237,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 237
+      }
+    },
+    {
+      "id": "lesson-011",
+      "pages": 15,
+      "source_chars": 8521,
+      "represented_chars": 8380,
+      "removed_chars": 141,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 127,
+        "repeated_title": 14
+      }
+    },
+    {
+      "id": "lesson-012",
+      "pages": 1,
+      "source_chars": 270,
+      "represented_chars": 105,
+      "removed_chars": 165,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 165
+      }
+    },
+    {
+      "id": "lesson-013",
+      "pages": 7,
+      "source_chars": 2093,
+      "represented_chars": 1935,
+      "removed_chars": 158,
+      "tables": 4,
+      "images": 3,
+      "image_occurrences": 3,
+      "removals": {
+        "export_metadata": 134,
+        "repeated_title": 24
+      }
+    },
+    {
+      "id": "lesson-014",
+      "pages": 1,
+      "source_chars": 588,
+      "represented_chars": 465,
+      "removed_chars": 123,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 120,
+        "repeated_title": 3
+      }
+    },
+    {
+      "id": "lesson-015",
+      "pages": 9,
+      "source_chars": 5027,
+      "represented_chars": 4841,
+      "removed_chars": 186,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 148,
+        "repeated_title": 38
+      }
+    },
+    {
+      "id": "lesson-016",
+      "pages": 1,
+      "source_chars": 305,
+      "represented_chars": 182,
+      "removed_chars": 123,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 120,
+        "repeated_title": 3
+      }
+    },
+    {
+      "id": "lesson-017",
+      "pages": 7,
+      "source_chars": 3671,
+      "represented_chars": 3477,
+      "removed_chars": 194,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 152,
+        "repeated_title": 42
+      }
+    },
+    {
+      "id": "lesson-018",
+      "pages": 5,
+      "source_chars": 2975,
+      "represented_chars": 2777,
+      "removed_chars": 198,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 154,
+        "repeated_title": 44
+      }
+    },
+    {
+      "id": "lesson-019",
+      "pages": 1,
+      "source_chars": 304,
+      "represented_chars": 140,
+      "removed_chars": 164,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 164
+      }
+    },
+    {
+      "id": "lesson-020",
+      "pages": 7,
+      "source_chars": 4170,
+      "represented_chars": 3995,
+      "removed_chars": 175,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 141,
+        "repeated_title": 34
+      }
+    },
+    {
+      "id": "lesson-021",
+      "pages": 1,
+      "source_chars": 288,
+      "represented_chars": 127,
+      "removed_chars": 161,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 161
+      }
+    },
+    {
+      "id": "lesson-022",
+      "pages": 3,
+      "source_chars": 1825,
+      "represented_chars": 1646,
+      "removed_chars": 179,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 143,
+        "repeated_title": 36
+      }
+    },
+    {
+      "id": "lesson-023",
+      "pages": 1,
+      "source_chars": 297,
+      "represented_chars": 140,
+      "removed_chars": 157,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 157
+      }
+    },
+    {
+      "id": "lesson-024",
+      "pages": 5,
+      "source_chars": 3362,
+      "represented_chars": 3187,
+      "removed_chars": 175,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 141,
+        "repeated_title": 34
+      }
+    },
+    {
+      "id": "lesson-025",
+      "pages": 1,
+      "source_chars": 255,
+      "represented_chars": 114,
+      "removed_chars": 141,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 141
+      }
+    },
+    {
+      "id": "lesson-026",
+      "pages": 6,
+      "source_chars": 3582,
+      "represented_chars": 3395,
+      "removed_chars": 187,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 147,
+        "repeated_title": 40
+      }
+    },
+    {
+      "id": "lesson-027",
+      "pages": 1,
+      "source_chars": 282,
+      "represented_chars": 129,
+      "removed_chars": 153,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 153
+      }
+    },
+    {
+      "id": "lesson-028",
+      "pages": 5,
+      "source_chars": 2871,
+      "represented_chars": 2658,
+      "removed_chars": 213,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 163,
+        "repeated_title": 50
+      }
+    },
+    {
+      "id": "lesson-029",
+      "pages": 1,
+      "source_chars": 321,
+      "represented_chars": 138,
+      "removed_chars": 183,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 183
+      }
+    },
+    {
+      "id": "lesson-030",
+      "pages": 8,
+      "source_chars": 4554,
+      "represented_chars": 4341,
+      "removed_chars": 213,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 163,
+        "repeated_title": 50
+      }
+    },
+    {
+      "id": "lesson-031",
+      "pages": 1,
+      "source_chars": 299,
+      "represented_chars": 135,
+      "removed_chars": 164,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 164
+      }
+    },
+    {
+      "id": "lesson-032",
+      "pages": 7,
+      "source_chars": 4579,
+      "represented_chars": 4366,
+      "removed_chars": 213,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 163,
+        "repeated_title": 50
+      }
+    },
+    {
+      "id": "lesson-033",
+      "pages": 3,
+      "source_chars": 3074,
+      "represented_chars": 2935,
+      "removed_chars": 139,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 126,
+        "repeated_title": 13
+      }
+    },
+    {
+      "id": "lesson-034",
+      "pages": 8,
+      "source_chars": 3798,
+      "represented_chars": 3631,
+      "removed_chars": 167,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 137,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-035",
+      "pages": 2,
+      "source_chars": 991,
+      "represented_chars": 860,
+      "removed_chars": 131,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 119,
+        "repeated_title": 12
+      }
+    },
+    {
+      "id": "lesson-036",
+      "pages": 5,
+      "source_chars": 3103,
+      "represented_chars": 2924,
+      "removed_chars": 179,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 143,
+        "repeated_title": 36
+      }
+    },
+    {
+      "id": "lesson-037",
+      "pages": 1,
+      "source_chars": 316,
+      "represented_chars": 148,
+      "removed_chars": 168,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 168
+      }
+    },
+    {
+      "id": "lesson-038",
+      "pages": 5,
+      "source_chars": 2471,
+      "represented_chars": 2284,
+      "removed_chars": 187,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 147,
+        "repeated_title": 40
+      }
+    },
+    {
+      "id": "lesson-039",
+      "pages": 1,
+      "source_chars": 264,
+      "represented_chars": 119,
+      "removed_chars": 145,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 145
+      }
+    },
+    {
+      "id": "lesson-040",
+      "pages": 2,
+      "source_chars": 824,
+      "represented_chars": 693,
+      "removed_chars": 131,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 119,
+        "repeated_title": 12
+      }
+    },
+    {
+      "id": "lesson-041",
+      "pages": 3,
+      "source_chars": 1729,
+      "represented_chars": 1545,
+      "removed_chars": 184,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 146,
+        "repeated_title": 38
+      }
+    },
+    {
+      "id": "lesson-042",
+      "pages": 1,
+      "source_chars": 354,
+      "represented_chars": 167,
+      "removed_chars": 187,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 187
+      }
+    },
+    {
+      "id": "lesson-043",
+      "pages": 2,
+      "source_chars": 2887,
+      "represented_chars": 2733,
+      "removed_chars": 154,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 131,
+        "repeated_title": 23
+      }
+    },
+    {
+      "id": "lesson-044",
+      "pages": 6,
+      "source_chars": 3562,
+      "represented_chars": 3374,
+      "removed_chars": 188,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 148,
+        "repeated_title": 40
+      }
+    },
+    {
+      "id": "lesson-045",
+      "pages": 1,
+      "source_chars": 323,
+      "represented_chars": 155,
+      "removed_chars": 168,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 168
+      }
+    },
+    {
+      "id": "lesson-046",
+      "pages": 1,
+      "source_chars": 664,
+      "represented_chars": 510,
+      "removed_chars": 154,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 131,
+        "repeated_title": 23
+      }
+    },
+    {
+      "id": "lesson-047",
+      "pages": 4,
+      "source_chars": 2630,
+      "represented_chars": 2446,
+      "removed_chars": 184,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 146,
+        "repeated_title": 38
+      }
+    },
+    {
+      "id": "lesson-048",
+      "pages": 1,
+      "source_chars": 312,
+      "represented_chars": 136,
+      "removed_chars": 176,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 176
+      }
+    },
+    {
+      "id": "lesson-049",
+      "pages": 2,
+      "source_chars": 657,
+      "represented_chars": 525,
+      "removed_chars": 132,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 120,
+        "repeated_title": 12
+      }
+    },
+    {
+      "id": "lesson-050",
+      "pages": 1,
+      "source_chars": 452,
+      "represented_chars": 313,
+      "removed_chars": 139,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 139
+      }
+    },
+    {
+      "id": "lesson-051",
+      "pages": 1,
+      "source_chars": 195,
+      "represented_chars": 76,
+      "removed_chars": 119,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 118,
+        "repeated_title": 1
+      }
+    },
+    {
+      "id": "lesson-052",
+      "pages": 1,
+      "source_chars": 145,
+      "represented_chars": 14,
+      "removed_chars": 131,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 131
+      }
+    },
+    {
+      "id": "lesson-053",
+      "pages": 1,
+      "source_chars": 220,
+      "represented_chars": 58,
+      "removed_chars": 162,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 162
+      }
+    },
+    {
+      "id": "lesson-054",
+      "pages": 1,
+      "source_chars": 205,
+      "represented_chars": 86,
+      "removed_chars": 119,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 118,
+        "repeated_title": 1
+      }
+    },
+    {
+      "id": "lesson-055",
+      "pages": 1,
+      "source_chars": 145,
+      "represented_chars": 14,
+      "removed_chars": 131,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 131
+      }
+    },
+    {
+      "id": "lesson-056",
+      "pages": 1,
+      "source_chars": 430,
+      "represented_chars": 297,
+      "removed_chars": 133,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 133
+      }
+    },
+    {
+      "id": "lesson-057",
+      "pages": 1,
+      "source_chars": 221,
+      "represented_chars": 102,
+      "removed_chars": 119,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 118,
+        "repeated_title": 1
+      }
+    },
+    {
+      "id": "lesson-058",
+      "pages": 1,
+      "source_chars": 145,
+      "represented_chars": 14,
+      "removed_chars": 131,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 131
+      }
+    },
+    {
+      "id": "lesson-059",
+      "pages": 7,
+      "source_chars": 4045,
+      "represented_chars": 3852,
+      "removed_chars": 193,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 151,
+        "repeated_title": 42
+      }
+    },
+    {
+      "id": "lesson-060",
+      "pages": 1,
+      "source_chars": 330,
+      "represented_chars": 157,
+      "removed_chars": 173,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 173
+      }
+    },
+    {
+      "id": "lesson-061",
+      "pages": 3,
+      "source_chars": 2432,
+      "represented_chars": 2300,
+      "removed_chars": 132,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 121,
+        "repeated_title": 11
+      }
+    },
+    {
+      "id": "lesson-062",
+      "pages": 9,
+      "source_chars": 4509,
+      "represented_chars": 4320,
+      "removed_chars": 189,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 149,
+        "repeated_title": 40
+      }
+    },
+    {
+      "id": "lesson-063",
+      "pages": 1,
+      "source_chars": 388,
+      "represented_chars": 195,
+      "removed_chars": 193,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 193
+      }
+    },
+    {
+      "id": "lesson-064",
+      "pages": 2,
+      "source_chars": 2301,
+      "represented_chars": 2169,
+      "removed_chars": 132,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 121,
+        "repeated_title": 11
+      }
+    },
+    {
+      "id": "lesson-065",
+      "pages": 4,
+      "source_chars": 2510,
+      "represented_chars": 2325,
+      "removed_chars": 185,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 147,
+        "repeated_title": 38
+      }
+    },
+    {
+      "id": "lesson-066",
+      "pages": 1,
+      "source_chars": 284,
+      "represented_chars": 126,
+      "removed_chars": 158,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 158
+      }
+    },
+    {
+      "id": "lesson-067",
+      "pages": 1,
+      "source_chars": 931,
+      "represented_chars": 799,
+      "removed_chars": 132,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 121,
+        "repeated_title": 11
+      }
+    },
+    {
+      "id": "lesson-068",
+      "pages": 8,
+      "source_chars": 3778,
+      "represented_chars": 3569,
+      "removed_chars": 209,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 165,
+        "repeated_title": 44
+      }
+    },
+    {
+      "id": "lesson-069",
+      "pages": 1,
+      "source_chars": 327,
+      "represented_chars": 151,
+      "removed_chars": 176,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 176
+      }
+    },
+    {
+      "id": "lesson-070",
+      "pages": 3,
+      "source_chars": 3989,
+      "represented_chars": 3845,
+      "removed_chars": 144,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 133,
+        "repeated_title": 11
+      }
+    },
+    {
+      "id": "lesson-071",
+      "pages": 10,
+      "source_chars": 5214,
+      "represented_chars": 5037,
+      "removed_chars": 177,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 149,
+        "repeated_title": 28
+      }
+    },
+    {
+      "id": "lesson-072",
+      "pages": 1,
+      "source_chars": 397,
+      "represented_chars": 193,
+      "removed_chars": 204,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 204
+      }
+    },
+    {
+      "id": "lesson-073",
+      "pages": 2,
+      "source_chars": 1343,
+      "represented_chars": 1199,
+      "removed_chars": 144,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 133,
+        "repeated_title": 11
+      }
+    },
+    {
+      "id": "lesson-074",
+      "pages": 6,
+      "source_chars": 3240,
+      "represented_chars": 2999,
+      "removed_chars": 241,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 183,
+        "repeated_title": 58
+      }
+    },
+    {
+      "id": "lesson-075",
+      "pages": 1,
+      "source_chars": 372,
+      "represented_chars": 187,
+      "removed_chars": 185,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 185
+      }
+    },
+    {
+      "id": "lesson-076",
+      "pages": 2,
+      "source_chars": 1041,
+      "represented_chars": 893,
+      "removed_chars": 148,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 137,
+        "repeated_title": 11
+      }
+    },
+    {
+      "id": "lesson-077",
+      "pages": 5,
+      "source_chars": 2520,
+      "represented_chars": 2301,
+      "removed_chars": 219,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 172,
+        "repeated_title": 47
+      }
+    },
+    {
+      "id": "lesson-078",
+      "pages": 1,
+      "source_chars": 351,
+      "represented_chars": 180,
+      "removed_chars": 171,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 171
+      }
+    },
+    {
+      "id": "lesson-079",
+      "pages": 3,
+      "source_chars": 3529,
+      "represented_chars": 3381,
+      "removed_chars": 148,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 137,
+        "repeated_title": 11
+      }
+    },
+    {
+      "id": "lesson-080",
+      "pages": 7,
+      "source_chars": 3822,
+      "represented_chars": 3603,
+      "removed_chars": 219,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 172,
+        "repeated_title": 47
+      }
+    },
+    {
+      "id": "lesson-081",
+      "pages": 1,
+      "source_chars": 314,
+      "represented_chars": 149,
+      "removed_chars": 165,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 165
+      }
+    },
+    {
+      "id": "lesson-082",
+      "pages": 1,
+      "source_chars": 476,
+      "represented_chars": 352,
+      "removed_chars": 124,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 124
+      }
+    },
+    {
+      "id": "lesson-083",
+      "pages": 9,
+      "source_chars": 6164,
+      "represented_chars": 6001,
+      "removed_chars": 163,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 135,
+        "repeated_title": 28
+      }
+    },
+    {
+      "id": "lesson-084",
+      "pages": 9,
+      "source_chars": 5272,
+      "represented_chars": 5117,
+      "removed_chars": 155,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 131,
+        "repeated_title": 24
+      }
+    },
+    {
+      "id": "lesson-085",
+      "pages": 7,
+      "source_chars": 4134,
+      "represented_chars": 3963,
+      "removed_chars": 171,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 139,
+        "repeated_title": 32
+      }
+    },
+    {
+      "id": "lesson-086",
+      "pages": 10,
+      "source_chars": 6370,
+      "represented_chars": 6201,
+      "removed_chars": 169,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 139,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-087",
+      "pages": 15,
+      "source_chars": 8365,
+      "represented_chars": 8158,
+      "removed_chars": 207,
+      "tables": 1,
+      "images": 2,
+      "image_occurrences": 2,
+      "removals": {
+        "export_metadata": 152,
+        "repeated_title": 38,
+        "code_line_number_artifact": 17
+      }
+    },
+    {
+      "id": "lesson-088",
+      "pages": 15,
+      "source_chars": 10700,
+      "represented_chars": 10501,
+      "removed_chars": 199,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 150,
+        "repeated_title": 36,
+        "code_line_number_artifact": 13
+      }
+    },
+    {
+      "id": "lesson-089",
+      "pages": 5,
+      "source_chars": 3109,
+      "represented_chars": 2935,
+      "removed_chars": 174,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 144,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-090",
+      "pages": 6,
+      "source_chars": 3762,
+      "represented_chars": 3584,
+      "removed_chars": 178,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 146,
+        "repeated_title": 32
+      }
+    },
+    {
+      "id": "lesson-091",
+      "pages": 8,
+      "source_chars": 4437,
+      "represented_chars": 4248,
+      "removed_chars": 189,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 151,
+        "repeated_title": 38
+      }
+    },
+    {
+      "id": "lesson-092",
+      "pages": 5,
+      "source_chars": 2087,
+      "represented_chars": 1912,
+      "removed_chars": 175,
+      "tables": 3,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 144,
+        "repeated_title": 31
+      }
+    },
+    {
+      "id": "lesson-093",
+      "pages": 10,
+      "source_chars": 4573,
+      "represented_chars": 4363,
+      "removed_chars": 210,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 146,
+        "repeated_title": 33,
+        "code_line_number_artifact": 31
+      }
+    },
+    {
+      "id": "lesson-094",
+      "pages": 12,
+      "source_chars": 7303,
+      "represented_chars": 7137,
+      "removed_chars": 166,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 138,
+        "repeated_title": 28
+      }
+    },
+    {
+      "id": "lesson-095",
+      "pages": 8,
+      "source_chars": 5424,
+      "represented_chars": 5210,
+      "removed_chars": 214,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 162,
+        "repeated_title": 52
+      }
+    },
+    {
+      "id": "lesson-096",
+      "pages": 13,
+      "source_chars": 5637,
+      "represented_chars": 5392,
+      "removed_chars": 245,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 162,
+        "repeated_title": 52,
+        "code_line_number_artifact": 31
+      }
+    },
+    {
+      "id": "lesson-097",
+      "pages": 13,
+      "source_chars": 7366,
+      "represented_chars": 7164,
+      "removed_chars": 202,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 156,
+        "repeated_title": 46
+      }
+    },
+    {
+      "id": "lesson-098",
+      "pages": 8,
+      "source_chars": 4895,
+      "represented_chars": 4707,
+      "removed_chars": 188,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 148,
+        "repeated_title": 40
+      }
+    },
+    {
+      "id": "lesson-099",
+      "pages": 13,
+      "source_chars": 7408,
+      "represented_chars": 7167,
+      "removed_chars": 241,
+      "tables": 4,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 164,
+        "repeated_title": 56,
+        "code_line_number_artifact": 21
+      }
+    },
+    {
+      "id": "lesson-100",
+      "pages": 12,
+      "source_chars": 7034,
+      "represented_chars": 6840,
+      "removed_chars": 194,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 157,
+        "repeated_title": 37
+      }
+    },
+    {
+      "id": "lesson-101",
+      "pages": 11,
+      "source_chars": 6721,
+      "represented_chars": 6513,
+      "removed_chars": 208,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 164,
+        "repeated_title": 44
+      }
+    },
+    {
+      "id": "lesson-102",
+      "pages": 12,
+      "source_chars": 7255,
+      "represented_chars": 7043,
+      "removed_chars": 212,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 166,
+        "repeated_title": 46
+      }
+    },
+    {
+      "id": "lesson-103",
+      "pages": 9,
+      "source_chars": 5943,
+      "represented_chars": 5741,
+      "removed_chars": 202,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 161,
+        "repeated_title": 41
+      }
+    },
+    {
+      "id": "lesson-104",
+      "pages": 12,
+      "source_chars": 7533,
+      "represented_chars": 7302,
+      "removed_chars": 231,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 172,
+        "repeated_title": 59
+      }
+    },
+    {
+      "id": "lesson-105",
+      "pages": 5,
+      "source_chars": 2922,
+      "represented_chars": 2675,
+      "removed_chars": 247,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 180,
+        "repeated_title": 67
+      }
+    },
+    {
+      "id": "lesson-106",
+      "pages": 8,
+      "source_chars": 4696,
+      "represented_chars": 4455,
+      "removed_chars": 241,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 187,
+        "repeated_title": 54
+      }
+    },
+    {
+      "id": "lesson-107",
+      "pages": 8,
+      "source_chars": 3785,
+      "represented_chars": 3507,
+      "removed_chars": 278,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 189,
+        "repeated_title": 56,
+        "code_line_number_artifact": 33
+      }
+    },
+    {
+      "id": "lesson-108",
+      "pages": 11,
+      "source_chars": 5364,
+      "represented_chars": 5171,
+      "removed_chars": 193,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 163,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-109",
+      "pages": 9,
+      "source_chars": 6048,
+      "represented_chars": 5865,
+      "removed_chars": 183,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 153,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-110",
+      "pages": 12,
+      "source_chars": 7213,
+      "represented_chars": 6975,
+      "removed_chars": 238,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 186,
+        "repeated_title": 52
+      }
+    },
+    {
+      "id": "lesson-111",
+      "pages": 6,
+      "source_chars": 4014,
+      "represented_chars": 3845,
+      "removed_chars": 169,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 139,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-112",
+      "pages": 6,
+      "source_chars": 3749,
+      "represented_chars": 3584,
+      "removed_chars": 165,
+      "tables": 3,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 137,
+        "repeated_title": 28
+      }
+    },
+    {
+      "id": "lesson-113",
+      "pages": 7,
+      "source_chars": 4389,
+      "represented_chars": 4201,
+      "removed_chars": 188,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 152,
+        "repeated_title": 36
+      }
+    },
+    {
+      "id": "lesson-114",
+      "pages": 8,
+      "source_chars": 5349,
+      "represented_chars": 5161,
+      "removed_chars": 188,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 152,
+        "repeated_title": 36
+      }
+    },
+    {
+      "id": "lesson-115",
+      "pages": 6,
+      "source_chars": 4089,
+      "represented_chars": 3893,
+      "removed_chars": 196,
+      "tables": 3,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 145,
+        "repeated_title": 28,
+        "code_line_number_artifact": 23
+      }
+    },
+    {
+      "id": "lesson-116",
+      "pages": 9,
+      "source_chars": 4856,
+      "represented_chars": 4660,
+      "removed_chars": 196,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 149,
+        "repeated_title": 32,
+        "code_line_number_artifact": 15
+      }
+    },
+    {
+      "id": "lesson-117",
+      "pages": 9,
+      "source_chars": 6745,
+      "represented_chars": 6457,
+      "removed_chars": 288,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 189,
+        "repeated_title": 72,
+        "code_line_number_artifact": 27
+      }
+    },
+    {
+      "id": "lesson-118",
+      "pages": 8,
+      "source_chars": 5646,
+      "represented_chars": 5478,
+      "removed_chars": 168,
+      "tables": 3,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 140,
+        "repeated_title": 28
+      }
+    },
+    {
+      "id": "lesson-119",
+      "pages": 7,
+      "source_chars": 3865,
+      "represented_chars": 3701,
+      "removed_chars": 164,
+      "tables": 2,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 138,
+        "repeated_title": 26
+      }
+    },
+    {
+      "id": "lesson-120",
+      "pages": 11,
+      "source_chars": 3706,
+      "represented_chars": 3540,
+      "removed_chars": 166,
+      "tables": 2,
+      "images": 1,
+      "image_occurrences": 2,
+      "removals": {
+        "export_metadata": 139,
+        "repeated_title": 27
+      }
+    },
+    {
+      "id": "lesson-121",
+      "pages": 6,
+      "source_chars": 3704,
+      "represented_chars": 3538,
+      "removed_chars": 166,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 139,
+        "repeated_title": 27
+      }
+    },
+    {
+      "id": "lesson-122",
+      "pages": 8,
+      "source_chars": 5561,
+      "represented_chars": 5371,
+      "removed_chars": 190,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 151,
+        "repeated_title": 39
+      }
+    },
+    {
+      "id": "lesson-123",
+      "pages": 3,
+      "source_chars": 2309,
+      "represented_chars": 2135,
+      "removed_chars": 174,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 143,
+        "repeated_title": 31
+      }
+    },
+    {
+      "id": "lesson-124",
+      "pages": 6,
+      "source_chars": 3176,
+      "represented_chars": 2990,
+      "removed_chars": 186,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 152,
+        "repeated_title": 34
+      }
+    },
+    {
+      "id": "lesson-125",
+      "pages": 10,
+      "source_chars": 3981,
+      "represented_chars": 3803,
+      "removed_chars": 178,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 2,
+      "removals": {
+        "export_metadata": 148,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-126",
+      "pages": 11,
+      "source_chars": 6848,
+      "represented_chars": 6669,
+      "removed_chars": 179,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 147,
+        "repeated_title": 32
+      }
+    },
+    {
+      "id": "lesson-127",
+      "pages": 4,
+      "source_chars": 2690,
+      "represented_chars": 2511,
+      "removed_chars": 179,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 147,
+        "repeated_title": 32
+      }
+    },
+    {
+      "id": "lesson-128",
+      "pages": 3,
+      "source_chars": 2209,
+      "represented_chars": 2034,
+      "removed_chars": 175,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 145,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-129",
+      "pages": 7,
+      "source_chars": 3868,
+      "represented_chars": 3655,
+      "removed_chars": 213,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 152,
+        "repeated_title": 34,
+        "code_line_number_artifact": 27
+      }
+    },
+    {
+      "id": "lesson-130",
+      "pages": 9,
+      "source_chars": 4552,
+      "represented_chars": 4351,
+      "removed_chars": 201,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 148,
+        "repeated_title": 30,
+        "code_line_number_artifact": 23
+      }
+    },
+    {
+      "id": "lesson-131",
+      "pages": 6,
+      "source_chars": 3301,
+      "represented_chars": 3141,
+      "removed_chars": 160,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 135,
+        "repeated_title": 22,
+        "code_line_number_artifact": 3
+      }
+    },
+    {
+      "id": "lesson-132",
+      "pages": 11,
+      "source_chars": 3960,
+      "represented_chars": 3811,
+      "removed_chars": 149,
+      "tables": 1,
+      "images": 3,
+      "image_occurrences": 4,
+      "removals": {
+        "export_metadata": 131,
+        "repeated_title": 18
+      }
+    },
+    {
+      "id": "lesson-133",
+      "pages": 9,
+      "source_chars": 6376,
+      "represented_chars": 6163,
+      "removed_chars": 213,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 163,
+        "repeated_title": 50
+      }
+    },
+    {
+      "id": "lesson-134",
+      "pages": 7,
+      "source_chars": 4585,
+      "represented_chars": 4420,
+      "removed_chars": 165,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 139,
+        "repeated_title": 26
+      }
+    },
+    {
+      "id": "lesson-135",
+      "pages": 6,
+      "source_chars": 4639,
+      "represented_chars": 4470,
+      "removed_chars": 169,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 141,
+        "repeated_title": 28
+      }
+    },
+    {
+      "id": "lesson-136",
+      "pages": 11,
+      "source_chars": 5467,
+      "represented_chars": 5282,
+      "removed_chars": 185,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 140,
+        "repeated_title": 24,
+        "code_line_number_artifact": 21
+      }
+    },
+    {
+      "id": "lesson-137",
+      "pages": 6,
+      "source_chars": 5115,
+      "represented_chars": 4951,
+      "removed_chars": 164,
+      "tables": 2,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 140,
+        "repeated_title": 24
+      }
+    },
+    {
+      "id": "lesson-138",
+      "pages": 4,
+      "source_chars": 3135,
+      "represented_chars": 2948,
+      "removed_chars": 187,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 153,
+        "repeated_title": 34
+      }
+    },
+    {
+      "id": "lesson-139",
+      "pages": 5,
+      "source_chars": 2821,
+      "represented_chars": 2594,
+      "removed_chars": 227,
+      "tables": 1,
+      "images": 2,
+      "image_occurrences": 2,
+      "removals": {
+        "export_metadata": 173,
+        "repeated_title": 54
+      }
+    },
+    {
+      "id": "lesson-140",
+      "pages": 6,
+      "source_chars": 5848,
+      "represented_chars": 5645,
+      "removed_chars": 203,
+      "tables": 3,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 161,
+        "repeated_title": 42
+      }
+    },
+    {
+      "id": "lesson-141",
+      "pages": 11,
+      "source_chars": 7912,
+      "represented_chars": 7749,
+      "removed_chars": 163,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 137,
+        "repeated_title": 26
+      }
+    },
+    {
+      "id": "lesson-142",
+      "pages": 4,
+      "source_chars": 2727,
+      "represented_chars": 2504,
+      "removed_chars": 223,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 167,
+        "repeated_title": 56
+      }
+    },
+    {
+      "id": "lesson-143",
+      "pages": 19,
+      "source_chars": 7719,
+      "represented_chars": 7544,
+      "removed_chars": 175,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 2,
+      "removals": {
+        "export_metadata": 147,
+        "repeated_title": 28
+      }
+    },
+    {
+      "id": "lesson-144",
+      "pages": 16,
+      "source_chars": 7741,
+      "represented_chars": 7578,
+      "removed_chars": 163,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 2,
+      "removals": {
+        "export_metadata": 141,
+        "repeated_title": 22
+      }
+    },
+    {
+      "id": "lesson-145",
+      "pages": 11,
+      "source_chars": 5909,
+      "represented_chars": 5722,
+      "removed_chars": 187,
+      "tables": 4,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 153,
+        "repeated_title": 34
+      }
+    },
+    {
+      "id": "lesson-146",
+      "pages": 13,
+      "source_chars": 5597,
+      "represented_chars": 5414,
+      "removed_chars": 183,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 151,
+        "repeated_title": 32
+      }
+    },
+    {
+      "id": "lesson-147",
+      "pages": 6,
+      "source_chars": 3658,
+      "represented_chars": 3479,
+      "removed_chars": 179,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 149,
+        "repeated_title": 30
+      }
+    },
+    {
+      "id": "lesson-148",
+      "pages": 9,
+      "source_chars": 4194,
+      "represented_chars": 4016,
+      "removed_chars": 178,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 146,
+        "repeated_title": 32
+      }
+    },
+    {
+      "id": "lesson-149",
+      "pages": 5,
+      "source_chars": 3583,
+      "represented_chars": 3375,
+      "removed_chars": 208,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 166,
+        "repeated_title": 42
+      }
+    },
+    {
+      "id": "lesson-150",
+      "pages": 9,
+      "source_chars": 5533,
+      "represented_chars": 5309,
+      "removed_chars": 224,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 174,
+        "repeated_title": 50
+      }
+    },
+    {
+      "id": "lesson-151",
+      "pages": 9,
+      "source_chars": 4201,
+      "represented_chars": 4016,
+      "removed_chars": 185,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "export_metadata": 153,
+        "repeated_title": 32
+      }
+    },
+    {
+      "id": "lesson-152",
+      "pages": 20,
+      "source_chars": 11871,
+      "represented_chars": 11663,
+      "removed_chars": 208,
+      "tables": 3,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 162,
+        "repeated_title": 46
+      }
+    },
+    {
+      "id": "lesson-153",
+      "pages": 8,
+      "source_chars": 5707,
+      "represented_chars": 5491,
+      "removed_chars": 216,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 166,
+        "repeated_title": 50
+      }
+    },
+    {
+      "id": "lesson-154",
+      "pages": 10,
+      "source_chars": 4410,
+      "represented_chars": 4210,
+      "removed_chars": 200,
+      "tables": 1,
+      "images": 1,
+      "image_occurrences": 2,
+      "removals": {
+        "export_metadata": 158,
+        "repeated_title": 42
+      }
+    },
+    {
+      "id": "lesson-155",
+      "pages": 8,
+      "source_chars": 6357,
+      "represented_chars": 6137,
+      "removed_chars": 220,
+      "tables": 1,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 168,
+        "repeated_title": 52
+      }
+    },
+    {
+      "id": "lesson-156",
+      "pages": 5,
+      "source_chars": 3400,
+      "represented_chars": 3195,
+      "removed_chars": 205,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "export_metadata": 165,
+        "repeated_title": 40
+      }
+    },
+    {
+      "id": "lesson-157",
+      "pages": 3,
+      "source_chars": 1863,
+      "represented_chars": 1822,
+      "removed_chars": 41,
+      "tables": 0,
+      "images": 0,
+      "image_occurrences": 0,
+      "removals": {
+        "repeated_title": 41
+      }
+    },
+    {
+      "id": "lesson-158",
+      "pages": 9,
+      "source_chars": 6468,
+      "represented_chars": 6439,
+      "removed_chars": 29,
+      "tables": 0,
+      "images": 3,
+      "image_occurrences": 3,
+      "removals": {
+        "repeated_title": 29
+      }
+    },
+    {
+      "id": "lesson-159",
+      "pages": 4,
+      "source_chars": 1930,
+      "represented_chars": 1890,
+      "removed_chars": 40,
+      "tables": 0,
+      "images": 1,
+      "image_occurrences": 1,
+      "removals": {
+        "repeated_title": 40
+      }
+    }
+  ]
+}

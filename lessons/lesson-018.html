@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>文字接龙（四）-Token、幻觉与创造力 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-018">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>文字接龙的游戏</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 019</span></div>
+<h1 class="lesson-title">文字接龙（四）-Token、幻觉与创造力</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>5 页原文</span><span>约 7 分钟阅读</span><span class="module-name">文字接龙的游戏</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-018.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-018.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面几节，我们了解了文字接龙、概率分布和自回归机制。 但还有两个重要的概念需要补充： ChatGPT预测的最小单位是什么？为什么每次回答都不一样？ 在这一节，我们将解答这些问题。</p></aside>
+<h2 id="section-1" data-source-page="1">7.1 Token和Tokenization：文字接龙的&quot;最小单位&quot;<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">这里我需要稍微技术性地补充一点：</p>
+<p data-source-page="1">ChatGPT预测的，准确说不是&quot;词&quot;，而是Token。</p>
+<p data-source-page="1">Token</p>
+<p data-source-page="1">什么是Tokenization（分词）？</p>
+<p data-source-page="1">在文本输入到ChatGPT之前，会先被切分成一个个Token。这个过程叫做Tokenization（分词）。</p>
+<p data-source-page="1">为什么需要这样做？</p>
+<p data-source-page="1">首先，你要理解一个关键约束：计算机需要一个固定大小的词表。</p>
+<p data-source-page="1">计算机需要一个固定大小的词表</p>
+<p data-source-page="1">什么意思？就是ChatGPT必须事先定好一个&quot;词汇表&quot;，比如包含20万个词。在预测下一个词时，只能从这20万个词里选，不能临时增加新词。但问题来了：</p>
+<p data-source-page="1">如果直接用&quot;词&quot;作为基本单位：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p class="list-item" data-source-page="2">中文常用词就有几万个，加上专业术语、人名地名，轻松上百万</p>
+<p class="list-item" data-source-page="2">英文单词更多，几十万个，加上各种变形（walk, walking, walked…）</p>
+<p class="list-item" data-source-page="2">还有不断涌现的新词：“元宇宙”、“Vibe-Coding”、“直播带货”…</p>
+<p data-source-page="2">如果把所有词都放进词表：</p>
+<p class="list-item" data-source-page="2">词表会非常大（几百万个）</p>
+<p class="list-item" data-source-page="2">计算成本会爆炸（每次预测要算几百万个概率）</p>
+<p class="list-item" data-source-page="2">还是会遇到新词（永远有没见过的词）</p>
+<h3 id="section-19" data-source-page="2">Token的解决方案<a class="heading-link" href="#section-19" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">不用&quot;词&quot;作为基本单位，而是用更小的&quot;token&quot;：</p>
+<p class="list-item" data-source-page="2">把常用词保留为一个token（如&quot;今天&quot;、“the”）</p>
+<p class="list-item" data-source-page="2">把不常用的词切分成几个token（如&quot;人工智能&quot; → “人工”+“智能”）</p>
+<p class="list-item" data-source-page="2">把生僻词切得更碎（如&quot;ChatGPT&quot; → “Chat”+“G”+“PT”）</p>
+<p data-source-page="2">这样，用20万个token，可以组合出无限种词汇。</p>
+<p data-source-page="2">用20万个token，可以组合出无限种词汇</p>
+<p data-source-page="2">Token是什么？</p>
+<p data-source-page="2">一个token可能是：</p>
+<p class="list-item" data-source-page="2">一个完整的中文词（如&quot;今天&quot;）</p>
+<p class="list-item" data-source-page="2">一个字（如&quot;真&quot;）</p>
+<p class="list-item" data-source-page="2">一个英文单词的一部分（如&quot;Token&quot;可能被切成&quot;Token&quot; + “ization”）</p>
+<p class="list-item" data-source-page="2">一个标点符号（如&quot;,&quot; 或 “.”）</p>
+<p data-source-page="2">具体例子</p>
+<p data-source-page="2">中文：</p>
+<aside class="callout" data-source-page="2"><p>&quot;今天天气真好&quot; → 切分成：[“今天”, “天气”, “真”, “好”] → 这是4个token</p></aside>
+<p data-source-page="2">而英文可能是这样：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<aside class="callout" data-source-page="3"><p>“Tokenization is important&quot; → 切分成：[“Token”, “ization”, &quot; is”, &quot; important&quot;] → 这是4个token（注意空格也算在token里）</p></aside>
+<p data-source-page="3">Token与中英文词汇的换算大致关系：</p>
+<p class="list-item" data-source-page="3">中文： 1个token ≈ 1个字</p>
+<p class="list-item" data-source-page="3">英文： 1个token ≈ 0.75个单词</p>
+<p data-source-page="3">词表大小随版本增长： 从 GPT-2/3 的 5万多个，到 GPT-4 的 10万多个，再到 GPT-4o 的 20万多个。</p>
+<p data-source-page="3">更大的词表意味着：</p>
+<p class="list-item" data-source-page="3">更精细的表示：能把常用词整个存储，不用切碎</p>
+<p data-source-page="3">更精细的表示</p>
+<p class="list-item" data-source-page="3">更高的效率：减少需要处理的token数量</p>
+<p data-source-page="3">更高的效率</p>
+<p data-source-page="3">这就是token的智慧之处。</p>
+<h2 id="section-47" data-source-page="3">7.2 为什么每次回答都不一样？<a class="heading-link" href="#section-47" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">因为ChatGPT引入了随机性。它不是每次都选概率最高的词，而是按照概率分布随机抽样。</p>
+<p data-source-page="3">为什么要这样设计？</p>
+<p class="list-item" data-source-page="3">更像人类：人类即使回答同一个问题，也会有不同的表达方式。随机性让AI的表达更生动、更自然。</p>
+<p class="list-item" data-source-page="3">创造力与准确性的平衡：完全确定性的回答太僵化，完全随机又太混乱。通过概率采样，在两者之间找到平衡。</p>
+<p data-source-page="3">这个话题非常深刻，涉及到创造力的本质、智能与随机性的关系等问题。我们会在后续专门详细讨论Temperature和另一个重要参数Top-p，以及它们如何控制AI的&quot;创造力&quot;。</p>
+<p data-source-page="3">想象下，如果ChatGPT对于同样的问题，每次回答都一字不差，那她就不配称为人工智能，她只是一个MySQL数据库。你只是在查询数据。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-54" data-source-page="4">7.3 冷知识与趣闻<a class="heading-link" href="#section-54" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">冷知识： ChatGPT其实不懂数学</p>
+<p data-source-page="4">很多人以为ChatGPT很擅长数学，毕竟它能解方程、算概率。</p>
+<p data-source-page="4">但其实它不是在&quot;算&quot;，而是在&quot;猜&quot;。</p>
+<aside class="callout" data-source-page="4"><p>问：“23 + 47 = ？” ChatGPT的思路： 训练数据里见过很多&quot;23 + 47 = 70&quot; 预测：下一个词最可能是&quot;70&quot;</p></aside>
+<p data-source-page="4">它不是真的在计算，只是记住了答案。</p>
+<p data-source-page="4">它可能连简单的计数都会错：</p>
+<aside class="callout" data-source-page="4"><p>问：“strawberry这个单词里有几个r？”</p></aside>
+<p data-source-page="4">ChatGPT可能答错。</p>
+<p data-source-page="4">因为它不是在&quot;数字母&quot;，而是在预测。</p>
+<p data-source-page="4">类似一个学生把所有题目和答案都背下来了，但并不理解数学原理——考试能过，换个题型就懵了。</p>
+<p data-source-page="4">不过，OpenAI很早就发现了这个问题，并找到了一个巧妙的解决方案：让ChatGPT学会“请外援”。</p>
+<p data-source-page="4">从GPT-4开始，ChatGPT可以调用外部工具——一个真正的计算器或Python代码执行环境。当遇到数学题时：</p>
+<p class="list-item" data-source-page="4">识别出这是个数学问题</p>
+<p class="list-item" data-source-page="4">调用Python执行真正的计算</p>
+<p class="list-item" data-source-page="4">把计算结果包装成自然语言返回</p>
+<p data-source-page="4">所以2024年你用ChatGPT算数学题，大概率不会出错——不是因为它“学会”了数学，而是因为它学会了调用工具。</p>
+<p data-source-page="4">2026年的新一代大模型（如GPT-5.5、Qwen3-Max、Gemini 3.0）通过强化学习和推理增强，它们已经具备了较强的原生数学计算能力，不再完全依赖调用外部工具，而是能够在模型内部进行多步骤的逻辑推导和自我纠错。</p>
+<p data-source-page="4">但核心原理没有变——它们仍然是在“预测”，只是通过更深的推理能力，让这种预测更加准确。对于特别复杂的数学问题，模型仍然会调用专业工具来保证100%的准确性。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-73" data-source-page="5">7.4 下一节预告<a class="heading-link" href="#section-73" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">现在你知道了ChatGPT是如何玩文字接龙游戏的：一个词一个词地预测，每次选概率最高的。</p>
+<p data-source-page="5">但这里有个核心问题：什么是&quot;语言模型&quot;？为什么ChatGPT被称为&quot;大语言模型&quot;？</p>
+<p data-source-page="5">下一节我们将正式介绍：语言模型的概念和本质。</p>
+<h2 id="section-77" data-source-page="5">7.5 ■ 学点英语<a class="heading-link" href="#section-77" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>词元</td><td>Token</td><td>/ˈtoʊkən/</td><td>模型预测的最小文本单位，可以是词、词的一部分或标点</td></tr><tr><td>分词</td><td>Tokenization</td><td>/ toʊkənaɪ ˌ ˈzeɪʃən/</td><td>将原始文本切分为Token序列的过程</td></tr><tr><td>词表</td><td>Vocabulary</td><td>/vəˈkæbjʊleri/</td><td>模型能识别的所有Token的集合，GPT-4o约20万个</td></tr><tr><td>子词</td><td>Subword</td><td>/ˈsʌbwɜːd/</td><td>比完整词更小的文本单元，通过组合子词Token可用固定词表表示无限词汇</td></tr><tr><td>温度参数</td><td>Temperature</td><td>/ˈtemprətʃər/</td><td>控制采样随机性的超参数，温度越高输出越多样、越具创造性</td></tr><tr><td>嵌入</td><td>Embedding</td><td>/ɪmˈbedɪŋ/</td><td>将离散的Token映射到连续向量空间的技术，使语义相近的词在空间中靠近</td></tr><tr><td>自回归</td><td>Autoregressive</td><td>/ɔːtoʊrɪˈɡresɪv/</td><td>模型依赖自身之前的输出作为后续输入、逐个预测下一个 Token的生成方式</td></tr><tr><td>随机采样</td><td>Random Sampling</td><td>/ˈrændəm ˈsæmplɪŋ/</td><td>按照概率分布随机选择下一个Token而不是每次都选最高概率者</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-017.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>文字接龙（三）-简单任务背后的复杂智能</strong><small>文字接龙的游戏</small></a><a class="chapter-neighbor next" href="lesson-019.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-7</strong><small>文字接龙的游戏</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5254#mid=104876" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">7.1 Token和Tokenization：文字接龙的&quot;最小单位&quot;</a><a href="#section-19" class="toc-level-3">Token的解决方案</a><a href="#section-47" class="toc-level-2">7.2 为什么每次回答都不一样？</a><a href="#section-54" class="toc-level-2">7.3 冷知识与趣闻</a><a href="#section-73" class="toc-level-2">7.4 下一节预告</a><a href="#section-77" class="toc-level-2">7.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-018", "title": "文字接龙（四）-Token、幻觉与创造力", "stage": 1, "week": 1, "module": "文字接龙的游戏", "minutes": 7, "pages": 5, "type": "article"}</script>
+</body></html>

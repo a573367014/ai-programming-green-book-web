@@ -1,0 +1,66 @@
+{
+  "id": "lesson-075",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "Temperature-控制创造力的旋钮",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/011-Temperature-控制创造力的旋钮/075-练习-1-2-选择练习.pdf",
+  "sha256": "bc9c5c33da64645a86b8dde3e02cbbb7aa931ec783a5ae9b2aa151c260caa4fb",
+  "pdf": "sources/pdf/lesson-075.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5263#mid=104986",
+  "minutes": 1,
+  "excerpt": "关于 Temperature 参数对模型输出概率分布的影响，下列描述最准确的是哪一项？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关于 Temperature 参数对模型输出概率分布的影响，下列描述最准确的是哪一项？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. T 越高，最高概率词被选中的几率越大，输出越稳定 B. T 越高，概率分布越平缓，低概率词更容易被采样，输出更有创造力 C. Temperature 会直接改变模型的参数权重，等价于一次临时的微调 D.Temperature 只对生成长度有影响，对采样概率没有影响",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 372,
+    "represented_chars": 187,
+    "removed_chars": 185,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 185
+    }
+  },
+  "videos": [],
+  "order": 76,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "关于 Temperature 参数对模型输出概率分布的影响，下列描述最准确的是哪一项？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. T 越高，最高概率词被选中的几率越大，输出越稳定 B. T 越高，概率分布越平缓，低概率词更容易被采样，输出更有创造力 C. Temperature 会直接改变模型的参数权重，等价于一次临时的微调 D.Temperature 只对生成长度有影响，对采样概率没有影响"
+    }
+  ]
+}

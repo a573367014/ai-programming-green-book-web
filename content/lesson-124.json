@@ -1,0 +1,641 @@
+{
+  "id": "lesson-124",
+  "title": "为什么需要 LangChain",
+  "code": "1-1",
+  "stage": 4,
+  "week": 8,
+  "week_title": "LangChain框架入门",
+  "module": "LangChain核心概念与应用",
+  "type": "article",
+  "repo_path": "004-阶段四 【框架应用】高效AI开发/001-第8周 LangChain框架入门/001-LangChain核心概念与应用/124-图文-1-1-为什么需要 LangChain.pdf",
+  "sha256": "0a0506a64217745d65fc9c183b8e633aca7261e48b0c386ca22c119713b7ee4d",
+  "pdf": "sources/pdf/lesson-124.pdf",
+  "pages": 6,
+  "source_url": "https://class.imooc.com/lesson/5282#mid=105026",
+  "minutes": 7,
+  "excerpt": "在前面的章节中，我们学会了调用 API、设计 Prompt、构建 RAG 系统、使用MCP 调用工具。但每次开发 AI 应用都要写很多重复代码——管理对话历史、解析 Function Calling、处理错误重试。这就像每次做饭都要从磨刀、洗菜、生火开始，太累了。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 在前面的章节中，我们学会了调用 API、设计 Prompt、构建 RAG 系统、使用MCP 调用工具。但每次开发 AI 应用都要写很多重复代码——管理对话历史、解析 Function Calling、处理错误重试。这就像每次做饭都要从磨刀、洗菜、生火开始，太累了。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "重复造轮子的痛苦",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "还是用之前的案例：开发一个游戏攻略助手。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "需求",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用户问问题",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "检索知识库找答案",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果需要实时数据(如最新版本信息),调用游戏 API",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "整合结果后返回",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统写法",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 1. 管理对话历史\nmessages = []\n\n# 2. 调用 RAG 检索\ndef search_knowledge(query):\n    embedding = get_embedding(query)\n    results = vector_db.search(embedding)\n    return results\n\n# 3. 判断是否需要调用 API\ndef need_api_call(query, rag_results):\n    prompt = f\"根据检索结果判断是否需要调用游戏 API 获取实时数据...\"\n    response = openai.chat.completions.create(...)\n    return \"需要调用\" in response\n\n# 4. 调用游戏 API\ndef call_game_api(query):\n    # 调用游戏数据 API\n    ...\n\n# 5. 组装完整流程\ndef answer_question(user_query):\n    # 检索知识库\n    rag_results = search_knowledge(user_query)\n\n    # 判断是否需要调用 API\n    if need_api_call(user_query, rag_results):\n        api_data = call_game_api(user_query)\n        context = rag_results + api_data\n    else:\n        context = rag_results\n\n    # 生成回答\n    messages.append({\"role\": \"user\", \"content\": user_query})\n    response = openai.chat.completions.create(\n        model=\"qwen3.6-plus\"\n        messages=[\n            {\"role\": \"system\", \"content\": f\"参考资料:\\n{context}\"},\n            *messages\n        ]\n    )\n\n    answer = response.choices[0].message.content\n    messages.append({\"role\": \"assistant\", \"content\": answer})\n\n    return answer",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这段代码有什么问题?",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "重复代码多 - 每个项目都要写类似的对话管理、工具调用逻辑",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "重复代码多",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "不易维护 - 逻辑散落在各处，改起来麻烦",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不易维护",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "缺少抽象 - 没有统一的接口，复用困难",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "缺少抽象",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "容易出错 - 手动管理状态，容易漏掉边界情况",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "容易出错",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "LangChain 的解决方案",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LangChain 提供了标准化的组件，把常见的 AI 应用模式封装成可复用的积木。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用 LangChain 改写:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain.chat_models import ChatOpenAI\nfrom langchain.memory import ConversationBufferMemory\nfrom langchain.tools import Tool\nfrom langchain.agents import initialize_agent\n\n# 1. 初始化组件\nllm = ChatOpenAI(model=\"gpt-5\")\nmemory = ConversationBufferMemory()\n\n# 2. 定义工具\ngame_api_tool = Tool(\n    name=\"game_api\",\n    func=call_game_api,\n    description=\"获取游戏实时数据,如角色属性、版本信息等\"\n)\n\n# 3. 创建 Agent（智能代理，能自主决定何时调用工具）\n# Agent 的详细原理和实现，我们会在第9章详细讲解\nagent = initialize_agent(\n    tools=[game_api_tool],\n    llm=llm,\n    memory=memory,\n    agent=\"conversational-react-description\"\n)\n\n# 4. 使用\nanswer = agent.run(\"原神中雷电将军的命座效果是什么?\")",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "对话管理 - ConversationBufferMemory 自动处理",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对话管理",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "工具调用 - Agent（智能代理）自动决定何时调用游戏 API",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "工具调用",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "流程编排 - 框架自动处理检索→判断→API调用→生成的流程",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "流程编排",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "错误处理 - 内置重试和降级机制",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "错误处理",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "关于 Agent Agent（智能代理）是能够自主决策的 AI 系统，也是目前AI领域最火的前沿概念和技术。在LangChain中，Agent会根据用户问题，自动判断需要调用哪些工具、按什么顺序调用。关于 Agent 的详细原理和实现，我们会在第9章详细讲解。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "LangChain 就像乐高积木",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LangChain 的核心思想:把 AI 应用拆解成标准化的组件，像搭积木一样组装。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心组件:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LLMs - 大模型接口(OpenAI、Qwen、本地模型等)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLMs",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Prompts - Prompt 模板管理",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Prompts",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Chains - 把多个步骤串联起来",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Chains",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Memory - 对话历史管理",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Tools - 外部工具调用",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Tools",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Agents - 智能代理，让 AI 自主决策调用哪些工具（后续章节详述）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agents",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统开发就像每次都手工制作零件，然后组装成产品。LangChain 提供了标准化的乐高积木，你只需要:",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "list",
+      "text": "选择需要的积木(组件)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "按照说明书组装(配置)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "运行(调用)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n链式框架 | LangChain | /læŋ tʃeɪn/ | 将 AI 应用拆解成标准化组件的集成框架\n样板代码 | Boilerplate Code | /ˈbɔɪlərpleɪt koʊd/ | 反复编写的基础性重复代码\n编排 | Orchestration | / ɔːrkɪˈstreɪʃn/ ˌ | 协调多个组件按流程协同工作\n组件 | Component | /kəmˈpoʊnənt/ | 可复用的模块化功能单元",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "链式框架",
+          "LangChain",
+          "/læŋ tʃeɪn/",
+          "将 AI 应用拆解成标准化组件的集成框架"
+        ],
+        [
+          "样板代码",
+          "Boilerplate Code",
+          "/ˈbɔɪlərpleɪt koʊd/",
+          "反复编写的基础性重复代码"
+        ],
+        [
+          "编排",
+          "Orchestration",
+          "/ ɔːrkɪˈstreɪʃn/ ˌ",
+          "协调多个组件按流程协同工作"
+        ],
+        [
+          "组件",
+          "Component",
+          "/kəmˈpoʊnənt/",
+          "可复用的模块化功能单元"
+        ]
+      ],
+      "page": 6
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们目前只是通过一个案例大致感受了 LangChain 的作用，却还没有系统梳理这个框架本身：到底有哪些核心组件，它们之间如何协同工作，又该如何在真实项目中按需选择。接下来，我们会从概念层面把 LangChain 拆开来看，理清它的基本积木和连接方式，为后面搭建第一个完整应用打下清晰的认知基础。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    }
+  ],
+  "accounting": {
+    "source_chars": 3176,
+    "represented_chars": 2990,
+    "removed_chars": 186,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 152,
+      "repeated_title": 34
+    }
+  },
+  "videos": [],
+  "order": 125,
+  "headings": [
+    {
+      "title": "重复造轮子的痛苦",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "LangChain 的解决方案",
+      "id": "section-19",
+      "level": 2
+    },
+    {
+      "title": "LangChain 就像乐高积木",
+      "id": "section-32",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-50",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-52",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "在前面的章节中，我们学会了调用 API、设计 Prompt、构建 RAG 系统、使用MCP 调用工具。但每次开发 AI 应用都要写很多重复代码——管理对话历史、解析 Function Calling、处理错误重试。这就像每次做饭都要从磨刀、洗菜、生火开始，太累了。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "重复造轮子的痛苦"
+    },
+    {
+      "anchor": "section-1",
+      "text": "还是用之前的案例：开发一个游戏攻略助手。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "需求"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用户问问题"
+    },
+    {
+      "anchor": "section-1",
+      "text": "检索知识库找答案"
+    },
+    {
+      "anchor": "section-1",
+      "text": "如果需要实时数据(如最新版本信息),调用游戏 API"
+    },
+    {
+      "anchor": "section-1",
+      "text": "整合结果后返回"
+    },
+    {
+      "anchor": "section-1",
+      "text": "传统写法"
+    },
+    {
+      "anchor": "section-1",
+      "text": "# 1. 管理对话历史\nmessages = []\n\n# 2. 调用 RAG 检索\ndef search_knowledge(query):\n    embedding = get_embedding(query)\n    results = vector_db.search(embedding)\n    return results\n\n# 3. 判断是否需要调用 API\ndef need_api_call(query, rag_results):\n    prompt = f\"根据检索结果判断是否需要调用游戏 API 获取实时数据...\"\n    response = openai.chat.completions.create(...)\n    return \"需要调用\" in response\n\n# 4. 调用游戏 API\ndef call_game_api(query):\n    # 调用游戏数据 API\n    ...\n\n# 5. 组装完整流程\ndef answer_question(user_query):\n    # 检索知识库\n    rag_results = search_knowledge(user_query)\n\n    # 判断是否需要调用 API\n    if need_api_call(user_query, rag_results):\n        api_data = call_game_api(user_query)\n        context = rag_results + api_data\n    else:\n        context = rag_results\n\n    # 生成回答\n    messages.append({\"role\": \"user\", \"content\": user_query})\n    response = openai.chat.completions.create(\n        model=\"qwen3.6-plus\"\n        messages=[\n            {\"role\": \"system\", \"content\": f\"参考资料:\\n{context}\"},\n            *messages\n        ]\n    )\n\n    answer = response.choices[0].message.content\n    messages.append({\"role\": \"assistant\", \"content\": answer})\n\n    return answer"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这段代码有什么问题?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "重复代码多 - 每个项目都要写类似的对话管理、工具调用逻辑"
+    },
+    {
+      "anchor": "section-1",
+      "text": "重复代码多"
+    },
+    {
+      "anchor": "section-1",
+      "text": "不易维护 - 逻辑散落在各处，改起来麻烦"
+    },
+    {
+      "anchor": "section-1",
+      "text": "不易维护"
+    },
+    {
+      "anchor": "section-1",
+      "text": "缺少抽象 - 没有统一的接口，复用困难"
+    },
+    {
+      "anchor": "section-1",
+      "text": "缺少抽象"
+    },
+    {
+      "anchor": "section-1",
+      "text": "容易出错 - 手动管理状态，容易漏掉边界情况"
+    },
+    {
+      "anchor": "section-1",
+      "text": "容易出错"
+    },
+    {
+      "anchor": "section-19",
+      "text": "LangChain 的解决方案"
+    },
+    {
+      "anchor": "section-19",
+      "text": "LangChain 提供了标准化的组件，把常见的 AI 应用模式封装成可复用的积木。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "用 LangChain 改写:"
+    },
+    {
+      "anchor": "section-19",
+      "text": "from langchain.chat_models import ChatOpenAI\nfrom langchain.memory import ConversationBufferMemory\nfrom langchain.tools import Tool\nfrom langchain.agents import initialize_agent\n\n# 1. 初始化组件\nllm = ChatOpenAI(model=\"gpt-5\")\nmemory = ConversationBufferMemory()\n\n# 2. 定义工具\ngame_api_tool = Tool(\n    name=\"game_api\",\n    func=call_game_api,\n    description=\"获取游戏实时数据,如角色属性、版本信息等\"\n)\n\n# 3. 创建 Agent（智能代理，能自主决定何时调用工具）\n# Agent 的详细原理和实现，我们会在第9章详细讲解\nagent = initialize_agent(\n    tools=[game_api_tool],\n    llm=llm,\n    memory=memory,\n    agent=\"conversational-react-description\"\n)\n\n# 4. 使用\nanswer = agent.run(\"原神中雷电将军的命座效果是什么?\")"
+    },
+    {
+      "anchor": "section-19",
+      "text": "对话管理 - ConversationBufferMemory 自动处理"
+    },
+    {
+      "anchor": "section-19",
+      "text": "对话管理"
+    },
+    {
+      "anchor": "section-19",
+      "text": "工具调用 - Agent（智能代理）自动决定何时调用游戏 API"
+    },
+    {
+      "anchor": "section-19",
+      "text": "工具调用"
+    },
+    {
+      "anchor": "section-19",
+      "text": "流程编排 - 框架自动处理检索→判断→API调用→生成的流程"
+    },
+    {
+      "anchor": "section-19",
+      "text": "流程编排"
+    },
+    {
+      "anchor": "section-19",
+      "text": "错误处理 - 内置重试和降级机制"
+    },
+    {
+      "anchor": "section-19",
+      "text": "错误处理"
+    },
+    {
+      "anchor": "section-19",
+      "text": "关于 Agent Agent（智能代理）是能够自主决策的 AI 系统，也是目前AI领域最火的前沿概念和技术。在LangChain中，Agent会根据用户问题，自动判断需要调用哪些工具、按什么顺序调用。关于 Agent 的详细原理和实现，我们会在第9章详细讲解。"
+    },
+    {
+      "anchor": "section-32",
+      "text": "LangChain 就像乐高积木"
+    },
+    {
+      "anchor": "section-32",
+      "text": "LangChain 的核心思想:把 AI 应用拆解成标准化的组件，像搭积木一样组装。"
+    },
+    {
+      "anchor": "section-32",
+      "text": "核心组件:"
+    },
+    {
+      "anchor": "section-32",
+      "text": "LLMs - 大模型接口(OpenAI、Qwen、本地模型等)"
+    },
+    {
+      "anchor": "section-32",
+      "text": "LLMs"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Prompts - Prompt 模板管理"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Prompts"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Chains - 把多个步骤串联起来"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Chains"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Memory - 对话历史管理"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Tools - 外部工具调用"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Tools"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Agents - 智能代理，让 AI 自主决策调用哪些工具（后续章节详述）"
+    },
+    {
+      "anchor": "section-32",
+      "text": "Agents"
+    },
+    {
+      "anchor": "section-32",
+      "text": "传统开发就像每次都手工制作零件，然后组装成产品。LangChain 提供了标准化的乐高积木，你只需要:"
+    },
+    {
+      "anchor": "section-32",
+      "text": "选择需要的积木(组件)"
+    },
+    {
+      "anchor": "section-32",
+      "text": "按照说明书组装(配置)"
+    },
+    {
+      "anchor": "section-32",
+      "text": "运行(调用)"
+    },
+    {
+      "anchor": "section-50",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-50",
+      "text": "中文 | English | 音标 | 说明\n链式框架 | LangChain | /læŋ tʃeɪn/ | 将 AI 应用拆解成标准化组件的集成框架\n样板代码 | Boilerplate Code | /ˈbɔɪlərpleɪt koʊd/ | 反复编写的基础性重复代码\n编排 | Orchestration | / ɔːrkɪˈstreɪʃn/ ˌ | 协调多个组件按流程协同工作\n组件 | Component | /kəmˈpoʊnənt/ | 可复用的模块化功能单元"
+    },
+    {
+      "anchor": "section-52",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-52",
+      "text": "我们目前只是通过一个案例大致感受了 LangChain 的作用，却还没有系统梳理这个框架本身：到底有哪些核心组件，它们之间如何协同工作，又该如何在真实项目中按需选择。接下来，我们会从概念层面把 LangChain 拆开来看，理清它的基本积木和连接方式，为后面搭建第一个完整应用打下清晰的认知基础。"
+    }
+  ]
+}

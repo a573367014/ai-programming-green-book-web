@@ -1,0 +1,1552 @@
+{
+  "id": "lesson-083",
+  "title": "AI不等于大模型",
+  "code": "1-1",
+  "stage": 2,
+  "week": 4,
+  "week_title": "理解大模型开发",
+  "module": "理解大模型开发",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/001-第4周 理解大模型开发/001-理解大模型开发/083-图文-1-1-AI不等于大模型.pdf",
+  "sha256": "589fc5cbc5936cfec1aff1c0212af68b718bfb749669ffe9a32338956ae3ed1d",
+  "pdf": "sources/pdf/lesson-083.pdf",
+  "pages": 9,
+  "source_url": "https://class.imooc.com/lesson/5267#mid=104902",
+  "minutes": 14,
+  "excerpt": "告别了第1章的核心理论，我们准备开始大模型的实战。后续的章节将反复印证理解第1章的知识是多么的重要。 阅读指南 大多数非程序员在谈到AI时通常指的是DeepSeek、豆包这些大语言模型。 渐渐地，一个错误的等式形成了： AI = 大语言模型。 但这是错的。大模型是当前AI领域最耀眼的明星，但它只是A",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 告别了第1章的核心理论，我们准备开始大模型的实战。后续的章节将反复印证理解第1章的知识是多么的重要。 阅读指南 大多数非程序员在谈到AI时通常指的是DeepSeek、豆包这些大语言模型。 渐渐地，一个错误的等式形成了： AI = 大语言模型。 但这是错的。大模型是当前AI领域最耀眼的明星，但它只是AI这个广阔领域中的一个分支。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "1.1 什么是AI",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "**人工智能(Artificial Intelligence)**这个词诞生于1956年的达特茅斯会议。当时，一群计算机科学家聚在一起，提出了一个大胆的设想：",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "quote",
+      "text": "“制造出能够模拟人类智能行为的机器”。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从那时起，AI就成为了一个领域：只要是让机器展现\"智能\"行为的技术，都可以被称为AI。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但问题来了:什么算\"智能\"?",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么算\"智能\"?",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI这个概念经历了三次重要的发展浪潮：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第一次浪潮(1956-1974):符号主义AI",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "那个年代，研究者认为智能的本质是逻辑推理和符号操作。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "逻辑推理和符号操作",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型代表包括专家系统和逻辑推理引擎。专家系统把人类专家的知识编码成规则，逻辑推理引擎用if-then规则解决问题。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "例如，一个医疗诊断系统可能是这样的：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "IF 患者发烧 AND 咳嗽 AND 流鼻涕\nTHEN 诊断为感冒，建议多喝水休息\n\n1\n2",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是AI吗，在当时，这就是AI。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但很快人们发现，真实世界太复杂了。没法用有限的规则覆盖所有情况。医生的经验，很多时候是\"直觉\"，而不是明确的规则。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "第二次浪潮(1980-2010):机器学习AI",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "研究者转变了思路，与其手工编写规则，不如让机器从数据中学习规律。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型代表包括决策树、随机森林、支持向量机和贝叶斯网络。决策树和随机森林从样本数据中学习分类规则，支持向量机找到最优分类边界，贝叶斯网络基于概率推理。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "例如，一个垃圾邮件分类器，不再手工写规则，而是从数据中学习：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "训练数据: “免费赠送” → 垃圾邮件 ✓ \"会议安排\" → 正常邮件 ✓ \"中奖通知\" → 垃圾邮件 ✓ …10000封邮件 机器学习模型自动总结规律: 包含\"免费\"、“中奖”、“点击链接” → 垃圾概率90% 包含\"会议\"、“项目”、“附件” → 正常概率85%",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个阶段的AI已经能做很多实用的事，包括信用卡欺诈检测、亚马逊的商品推荐系统、基于特征工程的人脸识别。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些，也是AI。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但它们有个共同特点，需要大量的人工特征工程。工程师要手工提取\"有用的特征\"，然后喂给模型。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第三次浪潮(2012-至今):深度学习AI",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2012年，一个叫AlexNet的深度神经网络在ImageNet图像识别竞赛中碾压了所有传统方法。一切都变了。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "深度学习的革命性突破在于，不再需要人工设计特征，让神经网络自己学习特征。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型代表包括卷积神经网络用于图像识别和物体检测、循环神经网络用于语音识别和机器翻译、Transformer用于语言理解和文本生成，这也是大模型的基础。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "深度学习AI的能力边界迅速扩展，AlphaGo击败围棋世界冠军、自动驾驶汽车上路、语音助手走进千家万户、人脸识别精度超过人类。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些，仍然是AI。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从这段历史可以看出，**AI不是某种特定技术，而是一个目标，让机器表现出智能。**实现这个目标的手段，一直在演进：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "list",
+      "text": "50年代:符号推理",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "90年代:统计学习",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "10年代:深度神经网络",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "20年代:大规模预训练模型",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "大语言模型，只是当前这个阶段实现AI的一种方式。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它很强大，但它不是AI的全部，甚至未来可能会被更先进的技术取代。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 理解这一点很重要，现在已经有不少领域专家在讨论Transformer的缺陷，甚至批评人类沉醉于Transformer架构\"不思进取\"。Transformer很厉害，但人类不可能永远停留在当前架构下。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "1.2 大模型的定位",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解了AI是一个广阔的领域后，让我们看看大模型在其中的位置。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "人工智能（AI） │ ├── 符号主义AI：专家系统、逻辑推理 │ ├── 机器学习 │ ├── 传统机器学习：决策树、SVM、贝叶斯 │ │ │ └── 深度学习 │ ├── 计算机视觉：CNN、ViT、YOLO │├── 语音识别：WaveNet、Whisper │ └── 自然语言处理 │ ├── 传统NLP（LSTM、GRU） │└── 大语言模型（LLM）★ │ ├── GPT系列 │ ├── LLaMA │ └── DeepSeek",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "大语言模型只是深度学习的一个分支，而深度学习又只是AI的一个分支。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "大模型的三个核心特征",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么样的模型才能叫\"大模型\"，有三个核心特征：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "规模巨大",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "参数量：数百亿到数千亿（GPT-3是1750亿，GPT-4、5.x只会更多）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "训练数据：数万亿token（几乎整个互联网的文本）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "相比之下，2018年的BERT模型\"只有\"3.4亿参数，在当时已经算大了。GPT-3比BERT大了500倍。BERT（Bidirectional Encoder Representations from Transformers）是Google在2018年发布的预训练语言模型，通过双向理解上下文来学习词语含义，在当时引发了NLP领域的革命。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "通用能力",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "大模型不是为某个特定任务训练的，而是在海量文本上做通用预训练：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "没有专门训练翻译，但能翻译",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "没有专门训练写代码，但能写代码",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "没有专门训练做数学题，但能做数学题",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种\"涌现能力\"（Emergent Abilities）是大模型的标志性特点。当模型规模达到某个临界点，就会突然展现出训练时没有明确教它的能力。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "基于Transformer架构",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "几乎所有当前的大语言模型，都基于Transformer架构：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "国际主流：GPT系列（OpenAI）、LLaMA系列（Meta）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "国产代表：DeepSeek（深度求索）、通义千问（阿里）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Transformer的自注意力机制，让模型能处理超长上下文，理解词与词之间的复杂关系。这也是为什么从美国的GPT，到中国的DeepSeek，几乎所有大模型都选择了这个架构，它已被证明是当前实现大规模语言理解的最优解。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h3",
+      "text": "大模型不能代表的AI技术",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解了大模型的定位，就能看清一个事实：很多AI技术，跟大模型没什么关系。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "计算机视觉领域的图像分类（ResNet、EfficientNet）、物体检测（YOLO、Faster R-CNN）大多基于CNN，跟大语言模型的Transformer架构不同，应用场景也不同。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "语音识别领域的Whisper（OpenAI的语音识别模型）、WaveNet（Google的语音合成），虽然Whisper也用了Transformer，但它处理的是音频，不是文本。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "推荐系统领域的协同过滤（Amazon早期的推荐算法）、深度学习推荐模型（Wide&Deep、DeepFM）、图神经网络推荐（GNN-based），这些系统关注的是\"预测用户偏好\"，而不是\"理解和生成语言\"。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "强化学习领域的AlphaGo（围棋）、OpenAI Five（Dota2游戏AI）、机器人控制，这些AI通过\"试错\"学习策略，跟大模型的\"预测下一个词\"完全不同。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "1.3 AI开发的现状",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们现在所做的AI开发，是不是主要是大模型相关应用的开发?",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在很大程度上，确实如此。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "打开招聘网站，搜索\"AI开发工程师\"，职位要求高度集中在：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "必备技能: 熟悉GPT、Claude等大语言模型API 掌握Prompt Engineering(提示词工程) 了解RAG(检索增强生成) 会用LangChain、LlamaIndex等框架 理解Function Calling、Agent机制 加分项: 有微调(Fine-tuning)经验 了解向量数据库(Pinecone、Chroma) 会部署开源大模型(LLaMA、Qwen)",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "几乎所有技能都围绕大语言模型。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "再看看近两年的AI应用创业公司，产品类型也高度集中:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "AI写作助手:Notion AI",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI写作助手",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "AI知识库: NoteBookLM",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI知识库",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "AI编程助手:Cursor、TRAE",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI编程助手",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "多模态:豆包、通义千问",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "多模态",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心都是调用大模型API，包装成垂直场景的应用。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "调用大模型API，包装成垂直场景的应用",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么会形成这种局面，因为大模型的出现，让AI应用开发的门槛几乎消失了。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "以前要做一个AI应用，需要选择算法、设计网络、准备数据、训练模型、优化参数，需要深厚的机器学习功底和大量算力。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在，只需要：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from openai import OpenAI\n\nclient = OpenAI(api_key=\"密钥\")\n\nresponse = client.chat.completions.create(\n    model=\"qwen3-max\",\n    messages=[\n        {\"role\": \"user\", \"content\": \"帮我总结这篇文章\"}\n    ]\n)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这让AI开发\"平民化\"了。它再也不是只有少数数学功底好的精英才能驾驭的技术。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.4 大语言模型的能力边界",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然当前大模型应用开发很火，但把AI等同于大模型，会带来认知误区。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "大模型擅长自然语言理解和生成、文本内容创作、代码生成和解释、逻辑推理（通过Chain-of-Thought）、知识问答。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "大模型不擅长实时决策（自动驾驶需要毫秒级响应）、精确计算（数学公式求解容易出错）、图像生成（需要专门的扩散模型如Stable Diffusion）、物理世界交互（机器人控制需要强化学习）。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "其他AI技术也有其独特价值。计算机视觉用于医学影像诊断和工业质检，语音识别用于实时字幕和语音转文字，推荐系统用于电商和短视频推荐，强化学习用于游戏AI、机器人控制和资源调度优化。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些任务，大模型做不了，或者做得不如专门的AI模型。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.5 实际开发中的选择",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理论讲完了，回到实战：作为开发者，怎么选择用大模型还是其他AI技术？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可以参照以下决策思路：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "任务是否涉及自然语言理解或生成？如果是，考虑大模型。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "任务通用、数据少，用大模型API（智能客服、内容生成、代码助手）；任务专一、数据多、成本敏感，用传统NLP模型（垃圾邮件分类、关键词提取）。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "list",
+      "text": "如果不涉及自然语言，考虑其他AI技术。图像/视频处理选择计算机视觉（人脸识别、物体检测），推荐/预测选择推荐系统或时间序列模型（商品推荐、股价预测），语音处理选择语音识别/合成模型，决策优化选择强化学习（游戏AI、机器人控制）。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "大模型对于自然语言的理解与文本的生成是其强大的能力，如果确实需要对接处理自然语言，大模型必然是首选。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "给出一些场景选型案例：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "智能客服选择大模型",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用户问法千变万化，无法穷举规则，需要理解自然语言的语义，希望回复自然、多样，而不是模板化。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "电商商品推荐选择推荐系统",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "基于用户行为数据，而非语言理解。调用频率极高（每个用户每次刷新都要推荐），成本敏感，大模型API成本太高。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "法律合同审查选择大模型+专业模型混合",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "需要理解合同条款（自然语言）用大模型，但法律领域专业性强，需要微调或专业模型。示例代码如下：",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例:",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 第一步:用大模型提取关键信息\nextracted_info = gpt_extract_clauses(contract_text)\n\n# 第二步:用专业的法律NLP模型分析风险\nrisk_analysis = legal_model.analyze(extracted_info)\n\n# 第三步:用大模型生成审查报告\nreport = gpt_generate_report(risk_analysis)",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "混合使用，发挥各自优势。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.6 大模型可能只是过渡形态",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "把视野放远一点，思考一个问题：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "大模型会是AI的终极形态吗？",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "答案是，不会。它很可能只是一个过渡阶段。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果把AI的发展看作几个阶段：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第一阶段：符号主义（1950-1980）→ 手工编写规则",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第二阶段：统计学习（1980-2010）→ 从数据中学习规则",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第三阶段：深度学习（2010-2020）→ 自动学习特征表示",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第四阶段：大模型（2020-?）→ 大规模预训练+通用能力",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第五阶段：??? → 可能是具身智能 + 持续学习 + 多模态融合",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "大模型很可能是第四到第五阶段的过渡。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“大模型时代，是AI从’狭隘专家’走向’通用智能’的关键一步，但它还不是终点。”",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.7 冷知识：抖音的推荐算法是怎么做到让人\"停不下来\"的？**",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "很多同学会好奇：抖音的推荐为什么这么准，为什么总能刷到喜欢的内容？",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "恰巧字节跳动在2025年3月首次公开了推荐算法原理。虽然这和本书的主题不相关，但这是一个非大模型AI技术的绝佳案例，展示了AI领域的多样性。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "抖音推荐系统采用四层技术架构。第一层是双塔召回模型，想象红娘介绍相亲，不会让所有人见面，而是先筛选出\"可能合适\"的候选者。双塔召回模型从数百万视频中，通过计算用户兴趣编码和视频内容编码的相似度，快速筛选出几百个候选。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "第二层是Wide&Deep模型，Wide部分记住明确偏好（点赞过10个美食视频就推荐美食），Deep部分发现潜在兴趣（喜欢美食的人70%也喜欢旅游），既能\"投其所好\"，又能\"拓宽视野\"。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "第三层是多目标建模，早期推荐系统只看完播率，现在综合评估完播率、点赞概率、评论概率、分享概率、关注概率等多个指标。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "第四层是底层引擎Monolith，这是字节自研的推荐系统框架，支持实时训练（用户刚点赞一个视频，几分钟后推荐就会调整）、处理万亿级别特征、毫秒级完成推荐计算。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "这和大模型完全是两个世界的AI技术。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.8 下一节预告",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解了\"AI不等于大模型\"之后，下一个问题来了：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当我们真正要开发AI应用时，该从哪里入手？",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可能已经有了一个运行良好的传统业务系统，电商平台、企业管理系统、在线教育平台……现在想接入AI能力，该怎么做？",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "又或者，想从零开始开发一个AI原生应用，智能客服、AI写作助手、代码生成工具……架构该如何设计？",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "**下一节《AI应用开发的正确姿势》**将为你揭晓。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.9 ■ 学点英语",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n人工智能 | Artificial Intelligence | / ɑːrtɪˈfɪʃl ɪn ˌ ˈtelɪdʒəns/ | 让机器展现智能行为的技术领域，不等于大模型\n机器学习 | Machine Learning | /məˈʃiːn ˈlɜːrnɪŋ/ | 让机器从数据中自动学习规律，而非手工编写规则\n大语言模型 | Large Language Model (LLM) | /lɑːrdʒ ˈlæŋɡwɪdʒ ˈmɑːdl/ | 基于Transformer的大规模预训练语言模型， AI的一个分支\n涌现能力 | Emergent Abilities | /iˈmɜːrdʒənt ə ˈbɪlətiz/ | 模型规模达到临界点后突然展现出未明确训练过的能力\n深度学习 | Deep Learning | /diːp ˈlɜːrnɪŋ/ | 用多层神经网络自动学习特征表示的AI方法",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "人工智能",
+          "Artificial Intelligence",
+          "/ ɑːrtɪˈfɪʃl ɪn ˌ ˈtelɪdʒəns/",
+          "让机器展现智能行为的技术领域，不等于大模型"
+        ],
+        [
+          "机器学习",
+          "Machine Learning",
+          "/məˈʃiːn ˈlɜːrnɪŋ/",
+          "让机器从数据中自动学习规律，而非手工编写规则"
+        ],
+        [
+          "大语言模型",
+          "Large Language Model (LLM)",
+          "/lɑːrdʒ ˈlæŋɡwɪdʒ ˈmɑːdl/",
+          "基于Transformer的大规模预训练语言模型， AI的一个分支"
+        ],
+        [
+          "涌现能力",
+          "Emergent Abilities",
+          "/iˈmɜːrdʒənt ə ˈbɪlətiz/",
+          "模型规模达到临界点后突然展现出未明确训练过的能力"
+        ],
+        [
+          "深度学习",
+          "Deep Learning",
+          "/diːp ˈlɜːrnɪŋ/",
+          "用多层神经网络自动学习特征表示的AI方法"
+        ]
+      ],
+      "page": 9
+    }
+  ],
+  "accounting": {
+    "source_chars": 6164,
+    "represented_chars": 6001,
+    "removed_chars": 163,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 135,
+      "repeated_title": 28
+    }
+  },
+  "videos": [],
+  "order": 84,
+  "headings": [
+    {
+      "title": "1.1 什么是AI",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "1.2 大模型的定位",
+      "id": "section-38",
+      "level": 2
+    },
+    {
+      "title": "大模型的三个核心特征",
+      "id": "section-42",
+      "level": 3
+    },
+    {
+      "title": "大模型不能代表的AI技术",
+      "id": "section-59",
+      "level": 3
+    },
+    {
+      "title": "1.3 AI开发的现状",
+      "id": "section-65",
+      "level": 2
+    },
+    {
+      "title": "1.4 大语言模型的能力边界",
+      "id": "section-87",
+      "level": 2
+    },
+    {
+      "title": "1.5 实际开发中的选择",
+      "id": "section-93",
+      "level": 2
+    },
+    {
+      "title": "1.6 大模型可能只是过渡形态",
+      "id": "section-110",
+      "level": 2
+    },
+    {
+      "title": "1.7 冷知识：抖音的推荐算法是怎么做到让人\"停不下来\"的？**",
+      "id": "section-122",
+      "level": 2
+    },
+    {
+      "title": "1.8 下一节预告",
+      "id": "section-130",
+      "level": 2
+    },
+    {
+      "title": "1.9 ■ 学点英语",
+      "id": "section-136",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "告别了第1章的核心理论，我们准备开始大模型的实战。后续的章节将反复印证理解第1章的知识是多么的重要。 阅读指南 大多数非程序员在谈到AI时通常指的是DeepSeek、豆包这些大语言模型。 渐渐地，一个错误的等式形成了： AI = 大语言模型。 但这是错的。大模型是当前AI领域最耀眼的明星，但它只是AI这个广阔领域中的一个分支。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "1.1 什么是AI"
+    },
+    {
+      "anchor": "section-1",
+      "text": "**人工智能(Artificial Intelligence)**这个词诞生于1956年的达特茅斯会议。当时，一群计算机科学家聚在一起，提出了一个大胆的设想："
+    },
+    {
+      "anchor": "section-1",
+      "text": "“制造出能够模拟人类智能行为的机器”。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "从那时起，AI就成为了一个领域：只要是让机器展现\"智能\"行为的技术，都可以被称为AI。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "但问题来了:什么算\"智能\"?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "什么算\"智能\"?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "AI这个概念经历了三次重要的发展浪潮："
+    },
+    {
+      "anchor": "section-1",
+      "text": "第一次浪潮(1956-1974):符号主义AI"
+    },
+    {
+      "anchor": "section-1",
+      "text": "那个年代，研究者认为智能的本质是逻辑推理和符号操作。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "逻辑推理和符号操作"
+    },
+    {
+      "anchor": "section-1",
+      "text": "典型代表包括专家系统和逻辑推理引擎。专家系统把人类专家的知识编码成规则，逻辑推理引擎用if-then规则解决问题。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "例如，一个医疗诊断系统可能是这样的："
+    },
+    {
+      "anchor": "section-1",
+      "text": "IF 患者发烧 AND 咳嗽 AND 流鼻涕\nTHEN 诊断为感冒，建议多喝水休息\n\n1\n2"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这是AI吗，在当时，这就是AI。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "但很快人们发现，真实世界太复杂了。没法用有限的规则覆盖所有情况。医生的经验，很多时候是\"直觉\"，而不是明确的规则。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "第二次浪潮(1980-2010):机器学习AI"
+    },
+    {
+      "anchor": "section-1",
+      "text": "研究者转变了思路，与其手工编写规则，不如让机器从数据中学习规律。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "典型代表包括决策树、随机森林、支持向量机和贝叶斯网络。决策树和随机森林从样本数据中学习分类规则，支持向量机找到最优分类边界，贝叶斯网络基于概率推理。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "例如，一个垃圾邮件分类器，不再手工写规则，而是从数据中学习："
+    },
+    {
+      "anchor": "section-1",
+      "text": "训练数据: “免费赠送” → 垃圾邮件 ✓ \"会议安排\" → 正常邮件 ✓ \"中奖通知\" → 垃圾邮件 ✓ …10000封邮件 机器学习模型自动总结规律: 包含\"免费\"、“中奖”、“点击链接” → 垃圾概率90% 包含\"会议\"、“项目”、“附件” → 正常概率85%"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个阶段的AI已经能做很多实用的事，包括信用卡欺诈检测、亚马逊的商品推荐系统、基于特征工程的人脸识别。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这些，也是AI。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "但它们有个共同特点，需要大量的人工特征工程。工程师要手工提取\"有用的特征\"，然后喂给模型。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "第三次浪潮(2012-至今):深度学习AI"
+    },
+    {
+      "anchor": "section-1",
+      "text": "2012年，一个叫AlexNet的深度神经网络在ImageNet图像识别竞赛中碾压了所有传统方法。一切都变了。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "深度学习的革命性突破在于，不再需要人工设计特征，让神经网络自己学习特征。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "典型代表包括卷积神经网络用于图像识别和物体检测、循环神经网络用于语音识别和机器翻译、Transformer用于语言理解和文本生成，这也是大模型的基础。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "深度学习AI的能力边界迅速扩展，AlphaGo击败围棋世界冠军、自动驾驶汽车上路、语音助手走进千家万户、人脸识别精度超过人类。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这些，仍然是AI。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "从这段历史可以看出，**AI不是某种特定技术，而是一个目标，让机器表现出智能。**实现这个目标的手段，一直在演进："
+    },
+    {
+      "anchor": "section-1",
+      "text": "50年代:符号推理"
+    },
+    {
+      "anchor": "section-1",
+      "text": "90年代:统计学习"
+    },
+    {
+      "anchor": "section-1",
+      "text": "10年代:深度神经网络"
+    },
+    {
+      "anchor": "section-1",
+      "text": "20年代:大规模预训练模型"
+    },
+    {
+      "anchor": "section-1",
+      "text": "大语言模型，只是当前这个阶段实现AI的一种方式。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它很强大，但它不是AI的全部，甚至未来可能会被更先进的技术取代。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "理解这一点很重要，现在已经有不少领域专家在讨论Transformer的缺陷，甚至批评人类沉醉于Transformer架构\"不思进取\"。Transformer很厉害，但人类不可能永远停留在当前架构下。"
+    },
+    {
+      "anchor": "section-38",
+      "text": "1.2 大模型的定位"
+    },
+    {
+      "anchor": "section-38",
+      "text": "理解了AI是一个广阔的领域后，让我们看看大模型在其中的位置。"
+    },
+    {
+      "anchor": "section-38",
+      "text": "人工智能（AI） │ ├── 符号主义AI：专家系统、逻辑推理 │ ├── 机器学习 │ ├── 传统机器学习：决策树、SVM、贝叶斯 │ │ │ └── 深度学习 │ ├── 计算机视觉：CNN、ViT、YOLO │├── 语音识别：WaveNet、Whisper │ └── 自然语言处理 │ ├── 传统NLP（LSTM、GRU） │└── 大语言模型（LLM）★ │ ├── GPT系列 │ ├── LLaMA │ └── DeepSeek"
+    },
+    {
+      "anchor": "section-38",
+      "text": "大语言模型只是深度学习的一个分支，而深度学习又只是AI的一个分支。"
+    },
+    {
+      "anchor": "section-42",
+      "text": "大模型的三个核心特征"
+    },
+    {
+      "anchor": "section-42",
+      "text": "什么样的模型才能叫\"大模型\"，有三个核心特征："
+    },
+    {
+      "anchor": "section-42",
+      "text": "规模巨大"
+    },
+    {
+      "anchor": "section-42",
+      "text": "参数量：数百亿到数千亿（GPT-3是1750亿，GPT-4、5.x只会更多）"
+    },
+    {
+      "anchor": "section-42",
+      "text": "训练数据：数万亿token（几乎整个互联网的文本）"
+    },
+    {
+      "anchor": "section-42",
+      "text": "相比之下，2018年的BERT模型\"只有\"3.4亿参数，在当时已经算大了。GPT-3比BERT大了500倍。BERT（Bidirectional Encoder Representations from Transformers）是Google在2018年发布的预训练语言模型，通过双向理解上下文来学习词语含义，在当时引发了NLP领域的革命。"
+    },
+    {
+      "anchor": "section-42",
+      "text": "通用能力"
+    },
+    {
+      "anchor": "section-42",
+      "text": "大模型不是为某个特定任务训练的，而是在海量文本上做通用预训练："
+    },
+    {
+      "anchor": "section-42",
+      "text": "没有专门训练翻译，但能翻译"
+    },
+    {
+      "anchor": "section-42",
+      "text": "没有专门训练写代码，但能写代码"
+    },
+    {
+      "anchor": "section-42",
+      "text": "没有专门训练做数学题，但能做数学题"
+    },
+    {
+      "anchor": "section-42",
+      "text": "这种\"涌现能力\"（Emergent Abilities）是大模型的标志性特点。当模型规模达到某个临界点，就会突然展现出训练时没有明确教它的能力。"
+    },
+    {
+      "anchor": "section-42",
+      "text": "基于Transformer架构"
+    },
+    {
+      "anchor": "section-42",
+      "text": "几乎所有当前的大语言模型，都基于Transformer架构："
+    },
+    {
+      "anchor": "section-42",
+      "text": "国际主流：GPT系列（OpenAI）、LLaMA系列（Meta）"
+    },
+    {
+      "anchor": "section-42",
+      "text": "国产代表：DeepSeek（深度求索）、通义千问（阿里）"
+    },
+    {
+      "anchor": "section-42",
+      "text": "Transformer的自注意力机制，让模型能处理超长上下文，理解词与词之间的复杂关系。这也是为什么从美国的GPT，到中国的DeepSeek，几乎所有大模型都选择了这个架构，它已被证明是当前实现大规模语言理解的最优解。"
+    },
+    {
+      "anchor": "section-59",
+      "text": "大模型不能代表的AI技术"
+    },
+    {
+      "anchor": "section-59",
+      "text": "理解了大模型的定位，就能看清一个事实：很多AI技术，跟大模型没什么关系。"
+    },
+    {
+      "anchor": "section-59",
+      "text": "计算机视觉领域的图像分类（ResNet、EfficientNet）、物体检测（YOLO、Faster R-CNN）大多基于CNN，跟大语言模型的Transformer架构不同，应用场景也不同。"
+    },
+    {
+      "anchor": "section-59",
+      "text": "语音识别领域的Whisper（OpenAI的语音识别模型）、WaveNet（Google的语音合成），虽然Whisper也用了Transformer，但它处理的是音频，不是文本。"
+    },
+    {
+      "anchor": "section-59",
+      "text": "推荐系统领域的协同过滤（Amazon早期的推荐算法）、深度学习推荐模型（Wide&Deep、DeepFM）、图神经网络推荐（GNN-based），这些系统关注的是\"预测用户偏好\"，而不是\"理解和生成语言\"。"
+    },
+    {
+      "anchor": "section-59",
+      "text": "强化学习领域的AlphaGo（围棋）、OpenAI Five（Dota2游戏AI）、机器人控制，这些AI通过\"试错\"学习策略，跟大模型的\"预测下一个词\"完全不同。"
+    },
+    {
+      "anchor": "section-65",
+      "text": "1.3 AI开发的现状"
+    },
+    {
+      "anchor": "section-65",
+      "text": "我们现在所做的AI开发，是不是主要是大模型相关应用的开发?"
+    },
+    {
+      "anchor": "section-65",
+      "text": "在很大程度上，确实如此。"
+    },
+    {
+      "anchor": "section-65",
+      "text": "打开招聘网站，搜索\"AI开发工程师\"，职位要求高度集中在："
+    },
+    {
+      "anchor": "section-65",
+      "text": "必备技能: 熟悉GPT、Claude等大语言模型API 掌握Prompt Engineering(提示词工程) 了解RAG(检索增强生成) 会用LangChain、LlamaIndex等框架 理解Function Calling、Agent机制 加分项: 有微调(Fine-tuning)经验 了解向量数据库(Pinecone、Chroma) 会部署开源大模型(LLaMA、Qwen)"
+    },
+    {
+      "anchor": "section-65",
+      "text": "几乎所有技能都围绕大语言模型。"
+    },
+    {
+      "anchor": "section-65",
+      "text": "再看看近两年的AI应用创业公司，产品类型也高度集中:"
+    },
+    {
+      "anchor": "section-65",
+      "text": "AI写作助手:Notion AI"
+    },
+    {
+      "anchor": "section-65",
+      "text": "AI写作助手"
+    },
+    {
+      "anchor": "section-65",
+      "text": "AI知识库: NoteBookLM"
+    },
+    {
+      "anchor": "section-65",
+      "text": "AI知识库"
+    },
+    {
+      "anchor": "section-65",
+      "text": "AI编程助手:Cursor、TRAE"
+    },
+    {
+      "anchor": "section-65",
+      "text": "AI编程助手"
+    },
+    {
+      "anchor": "section-65",
+      "text": "多模态:豆包、通义千问"
+    },
+    {
+      "anchor": "section-65",
+      "text": "多模态"
+    },
+    {
+      "anchor": "section-65",
+      "text": "核心都是调用大模型API，包装成垂直场景的应用。"
+    },
+    {
+      "anchor": "section-65",
+      "text": "调用大模型API，包装成垂直场景的应用"
+    },
+    {
+      "anchor": "section-65",
+      "text": "为什么会形成这种局面，因为大模型的出现，让AI应用开发的门槛几乎消失了。"
+    },
+    {
+      "anchor": "section-65",
+      "text": "以前要做一个AI应用，需要选择算法、设计网络、准备数据、训练模型、优化参数，需要深厚的机器学习功底和大量算力。"
+    },
+    {
+      "anchor": "section-65",
+      "text": "现在，只需要："
+    },
+    {
+      "anchor": "section-65",
+      "text": "from openai import OpenAI\n\nclient = OpenAI(api_key=\"密钥\")\n\nresponse = client.chat.completions.create(\n    model=\"qwen3-max\",\n    messages=[\n        {\"role\": \"user\", \"content\": \"帮我总结这篇文章\"}\n    ]\n)"
+    },
+    {
+      "anchor": "section-65",
+      "text": "这让AI开发\"平民化\"了。它再也不是只有少数数学功底好的精英才能驾驭的技术。"
+    },
+    {
+      "anchor": "section-87",
+      "text": "1.4 大语言模型的能力边界"
+    },
+    {
+      "anchor": "section-87",
+      "text": "虽然当前大模型应用开发很火，但把AI等同于大模型，会带来认知误区。"
+    },
+    {
+      "anchor": "section-87",
+      "text": "大模型擅长自然语言理解和生成、文本内容创作、代码生成和解释、逻辑推理（通过Chain-of-Thought）、知识问答。"
+    },
+    {
+      "anchor": "section-87",
+      "text": "大模型不擅长实时决策（自动驾驶需要毫秒级响应）、精确计算（数学公式求解容易出错）、图像生成（需要专门的扩散模型如Stable Diffusion）、物理世界交互（机器人控制需要强化学习）。"
+    },
+    {
+      "anchor": "section-87",
+      "text": "其他AI技术也有其独特价值。计算机视觉用于医学影像诊断和工业质检，语音识别用于实时字幕和语音转文字，推荐系统用于电商和短视频推荐，强化学习用于游戏AI、机器人控制和资源调度优化。"
+    },
+    {
+      "anchor": "section-87",
+      "text": "这些任务，大模型做不了，或者做得不如专门的AI模型。"
+    },
+    {
+      "anchor": "section-93",
+      "text": "1.5 实际开发中的选择"
+    },
+    {
+      "anchor": "section-93",
+      "text": "理论讲完了，回到实战：作为开发者，怎么选择用大模型还是其他AI技术？"
+    },
+    {
+      "anchor": "section-93",
+      "text": "可以参照以下决策思路："
+    },
+    {
+      "anchor": "section-93",
+      "text": "任务是否涉及自然语言理解或生成？如果是，考虑大模型。"
+    },
+    {
+      "anchor": "section-93",
+      "text": "任务通用、数据少，用大模型API（智能客服、内容生成、代码助手）；任务专一、数据多、成本敏感，用传统NLP模型（垃圾邮件分类、关键词提取）。"
+    },
+    {
+      "anchor": "section-93",
+      "text": "如果不涉及自然语言，考虑其他AI技术。图像/视频处理选择计算机视觉（人脸识别、物体检测），推荐/预测选择推荐系统或时间序列模型（商品推荐、股价预测），语音处理选择语音识别/合成模型，决策优化选择强化学习（游戏AI、机器人控制）。"
+    },
+    {
+      "anchor": "section-93",
+      "text": "大模型对于自然语言的理解与文本的生成是其强大的能力，如果确实需要对接处理自然语言，大模型必然是首选。"
+    },
+    {
+      "anchor": "section-93",
+      "text": "给出一些场景选型案例："
+    },
+    {
+      "anchor": "section-93",
+      "text": "智能客服选择大模型"
+    },
+    {
+      "anchor": "section-93",
+      "text": "用户问法千变万化，无法穷举规则，需要理解自然语言的语义，希望回复自然、多样，而不是模板化。"
+    },
+    {
+      "anchor": "section-93",
+      "text": "电商商品推荐选择推荐系统"
+    },
+    {
+      "anchor": "section-93",
+      "text": "基于用户行为数据，而非语言理解。调用频率极高（每个用户每次刷新都要推荐），成本敏感，大模型API成本太高。"
+    },
+    {
+      "anchor": "section-93",
+      "text": "法律合同审查选择大模型+专业模型混合"
+    },
+    {
+      "anchor": "section-93",
+      "text": "需要理解合同条款（自然语言）用大模型，但法律领域专业性强，需要微调或专业模型。示例代码如下："
+    },
+    {
+      "anchor": "section-93",
+      "text": "示例:"
+    },
+    {
+      "anchor": "section-93",
+      "text": "# 第一步:用大模型提取关键信息\nextracted_info = gpt_extract_clauses(contract_text)\n\n# 第二步:用专业的法律NLP模型分析风险\nrisk_analysis = legal_model.analyze(extracted_info)\n\n# 第三步:用大模型生成审查报告\nreport = gpt_generate_report(risk_analysis)"
+    },
+    {
+      "anchor": "section-93",
+      "text": "混合使用，发挥各自优势。"
+    },
+    {
+      "anchor": "section-110",
+      "text": "1.6 大模型可能只是过渡形态"
+    },
+    {
+      "anchor": "section-110",
+      "text": "把视野放远一点，思考一个问题："
+    },
+    {
+      "anchor": "section-110",
+      "text": "大模型会是AI的终极形态吗？"
+    },
+    {
+      "anchor": "section-110",
+      "text": "答案是，不会。它很可能只是一个过渡阶段。"
+    },
+    {
+      "anchor": "section-110",
+      "text": "如果把AI的发展看作几个阶段："
+    },
+    {
+      "anchor": "section-110",
+      "text": "第一阶段：符号主义（1950-1980）→ 手工编写规则"
+    },
+    {
+      "anchor": "section-110",
+      "text": "第二阶段：统计学习（1980-2010）→ 从数据中学习规则"
+    },
+    {
+      "anchor": "section-110",
+      "text": "第三阶段：深度学习（2010-2020）→ 自动学习特征表示"
+    },
+    {
+      "anchor": "section-110",
+      "text": "第四阶段：大模型（2020-?）→ 大规模预训练+通用能力"
+    },
+    {
+      "anchor": "section-110",
+      "text": "第五阶段：??? → 可能是具身智能 + 持续学习 + 多模态融合"
+    },
+    {
+      "anchor": "section-110",
+      "text": "大模型很可能是第四到第五阶段的过渡。"
+    },
+    {
+      "anchor": "section-110",
+      "text": "“大模型时代，是AI从’狭隘专家’走向’通用智能’的关键一步，但它还不是终点。”"
+    },
+    {
+      "anchor": "section-122",
+      "text": "1.7 冷知识：抖音的推荐算法是怎么做到让人\"停不下来\"的？**"
+    },
+    {
+      "anchor": "section-122",
+      "text": "很多同学会好奇：抖音的推荐为什么这么准，为什么总能刷到喜欢的内容？"
+    },
+    {
+      "anchor": "section-122",
+      "text": "恰巧字节跳动在2025年3月首次公开了推荐算法原理。虽然这和本书的主题不相关，但这是一个非大模型AI技术的绝佳案例，展示了AI领域的多样性。"
+    },
+    {
+      "anchor": "section-122",
+      "text": "抖音推荐系统采用四层技术架构。第一层是双塔召回模型，想象红娘介绍相亲，不会让所有人见面，而是先筛选出\"可能合适\"的候选者。双塔召回模型从数百万视频中，通过计算用户兴趣编码和视频内容编码的相似度，快速筛选出几百个候选。"
+    },
+    {
+      "anchor": "section-122",
+      "text": "第二层是Wide&Deep模型，Wide部分记住明确偏好（点赞过10个美食视频就推荐美食），Deep部分发现潜在兴趣（喜欢美食的人70%也喜欢旅游），既能\"投其所好\"，又能\"拓宽视野\"。"
+    },
+    {
+      "anchor": "section-122",
+      "text": "第三层是多目标建模，早期推荐系统只看完播率，现在综合评估完播率、点赞概率、评论概率、分享概率、关注概率等多个指标。"
+    },
+    {
+      "anchor": "section-122",
+      "text": "第四层是底层引擎Monolith，这是字节自研的推荐系统框架，支持实时训练（用户刚点赞一个视频，几分钟后推荐就会调整）、处理万亿级别特征、毫秒级完成推荐计算。"
+    },
+    {
+      "anchor": "section-122",
+      "text": "这和大模型完全是两个世界的AI技术。"
+    },
+    {
+      "anchor": "section-130",
+      "text": "1.8 下一节预告"
+    },
+    {
+      "anchor": "section-130",
+      "text": "理解了\"AI不等于大模型\"之后，下一个问题来了："
+    },
+    {
+      "anchor": "section-130",
+      "text": "当我们真正要开发AI应用时，该从哪里入手？"
+    },
+    {
+      "anchor": "section-130",
+      "text": "可能已经有了一个运行良好的传统业务系统，电商平台、企业管理系统、在线教育平台……现在想接入AI能力，该怎么做？"
+    },
+    {
+      "anchor": "section-130",
+      "text": "又或者，想从零开始开发一个AI原生应用，智能客服、AI写作助手、代码生成工具……架构该如何设计？"
+    },
+    {
+      "anchor": "section-130",
+      "text": "**下一节《AI应用开发的正确姿势》**将为你揭晓。"
+    },
+    {
+      "anchor": "section-136",
+      "text": "1.9 ■ 学点英语"
+    },
+    {
+      "anchor": "section-136",
+      "text": "中文 | English | 音标 | 说明\n人工智能 | Artificial Intelligence | / ɑːrtɪˈfɪʃl ɪn ˌ ˈtelɪdʒəns/ | 让机器展现智能行为的技术领域，不等于大模型\n机器学习 | Machine Learning | /məˈʃiːn ˈlɜːrnɪŋ/ | 让机器从数据中自动学习规律，而非手工编写规则\n大语言模型 | Large Language Model (LLM) | /lɑːrdʒ ˈlæŋɡwɪdʒ ˈmɑːdl/ | 基于Transformer的大规模预训练语言模型， AI的一个分支\n涌现能力 | Emergent Abilities | /iˈmɜːrdʒənt ə ˈbɪlətiz/ | 模型规模达到临界点后突然展现出未明确训练过的能力\n深度学习 | Deep Learning | /diːp ˈlɜːrnɪŋ/ | 用多层神经网络自动学习特征表示的AI方法"
+    }
+  ]
+}

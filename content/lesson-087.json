@@ -1,0 +1,1526 @@
+{
+  "id": "lesson-087",
+  "title": "第一次API调用与核心参数",
+  "code": "1-1",
+  "stage": 2,
+  "week": 4,
+  "week_title": "理解大模型开发",
+  "module": "小试牛刀，做一个简单的翻译器",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/001-第4周 理解大模型开发/003-小试牛刀，做一个简单的翻译器/087-图文-1-1-第一次API调用与核心参数.pdf",
+  "sha256": "a5f2a6e87940b52688fba0a93c75420209bcb097e8e9e84af0be8a549a0ad180",
+  "pdf": "sources/pdf/lesson-087.pdf",
+  "pages": 15,
+  "source_url": "https://class.imooc.com/lesson/5269#mid=104906",
+  "minutes": 19,
+  "excerpt": "上一节我们完成了环境搭建。本节将跑通第一个API调用，并深入理解model、messages、role等核心参数——这些是后续所有开发的基础。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们完成了环境搭建。本节将跑通第一个API调用，并深入理解model、messages、role等核心参数——这些是后续所有开发的基础。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "5.1 快速自测示例",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "新建你的项目目录，建议起一个正式的名字，因为我们后面还有很多地方需要写代码，最后集中在一个目录下管理。使用Qoder项目目录，在文件夹中创建一个名为test_qwen.py的文件，输入以下代码：",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "code",
+      "text": "from openai import OpenAI\n\nclient = OpenAI(\n    api_key=\"sk-qwen-xxxxxxxx\",  # 你的Qwen密钥\n    base_url=\"https://dashscope.aliyuncs.com/compatible-mode/v1\"  # Qwen地址\n)\n\nresp = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"你好，请简单介绍你自己\"}]\n)\nprint(resp.choices[0].message.content)",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整可运行文件见本书资料：samples/chapter4/test_qwen.py",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "记得把sk-qwen-xxxxxxxx替换成你的真实密钥。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在Qoder的对话框中输入：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "运行test_qwen.py",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例回复（可能略有差异）：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "你好！我是Qwen，是阿里云研发的超大规模语言模型。我能够回答问题。我的训练数据截止时间是2024年12月，因此我对这一时间点之前的信息有较好的了解。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "DeepSeek 快速自测示例",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from openai import OpenAI\n\nclient = OpenAI(\n    api_key=\"sk-deepseek-xxxxxxxx\",  # 你的DeepSeek密钥\n    base_url=\"https://api.deepseek.com\"  # DeepSeek接口地址\n)\n\nresp = client.chat.completions.create(\n    model=\"deepseek-v4-flash\",\n    messages=[{\"role\": \"user\", \"content\": \"你好，请简单介绍你自己\"}]\n)\nprint(resp.choices[0].message.content)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整可运行文件见本书资料：samples/chapter4/test_deepseek.py",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "你好！很高兴认识你！ 我是DeepSeek，由深度求索公司创造的AI助手。让我简单介绍一下自己：我的特点 知识截止到2024年7月，是DeepSeek最新版本模型 … 我能帮你做什么： …",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "你可以看到无论是DeepSeek还是Qwen他们的代码几乎一模一样，只是配置需要更换一下。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这主要是因为他们都兼容OpenAI的API，使用的也是OpenAI的开发SDK。本文后续不再演示DeepSeek，主要还是使用Qwen模型。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "此外，可以看到他们的回复都包含自己训练数据的截止日期。这些截止日期大多数早于当前时间，在学习了第1章的知识后，应该明白为什么是这样。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "5.2 第一次调用：Hello AI",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在，开始写人生第一个AI程序。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "代码：最简单的调用",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter4/hello_ai.py",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "创建一个文件hello_ai.py，输入以下代码：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from openai import OpenAI\n\n# 使用 system 角色并返回结构化结果\nclient = OpenAI(\n    api_key=\"sk-xxxxxxxxxxxxxxxxxxx\",  # 你的Qwen密钥\n    base_url=\"https://dashscope.aliyuncs.com/compatible-mode/v1\"  # Qwen兼容接口地址\n)\n\nmessages = [\n    {\n        \"role\": \"system\",\n        \"content\": \"你是一个专业的AI助手。请仅以JSON格式返回结果。字段：intro（简短自我介\n绍），capabilities（列出3项能力）。\"\n    },\n    {\n        \"role\": \"user\",\n        \"content\": \"请介绍你自己，并说明你能做什么。\"\n    }\n]\n\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",  # 当前示例使用 Qwen3.6-Plus\n    messages=messages\n)\n\n# 打印JSON结构的回复与用量信息\nprint(response.choices[0].message.content)\nprint(\"tokens:\", response.usage.total_tokens)",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "保存文件后，有两种执行方式，任选其一即可：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统方式",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在终端中运行：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "python3 hello_ai.py\n\n1",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "bash"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI Agent方式",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "运行hello_ai.py",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Qoder会在内置终端中执行，并直接显示结果。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 后续章节中，除非代码执行方式有特殊之处，否则不再重复说明如何执行代码。读者可以自行选择使用传统方式或AI Agent方式。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "几秒钟后，会看到AI的回复（仅为示例数据）：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "{\n  \"intro\": \"我是一个专业的AI助手，致力于提供准确、高效和有用的信息与服务。\",\n  \"capabilities\": [\n    \"回答各种主题的问题，包括科学、技术、文化、历史等\",\n    \"协助进行文本生成、编辑和总结\",\n    \"提供逻辑推理、数学计算和编程支持\"\n  ]\n}",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "json"
+    },
+    {
+      "kind": "paragraph",
+      "text": "恭喜！ 已经完成了第一次AI API调用。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "@logicframe-video{19}",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "调用流程总览与逐行解析",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "先看整体流程（总览）：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然只有短短十几行代码，但每一行都很重要。下面逐行解读：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "导入库",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from openai import OpenAI\n\n1",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "导入OpenAI的Python客户端库。虽然我们用的是Qwen，但因为兼容OpenAI接口，所以用同一个库。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "初始化客户端",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "client = OpenAI(\n    api_key=\"sk-qwen-xxxxxxxx\",\n    base_url=\"https://dashscope.aliyuncs.com/compatible-mode/v1\"\n)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "api_key：你的API密钥，用于身份验证和计费",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "base_url：API的服务器地址 Qwen的地址：https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "发送请求",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[\n        {\"role\": \"user\", \"content\": \"你好，请介绍一下你自己\"}\n    ]\n)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "model：指定使用的模型 qwen3.6-plus：Qwen的对话模型（均衡型） 其他Qwen模型：可按需要选择",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "list",
+      "text": "messages：对话消息列表 role：角色，这里是user（用户） content：消息内容",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "获取回复",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "print(response.choices[0].message.content)\n\n1",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "response.choices：API返回的候选回复列表（通常只有1个）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "[0]：取第一个候选",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": ".message.content：提取回复的文本内容",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "5.3 关键参数说明",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解完整个代码流程后，需要对一些关键概念进行说明。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] API文档 Qwen 文档：https://help.aliyun.com/zh/model-studio/model-api-reference/我们不会把文档内容复制过来，这里主要说明一些必须要了解的模型参数，帮助你快速理解基本概念，节约学习时间。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h3",
+      "text": "model参数：选择合适的模型",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "model参数指定使用哪个具体的AI模型。不同模型有不同的特点、能力和成本。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "以通义千问为例，通义千问实际上是一个模型家族，可选模型多达上百种。除了文本生成模型，还包括音视频、图形图像、自主编程、数学等其他专有能力模型。这里我们聚焦常用的文本模型，按功能划分为以下模型系列，每个系列针对不同的使用场景：",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "list",
+      "text": "通义千问3.6系列（2026年4月最新） 通义千问已经发布3.6系列，在编程Coding能力、智能体Agent能力和工具调用能力方面有显著提升： Qwen3.6-Max-Preview：能力最强，世界知识和指令遵循能力增强，适合复杂任务 Qwen3.6-Plus：效果、速度、成本均衡，重点增强Agentic Coding智能体编程能力，提升深度推理与多模态识别（OCR/万物识别） Qwen3.6-Flash：适合简单任务，速度快、成本低 Qwen3.6-27B：270亿参数稠密多模态模型，已开源，编程能力超越15倍规模MoE模型 适用场景：根据任务复杂度和预算选择，复杂推理用Max，日常任务和智能体用Plus，简单高频用Flash",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例：选择不同模型系列",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 场景1：需要推理比如Agent → 使用 plus系列\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"用Python实现快速排序\"}]\n)\n\n# 场景2：简单翻译 → 使用 Flash系列\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-flash\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译成英文：你好\"}]\n)\n\n# 场景3：复杂任务\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-max-preview\",\n    messages=[{\"role\": \"user\", \"content\": \"证明：根号2是无理数\"}]\n)",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "能力越强的模型，消耗Token越多。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "对话式API vs 传统API（非常重要）",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在深入参数细节前，先要打破一个常见的思维定式：大模型的API是对话式API，它和传统API的\"一次性请求\"不太一样。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们习惯了这样的API调用模式：发一次请求拿一次结果，上一次与下一次API调用彼此独立。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但大模型的对话式API完全不同——它需要历史信息来理解你的问题，所以上一次调用和下一次调用是有关联的。也就是说，下一次调用API时，你需要携带历史消息(如果有的话），这是对话式API和传统API最大的不同。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "接下来先看两个对比示例代码，然后再用两张图帮助你建立直观认知。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统API（一次性请求，固定选项参数）：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "import requests\n\nBASE_URL = \"API_BASE_URL\"  # 传统接口地址（示意）\n\n# 第1次：获取今天的天气，不依赖历史\nresp_today = requests.get(\n    BASE_URL + \"/weather/forecast\",\n    params={\"city\": \"CITY_123\", \"day\": \"today\"}\n)\n\n# 第2次：获取明天的天气，仍然不需要上一次的结果\nresp_tomorrow = requests.get(\n    BASE_URL + \"/weather/forecast\",\n    params={\"city\": \"CITY_123\", \"day\": \"tomorrow\"}\n)",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI对话式API（多轮交互，必需携带历史对话数据）：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 伪代码：携带历史的对话式调用\nhistory = []\n\n# 第1轮：提问并假设返回的文本内容\nresp1 = call_ai(question=\"我正在开发一个电商网站\", history=history)\nresp1_text = \"很好！电商网站需要考虑商品管理、订单处理、支付集成等模块。你想从哪个部分开\n始？\"  #\n\n# 将上一轮的回答文本加入历史，便于下一轮继续追问\nhistory.append(resp1_text)\n\n# 第2轮：继续追问（这里的\"它\"指代第1轮提到的\"电商网站\"，必须依赖历史才能理解）\nresp2 = call_ai(question=\"它需要用到什么数据库？\", history=history)\nresp2_text = \"对于电商网站，推荐使用MySQL存储商品、订单等结构化数据，Redis做缓存层提升性\n能。\"  #\n\n# AI理解了\"它\"指代电商网站\n# 同样把这轮的回答加入历史\nhistory.append(resp2_text)\n\n# 第3轮：在已有历史基础上继续深入（\"这两个\"指代上一轮提到的MySQL和Redis）\n# 如果不携带历史，AI根本不知道\"这两个\"是什么\nresp3 = call_ai(question=\"这两个怎么配合使用？\", history=history)",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面用一张时序图串起两轮调用，直观理解\"携带历史\"的节奏：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "每次请求都要带上\"对话上下文历史信息\"，这个历史信息就是 messages 参数。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面就来拆解 messages 的具体结构。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "messages参数的技术结构",
+      "page": 9,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "回到前面的 Hello AI 示例，那段代码已经给出了 messages 的基本形态：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "messages = [\n    {\n        \"role\": \"system\",\n        \"content\": \"你是一个专业的AI助手。请仅以JSON格式返回结果。字段：intro（简短自我介\n绍），capabilities（列出3项能力）。\"\n    },\n    {\n        \"role\": \"user\",\n        \"content\": \"请介绍你自己，并说明你能做什么。\"\n    }\n]",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这段代码包含了两条消息：一条是系统指令，设定了AI的角色和输出格式要求；另一条是用户的提问。它们被放在一个数组里，按时间顺序排列。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "paragraph",
+      "text": "messages 数组就是承载这些历史对话的容器。每条消息都是一个字典，必须包含两个核心字段：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "{\n    \"role\": \"角色类型\",      # 必需：指定消息发送者（system/user/assistant）\n    \"content\": \"消息内容\"    # 必需：实际的文本内容\n}",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "json"
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么是数组？",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "因为对话是连续的时间序列。数组保证了历史消息按顺序传递，让模型理解\"谁在什么时候说了什么\"。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "paragraph",
+      "text": "最小有效示例：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"什么是质数？\"}\n]",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "messages 至少要有1条消息，且每条必须包含 role 和 content 字段。",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "三轮对话演进示例：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设用户问：“推荐一部科幻电影”，AI回答了《星际穿越》。用户接着问：“导演是谁？”，AI回答后用户继续问：“他还拍了什么？”。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "paragraph",
+      "text": "整个过程中，messages 数组的演变如下：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第1轮 (用户提问）：",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"推荐一部科幻电影\"}\n]\n# 请求后，AI返回《星际穿越》",
+      "page": 11,
+      "size": 9.75,
+      "end_page": 11,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "第2轮（用户追问\"导演是谁\"）：",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"推荐一部科幻电影\"},\n    {\"role\": \"assistant\", \"content\": \"推荐《星际穿越》（Interstellar），由克里斯托弗·诺兰执\n导...\"},\n    {\"role\": \"user\", \"content\": \"导演是谁？\"}\n]\n# AI能理解\"导演\"指的是《星际穿越》的导演，回答\"克里斯托弗·诺兰\"",
+      "page": 11,
+      "size": 9.75,
+      "end_page": 11,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "第3轮（用户追问\"他还拍了什么\"）：",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"推荐一部科幻电影\"},\n    {\"role\": \"assistant\", \"content\": \"推荐《星际穿越》（Interstellar），由克里斯托弗·诺兰执\n导...\"},\n    {\"role\": \"user\", \"content\": \"导演是谁？\"},\n    {\"role\": \"assistant\", \"content\": \"导演是克里斯托弗·诺兰（Christopher Nolan）。\"},\n    {\"role\": \"user\", \"content\": \"他还拍了什么？\"}\n]\n# AI能理解\"他\"指代诺兰，回答《盗梦空间》《信条》等作品。\n# 如果不携带历史，AI根本不知道\"他\"是谁。",
+      "page": 11,
+      "size": 9.75,
+      "end_page": 11,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "通过这种历史积累，AI能在多轮对话中保持上下文连贯。每次请求时，都要把之前的对话完整传入。",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "role参数的三种取值",
+      "page": 11,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "role，意为角色，这个参数表明当前消息的角色是什么，它有3个取值。",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "system（系统角色）",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "作用：设定AI的\"人设\"与行为规则",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "作用",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "特点：最高优先级，贯穿整个对话 ，在数组中只会出现一次",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "位置：通常放在 messages 数组的第一条",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "位置",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "是否必需：可选，但强烈建议使用",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "是否必需",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "强烈建议使用",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型用途：",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "定义AI的角色身份（“你是Python导师”）",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "约束输出格式（“只返回JSON格式”）",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "设定回答风格（“讲解要通俗易懂”）",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!IMPORTANT] 为什么要设定AI角色？ 同样的问题，不同角色给出的回答深度完全不同。 例如问\"什么是递归？\"： 设定为\"小学老师\" → AI会用汉诺塔等简单比喻 设定为\"算法专家\" → AI会深入分析调用栈与时间复杂度",
+      "page": 12,
+      "size": 11.25,
+      "end_page": 12
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例：",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "messages = [\n    {\n        \"role\": \"system\",\n        \"content\": \"你是一位Python编程导师，擅长用简单语言解释复杂概念。回答时要分步骤，配合\n代码示例。\"\n    },\n    {\n        \"role\": \"user\",\n        \"content\": \"什么是装饰器？\"\n    }\n]",
+      "page": 12,
+      "size": 9.75,
+      "end_page": 12,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "user（用户角色）",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "作用：表明这是用户的输入信息（问题）",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "位置：可以有多条（多轮对话）",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "是否必需：必需，至少要有一条",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "role最常见的取值，通常就是用来记录用户的问题。",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"帮我写一个计算阶乘的函数\"}\n]",
+      "page": 13,
+      "size": 9.75,
+      "end_page": 13,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "assistant（助手角色）",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "作用：表明这是AI的历史回复",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "位置：穿插在 user 消息之间",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "是否必需：单轮对话不需要，多轮对话必需",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "多轮对话必需",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!IMPORTANT] 每次API调用都是独立的，模型不会自动记住历史。如果你需要连续对话，你应当手动将之前的 user 和 assistant 消息都传入 messages 数组。",
+      "page": 13,
+      "size": 11.25,
+      "end_page": 13
+    },
+    {
+      "kind": "h2",
+      "text": "5.4 下一节预告",
+      "page": 13,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "掌握了API调用的核心参数后，接下来进入实战阶段——多轮对话、上下文管理策略，最终实现一个智能翻译器。",
+      "page": 13,
+      "size": 11.25,
+      "end_page": 13
+    },
+    {
+      "kind": "h2",
+      "text": "5.5 ■ 学点英语",
+      "page": 13,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\nAPI调用 | API Call | / eɪ.piːˈaɪ kɔːl/ ˌ | 通过编程接口向AI模型发送请求并获取回复\n系统角色 | System Role | /ˈsɪstəm roʊl/ | 设定AI人设与行为规则的messages角色\n用户角色 | User Role | /ˈjuːzər roʊl/ | 表示用户输入信息的messages角色\n助手角色 | Assistant Role | /əˈsɪstənt roʊl/ | 记录AI历史回复的messages角色\n模型选择 | Model Selection | /ˈmɑːdl sɪˈlekʃn/ | 根据任务复杂度选择不同能力级别的模型",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "API调用",
+          "API Call",
+          "/ eɪ.piːˈaɪ kɔːl/ ˌ",
+          "通过编程接口向AI模型发送请求并获取回复"
+        ],
+        [
+          "系统角色",
+          "System Role",
+          "/ˈsɪstəm roʊl/",
+          "设定AI人设与行为规则的messages角色"
+        ],
+        [
+          "用户角色",
+          "User Role",
+          "/ˈjuːzər roʊl/",
+          "表示用户输入信息的messages角色"
+        ],
+        [
+          "助手角色",
+          "Assistant Role",
+          "/əˈsɪstənt roʊl/",
+          "记录AI历史回复的messages角色"
+        ],
+        [
+          "模型选择",
+          "Model Selection",
+          "/ˈmɑːdl sɪˈlekʃn/",
+          "根据任务复杂度选择不同能力级别的模型"
+        ]
+      ],
+      "page": 13
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 14,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/ba1409c302029362126506689132679c.png",
+      "width": 2124,
+      "height": 1298,
+      "page": 14
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/2b198ec278eb8f592ed5d72681981e3d.png",
+      "width": 1876,
+      "height": 1452,
+      "page": 15
+    }
+  ],
+  "accounting": {
+    "source_chars": 8365,
+    "represented_chars": 8158,
+    "removed_chars": 207,
+    "tables": 1,
+    "images": 2,
+    "image_occurrences": 2,
+    "removals": {
+      "export_metadata": 152,
+      "repeated_title": 38,
+      "code_line_number_artifact": 17
+    }
+  },
+  "videos": [],
+  "order": 88,
+  "headings": [
+    {
+      "title": "5.1 快速自测示例",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "5.2 第一次调用：Hello AI",
+      "id": "section-17",
+      "level": 2
+    },
+    {
+      "title": "调用流程总览与逐行解析",
+      "id": "section-35",
+      "level": 3
+    },
+    {
+      "title": "5.3 关键参数说明",
+      "id": "section-54",
+      "level": 2
+    },
+    {
+      "title": "model参数：选择合适的模型",
+      "id": "section-57",
+      "level": 3
+    },
+    {
+      "title": "对话式API vs 传统API（非常重要）",
+      "id": "section-64",
+      "level": 3
+    },
+    {
+      "title": "messages参数的技术结构",
+      "id": "section-76",
+      "level": 3
+    },
+    {
+      "title": "role参数的三种取值",
+      "id": "section-97",
+      "level": 3
+    },
+    {
+      "title": "5.4 下一节预告",
+      "id": "section-127",
+      "level": 2
+    },
+    {
+      "title": "5.5 ■ 学点英语",
+      "id": "section-129",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-131",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们完成了环境搭建。本节将跑通第一个API调用，并深入理解model、messages、role等核心参数——这些是后续所有开发的基础。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "5.1 快速自测示例"
+    },
+    {
+      "anchor": "section-1",
+      "text": "新建你的项目目录，建议起一个正式的名字，因为我们后面还有很多地方需要写代码，最后集中在一个目录下管理。使用Qoder项目目录，在文件夹中创建一个名为test_qwen.py的文件，输入以下代码："
+    },
+    {
+      "anchor": "section-1",
+      "text": "from openai import OpenAI\n\nclient = OpenAI(\n    api_key=\"sk-qwen-xxxxxxxx\",  # 你的Qwen密钥\n    base_url=\"https://dashscope.aliyuncs.com/compatible-mode/v1\"  # Qwen地址\n)\n\nresp = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"你好，请简单介绍你自己\"}]\n)\nprint(resp.choices[0].message.content)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "完整可运行文件见本书资料：samples/chapter4/test_qwen.py"
+    },
+    {
+      "anchor": "section-1",
+      "text": "记得把sk-qwen-xxxxxxxx替换成你的真实密钥。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "在Qoder的对话框中输入："
+    },
+    {
+      "anchor": "section-1",
+      "text": "运行test_qwen.py"
+    },
+    {
+      "anchor": "section-1",
+      "text": "示例回复（可能略有差异）："
+    },
+    {
+      "anchor": "section-1",
+      "text": "你好！我是Qwen，是阿里云研发的超大规模语言模型。我能够回答问题。我的训练数据截止时间是2024年12月，因此我对这一时间点之前的信息有较好的了解。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "DeepSeek 快速自测示例"
+    },
+    {
+      "anchor": "section-1",
+      "text": "from openai import OpenAI\n\nclient = OpenAI(\n    api_key=\"sk-deepseek-xxxxxxxx\",  # 你的DeepSeek密钥\n    base_url=\"https://api.deepseek.com\"  # DeepSeek接口地址\n)\n\nresp = client.chat.completions.create(\n    model=\"deepseek-v4-flash\",\n    messages=[{\"role\": \"user\", \"content\": \"你好，请简单介绍你自己\"}]\n)\nprint(resp.choices[0].message.content)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "完整可运行文件见本书资料：samples/chapter4/test_deepseek.py"
+    },
+    {
+      "anchor": "section-1",
+      "text": "你好！很高兴认识你！ 我是DeepSeek，由深度求索公司创造的AI助手。让我简单介绍一下自己：我的特点 知识截止到2024年7月，是DeepSeek最新版本模型 … 我能帮你做什么： …"
+    },
+    {
+      "anchor": "section-1",
+      "text": "你可以看到无论是DeepSeek还是Qwen他们的代码几乎一模一样，只是配置需要更换一下。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这主要是因为他们都兼容OpenAI的API，使用的也是OpenAI的开发SDK。本文后续不再演示DeepSeek，主要还是使用Qwen模型。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "此外，可以看到他们的回复都包含自己训练数据的截止日期。这些截止日期大多数早于当前时间，在学习了第1章的知识后，应该明白为什么是这样。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "5.2 第一次调用：Hello AI"
+    },
+    {
+      "anchor": "section-17",
+      "text": "现在，开始写人生第一个AI程序。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "代码：最简单的调用"
+    },
+    {
+      "anchor": "section-17",
+      "text": "完整源码参考：samples/chapter4/hello_ai.py"
+    },
+    {
+      "anchor": "section-17",
+      "text": "创建一个文件hello_ai.py，输入以下代码："
+    },
+    {
+      "anchor": "section-17",
+      "text": "from openai import OpenAI\n\n# 使用 system 角色并返回结构化结果\nclient = OpenAI(\n    api_key=\"sk-xxxxxxxxxxxxxxxxxxx\",  # 你的Qwen密钥\n    base_url=\"https://dashscope.aliyuncs.com/compatible-mode/v1\"  # Qwen兼容接口地址\n)\n\nmessages = [\n    {\n        \"role\": \"system\",\n        \"content\": \"你是一个专业的AI助手。请仅以JSON格式返回结果。字段：intro（简短自我介\n绍），capabilities（列出3项能力）。\"\n    },\n    {\n        \"role\": \"user\",\n        \"content\": \"请介绍你自己，并说明你能做什么。\"\n    }\n]\n\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",  # 当前示例使用 Qwen3.6-Plus\n    messages=messages\n)\n\n# 打印JSON结构的回复与用量信息\nprint(response.choices[0].message.content)\nprint(\"tokens:\", response.usage.total_tokens)"
+    },
+    {
+      "anchor": "section-17",
+      "text": "保存文件后，有两种执行方式，任选其一即可："
+    },
+    {
+      "anchor": "section-17",
+      "text": "传统方式"
+    },
+    {
+      "anchor": "section-17",
+      "text": "在终端中运行："
+    },
+    {
+      "anchor": "section-17",
+      "text": "python3 hello_ai.py\n\n1"
+    },
+    {
+      "anchor": "section-17",
+      "text": "AI Agent方式"
+    },
+    {
+      "anchor": "section-17",
+      "text": "运行hello_ai.py"
+    },
+    {
+      "anchor": "section-17",
+      "text": "Qoder会在内置终端中执行，并直接显示结果。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "后续章节中，除非代码执行方式有特殊之处，否则不再重复说明如何执行代码。读者可以自行选择使用传统方式或AI Agent方式。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "几秒钟后，会看到AI的回复（仅为示例数据）："
+    },
+    {
+      "anchor": "section-17",
+      "text": "{\n  \"intro\": \"我是一个专业的AI助手，致力于提供准确、高效和有用的信息与服务。\",\n  \"capabilities\": [\n    \"回答各种主题的问题，包括科学、技术、文化、历史等\",\n    \"协助进行文本生成、编辑和总结\",\n    \"提供逻辑推理、数学计算和编程支持\"\n  ]\n}"
+    },
+    {
+      "anchor": "section-17",
+      "text": "恭喜！ 已经完成了第一次AI API调用。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "@logicframe-video{19}"
+    },
+    {
+      "anchor": "section-35",
+      "text": "调用流程总览与逐行解析"
+    },
+    {
+      "anchor": "section-35",
+      "text": "先看整体流程（总览）："
+    },
+    {
+      "anchor": "section-35",
+      "text": "虽然只有短短十几行代码，但每一行都很重要。下面逐行解读："
+    },
+    {
+      "anchor": "section-35",
+      "text": "导入库"
+    },
+    {
+      "anchor": "section-35",
+      "text": "from openai import OpenAI\n\n1"
+    },
+    {
+      "anchor": "section-35",
+      "text": "导入OpenAI的Python客户端库。虽然我们用的是Qwen，但因为兼容OpenAI接口，所以用同一个库。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "初始化客户端"
+    },
+    {
+      "anchor": "section-35",
+      "text": "client = OpenAI(\n    api_key=\"sk-qwen-xxxxxxxx\",\n    base_url=\"https://dashscope.aliyuncs.com/compatible-mode/v1\"\n)"
+    },
+    {
+      "anchor": "section-35",
+      "text": "api_key：你的API密钥，用于身份验证和计费"
+    },
+    {
+      "anchor": "section-35",
+      "text": "base_url：API的服务器地址 Qwen的地址：https://dashscope.aliyuncs.com/compatible-mode/v1"
+    },
+    {
+      "anchor": "section-35",
+      "text": "发送请求"
+    },
+    {
+      "anchor": "section-35",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[\n        {\"role\": \"user\", \"content\": \"你好，请介绍一下你自己\"}\n    ]\n)"
+    },
+    {
+      "anchor": "section-35",
+      "text": "model：指定使用的模型 qwen3.6-plus：Qwen的对话模型（均衡型） 其他Qwen模型：可按需要选择"
+    },
+    {
+      "anchor": "section-35",
+      "text": "messages：对话消息列表 role：角色，这里是user（用户） content：消息内容"
+    },
+    {
+      "anchor": "section-35",
+      "text": "获取回复"
+    },
+    {
+      "anchor": "section-35",
+      "text": "print(response.choices[0].message.content)\n\n1"
+    },
+    {
+      "anchor": "section-35",
+      "text": "response.choices：API返回的候选回复列表（通常只有1个）"
+    },
+    {
+      "anchor": "section-35",
+      "text": "[0]：取第一个候选"
+    },
+    {
+      "anchor": "section-35",
+      "text": ".message.content：提取回复的文本内容"
+    },
+    {
+      "anchor": "section-54",
+      "text": "5.3 关键参数说明"
+    },
+    {
+      "anchor": "section-54",
+      "text": "理解完整个代码流程后，需要对一些关键概念进行说明。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "API文档 Qwen 文档：https://help.aliyun.com/zh/model-studio/model-api-reference/我们不会把文档内容复制过来，这里主要说明一些必须要了解的模型参数，帮助你快速理解基本概念，节约学习时间。"
+    },
+    {
+      "anchor": "section-57",
+      "text": "model参数：选择合适的模型"
+    },
+    {
+      "anchor": "section-57",
+      "text": "model参数指定使用哪个具体的AI模型。不同模型有不同的特点、能力和成本。"
+    },
+    {
+      "anchor": "section-57",
+      "text": "以通义千问为例，通义千问实际上是一个模型家族，可选模型多达上百种。除了文本生成模型，还包括音视频、图形图像、自主编程、数学等其他专有能力模型。这里我们聚焦常用的文本模型，按功能划分为以下模型系列，每个系列针对不同的使用场景："
+    },
+    {
+      "anchor": "section-57",
+      "text": "通义千问3.6系列（2026年4月最新） 通义千问已经发布3.6系列，在编程Coding能力、智能体Agent能力和工具调用能力方面有显著提升： Qwen3.6-Max-Preview：能力最强，世界知识和指令遵循能力增强，适合复杂任务 Qwen3.6-Plus：效果、速度、成本均衡，重点增强Agentic Coding智能体编程能力，提升深度推理与多模态识别（OCR/万物识别） Qwen3.6-Flash：适合简单任务，速度快、成本低 Qwen3.6-27B：270亿参数稠密多模态模型，已开源，编程能力超越15倍规模MoE模型 适用场景：根据任务复杂度和预算选择，复杂推理用Max，日常任务和智能体用Plus，简单高频用Flash"
+    },
+    {
+      "anchor": "section-57",
+      "text": "示例：选择不同模型系列"
+    },
+    {
+      "anchor": "section-57",
+      "text": "# 场景1：需要推理比如Agent → 使用 plus系列\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"用Python实现快速排序\"}]\n)\n\n# 场景2：简单翻译 → 使用 Flash系列\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-flash\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译成英文：你好\"}]\n)\n\n# 场景3：复杂任务\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-max-preview\",\n    messages=[{\"role\": \"user\", \"content\": \"证明：根号2是无理数\"}]\n)"
+    },
+    {
+      "anchor": "section-57",
+      "text": "能力越强的模型，消耗Token越多。"
+    },
+    {
+      "anchor": "section-64",
+      "text": "对话式API vs 传统API（非常重要）"
+    },
+    {
+      "anchor": "section-64",
+      "text": "在深入参数细节前，先要打破一个常见的思维定式：大模型的API是对话式API，它和传统API的\"一次性请求\"不太一样。"
+    },
+    {
+      "anchor": "section-64",
+      "text": "我们习惯了这样的API调用模式：发一次请求拿一次结果，上一次与下一次API调用彼此独立。"
+    },
+    {
+      "anchor": "section-64",
+      "text": "但大模型的对话式API完全不同——它需要历史信息来理解你的问题，所以上一次调用和下一次调用是有关联的。也就是说，下一次调用API时，你需要携带历史消息(如果有的话），这是对话式API和传统API最大的不同。"
+    },
+    {
+      "anchor": "section-64",
+      "text": "接下来先看两个对比示例代码，然后再用两张图帮助你建立直观认知。"
+    },
+    {
+      "anchor": "section-64",
+      "text": "传统API（一次性请求，固定选项参数）："
+    },
+    {
+      "anchor": "section-64",
+      "text": "import requests\n\nBASE_URL = \"API_BASE_URL\"  # 传统接口地址（示意）\n\n# 第1次：获取今天的天气，不依赖历史\nresp_today = requests.get(\n    BASE_URL + \"/weather/forecast\",\n    params={\"city\": \"CITY_123\", \"day\": \"today\"}\n)\n\n# 第2次：获取明天的天气，仍然不需要上一次的结果\nresp_tomorrow = requests.get(\n    BASE_URL + \"/weather/forecast\",\n    params={\"city\": \"CITY_123\", \"day\": \"tomorrow\"}\n)"
+    },
+    {
+      "anchor": "section-64",
+      "text": "AI对话式API（多轮交互，必需携带历史对话数据）："
+    },
+    {
+      "anchor": "section-64",
+      "text": "# 伪代码：携带历史的对话式调用\nhistory = []\n\n# 第1轮：提问并假设返回的文本内容\nresp1 = call_ai(question=\"我正在开发一个电商网站\", history=history)\nresp1_text = \"很好！电商网站需要考虑商品管理、订单处理、支付集成等模块。你想从哪个部分开\n始？\"  #\n\n# 将上一轮的回答文本加入历史，便于下一轮继续追问\nhistory.append(resp1_text)\n\n# 第2轮：继续追问（这里的\"它\"指代第1轮提到的\"电商网站\"，必须依赖历史才能理解）\nresp2 = call_ai(question=\"它需要用到什么数据库？\", history=history)\nresp2_text = \"对于电商网站，推荐使用MySQL存储商品、订单等结构化数据，Redis做缓存层提升性\n能。\"  #\n\n# AI理解了\"它\"指代电商网站\n# 同样把这轮的回答加入历史\nhistory.append(resp2_text)\n\n# 第3轮：在已有历史基础上继续深入（\"这两个\"指代上一轮提到的MySQL和Redis）\n# 如果不携带历史，AI根本不知道\"这两个\"是什么\nresp3 = call_ai(question=\"这两个怎么配合使用？\", history=history)"
+    },
+    {
+      "anchor": "section-64",
+      "text": "下面用一张时序图串起两轮调用，直观理解\"携带历史\"的节奏："
+    },
+    {
+      "anchor": "section-64",
+      "text": "每次请求都要带上\"对话上下文历史信息\"，这个历史信息就是 messages 参数。"
+    },
+    {
+      "anchor": "section-64",
+      "text": "下面就来拆解 messages 的具体结构。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "messages参数的技术结构"
+    },
+    {
+      "anchor": "section-76",
+      "text": "回到前面的 Hello AI 示例，那段代码已经给出了 messages 的基本形态："
+    },
+    {
+      "anchor": "section-76",
+      "text": "messages = [\n    {\n        \"role\": \"system\",\n        \"content\": \"你是一个专业的AI助手。请仅以JSON格式返回结果。字段：intro（简短自我介\n绍），capabilities（列出3项能力）。\"\n    },\n    {\n        \"role\": \"user\",\n        \"content\": \"请介绍你自己，并说明你能做什么。\"\n    }\n]"
+    },
+    {
+      "anchor": "section-76",
+      "text": "这段代码包含了两条消息：一条是系统指令，设定了AI的角色和输出格式要求；另一条是用户的提问。它们被放在一个数组里，按时间顺序排列。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "messages 数组就是承载这些历史对话的容器。每条消息都是一个字典，必须包含两个核心字段："
+    },
+    {
+      "anchor": "section-76",
+      "text": "{\n    \"role\": \"角色类型\",      # 必需：指定消息发送者（system/user/assistant）\n    \"content\": \"消息内容\"    # 必需：实际的文本内容\n}"
+    },
+    {
+      "anchor": "section-76",
+      "text": "为什么是数组？"
+    },
+    {
+      "anchor": "section-76",
+      "text": "因为对话是连续的时间序列。数组保证了历史消息按顺序传递，让模型理解\"谁在什么时候说了什么\"。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "最小有效示例："
+    },
+    {
+      "anchor": "section-76",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"什么是质数？\"}\n]"
+    },
+    {
+      "anchor": "section-76",
+      "text": "messages 至少要有1条消息，且每条必须包含 role 和 content 字段。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "三轮对话演进示例："
+    },
+    {
+      "anchor": "section-76",
+      "text": "假设用户问：“推荐一部科幻电影”，AI回答了《星际穿越》。用户接着问：“导演是谁？”，AI回答后用户继续问：“他还拍了什么？”。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "整个过程中，messages 数组的演变如下："
+    },
+    {
+      "anchor": "section-76",
+      "text": "第1轮 (用户提问）："
+    },
+    {
+      "anchor": "section-76",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"推荐一部科幻电影\"}\n]\n# 请求后，AI返回《星际穿越》"
+    },
+    {
+      "anchor": "section-76",
+      "text": "第2轮（用户追问\"导演是谁\"）："
+    },
+    {
+      "anchor": "section-76",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"推荐一部科幻电影\"},\n    {\"role\": \"assistant\", \"content\": \"推荐《星际穿越》（Interstellar），由克里斯托弗·诺兰执\n导...\"},\n    {\"role\": \"user\", \"content\": \"导演是谁？\"}\n]\n# AI能理解\"导演\"指的是《星际穿越》的导演，回答\"克里斯托弗·诺兰\""
+    },
+    {
+      "anchor": "section-76",
+      "text": "第3轮（用户追问\"他还拍了什么\"）："
+    },
+    {
+      "anchor": "section-76",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"推荐一部科幻电影\"},\n    {\"role\": \"assistant\", \"content\": \"推荐《星际穿越》（Interstellar），由克里斯托弗·诺兰执\n导...\"},\n    {\"role\": \"user\", \"content\": \"导演是谁？\"},\n    {\"role\": \"assistant\", \"content\": \"导演是克里斯托弗·诺兰（Christopher Nolan）。\"},\n    {\"role\": \"user\", \"content\": \"他还拍了什么？\"}\n]\n# AI能理解\"他\"指代诺兰，回答《盗梦空间》《信条》等作品。\n# 如果不携带历史，AI根本不知道\"他\"是谁。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "通过这种历史积累，AI能在多轮对话中保持上下文连贯。每次请求时，都要把之前的对话完整传入。"
+    },
+    {
+      "anchor": "section-97",
+      "text": "role参数的三种取值"
+    },
+    {
+      "anchor": "section-97",
+      "text": "role，意为角色，这个参数表明当前消息的角色是什么，它有3个取值。"
+    },
+    {
+      "anchor": "section-97",
+      "text": "system（系统角色）"
+    },
+    {
+      "anchor": "section-97",
+      "text": "作用：设定AI的\"人设\"与行为规则"
+    },
+    {
+      "anchor": "section-97",
+      "text": "作用"
+    },
+    {
+      "anchor": "section-97",
+      "text": "特点：最高优先级，贯穿整个对话 ，在数组中只会出现一次"
+    },
+    {
+      "anchor": "section-97",
+      "text": "位置：通常放在 messages 数组的第一条"
+    },
+    {
+      "anchor": "section-97",
+      "text": "位置"
+    },
+    {
+      "anchor": "section-97",
+      "text": "是否必需：可选，但强烈建议使用"
+    },
+    {
+      "anchor": "section-97",
+      "text": "是否必需"
+    },
+    {
+      "anchor": "section-97",
+      "text": "强烈建议使用"
+    },
+    {
+      "anchor": "section-97",
+      "text": "典型用途："
+    },
+    {
+      "anchor": "section-97",
+      "text": "定义AI的角色身份（“你是Python导师”）"
+    },
+    {
+      "anchor": "section-97",
+      "text": "约束输出格式（“只返回JSON格式”）"
+    },
+    {
+      "anchor": "section-97",
+      "text": "设定回答风格（“讲解要通俗易懂”）"
+    },
+    {
+      "anchor": "section-97",
+      "text": "为什么要设定AI角色？ 同样的问题，不同角色给出的回答深度完全不同。 例如问\"什么是递归？\"： 设定为\"小学老师\" → AI会用汉诺塔等简单比喻 设定为\"算法专家\" → AI会深入分析调用栈与时间复杂度"
+    },
+    {
+      "anchor": "section-97",
+      "text": "示例："
+    },
+    {
+      "anchor": "section-97",
+      "text": "messages = [\n    {\n        \"role\": \"system\",\n        \"content\": \"你是一位Python编程导师，擅长用简单语言解释复杂概念。回答时要分步骤，配合\n代码示例。\"\n    },\n    {\n        \"role\": \"user\",\n        \"content\": \"什么是装饰器？\"\n    }\n]"
+    },
+    {
+      "anchor": "section-97",
+      "text": "user（用户角色）"
+    },
+    {
+      "anchor": "section-97",
+      "text": "作用：表明这是用户的输入信息（问题）"
+    },
+    {
+      "anchor": "section-97",
+      "text": "位置：可以有多条（多轮对话）"
+    },
+    {
+      "anchor": "section-97",
+      "text": "是否必需：必需，至少要有一条"
+    },
+    {
+      "anchor": "section-97",
+      "text": "role最常见的取值，通常就是用来记录用户的问题。"
+    },
+    {
+      "anchor": "section-97",
+      "text": "messages = [\n    {\"role\": \"user\", \"content\": \"帮我写一个计算阶乘的函数\"}\n]"
+    },
+    {
+      "anchor": "section-97",
+      "text": "assistant（助手角色）"
+    },
+    {
+      "anchor": "section-97",
+      "text": "作用：表明这是AI的历史回复"
+    },
+    {
+      "anchor": "section-97",
+      "text": "位置：穿插在 user 消息之间"
+    },
+    {
+      "anchor": "section-97",
+      "text": "是否必需：单轮对话不需要，多轮对话必需"
+    },
+    {
+      "anchor": "section-97",
+      "text": "多轮对话必需"
+    },
+    {
+      "anchor": "section-97",
+      "text": "每次API调用都是独立的，模型不会自动记住历史。如果你需要连续对话，你应当手动将之前的 user 和 assistant 消息都传入 messages 数组。"
+    },
+    {
+      "anchor": "section-127",
+      "text": "5.4 下一节预告"
+    },
+    {
+      "anchor": "section-127",
+      "text": "掌握了API调用的核心参数后，接下来进入实战阶段——多轮对话、上下文管理策略，最终实现一个智能翻译器。"
+    },
+    {
+      "anchor": "section-129",
+      "text": "5.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-129",
+      "text": "中文 | English | 音标 | 说明\nAPI调用 | API Call | / eɪ.piːˈaɪ kɔːl/ ˌ | 通过编程接口向AI模型发送请求并获取回复\n系统角色 | System Role | /ˈsɪstəm roʊl/ | 设定AI人设与行为规则的messages角色\n用户角色 | User Role | /ˈjuːzər roʊl/ | 表示用户输入信息的messages角色\n助手角色 | Assistant Role | /əˈsɪstənt roʊl/ | 记录AI历史回复的messages角色\n模型选择 | Model Selection | /ˈmɑːdl sɪˈlekʃn/ | 根据任务复杂度选择不同能力级别的模型"
+    },
+    {
+      "anchor": "section-131",
+      "text": "图片"
+    }
+  ]
+}

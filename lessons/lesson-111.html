@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>为什么需要 MCP · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-111">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 7 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>MCP核心概念</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 112</span></div>
+<h1 class="lesson-title">为什么需要 MCP</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>6 页原文</span><span>约 9 分钟阅读</span><span class="module-name">MCP核心概念</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-111.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-111.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>本节从工具共享的难题出发，引出 Function Calling 在工具分发方面的局限，再介绍 MCP 如何解决这些问题。</p></aside>
+<p data-source-page="1">上一章介绍了 Function Calling，让 AI 能够调用工具、执行实际操作。但写完一个工具之后，真正的问题是：怎样让别人也能用上这个工具？</p>
+<p data-source-page="1">MCP（Model Context Protocol） 正是为解决这个问题而生。</p>
+<h2 id="section-3" data-source-page="1">1.1 工具分享的难题<a class="heading-link" href="#section-3" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">工具孤岛</p>
+<p data-source-page="1">假设写了一个很好用的文件操作工具，能让 AI 读取、修改、搜索项目文件。现在，想分享给别人用。</p>
+<p data-source-page="1">传统方式：把代码发给对方，对方复制到自己项目里，看懂代码、适配自己的 AI 应用。如果更新了工具，对方还得重新复制一遍。这就像没有 npm 的时代，想用一个 JavaScript 库，只能去 GitHub 下载源码、手动复制到项目里、手动管理版本和依赖。有 npm 后，一行命令就解决：</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>BASH</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-bash">npm install lodash
+
+1</code></pre></div>
+<p data-source-page="1">1 install</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">AI 工具生态需要的是同样的东西。</p>
+<h2 id="section-10" data-source-page="2">1.2 MCP 的诞生<a class="heading-link" href="#section-10" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">时间线</p>
+<p data-source-page="2">2024年11月25日，Anthropic（Claude 的开发公司）发布了一个重要的开源协议：Model Context Protocol（MCP）。</p>
+<p data-source-page="2">虽然这是Anthropic公司定义的私有协议，但随后Anthropic将其开源作为一个开放标准，任何人都可以实现，任何模型都可以支持。</p>
+<h3 id="section-14" data-source-page="2">MCP 要解决什么<a class="heading-link" href="#section-14" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">MCP 的核心目标是建立 AI 工具的生态系统，就像 npm 之于 JavaScript、pip 之于 Python。但盯住单一目标还不够——这个生态要能立住，必须同时解决三个环环相扣的问题：工具怎么让所有人复用、权限怎么统一管控、接入方式怎么标准化。</p>
+<h3 id="section-16" data-source-page="2">一个场景，三个痛点<a class="heading-link" href="#section-16" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">假设要给团队做一个 AI 助手，能查内部文档、查产品数据库、搜最新行业新闻。听起来不复杂——写三个 Function Calling 工具就行。</p>
+<p data-source-page="2">第一个工具写完，文件操作跑通了。同事觉得好用，问能不能也装一个。把代码发过去，他折腾了一下午才配好环境。过两天工具更新了一个 bug，又得通知所有人重新下载。三个人的团队尚且如此，三十个人的部门呢？</p>
+<p data-source-page="2">第二个工具连数据库。写完发现权限是个大问题——这个工具能访问所有表，但需求只是查产品表。限制权限的代码散落在几个函数里，改起来提心吊胆，怕一不小心把别的逻辑弄坏。</p>
+<p data-source-page="2">第三个工具接搜索 API。这时候老板说，市场部用的 AI 客户端和开发部不是同一个平台——一个用Claude Desktop，一个用 Gemini。工具要写两遍？</p>
+<p data-source-page="2">三个问题不是孤立的。它们指向同一件事：AI 工具缺一个统一的生态底座。MCP 就是在这个背景下诞生的。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-22" data-source-page="3">1.3 MCP 如何实现这些目标<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h2>
+<h3 id="section-23" data-source-page="3">工具复用：不再各写各的<a class="heading-link" href="#section-23" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">现实是每个 AI 应用都在重复造轮子——文件操作自己写一套，数据库查询自己写一套，网络搜索自己写一套。三个应用就是三套重复代码。</p>
+<p data-source-page="3">MCP 的做法更像 npm：同一个工具，一个人写好发布，其他人一行命令就能装。不用复制代码、不用配环境、不用操心版本更新。</p>
+<p data-source-page="3">实际效果</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">+-----------------------------+
+| 没有 MCP
++-----------------------------+
+| 你的 AI 应用 -&gt; 自己写 200行
+| 我的 AI 应用 -&gt; 自己写 200行
+| 他的 AI 应用 -&gt; 自己写 200行
+| 总计：600行重复代码
++-----------------------------+
+
+          |
+          | MCP Filesystem Server (200行)
+          v
+
++-----------------------------+
+| 你的 AI 应用 ----+
+| 我的 AI 应用 ----+-&gt; 共享
+| 他的 AI 应用 ----+
++-----------------------------+
+| 总计：200行，3个应用受益
++-----------------------------+</code></pre></div>
+<p data-source-page="3">而且 MCP Server 往往是社区维护的——经过了大量测试，比自己从零写的更可靠。</p>
+<h3 id="section-29" data-source-page="3">统一权限：配置即安全边界<a class="heading-link" href="#section-29" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">传统 Function Calling 的权限管理藏在代码里。每个工具自己判断该不该给权限，规则散落在各处，不统一也看不见。比如想让文件操作工具只能碰项目目录、别碰个人文件——这个约束写在哪个函数的哪一行里，只有最初写的人知道。</p>
+<p data-source-page="3">MCP 把权限控制提到了配置层。启动 Server 时就明确声明它能访问的目录、端口、资源范围——在mcpServers 配置里白纸黑字写清楚，随时查看、随时修改。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;filesystem&quot;: {
+      &quot;command&quot;: &quot;npx&quot;,
+      &quot;args&quot;: [
+        &quot;-y&quot;,
+        &quot;@modelcontextprotocol/server-filesystem&quot;,
+        &quot;/Users/username/Projects/my-app&quot;  // 只能访问这个目录
+      ]
+    }
+  }
+}</code></pre></div>
+<p data-source-page="4">文件操作 Server 被限制在 /Users/username/Projects/my-app，其他地方碰不到。权限不再是散落在代码里的零散判断，而是一份可审计的配置。</p>
+<h3 id="section-34" data-source-page="4">标准接入：一个协议通吃<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">假设要开发一个 AI 助手，需要文件操作、数据库查询、网络搜索、GitHub 集成。没有 MCP 的话，得分别对接四套 SDK、四种认证方式、四种错误处理逻辑——每加一种能力就多一层复杂度。</p>
+<p data-source-page="4">MCP 定义了一套统一的 Client-Server 协议。接入新工具不挑语言、不挑平台，只需要一行命令：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>BASH</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-bash">npm install -g @modelcontextprotocol/server-filesystem
+npm install -g @modelcontextprotocol/server-postgres
+npm install -g @modelcontextprotocol/server-brave-search
+npm install -g @modelcontextprotocol/server-github</code></pre></div>
+<p data-source-page="4">四种能力、同一套通信协议、相同的调用方式。AI 应用只需要实现一个 MCP Client，剩下的能力通过Server 生态按需扩展——不再需要为每个新工具单独写集成代码。</p>
+<h2 id="section-39" data-source-page="4">1.4 MCP 的另一面<a class="heading-link" href="#section-39" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">MCP 虽然号称开放标准，但 SDK 和官方文档里到处都是 Claude 的痕迹。这不是巧合。</p>
+<p data-source-page="4">MCP 是由 Anthropic（Claude 的开发公司）在 2024 年 11 月发布的。严格来说：</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">+--------------------------------+
+| [v] 开放（代码公开、文档公开）
+| [v] 标准（有明确的协议规范）
+| [x] 但不中立（Anthropic 主导）
++--------------------------------+</code></pre></div>
+<p data-source-page="5">对比</p>
+<p data-source-page="5">传统的开放标准（如 HTTP、JSON）由中立组织（W3C、IETF）制定，多方参与，商业中立。</p>
+<p data-source-page="5">但 MCP 更像这些标准：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">+----------------------------------------+
+| TypeScript：微软创造，开源但微软主导
+| Kubernetes：Google 创造，CNCF 管理
+| Rust：Mozilla 创造，Foundation 管理
++----------------------------------------+</code></pre></div>
+<p data-source-page="5">MCP 目前的情况是 Anthropic 主导，虽然完全开源。</p>
+<p data-source-page="5">为什么会这样？这反映了 MCP 的诞生背景：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">+--------------------------------+
+| MCP 的设计初衷是为 Claude 赋能
+|     |
+|     v
+| 发现这个能力是通用的
+|     |
+|     v
+| 开源成开放标准
+|     |
+|     v
+| 但保留了 Claude 特有特性
++--------------------------------+</code></pre></div>
+<p data-source-page="5">比如，MCP 中的某些枚举值（如 tool_use 的 stop_reason）直接来自 Claude 的 API 设计。</p>
+<h2 id="section-51" data-source-page="5">1.5 下一节预告<a class="heading-link" href="#section-51" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">理解了为什么需要 MCP。下一节会系统拆解 MCP 的核心概念和整体架构，并和传统的 Function Calling 进行对比。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<h2 id="section-53" data-source-page="6">1.6 ■ 学点英语<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>模型上下文协议</td><td>Model Context Protocol (MCP)</td><td>/ˈmɑːdl ˈkɑːntekst ˈproʊtəkɑːl/</td><td>统一AI应用与外部工具交互的标准化协议</td></tr><tr><td>工具孤岛</td><td>Tool Isolation</td><td>/tuːl aɪsəˈleɪʃn/ ˌ</td><td>工具与应用高度耦合，无法在多个AI应用间共享的问题</td></tr><tr><td>标准化协议</td><td>Standardized Protocol</td><td>/ˈstændərdaɪzd ˈproʊtəkɑːl/</td><td>定义统一规范使不同组件可互操作的协议标准</td></tr><tr><td>语言服务器协议</td><td>Language Server Protocol (LSP)</td><td>/ˈlæŋɡwɪdʒ ˈsɜːrvər ˈproʊtəkɑːl/</td><td>标准化编辑器与语言服务之间通信的协议，MCP的灵感来源</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-110.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Function Calling进阶实战</strong><small>Function Calling进阶实战</small></a><a class="chapter-neighbor next" href="lesson-112.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>MCP 核心概念</strong><small>MCP核心概念</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5278#mid=104930" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-3" class="toc-level-2">1.1 工具分享的难题</a><a href="#section-10" class="toc-level-2">1.2 MCP 的诞生</a><a href="#section-14" class="toc-level-3">MCP 要解决什么</a><a href="#section-16" class="toc-level-3">一个场景，三个痛点</a><a href="#section-22" class="toc-level-2">1.3 MCP 如何实现这些目标</a><a href="#section-23" class="toc-level-3">工具复用：不再各写各的</a><a href="#section-29" class="toc-level-3">统一权限：配置即安全边界</a><a href="#section-34" class="toc-level-3">标准接入：一个协议通吃</a><a href="#section-39" class="toc-level-2">1.4 MCP 的另一面</a><a href="#section-51" class="toc-level-2">1.5 下一节预告</a><a href="#section-53" class="toc-level-2">1.6 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-111", "title": "为什么需要 MCP", "stage": 3, "week": 7, "module": "MCP核心概念", "minutes": 9, "pages": 6, "type": "article"}</script>
+</body></html>

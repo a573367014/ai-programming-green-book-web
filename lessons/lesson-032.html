@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Embedding（三）-意义的数学化 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-032">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 2 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Embedding</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 033</span></div>
+<h1 class="lesson-title">Embedding（三）-意义的数学化</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 10 分钟阅读</span><span class="module-name">Embedding</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-032.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-032.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节看到了词向量的神奇性质和学习机制。但这背后隐藏着一个更深刻的问题:这些数字真的代表&quot;意义&quot;吗?本节将从哲学角度思考&quot;什么是猫&quot;,同时看看一些有趣的词向量实验,最后补充余弦相似度的技术细节。</p></aside>
+<h2 id="section-1" data-source-page="1">3.1 意义的数学化<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">读到这里,希望停下来思考一个深刻的问题。</p>
+<p data-source-page="1">&quot;猫&quot;这个词,是什么?</p>
+<p data-source-page="1">&quot;猫&quot;在不同的系统中,有着完全不同的表示方式:</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">系统        表示方式                           说明
+─────────────────────────────────────────────────────────
+人类语言     &quot;猫&quot;                              汉字符号
+英语        &quot;cat&quot;                             字母组合
+计算机      01101110 01011011 00101100        二进制编码
+ChatGPT     [0.23, -0.45, 0.67, ..., 0.12]   12288维向量</code></pre></div>
+<p data-source-page="1">哪一个才是真正的&quot;猫&quot;?</p>
+<p data-source-page="1">这个问题,在哲学上被称为指称问题(Problem of Reference)。20世纪的语言学家费尔迪南·德·索绪尔给出了一个深刻的答案:</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<aside class="callout" data-source-page="2"><p>“词的意义不在符号本身,而在于它与其他词的关系网络。”</p></aside>
+<p data-source-page="2">真正的&quot;猫&quot;,不是某个具体的符号或数字,而是一种关系的集合:</p>
+<p class="list-item" data-source-page="2">它与&quot;狗&quot;的关系(都是动物,都是宠物)</p>
+<p class="list-item" data-source-page="2">它与&quot;鱼&quot;的关系(捕食关系)</p>
+<p class="list-item" data-source-page="2">它与&quot;吃&quot;的关系(动词搭配)</p>
+<p class="list-item" data-source-page="2">它与&quot;可爱&quot;的关系(情感联想)</p>
+<p data-source-page="2">Embedding做的,正是把这个&quot;关系的集合&quot;编码成了数学对象。</p>
+<p data-source-page="2">在哲学上,这被称为结构主义的观点:一个事物的意义,不在于它本身,而在于它与其他事物的关系网络。Embedding,就是用数学的方式,实现了这个哲学洞见。</p>
+<p data-source-page="2">这就引出了一个有趣的问题:AI真的&quot;理解&quot;语言吗?从某种意义上说,是的。AI不需要真的&quot;见过&quot;一只猫,也不需要摸过它的毛、听过它的叫声——这些都是人类的感性经验。AI所做的,是在文本中见过数万次&quot;猫&quot;这个词与其他词的共现,然后把这些共现规律编码进Embedding向量里。</p>
+<p data-source-page="2">这是一种统计意义上的理解。虽然与人类的感性经验不同,但在语言处理上,这种基于关系网络的理解方式惊人地有效。</p>
+<h2 id="section-18" data-source-page="2">3.2 趣闻1:向量的&quot;随机炼金术&quot;<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">向量语义加减法有一个更酷的玩法:拿几个词,把它们随意加减,看看会发生什么。</p>
+<p data-source-page="2">选4个词来做实验:火焰、水、夜晚、白天</p>
+<h2 id="section-21" data-source-page="2">1. 火焰 + 水<a class="heading-link" href="#section-21" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="2"><p>Embedding(火焰) + Embedding(水) ≈ Embedding(蒸汽 / 云雾 / 温泉) 火焰:热、能量、动态 水:液体、流动、生命 相加:两种元素的融合 → 产生蒸汽、雾气这种介于两者之间的状态</p></aside>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-23" data-source-page="3">2. 火焰 - 水<a class="heading-link" href="#section-23" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="3"><p>Embedding(火焰) - Embedding(水) ≈ Embedding(干燥 / 燃烧 / 沙漠) 火焰 - 水 = 去掉&quot;冷、湿&quot;的属性 保留:热、干燥、炙烤 结果:极度干燥和炽热的状态 → 沙漠、烈日、干旱</p></aside>
+<h2 id="section-25" data-source-page="3">3. 夜晚 + 火焰<a class="heading-link" href="#section-25" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="3"><p>Embedding(夜晚) + Embedding(火焰) ≈ Embedding(篝火 / 烛光 / 星火) 夜晚:黑暗、神秘、静谧 火焰:光明、温暖、跳动 相加:黑暗中的光明 → 篝火晚会、烛光晚餐的浪漫氛围</p></aside>
+<h2 id="section-27" data-source-page="3">4. 夜晚 - 白天<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="3"><p>Embedding(夜晚) - Embedding(白天) ≈ Embedding(黑暗 / 阴影 / 月光) 夜晚 - 白天 = 去掉&quot;光明、活跃&quot;的成分 强化:黑暗、安静、神秘 结果:纯粹的黑暗概念,或者月光这种微弱的光</p></aside>
+<h2 id="section-29" data-source-page="3">5. 水 + 夜晚<a class="heading-link" href="#section-29" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="3"><p>Embedding(水) + Embedding(夜晚) ≈ Embedding(月光下的湖面 / 夜雨 / 深海) 水:流动、平静、反射 夜晚:黑暗、宁静、神秘 相加:宁静而神秘的水域 → 月光下波光粼粼的湖面</p></aside>
+<h2 id="section-31" data-source-page="3">6. 白天 + 水<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="3"><p>Embedding(白天) + Embedding(水) ≈ Embedding(清晨的露水 / 海滩 / 喷泉) 白天:明亮、活力、清新 水:清澈、流动、生机 相加:明亮而有生机的水景 → 阳光下的海滩、喷泉</p></aside>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-33" data-source-page="4">7. 火焰 + 夜晚 - 水<a class="heading-link" href="#section-33" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="4"><p>Embedding(火焰) + Embedding(夜晚) - Embedding(水) ≈ Embedding(干燥的篝火 / 沙漠之夜的营火) 火焰 + 夜晚 = 黑暗中的火光 再减去水 = 去掉湿润、去掉蒸汽 结果:干燥炙热的夜间火焰→ 沙漠中的营火</p></aside>
+<h2 id="section-35" data-source-page="4">8. 白天 - 夜晚<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="4"><p>Embedding(白天) - Embedding(夜晚) ≈ Embedding(正午 / 阳光 / 明亮) 白天 - 夜晚 = 去掉所有&quot;黑暗&quot;成分 强化:光明、炙热、耀眼 结果:极致的光明 → 正午的烈日</p></aside>
+<h2 id="section-37" data-source-page="4">3.3 趣闻2:哲学家和工程师的&quot;百年约会&quot;<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">这是一个关于哲学和科学如何殊途同归的故事。</p>
+<p data-source-page="4">1916年,瑞士日内瓦</p>
+<p data-source-page="4">瑞士语言学家费尔迪南·德·索绪尔去世后,他的学生整理出版了《普通语言学教程》。书中提出了一个革命性的观点:</p>
+<aside class="callout" data-source-page="4"><p>“词的意义不在符号本身,而在于它与其他词的差异关系。”</p></aside>
+<p data-source-page="4">这是纯粹的哲学思辨,基于对语言本质的深刻洞察。</p>
+<p data-source-page="4">2013年,美国加州</p>
+<p data-source-page="4">97年后,Google的工程师Tomas Mikolov和他的团队发明了Word2Vec。他们的目标很实际:如何更高效地让计算机表示词?</p>
+<p data-source-page="4">他们设计了一个算法:</p>
+<aside class="callout" data-source-page="4"><p>训练目标:根据上下文预测词 副产品:每个词得到一个12288维向量 惊喜发现:这些向量竟然能做代数运算! 国王 - 男人 + 女人 = 女王</p></aside>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">语言学家们震惊了:“这不就是索绪尔说的’关系网络’的数学实现吗?!”</p>
+<p data-source-page="5">Word2Vec的发明者们并没有读过索绪尔的理论,他们只是在解决工程问题。但他们用数学和数据,独立地&quot;发现&quot;了索绪尔用思辨得出的结论。</p>
+<p data-source-page="5">哲学的思辨和科学的实验,常常是从不同路径,抵达同一个真理。</p>
+<p class="list-item" data-source-page="5">索绪尔用思辨揭示:语言的本质是关系网络</p>
+<p class="list-item" data-source-page="5">Mikolov用数据发现:向量空间能编码这种关系</p>
+<p class="list-item" data-source-page="5">两者相隔近百年,却指向了同一个深层结构</p>
+<p data-source-page="5">当一个数学模型与哲学洞见高度一致时,往往说明我们触及了事物的真实本质。这或许就是为什么,AI研究不仅需要工程师,也需要哲学家。</p>
+<h2 id="section-54" data-source-page="5">3.4 余弦相似度<a class="heading-link" href="#section-54" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">本节中多次提到&quot;相似度&quot;来衡量两个向量的相似程度,这里用的就是余弦相似度。</p>
+<p data-source-page="5">简单理解</p>
+<p data-source-page="5">余弦相似度衡量的是两个向量的方向有多相似,而不是大小。</p>
+<p data-source-page="5">想象两个箭头:</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">情况                余弦相似度      说明
+──────────────────────────────────────────────
+两个箭头指向同一方向     1            完全相同
+两个箭头垂直            0            完全无关
+两个箭头方向相反       -1            完全相反</code></pre></div>
+<p data-source-page="5">数学公式</p>
+<div class="math-line" data-source-page="5">余弦相似度 = <span class="fraction"><span>A · B</span><span>∣A∣ × ∣B∣</span></span><details class="formula-source"><summary>查看原文公式文本</summary><p>余弦相似度 = 𝐴 ⋅ 𝐵 ∣ 𝐴 ∣ × ∣ 𝐵 ∣ 余弦相似度= ∣A∣×∣B∣ A⋅B </p></details></div>
+<p data-source-page="5">其中:</p>
+<p class="list-item" data-source-page="5">𝐴 ⋅ 𝐵 A⋅B = 向量点积(对应位置相乘再相加)</p>
+<p class="list-item" data-source-page="5">∣ 𝐴 ∣ ∣A∣ 和 ∣ 𝐵 ∣ ∣B∣ = 两个向量的长度(模)</p>
+<p data-source-page="5">具体例子</p>
+<p data-source-page="5">计算&quot;猫&quot;和&quot;狗&quot;的One-Hot向量相似度:</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">向量    表示          说明
+─────────────────────────────────
+A       [1, 0, 0, 0, 0]   &quot;猫&quot;
+B       [0, 1, 0, 0, 0]   &quot;狗&quot;</code></pre></div>
+<p data-source-page="6">步1:计算点积</p>
+<aside class="callout" data-source-page="6"><p>𝐴 ⋅ 𝐵 = 1 × 0 + 0 × 1 + 0 × 0 + 0 × 0 + 0 × 0 = 0 A⋅B=1×0+0×1+0×0+0×0+0×0=0</p></aside>
+<p data-source-page="6">步2:计算长度</p>
+<aside class="callout" data-source-page="6"><p>∣ 𝐴 ∣ = 1 2 + 0 2 + 0 2 + 0 2 + 0 2 = 1 ∣A∣= 1 2 +0 2 +0 2 +0 2 +0 2  =1 ∣ 𝐵 ∣ = 0 2 + 1 2+ 0 2 + 0 2 + 0 2 = 1 ∣B∣= 0 2 +1 2 +0 2 +0 2 +0 2  =1</p></aside>
+<p data-source-page="6">步3:计算余弦相似度</p>
+<aside class="callout" data-source-page="6"><p>余弦相似度 = 𝐴 ⋅ 𝐵 ∣ 𝐴 ∣ × ∣ 𝐵 ∣ = 0 1 × 1 = 0 余弦相似度= ∣A∣×∣B∣ A⋅B  = 1×1 0  =0</p></aside>
+<p data-source-page="6">01×1</p>
+<p data-source-page="6">结果为0,说明这两个向量完全垂直,没有任何相似性。</p>
+<p data-source-page="6">为什么叫&quot;余弦&quot;?</p>
+<p data-source-page="6">因为它实际上计算的是两个向量之间夹角的余弦值:</p>
+<aside class="callout" data-source-page="6"><p>夹角0° → cos(0°) = 1 (完全相同) 夹角90° → cos(90°) = 0 (垂直,无关) 夹角180° → cos(180°) =-1 (完全相反)</p></aside>
+<p data-source-page="6">为什么用余弦相似度?</p>
+<p class="list-item" data-source-page="6">不受长度影响:只看方向,不看大小 向量[1, 2]和向量[2, 4]方向相同,余弦相似度=1 虽然长度不同,但语义方向一致</p>
+<p class="list-item" data-source-page="6">值域固定:总是在-1到1之间,便于比较</p>
+<p class="list-item" data-source-page="6">几何意义清晰:直接对应向量夹角</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">在词向量中,关心的正是词的语义方向是否相似,而不是绝对大小,所以余弦相似度是最合适的度量。</p>
+<h2 id="section-84" data-source-page="7">3.5 下一节预告<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">现在知道了Embedding是如何把文字变成向量的:每个词都是一个12288维的向量,编码了它的语义。</p>
+<p data-source-page="7">但这些向量是哪里来的?它们是怎么学会语义的?</p>
+<p data-source-page="7">答案就在下一节:预训练——通过3000亿Token的训练,让模型学会语言规律。</p>
+<h2 id="section-88" data-source-page="7">3.6 ■ 学点英语<a class="heading-link" href="#section-88" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>指称问题</td><td>Problem of Reference</td><td>/ˈprɒbləm əv ˈrefrəns/</td><td>符号与它所代表的事物之间关系的哲学问题</td></tr><tr><td>结构主义</td><td>Structuralism</td><td>/ˈstrʌktʃərəlɪzəm/</td><td>认为事物的意义来自其与其他事物的关系而非本身的哲学观点</td></tr><tr><td>向量夹角</td><td>Vector Angle</td><td>/ˈvektər ˈæŋɡl/</td><td>两个向量之间的夹角，余弦相似度即夹角的余弦值</td></tr><tr><td>点积</td><td>Dot Product</td><td>/dɒt ˈprɒdʌkt/</td><td>向量对应位置相乘再相加的运算，用于计算余弦相似度</td></tr><tr><td>向量模长</td><td>Vector Norm</td><td>/ˈvektər nɔːm/</td><td>向量的长度（L2范数），从原点到向量终点的距离</td></tr><tr><td>Word2V ec</td><td>Word2Vec</td><td>/wɜːd tuː vek/</td><td>2013年Google发布的词向量训练算法，首次展示语义代数性质</td></tr></tbody></table></div>
+<h2 id="section-90" data-source-page="7">3.8 推荐阅读<a class="heading-link" href="#section-90" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">Efficient Estimation of Word Representations in Vector Space (Word2Vec论文, 2013)</p>
+<p data-source-page="7">Tomas Mikolov等人发表的Word2Vec原始论文,首次展示了词向量的语义代数特性(国王 - 男人 + 女人= 女王)。论文写得很清楚,数学部分不复杂,重点在于展示这一发现的惊人之处。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-031.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-4</strong><small>Embedding</small></a><a class="chapter-neighbor next" href="lesson-033.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>强化练习题 · 1-6</strong><small>Embedding</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5257#mid=104883" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">3.1 意义的数学化</a><a href="#section-18" class="toc-level-2">3.2 趣闻1:向量的&quot;随机炼金术&quot;</a><a href="#section-21" class="toc-level-2">1. 火焰 + 水</a><a href="#section-23" class="toc-level-2">2. 火焰 - 水</a><a href="#section-25" class="toc-level-2">3. 夜晚 + 火焰</a><a href="#section-27" class="toc-level-2">4. 夜晚 - 白天</a><a href="#section-29" class="toc-level-2">5. 水 + 夜晚</a><a href="#section-31" class="toc-level-2">6. 白天 + 水</a><a href="#section-33" class="toc-level-2">7. 火焰 + 夜晚 - 水</a><a href="#section-35" class="toc-level-2">8. 白天 - 夜晚</a><a href="#section-37" class="toc-level-2">3.3 趣闻2:哲学家和工程师的&quot;百年约会&quot;</a><a href="#section-54" class="toc-level-2">3.4 余弦相似度</a><a href="#section-84" class="toc-level-2">3.5 下一节预告</a><a href="#section-88" class="toc-level-2">3.6 ■ 学点英语</a><a href="#section-90" class="toc-level-2">3.8 推荐阅读</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-032", "title": "Embedding（三）-意义的数学化", "stage": 1, "week": 2, "module": "Embedding", "minutes": 10, "pages": 7, "type": "article"}</script>
+</body></html>

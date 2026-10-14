@@ -1,0 +1,698 @@
+{
+  "id": "lesson-155",
+  "title": "CrewAI 实战解析：程序2考试系统与混合架构",
+  "code": "1-4",
+  "stage": 6,
+  "week": 12,
+  "week_title": "Multi-Agent：多智能体协作",
+  "module": "CrewAI 实战",
+  "type": "article",
+  "repo_path": "006-阶段六 【智能体】从单体到多体/002-第12周 Multi-Agent：多智能体协作/007-CrewAI 实战/020-图文-1-4-CrewAI 实战解析：程序2考试系统与混合架构.pdf",
+  "sha256": "3e7afe1fc8259d4244a59bdd803e80a30944f5db368d66b5ad052071e3264784",
+  "pdf": "sources/pdf/lesson-155.pdf",
+  "pages": 8,
+  "source_url": "https://class.imooc.com/lesson/5293#mid=105160",
+  "minutes": 15,
+  "excerpt": "上一节我们学习了程序1的Sequential模式，看到了Crew、Agent、Task如何协同工作。本节我们将学习程序2（main.py），它展示了一个重要的架构思想：不是所有业务都需要Crew，传统代码与AI决策可以完美混合。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们学习了程序1的Sequential模式，看到了Crew、Agent、Task如何协同工作。本节我们将学习程序2（main.py），它展示了一个重要的架构思想：不是所有业务都需要Crew，传统代码与AI决策可以完美混合。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "程序2业务流程回顾",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序2实现了完整的考试流程，包含4个阶段：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "─────────────────────────────────────────\n  阶段1: 组卷\n  • 传统业务：从题库随机抽题\n  • 逻辑：min(题库总数, 配置数量)\n─────────────────────────────────────────\n  阶段2: 学生答题\n  • 传统业务：收集学生输入（A/B/C/D）\n─────────────────────────────────────────\n  阶段3: 自动批改\n  • 传统业务：对比答案，计算分数\n  • 无需AI：选择题答案确定\n─────────────────────────────────────────\n  阶段4: AI深度分析（可选，用户询问）\n  • AI决策：Manager协调2个Agent\n    - Agent1: 答案解析专家\n    - Agent2: 学习诊断教练\n─────────────────────────────────────────",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "一个常见的错误直觉",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "看到这4个阶段，很多人会自然地想：“这和程序1一样，应该创建4个Task，然后用Sequential模式顺序执行吧？”",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "假想的实现（如果全部用Crew）：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假想的实现",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# ✗ 错误的想法：把所有阶段都交给Crew\nclass ExamSystem:\n    def run_exam(self):\n        # 创建4个Task\n        task1 = create_paper_task(...)      # 组卷\n        task2 = create_answer_task(...)     # 收集答案\n        task3 = create_grading_task(...)    # 批改\n        task4 = create_analysis_task(...)   # 分析\n\n        # 顺序执行\n        crew = Crew(\n            agents=[paper_agent, answer_agent, grading_agent, analysis_agent],\n            tasks=[task1, task2, task3, task4],\n            process=Process.sequential\n        )\n\n        result = crew.kickoff()",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这样做的问题：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这样做的问题",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "浪费Token：组卷、收集答案、对比答案都是确定性逻辑，不需要LLM",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "浪费Token",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "性能低下：每个Task都要调用LLM，即使是简单的数据库查询",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "性能低下",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "调试困难：传统代码的逻辑错误和AI的输出问题混在一起",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "调试困难",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "成本高昂：3个阶段的Token消耗完全是浪费",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "成本高昂",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "实际的混合架构",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序2的实际实现采用了混合架构：传统代码负责确定性任务，Crew只在需要AI决策时启用。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "整体架构",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "class ExamSystem:\n    \"\"\"考试系统主程序\"\"\"\n\n    def __init__(self):\n        self.config = load_config()\n        self.db = QuestionDatabase()\n        self.console = Console()\n\n        # 只在需要AI时才初始化Crew\n        self.llm = create_llm()\n        self.crew = ExerciseCrew(self.llm)\n\n    def run(self):\n        \"\"\"完整考试流程\"\"\"\n        # 阶段1-3：传统代码（不用Crew）\n        self.create_exam_paper()      # 传统：随机抽题\n        self.collect_answers()        # 传统：终端输入\n        grading_result = self.grade_answers()  # 传统：对比答案\n\n        # 显示分数\n        self._display_grading_result(grading_result)\n\n        # 询问是否需要AI分析\n        need_analysis = Confirm.ask(\"是否需要AI进行答案解析和学习建议？\")\n\n        if need_analysis:\n            # 阶段4：启用Crew（Hierarchical模式）\n            explanation, advice = self.crew.run_analysis(grading_result)\n            self.console.print(f\"答案解析：\\n{explanation}\")\n            self.console.print(f\"学习建议：\\n{advice}\")",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这三个阶段完全不需要AI，使用确定性算法即可：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "class ExamSystem:\n    def create_exam_paper(self) -> bool:\n        \"\"\"阶段1：组卷 - 核心算法：random.sample()\"\"\"\n        exam_count = self.config.exam_count\n        total_count = self.db.get_question_count()\n\n        if total_count < exam_count:\n            return False\n\n        # 随机抽题\n        self.exam_questions = self.db.random_select_questions(exam_count)\n        return True\n\n    def collect_answers(self):\n        \"\"\"阶段2：收集答案 - 核心算法：输入验证\"\"\"\n        self.student_answers = []\n\n        for i, question in enumerate(self.exam_questions, 1):\n            self._display_question(i, question)\n\n            # 验证输入\n            while True:\n                answer = Prompt.ask(\"请输入答案（A/B/C/D）\").upper()\n                if answer in ['A', 'B', 'C', 'D']:\n                    self.student_answers.append(answer)\n                    break\n\n    def grade_answers(self) -> dict:\n        \"\"\"阶段3：批改 - 核心算法：字符串比较\"\"\"\n        total_score = 0\n        details = []\n\n        # 逐题对比\n        for question, student_answer in zip(self.exam_questions, self.student_answers):\n            is_correct = (student_answer == question.answer)\n            score = 10 if is_correct else 0\n            total_score += score\n\n            details.append({\n                'is_correct': is_correct,\n                'score': score\n            })\n        return {'total_score': total_score, 'details': details}",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这三个阶段都是确定性算法（随机抽取、输入验证、字符串比较），用LLM不仅浪费Token，还可能出错。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "只有在阶段4（AI深度分析）时，才启用Crew：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# crews/exercise_crew.py\n\nclass ExerciseCrew:\n    def run_analysis(self, grading_result: dict):\n        \"\"\"\n        执行AI分析（Hierarchical模式）\n        只在这里调用LLM！\n        \"\"\"\n        # 创建2个Agent\n        explanation_agent = create_explanation_agent(self.llm)\n        advisor_agent = create_learning_advisor(self.llm)\n\n        # 创建2个Task（可以并行）\n        explanation_task = create_explanation_task(explanation_agent, grading_result)\n        advice_task = create_learning_advice_task(advisor_agent, grading_result)\n\n        # Hierarchical模式：Manager协调2个Agent并行工作\n        crew = Crew(\n            agents=[explanation_agent, advisor_agent],\n            tasks=[explanation_task, advice_task],\n            process=Process.hierarchical,  # 并行执行\n            manager_llm=self.llm,          # Manager使用的LLM\n            verbose=True\n        )\n\n        result = crew.kickoff()\n\n        # 返回两个Agent的输出\n        return result.explanation, result.advice",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么要用Hierarchical？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "并行执行：答案解析和学习建议可以同时进行，提升速度",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Manager协调：需要一个\"项目经理\"分配任务给2个Agent",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "创造性任务：需要LLM理解错题原因、生成个性化建议",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "创造性任务",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "Hierarchical模式：Manager协调多Agent",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在程序2的阶段4，我们使用Hierarchical模式协调2个Agent并行工作。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "代码实现",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "# crews/exercise_crew.py\n\nclass ExerciseCrew:\n    def run_analysis(self, grading_result: dict):\n        \"\"\"执行AI分析（Hierarchical模式）\"\"\"\n        # 创建2个专家Agent\n        explanation_agent = create_explanation_agent(self.llm)\n        advisor_agent = create_learning_advisor(self.llm)\n\n        # 创建2个Task\n        explanation_task = create_explanation_task(explanation_agent, grading_result)\n        advice_task = create_learning_advice_task(advisor_agent, grading_result)\n\n        # Hierarchical模式：Manager协调\n        crew = Crew(\n            agents=[explanation_agent, advisor_agent],\n            tasks=[explanation_task, advice_task],\n            process=Process.hierarchical,  # 关键：启用Hierarchical\n            manager_llm=self.llm,          # Manager使用的LLM\n            verbose=True\n        )\n\n        result = crew.kickoff()\n        return result.explanation, result.advice",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "执行流程",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键特性",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Manager自动创建：你不需要定义Manager Agent，CrewAI自动生成",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "并行执行：2个Agent同时调用LLM，提升速度",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "结果汇总：Manager负责收集2个Agent的输出并整合",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "结果汇总",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Token消耗：2个Agent的LLM调用 + Manager的协调调用（约3次LLM调用）",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "与Sequential模式对比",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "维度 | Sequential（程序1） | Hierarchical（程序2-阶段4）\n执行方式 | 任务按顺序执行 | 任务并行执行\n协调者 | Crew按Task列表顺序 | Manager动态分配\n适用场景 | 有明确先后依赖 | 任务可独立并行\n性能 | Task2等Task1完成 | 2个Task同时进行",
+      "rows": [
+        [
+          "维度",
+          "Sequential（程序1）",
+          "Hierarchical（程序2-阶段4）"
+        ],
+        [
+          "执行方式",
+          "任务按顺序执行",
+          "任务并行执行"
+        ],
+        [
+          "协调者",
+          "Crew按Task列表顺序",
+          "Manager动态分配"
+        ],
+        [
+          "适用场景",
+          "有明确先后依赖",
+          "任务可独立并行"
+        ],
+        [
+          "性能",
+          "Task2等Task1完成",
+          "2个Task同时进行"
+        ]
+      ],
+      "page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "小结",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "通过程序2，我们看到了CrewAI的实战精髓：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "混合架构：传统代码处理确定性任务，AI处理创造性任务",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Hierarchical模式：Manager协调多个Agent并行工作",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "成本优化：只在必要时启用Crew，节省75%的Token",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "成本优化",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对比两个程序：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "程序1（Sequential）：全流程AI决策，适合纯创造性任务",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "程序2（混合架构）：按需启用AI，适合复杂业务场景",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将回顾整个学习旅程，总结从理论到实践的关键收获。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "![](020-图文-1-4-CrewAI 实战解析：程序2考试系统与混合架构.assets/img-001.png)",
+      "page": 8,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 6357,
+    "represented_chars": 6137,
+    "removed_chars": 220,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 168,
+      "repeated_title": 52
+    }
+  },
+  "videos": [],
+  "order": 156,
+  "headings": [
+    {
+      "title": "程序2业务流程回顾",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "一个常见的错误直觉",
+      "id": "section-4",
+      "level": 2
+    },
+    {
+      "title": "实际的混合架构",
+      "id": "section-19",
+      "level": 2
+    },
+    {
+      "title": "整体架构",
+      "id": "section-21",
+      "level": 3
+    },
+    {
+      "title": "Hierarchical模式：Manager协调多Agent",
+      "id": "section-33",
+      "level": 2
+    },
+    {
+      "title": "代码实现",
+      "id": "section-35",
+      "level": 3
+    },
+    {
+      "title": "小结",
+      "id": "section-46",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-56",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们学习了程序1的Sequential模式，看到了Crew、Agent、Task如何协同工作。本节我们将学习程序2（main.py），它展示了一个重要的架构思想：不是所有业务都需要Crew，传统代码与AI决策可以完美混合。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "程序2业务流程回顾"
+    },
+    {
+      "anchor": "section-1",
+      "text": "程序2实现了完整的考试流程，包含4个阶段："
+    },
+    {
+      "anchor": "section-1",
+      "text": "─────────────────────────────────────────\n  阶段1: 组卷\n  • 传统业务：从题库随机抽题\n  • 逻辑：min(题库总数, 配置数量)\n─────────────────────────────────────────\n  阶段2: 学生答题\n  • 传统业务：收集学生输入（A/B/C/D）\n─────────────────────────────────────────\n  阶段3: 自动批改\n  • 传统业务：对比答案，计算分数\n  • 无需AI：选择题答案确定\n─────────────────────────────────────────\n  阶段4: AI深度分析（可选，用户询问）\n  • AI决策：Manager协调2个Agent\n    - Agent1: 答案解析专家\n    - Agent2: 学习诊断教练\n─────────────────────────────────────────"
+    },
+    {
+      "anchor": "section-4",
+      "text": "一个常见的错误直觉"
+    },
+    {
+      "anchor": "section-4",
+      "text": "看到这4个阶段，很多人会自然地想：“这和程序1一样，应该创建4个Task，然后用Sequential模式顺序执行吧？”"
+    },
+    {
+      "anchor": "section-4",
+      "text": "假想的实现（如果全部用Crew）："
+    },
+    {
+      "anchor": "section-4",
+      "text": "假想的实现"
+    },
+    {
+      "anchor": "section-4",
+      "text": "# ✗ 错误的想法：把所有阶段都交给Crew\nclass ExamSystem:\n    def run_exam(self):\n        # 创建4个Task\n        task1 = create_paper_task(...)      # 组卷\n        task2 = create_answer_task(...)     # 收集答案\n        task3 = create_grading_task(...)    # 批改\n        task4 = create_analysis_task(...)   # 分析\n\n        # 顺序执行\n        crew = Crew(\n            agents=[paper_agent, answer_agent, grading_agent, analysis_agent],\n            tasks=[task1, task2, task3, task4],\n            process=Process.sequential\n        )\n\n        result = crew.kickoff()"
+    },
+    {
+      "anchor": "section-4",
+      "text": "这样做的问题："
+    },
+    {
+      "anchor": "section-4",
+      "text": "这样做的问题"
+    },
+    {
+      "anchor": "section-4",
+      "text": "浪费Token：组卷、收集答案、对比答案都是确定性逻辑，不需要LLM"
+    },
+    {
+      "anchor": "section-4",
+      "text": "浪费Token"
+    },
+    {
+      "anchor": "section-4",
+      "text": "性能低下：每个Task都要调用LLM，即使是简单的数据库查询"
+    },
+    {
+      "anchor": "section-4",
+      "text": "性能低下"
+    },
+    {
+      "anchor": "section-4",
+      "text": "调试困难：传统代码的逻辑错误和AI的输出问题混在一起"
+    },
+    {
+      "anchor": "section-4",
+      "text": "调试困难"
+    },
+    {
+      "anchor": "section-4",
+      "text": "成本高昂：3个阶段的Token消耗完全是浪费"
+    },
+    {
+      "anchor": "section-4",
+      "text": "成本高昂"
+    },
+    {
+      "anchor": "section-19",
+      "text": "实际的混合架构"
+    },
+    {
+      "anchor": "section-19",
+      "text": "程序2的实际实现采用了混合架构：传统代码负责确定性任务，Crew只在需要AI决策时启用。"
+    },
+    {
+      "anchor": "section-21",
+      "text": "整体架构"
+    },
+    {
+      "anchor": "section-21",
+      "text": "class ExamSystem:\n    \"\"\"考试系统主程序\"\"\"\n\n    def __init__(self):\n        self.config = load_config()\n        self.db = QuestionDatabase()\n        self.console = Console()\n\n        # 只在需要AI时才初始化Crew\n        self.llm = create_llm()\n        self.crew = ExerciseCrew(self.llm)\n\n    def run(self):\n        \"\"\"完整考试流程\"\"\"\n        # 阶段1-3：传统代码（不用Crew）\n        self.create_exam_paper()      # 传统：随机抽题\n        self.collect_answers()        # 传统：终端输入\n        grading_result = self.grade_answers()  # 传统：对比答案\n\n        # 显示分数\n        self._display_grading_result(grading_result)\n\n        # 询问是否需要AI分析\n        need_analysis = Confirm.ask(\"是否需要AI进行答案解析和学习建议？\")\n\n        if need_analysis:\n            # 阶段4：启用Crew（Hierarchical模式）\n            explanation, advice = self.crew.run_analysis(grading_result)\n            self.console.print(f\"答案解析：\\n{explanation}\")\n            self.console.print(f\"学习建议：\\n{advice}\")"
+    },
+    {
+      "anchor": "section-21",
+      "text": "这三个阶段完全不需要AI，使用确定性算法即可："
+    },
+    {
+      "anchor": "section-21",
+      "text": "class ExamSystem:\n    def create_exam_paper(self) -> bool:\n        \"\"\"阶段1：组卷 - 核心算法：random.sample()\"\"\"\n        exam_count = self.config.exam_count\n        total_count = self.db.get_question_count()\n\n        if total_count < exam_count:\n            return False\n\n        # 随机抽题\n        self.exam_questions = self.db.random_select_questions(exam_count)\n        return True\n\n    def collect_answers(self):\n        \"\"\"阶段2：收集答案 - 核心算法：输入验证\"\"\"\n        self.student_answers = []\n\n        for i, question in enumerate(self.exam_questions, 1):\n            self._display_question(i, question)\n\n            # 验证输入\n            while True:\n                answer = Prompt.ask(\"请输入答案（A/B/C/D）\").upper()\n                if answer in ['A', 'B', 'C', 'D']:\n                    self.student_answers.append(answer)\n                    break\n\n    def grade_answers(self) -> dict:\n        \"\"\"阶段3：批改 - 核心算法：字符串比较\"\"\"\n        total_score = 0\n        details = []\n\n        # 逐题对比\n        for question, student_answer in zip(self.exam_questions, self.student_answers):\n            is_correct = (student_answer == question.answer)\n            score = 10 if is_correct else 0\n            total_score += score\n\n            details.append({\n                'is_correct': is_correct,\n                'score': score\n            })\n        return {'total_score': total_score, 'details': details}"
+    },
+    {
+      "anchor": "section-21",
+      "text": "这三个阶段都是确定性算法（随机抽取、输入验证、字符串比较），用LLM不仅浪费Token，还可能出错。"
+    },
+    {
+      "anchor": "section-21",
+      "text": "只有在阶段4（AI深度分析）时，才启用Crew："
+    },
+    {
+      "anchor": "section-21",
+      "text": "# crews/exercise_crew.py\n\nclass ExerciseCrew:\n    def run_analysis(self, grading_result: dict):\n        \"\"\"\n        执行AI分析（Hierarchical模式）\n        只在这里调用LLM！\n        \"\"\"\n        # 创建2个Agent\n        explanation_agent = create_explanation_agent(self.llm)\n        advisor_agent = create_learning_advisor(self.llm)\n\n        # 创建2个Task（可以并行）\n        explanation_task = create_explanation_task(explanation_agent, grading_result)\n        advice_task = create_learning_advice_task(advisor_agent, grading_result)\n\n        # Hierarchical模式：Manager协调2个Agent并行工作\n        crew = Crew(\n            agents=[explanation_agent, advisor_agent],\n            tasks=[explanation_task, advice_task],\n            process=Process.hierarchical,  # 并行执行\n            manager_llm=self.llm,          # Manager使用的LLM\n            verbose=True\n        )\n\n        result = crew.kickoff()\n\n        # 返回两个Agent的输出\n        return result.explanation, result.advice"
+    },
+    {
+      "anchor": "section-21",
+      "text": "为什么要用Hierarchical？"
+    },
+    {
+      "anchor": "section-21",
+      "text": "并行执行：答案解析和学习建议可以同时进行，提升速度"
+    },
+    {
+      "anchor": "section-21",
+      "text": "Manager协调：需要一个\"项目经理\"分配任务给2个Agent"
+    },
+    {
+      "anchor": "section-21",
+      "text": "创造性任务：需要LLM理解错题原因、生成个性化建议"
+    },
+    {
+      "anchor": "section-21",
+      "text": "创造性任务"
+    },
+    {
+      "anchor": "section-33",
+      "text": "Hierarchical模式：Manager协调多Agent"
+    },
+    {
+      "anchor": "section-33",
+      "text": "在程序2的阶段4，我们使用Hierarchical模式协调2个Agent并行工作。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "代码实现"
+    },
+    {
+      "anchor": "section-35",
+      "text": "# crews/exercise_crew.py\n\nclass ExerciseCrew:\n    def run_analysis(self, grading_result: dict):\n        \"\"\"执行AI分析（Hierarchical模式）\"\"\"\n        # 创建2个专家Agent\n        explanation_agent = create_explanation_agent(self.llm)\n        advisor_agent = create_learning_advisor(self.llm)\n\n        # 创建2个Task\n        explanation_task = create_explanation_task(explanation_agent, grading_result)\n        advice_task = create_learning_advice_task(advisor_agent, grading_result)\n\n        # Hierarchical模式：Manager协调\n        crew = Crew(\n            agents=[explanation_agent, advisor_agent],\n            tasks=[explanation_task, advice_task],\n            process=Process.hierarchical,  # 关键：启用Hierarchical\n            manager_llm=self.llm,          # Manager使用的LLM\n            verbose=True\n        )\n\n        result = crew.kickoff()\n        return result.explanation, result.advice"
+    },
+    {
+      "anchor": "section-35",
+      "text": "执行流程"
+    },
+    {
+      "anchor": "section-35",
+      "text": "关键特性"
+    },
+    {
+      "anchor": "section-35",
+      "text": "Manager自动创建：你不需要定义Manager Agent，CrewAI自动生成"
+    },
+    {
+      "anchor": "section-35",
+      "text": "并行执行：2个Agent同时调用LLM，提升速度"
+    },
+    {
+      "anchor": "section-35",
+      "text": "结果汇总：Manager负责收集2个Agent的输出并整合"
+    },
+    {
+      "anchor": "section-35",
+      "text": "结果汇总"
+    },
+    {
+      "anchor": "section-35",
+      "text": "Token消耗：2个Agent的LLM调用 + Manager的协调调用（约3次LLM调用）"
+    },
+    {
+      "anchor": "section-35",
+      "text": "与Sequential模式对比"
+    },
+    {
+      "anchor": "section-35",
+      "text": "维度 | Sequential（程序1） | Hierarchical（程序2-阶段4）\n执行方式 | 任务按顺序执行 | 任务并行执行\n协调者 | Crew按Task列表顺序 | Manager动态分配\n适用场景 | 有明确先后依赖 | 任务可独立并行\n性能 | Task2等Task1完成 | 2个Task同时进行"
+    },
+    {
+      "anchor": "section-46",
+      "text": "小结"
+    },
+    {
+      "anchor": "section-46",
+      "text": "通过程序2，我们看到了CrewAI的实战精髓："
+    },
+    {
+      "anchor": "section-46",
+      "text": "混合架构：传统代码处理确定性任务，AI处理创造性任务"
+    },
+    {
+      "anchor": "section-46",
+      "text": "Hierarchical模式：Manager协调多个Agent并行工作"
+    },
+    {
+      "anchor": "section-46",
+      "text": "成本优化：只在必要时启用Crew，节省75%的Token"
+    },
+    {
+      "anchor": "section-46",
+      "text": "成本优化"
+    },
+    {
+      "anchor": "section-46",
+      "text": "对比两个程序："
+    },
+    {
+      "anchor": "section-46",
+      "text": "程序1（Sequential）：全流程AI决策，适合纯创造性任务"
+    },
+    {
+      "anchor": "section-46",
+      "text": "程序2（混合架构）：按需启用AI，适合复杂业务场景"
+    },
+    {
+      "anchor": "section-46",
+      "text": "下一节，我们将回顾整个学习旅程，总结从理论到实践的关键收获。"
+    },
+    {
+      "anchor": "section-56",
+      "text": "图片"
+    },
+    {
+      "anchor": "section-56",
+      "text": "![](020-图文-1-4-CrewAI 实战解析：程序2考试系统与混合架构.assets/img-001.png)"
+    }
+  ]
+}

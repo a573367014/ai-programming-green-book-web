@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Function Calling的本质与角色 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-107">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 6 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Function Calling的本质</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 108</span></div>
+<h1 class="lesson-title">Function Calling的本质与角色</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>8 页原文</span><span>约 9 分钟阅读</span><span class="module-name">Function Calling的本质</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-107.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-107.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节了解了 Function Calling 能让 AI 从&quot;只会说&quot;变成&quot;能做事&quot;。这一节深入它的技术原理——LLM 如何判断该调用哪个函数、怎么提取参数，先从核心概念讲起：LLM 需要解决什么问题、谁在调用函数、三方角色如何分工。</p></aside>
+<h2 id="section-1" data-source-page="1">2.1 LLM需要解决的三个问题<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">让 LLM 调用函数时，它需要解决三个关键问题：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">问题1：我需要调用工具吗？
+- 判断用户的请求是否需要外部工具
+- 示例：
+    &quot;今天天气真好&quot; → 不需要工具（闲聊）
+    &quot;今天天气怎么样？&quot; → 需要工具（查询）
+
+问题2：调用哪个工具？
+- 从可用工具列表中选择合适的
+- 理解每个工具的功能描述
+- 示例：
+    可用工具：[get_weather, send_email, set_reminder]
+    用户：&quot;明天会下雨吗？&quot; → 选择：get_weather
+
+问题3：传什么参数？
+- 从用户输入中提取参数
+- 转换为正确的数据类型
+- 处理缺失的参数
+- 示例：
+    用户：&quot;明天上海天气&quot;
+    提取：city=&quot;上海&quot;, date=&quot;明天&quot;</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-4" data-source-page="3">2.2 不同视角理解Function Calling<a class="heading-link" href="#section-4" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">从AI的角度看</p>
+<p data-source-page="3">Function Calling是一个分类+信息抽取任务：</p>
+<p data-source-page="3">分类+信息抽取</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 步骤1：分类任务
+用户输入 → 判断意图 → [需要工具] or [不需要工具]
+
+# 或者：多分类任务（如果需要工具）
+用户输入 → 判断意图 -&gt; 工具列表 → 选择工具 → [工具A] or [工具B] or [工具C]
+
+# 步骤3：信息抽取任务
+用户输入 + 工具定义 → 提取参数 → {param1: value1, param2: value2}</code></pre></div>
+<p data-source-page="3">从开发者的角度看</p>
+<p data-source-page="3">Function Calling是LLM阅读工具的说明书，然后LLM告诉你该调用哪个：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># ═══════════════════════════════════════
+#  你给LLM一份&quot;工具说明书&quot;
+# ═══════════════════════════════════════
+
+tools = [
+    {
+        &quot;name&quot;: &quot;get_weather&quot;,
+        &quot;description&quot;: &quot;获取指定城市的天气&quot;,  # ← LLM靠这个判断
+        &quot;parameters&quot;: {
+            &quot;city&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;城市名&quot;},
+            &quot;date&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;日期&quot;}
+        }
+    },
+    {
+        &quot;name&quot;: &quot;send_email&quot;,
+        &quot;description&quot;: &quot;发送邮件&quot;,
+        &quot;parameters&quot;: {...}
+    }
+]
+
+# ═══════════════════════════════════════
+#  LLM看完说明书，告诉你调用哪个
+# ═══════════════════════════════════════
+
+用户问：&quot;明天上海天气怎么样？&quot;
+
+# LLM的思考过程：
+# 1. 用户在问天气
+# 2. get_weather的描述是&quot;获取天气&quot; ✓ 匹配
+# 3. send_email是&quot;发送邮件&quot; ✗ 不匹配
+# 4. 决定：调用get_weather
+# 5. 提取参数：city=&quot;上海&quot;, date=&quot;明天&quot;
+
+# LLM输出：
+{
+    &quot;tool&quot;: &quot;get_weather&quot;,
+    &quot;arguments&quot;: {&quot;city&quot;: &quot;上海&quot;, &quot;date&quot;: &quot;明天&quot;}
+}
+
+# ═══════════════════════════════════════
+#  你拿到LLM的决定后，真正执行
+# ═══════════════════════════════════════
+result = get_weather(city=&quot;上海&quot;, date=&quot;明天&quot;)</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">从系统的角度看</p>
+<p data-source-page="5">Function Calling是一个多轮对话流程：</p>
+<p data-source-page="5">多轮对话</p>
+<h2 id="section-15" data-source-page="5">2.3 到底是谁在调用函数<a class="heading-link" href="#section-15" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">一个常见的误解</p>
+<p data-source-page="5">很多人第一次接触Function Calling时，会有这样的误解：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">错误：AI自己调用函数
+用户 → LLM → LLM自己调用天气API ← 不是这样！
+
+1
+2</code></pre></div>
+<p data-source-page="5">这是不对的！ LLM并不会真正执行函数调用。</p>
+<p data-source-page="5">这是不对的！</p>
+<p data-source-page="5">谁才是执行者</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">✓ 正确理解：AI告诉你调用哪个函数，你来执行
+用户 → LLM → LLM说&quot;你去调get_weather&quot;
+      → 你的代码执行get_weather
+      → 你把结果给LLM
+      → LLM生成回答</code></pre></div>
+<p data-source-page="5">归结起来就是三句话：LLM 做决策（判断调用哪个工具、提取参数），代码做执行（真正调用函数），LLM 再做整合（基于结果生成回答）。</p>
+<h2 id="section-24" data-source-page="5">2.4 角色分工<a class="heading-link" href="#section-24" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">LLM的工作</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># LLM只做两件事：
+
+1. 判断：分析用户意图，决定该调用哪个函数
+   用户：&quot;明天上海天气&quot;
+   LLM：需要调用get_weather
+
+2. 抽取：从用户输入中提取参数
+   LLM：city=&quot;上海&quot;, date=&quot;明天&quot;</code></pre></div>
+<p data-source-page="6">代码的工作</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 你的代码负责：
+
+1. 定义有哪些工具可用
+   tools = [{&quot;name&quot;: &quot;get_weather&quot;, ...}]
+
+2. 接收LLM的决定
+   tool_name = response.tool_calls[0].function.name
+   arguments = response.tool_calls[0].function.arguments
+
+3. 真正执行函数调用（重点！）
+   result = get_weather(**arguments)  # ← 这是你调用的！
+
+4. 把结果返回给LLM
+   final_answer = llm.chat(tool_result=result)</code></pre></div>
+<h3 id="section-29" data-source-page="6">为什么这样设计<a class="heading-link" href="#section-29" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">安全性</p>
+<p data-source-page="6">如果LLM能直接调用函数，风险太大：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 危险场景
+def delete_all_data():
+    &quot;&quot;&quot;删除所有数据&quot;&quot;&quot;
+    db.execute(&quot;DROP DATABASE production&quot;)
+
+# 如果LLM误判 → 直接删库 → 灾难！</code></pre></div>
+<p data-source-page="6">交给代码来调用，就有了控制权——加确认机制、做权限检查、记录每次操作日志、遇到危险命令直接拒绝。每一步都有兜底。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">灵活性</p>
+<p data-source-page="7">实际执行还可以根据情况灵活调整：</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># LLM说调用get_weather
+# 但你可以根据情况灵活处理：
+
+if user.is_vip:
+    result = call_premium_weather_api()  # VIP用高级API
+else:
+    result = call_free_weather_api()     # 普通用户用免费API
+
+# 或者加缓存
+if cache.has(city, date):
+    result = cache.get(city, date)  # 命中缓存
+else:
+    result = call_weather_api()     # 真正调用
+    cache.set(city, date, result)   # 保存缓存</code></pre></div>
+<p data-source-page="7">技术限制</p>
+<p data-source-page="7">LLM运行在云端（OpenAI/阿里云的服务器），它的物理位置决定了边界——访问不到本地文件，调用不了内网API，更操作不了数据库和硬件设备。这些它都够不着。</p>
+<p data-source-page="7">这就是为什么叫&quot;Function Calling&quot;而不是&quot;Function Execution&quot;：</p>
+<p class="list-item" data-source-page="7">Calling = 呼叫/请求（LLM的角色）</p>
+<p class="list-item" data-source-page="7">Execution = 执行（你的代码的角色）</p>
+<p data-source-page="7">理解了这一点，后面的内容就清晰多了。</p>
+<h2 id="section-43" data-source-page="7">2.5 ■ 学点英语<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>函数描述</td><td>Function Description</td><td>/ˈfʌŋkʃn dɪˈskrɪpʃn/</td><td>工具定义中的description字段，LLM靠它判断是否调用该工具</td></tr><tr><td>参数提取</td><td>Parameter Extraction</td><td>/pəˈræmɪtər ɪk ˈstrækʃn/</td><td>LLM从用户输入中识别并提取函数参数的子任务</td></tr><tr><td>决策与执行分离</td><td>Decision-Execution Separation</td><td>/dɪˈsɪʒn ɪɡˈzekjuːʃn sepəˈreɪʃn/ ˌ</td><td>LLM做决策、代码做执行的核心架构原则</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-45" data-source-page="8">图片<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">![](107-图文-1-2-Function Calling的本质与角色.assets/img-001.png)</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-106.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>为什么需要Function Calling</strong><small>Function Calling的本质</small></a><a class="chapter-neighbor next" href="lesson-108.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>一次完整的调用流程</strong><small>Function Calling的本质</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5275#mid=104926" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">2.1 LLM需要解决的三个问题</a><a href="#section-4" class="toc-level-2">2.2 不同视角理解Function Calling</a><a href="#section-15" class="toc-level-2">2.3 到底是谁在调用函数</a><a href="#section-24" class="toc-level-2">2.4 角色分工</a><a href="#section-29" class="toc-level-3">为什么这样设计</a><a href="#section-43" class="toc-level-2">2.5 ■ 学点英语</a><a href="#section-45" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-107", "title": "Function Calling的本质与角色", "stage": 3, "week": 6, "module": "Function Calling的本质", "minutes": 9, "pages": 8, "type": "article"}</script>
+</body></html>

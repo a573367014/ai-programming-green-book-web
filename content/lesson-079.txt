@@ -1,0 +1,82 @@
+--- PDF 第 1 页 ---
+1
+来源: https://class.imooc.com/lesson/5263#mid=104988
+阶段: 阶段一: 【认知基石】理解大模型的本质与工作原理
+周: 第3周 语言模型的进阶能力
+模块: Temperature-控制创造力的旋钮
+课节: 图文 1-6 扩展练习（2）
+1-6 扩展练习（2）
+1
+题型: 判断题 难度: 中等
+题干: 当 Top-p 设置为 1.0 时，等价于"不进行任何 Top-p 过滤"，会保留模型的完整概率分布用于采
+样。 (复习题)
+正确答案: 正确
+解析: p=1.0 意味着要求累积概率达到 100%，而所有词的概率和本来就是 1.0，所以所有词都被纳入候
+选集——这等于没有过滤。这也是为什么在实际调用中想"关掉 Top-p 过滤"时，常把它设为 1.0 的原
+因。相应地，p=0.1 则是极端保守，只留最顶端那少数几个词，效果接近贪心解码。理解 p 的两个端
+点，有助于把 Top-p 放在一个连续的"过滤强度轴"上去调参。
+2
+题型: 简答题 难度: 困难
+题干: OpenAI 官方建议"Temperature 和 Top-p 一般只调一个，不建议同时调整"。请从采样机制和工
+程可解释性两个角度，分析这条建议背后的道理。另外，试着举一个例外场景——在什么情况下，同时
+精细调整两者反而是合理的？ (思维题)
+参考答案:
+● 采样机制角度：两者都改变"下一个 Token 的采样概率"。Temperature 先改变分布形状，Top-p 再
+截断尾部。如果两者同时变动，最终采样行为是它们的复合效应，很难从外部观察到"究竟是哪一个参数
+造成了某种输出风格"——这让调参从"单因素实验"退化成"多因素盲调" ● 工程可解释性角度：当线上
+出现输出异常（太发散、太保守、出现乱码词），如果只调一个参数，问题定位简单；如果两者都在
+
+
+--- PDF 第 2 页 ---
+动，排查成本指数级上升——这在生产环境是一种调试灾难 ● 例外场景：当对输出质量有苛刻要求且有
+完整离线评测集时，可以做"参数矩阵扫描"——例如系统 Prompt 固定、对 T × Top-p 的二维网格做交
+叉测试，为每一类业务场景找到最优组合。这种做法只适合有数据闭环、能量化评测的团队 ● 更激进的
+用法是把 Top-p 设得略小（过滤掉长尾垃圾），同时把 Temperature 略大（在"核"内保留创造性），
+让输出同时拥有"不跑飞"和"有新意"两种属性——这是经验工程师的常见套路 ● 核心判断：建议是给新
+手的"避免混乱"原则；例外是给有评测体系的老手的"组合优势"策略。两者并不矛盾
+3
+题型: 阅读理解题 难度: 困难
+题干: Read the following passage and answer the questions below. (延展题)
+阅读材料:
+In 2019, Holtzman, Buys, Du, Forbes and Choi published “The Curious Case of Neural
+Text Degeneration” (ICLR 2020), in which they proposed Nucleus Sampling — the
+decoding strategy now widely known as Top-p. The paper states: “Despite considerable
+advances in neural language modeling, it remains an open question what the best
+decoding strategy is for text generation from a language model… We show that
+maximization-based decoding methods such as beam search lead to degeneration —
+output text that is bland, incoherent, or gets stuck in repetitive loops. To address this
+issue, we propose Nucleus Sampling, a simple but effective method to draw considerably
+higher quality text out of neural language models than previous decoding strategies. Our
+approach avoids text degeneration by truncating the unreliable tail of the probability
+distribution, sampling from the dynamic nucleus of tokens containing the vast majority of
+the probability mass.”
+题目1:
+题型: 单选题
+题干: According to the passage, which of the following best summarizes the central motivation
+for proposing Nucleus Sampling?
+选项A: Maximization-based decoding methods like beam search always produce the most
+diverse and high-quality text. 选项B: Pure random sampling over the full vocabulary is the only
+way to avoid repetition in generated text. 选项C: Maximization-based decoding tends to
+produce bland, incoherent or repetitive text, and a better strategy is to sample from a dynamic
+
+
+--- PDF 第 3 页 ---
+“nucleus” of high-probability tokens while truncating the unreliable low-probability tail. 选项
+D: The best decoding strategy is to train larger models; decoding choices have little effect on
+output quality.
+正确答案: C
+解析: 原文明确提到 beam search 等 maximization-based decoding 会造成 degeneration（退化）
+——“bland, incoherent, or gets stuck in repetitive loops”，而 Nucleus Sampling 的核心思路
+是"truncate the unreliable tail"并从"dynamic nucleus"中采样，选项C 的概括与原文一一对应。选项
+A 直接与原文矛盾；选项B 是极端相反的"纯随机"方向，也不是本文的提案；选项D 把问题甩锅给模型
+规模，与论文聚焦解码策略的定位不符。
+题目2:
+题型: 判断题
+题干: The phrase “dynamic nucleus” in the passage implies that the size of the candidate
+token set adapts to the shape of the probability distribution at each step, rather than being
+fixed in advance.
+解析: “Dynamic nucleus"是 Nucleus Sampling 这个名字的精髓：nucleus（核）的大小不是预先固
+定的 k 个词（那是 Top-k），而是在每一步根据概率分布的形状动态调整——分布尖锐时核小，分布平
+坦时核大。这个特性也正是 Top-p 相较 Top-k 的根本优势：它用"累积概率"这个与分布形状相关的度
+量来定义候选集，而不是用"硬数量”。理解了这一点，也就理解了为什么在遇到"模型不确定的位置"时
+Top-p 能保留更多探索空间、在"模型确定的位置"又能自动收紧。

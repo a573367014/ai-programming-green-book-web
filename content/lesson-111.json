@@ -1,0 +1,707 @@
+{
+  "id": "lesson-111",
+  "title": "为什么需要 MCP",
+  "code": "1-1",
+  "stage": 3,
+  "week": 7,
+  "week_title": "MCP：模型上下文协议",
+  "module": "MCP核心概念",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/002-第7周 MCP：模型上下文协议/004-MCP核心概念/111-图文-1-1-为什么需要 MCP.pdf",
+  "sha256": "852858399551e02cd9d9940586a2a5b024eb77b0a5684775be67b2729589661e",
+  "pdf": "sources/pdf/lesson-111.pdf",
+  "pages": 6,
+  "source_url": "https://class.imooc.com/lesson/5278#mid=104930",
+  "minutes": 9,
+  "excerpt": "本节从工具共享的难题出发，引出 Function Calling 在工具分发方面的局限，再介绍 MCP 如何解决这些问题。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 本节从工具共享的难题出发，引出 Function Calling 在工具分发方面的局限，再介绍 MCP 如何解决这些问题。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "上一章介绍了 Function Calling，让 AI 能够调用工具、执行实际操作。但写完一个工具之后，真正的问题是：怎样让别人也能用上这个工具？",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP（Model Context Protocol） 正是为解决这个问题而生。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.1 工具分享的难题",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "工具孤岛",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设写了一个很好用的文件操作工具，能让 AI 读取、修改、搜索项目文件。现在，想分享给别人用。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统方式：把代码发给对方，对方复制到自己项目里，看懂代码、适配自己的 AI 应用。如果更新了工具，对方还得重新复制一遍。这就像没有 npm 的时代，想用一个 JavaScript 库，只能去 GitHub 下载源码、手动复制到项目里、手动管理版本和依赖。有 npm 后，一行命令就解决：",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "code",
+      "text": "npm install lodash\n\n1",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "bash"
+    },
+    {
+      "kind": "paragraph",
+      "text": "1 install",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI 工具生态需要的是同样的东西。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.2 MCP 的诞生",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "时间线",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2024年11月25日，Anthropic（Claude 的开发公司）发布了一个重要的开源协议：Model Context Protocol（MCP）。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然这是Anthropic公司定义的私有协议，但随后Anthropic将其开源作为一个开放标准，任何人都可以实现，任何模型都可以支持。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "MCP 要解决什么",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP 的核心目标是建立 AI 工具的生态系统，就像 npm 之于 JavaScript、pip 之于 Python。但盯住单一目标还不够——这个生态要能立住，必须同时解决三个环环相扣的问题：工具怎么让所有人复用、权限怎么统一管控、接入方式怎么标准化。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "一个场景，三个痛点",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设要给团队做一个 AI 助手，能查内部文档、查产品数据库、搜最新行业新闻。听起来不复杂——写三个 Function Calling 工具就行。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "第一个工具写完，文件操作跑通了。同事觉得好用，问能不能也装一个。把代码发过去，他折腾了一下午才配好环境。过两天工具更新了一个 bug，又得通知所有人重新下载。三个人的团队尚且如此，三十个人的部门呢？",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "第二个工具连数据库。写完发现权限是个大问题——这个工具能访问所有表，但需求只是查产品表。限制权限的代码散落在几个函数里，改起来提心吊胆，怕一不小心把别的逻辑弄坏。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "第三个工具接搜索 API。这时候老板说，市场部用的 AI 客户端和开发部不是同一个平台——一个用Claude Desktop，一个用 Gemini。工具要写两遍？",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "三个问题不是孤立的。它们指向同一件事：AI 工具缺一个统一的生态底座。MCP 就是在这个背景下诞生的。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "1.3 MCP 如何实现这些目标",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "工具复用：不再各写各的",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现实是每个 AI 应用都在重复造轮子——文件操作自己写一套，数据库查询自己写一套，网络搜索自己写一套。三个应用就是三套重复代码。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP 的做法更像 npm：同一个工具，一个人写好发布，其他人一行命令就能装。不用复制代码、不用配环境、不用操心版本更新。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际效果",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "+-----------------------------+\n| 没有 MCP\n+-----------------------------+\n| 你的 AI 应用 -> 自己写 200行\n| 我的 AI 应用 -> 自己写 200行\n| 他的 AI 应用 -> 自己写 200行\n| 总计：600行重复代码\n+-----------------------------+\n\n          |\n          | MCP Filesystem Server (200行)\n          v\n\n+-----------------------------+\n| 你的 AI 应用 ----+\n| 我的 AI 应用 ----+-> 共享\n| 他的 AI 应用 ----+\n+-----------------------------+\n| 总计：200行，3个应用受益\n+-----------------------------+",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "而且 MCP Server 往往是社区维护的——经过了大量测试，比自己从零写的更可靠。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "统一权限：配置即安全边界",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统 Function Calling 的权限管理藏在代码里。每个工具自己判断该不该给权限，规则散落在各处，不统一也看不见。比如想让文件操作工具只能碰项目目录、别碰个人文件——这个约束写在哪个函数的哪一行里，只有最初写的人知道。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP 把权限控制提到了配置层。启动 Server 时就明确声明它能访问的目录、端口、资源范围——在mcpServers 配置里白纸黑字写清楚，随时查看、随时修改。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "code",
+      "text": "{\n  \"mcpServers\": {\n    \"filesystem\": {\n      \"command\": \"npx\",\n      \"args\": [\n        \"-y\",\n        \"@modelcontextprotocol/server-filesystem\",\n        \"/Users/username/Projects/my-app\"  // 只能访问这个目录\n      ]\n    }\n  }\n}",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "json"
+    },
+    {
+      "kind": "paragraph",
+      "text": "文件操作 Server 被限制在 /Users/username/Projects/my-app，其他地方碰不到。权限不再是散落在代码里的零散判断，而是一份可审计的配置。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h3",
+      "text": "标准接入：一个协议通吃",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设要开发一个 AI 助手，需要文件操作、数据库查询、网络搜索、GitHub 集成。没有 MCP 的话，得分别对接四套 SDK、四种认证方式、四种错误处理逻辑——每加一种能力就多一层复杂度。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP 定义了一套统一的 Client-Server 协议。接入新工具不挑语言、不挑平台，只需要一行命令：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "npm install -g @modelcontextprotocol/server-filesystem\nnpm install -g @modelcontextprotocol/server-postgres\nnpm install -g @modelcontextprotocol/server-brave-search\nnpm install -g @modelcontextprotocol/server-github",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "bash"
+    },
+    {
+      "kind": "paragraph",
+      "text": "四种能力、同一套通信协议、相同的调用方式。AI 应用只需要实现一个 MCP Client，剩下的能力通过Server 生态按需扩展——不再需要为每个新工具单独写集成代码。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "1.4 MCP 的另一面",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP 虽然号称开放标准，但 SDK 和官方文档里到处都是 Claude 的痕迹。这不是巧合。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP 是由 Anthropic（Claude 的开发公司）在 2024 年 11 月发布的。严格来说：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "+--------------------------------+\n| [v] 开放（代码公开、文档公开）\n| [v] 标准（有明确的协议规范）\n| [x] 但不中立（Anthropic 主导）\n+--------------------------------+",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "对比",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统的开放标准（如 HTTP、JSON）由中立组织（W3C、IETF）制定，多方参与，商业中立。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但 MCP 更像这些标准：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "+----------------------------------------+\n| TypeScript：微软创造，开源但微软主导\n| Kubernetes：Google 创造，CNCF 管理\n| Rust：Mozilla 创造，Foundation 管理\n+----------------------------------------+",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "MCP 目前的情况是 Anthropic 主导，虽然完全开源。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么会这样？这反映了 MCP 的诞生背景：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "+--------------------------------+\n| MCP 的设计初衷是为 Claude 赋能\n|     |\n|     v\n| 发现这个能力是通用的\n|     |\n|     v\n| 开源成开放标准\n|     |\n|     v\n| 但保留了 Claude 特有特性\n+--------------------------------+",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "比如，MCP 中的某些枚举值（如 tool_use 的 stop_reason）直接来自 Claude 的 API 设计。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.5 下一节预告",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解了为什么需要 MCP。下一节会系统拆解 MCP 的核心概念和整体架构，并和传统的 Function Calling 进行对比。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "1.6 ■ 学点英语",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n模型上下文协议 | Model Context Protocol (MCP) | /ˈmɑːdl ˈkɑːntekst ˈproʊtəkɑːl/ | 统一AI应用与外部工具交互的标准化协议\n工具孤岛 | Tool Isolation | /tuːl aɪsəˈleɪʃn/ ˌ | 工具与应用高度耦合，无法在多个AI应用间共享的问题\n标准化协议 | Standardized Protocol | /ˈstændərdaɪzd ˈproʊtəkɑːl/ | 定义统一规范使不同组件可互操作的协议标准\n语言服务器协议 | Language Server Protocol (LSP) | /ˈlæŋɡwɪdʒ ˈsɜːrvər ˈproʊtəkɑːl/ | 标准化编辑器与语言服务之间通信的协议，MCP的灵感来源",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "模型上下文协议",
+          "Model Context Protocol (MCP)",
+          "/ˈmɑːdl ˈkɑːntekst ˈproʊtəkɑːl/",
+          "统一AI应用与外部工具交互的标准化协议"
+        ],
+        [
+          "工具孤岛",
+          "Tool Isolation",
+          "/tuːl aɪsəˈleɪʃn/ ˌ",
+          "工具与应用高度耦合，无法在多个AI应用间共享的问题"
+        ],
+        [
+          "标准化协议",
+          "Standardized Protocol",
+          "/ˈstændərdaɪzd ˈproʊtəkɑːl/",
+          "定义统一规范使不同组件可互操作的协议标准"
+        ],
+        [
+          "语言服务器协议",
+          "Language Server Protocol (LSP)",
+          "/ˈlæŋɡwɪdʒ ˈsɜːrvər ˈproʊtəkɑːl/",
+          "标准化编辑器与语言服务之间通信的协议，MCP的灵感来源"
+        ]
+      ],
+      "page": 6
+    }
+  ],
+  "accounting": {
+    "source_chars": 4014,
+    "represented_chars": 3845,
+    "removed_chars": 169,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 139,
+      "repeated_title": 30
+    }
+  },
+  "videos": [],
+  "order": 112,
+  "headings": [
+    {
+      "title": "1.1 工具分享的难题",
+      "id": "section-3",
+      "level": 2
+    },
+    {
+      "title": "1.2 MCP 的诞生",
+      "id": "section-10",
+      "level": 2
+    },
+    {
+      "title": "MCP 要解决什么",
+      "id": "section-14",
+      "level": 3
+    },
+    {
+      "title": "一个场景，三个痛点",
+      "id": "section-16",
+      "level": 3
+    },
+    {
+      "title": "1.3 MCP 如何实现这些目标",
+      "id": "section-22",
+      "level": 2
+    },
+    {
+      "title": "工具复用：不再各写各的",
+      "id": "section-23",
+      "level": 3
+    },
+    {
+      "title": "统一权限：配置即安全边界",
+      "id": "section-29",
+      "level": 3
+    },
+    {
+      "title": "标准接入：一个协议通吃",
+      "id": "section-34",
+      "level": 3
+    },
+    {
+      "title": "1.4 MCP 的另一面",
+      "id": "section-39",
+      "level": 2
+    },
+    {
+      "title": "1.5 下一节预告",
+      "id": "section-51",
+      "level": 2
+    },
+    {
+      "title": "1.6 ■ 学点英语",
+      "id": "section-53",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "本节从工具共享的难题出发，引出 Function Calling 在工具分发方面的局限，再介绍 MCP 如何解决这些问题。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "上一章介绍了 Function Calling，让 AI 能够调用工具、执行实际操作。但写完一个工具之后，真正的问题是：怎样让别人也能用上这个工具？"
+    },
+    {
+      "anchor": "article-start",
+      "text": "MCP（Model Context Protocol） 正是为解决这个问题而生。"
+    },
+    {
+      "anchor": "section-3",
+      "text": "1.1 工具分享的难题"
+    },
+    {
+      "anchor": "section-3",
+      "text": "工具孤岛"
+    },
+    {
+      "anchor": "section-3",
+      "text": "假设写了一个很好用的文件操作工具，能让 AI 读取、修改、搜索项目文件。现在，想分享给别人用。"
+    },
+    {
+      "anchor": "section-3",
+      "text": "传统方式：把代码发给对方，对方复制到自己项目里，看懂代码、适配自己的 AI 应用。如果更新了工具，对方还得重新复制一遍。这就像没有 npm 的时代，想用一个 JavaScript 库，只能去 GitHub 下载源码、手动复制到项目里、手动管理版本和依赖。有 npm 后，一行命令就解决："
+    },
+    {
+      "anchor": "section-3",
+      "text": "npm install lodash\n\n1"
+    },
+    {
+      "anchor": "section-3",
+      "text": "1 install"
+    },
+    {
+      "anchor": "section-3",
+      "text": "AI 工具生态需要的是同样的东西。"
+    },
+    {
+      "anchor": "section-10",
+      "text": "1.2 MCP 的诞生"
+    },
+    {
+      "anchor": "section-10",
+      "text": "时间线"
+    },
+    {
+      "anchor": "section-10",
+      "text": "2024年11月25日，Anthropic（Claude 的开发公司）发布了一个重要的开源协议：Model Context Protocol（MCP）。"
+    },
+    {
+      "anchor": "section-10",
+      "text": "虽然这是Anthropic公司定义的私有协议，但随后Anthropic将其开源作为一个开放标准，任何人都可以实现，任何模型都可以支持。"
+    },
+    {
+      "anchor": "section-14",
+      "text": "MCP 要解决什么"
+    },
+    {
+      "anchor": "section-14",
+      "text": "MCP 的核心目标是建立 AI 工具的生态系统，就像 npm 之于 JavaScript、pip 之于 Python。但盯住单一目标还不够——这个生态要能立住，必须同时解决三个环环相扣的问题：工具怎么让所有人复用、权限怎么统一管控、接入方式怎么标准化。"
+    },
+    {
+      "anchor": "section-16",
+      "text": "一个场景，三个痛点"
+    },
+    {
+      "anchor": "section-16",
+      "text": "假设要给团队做一个 AI 助手，能查内部文档、查产品数据库、搜最新行业新闻。听起来不复杂——写三个 Function Calling 工具就行。"
+    },
+    {
+      "anchor": "section-16",
+      "text": "第一个工具写完，文件操作跑通了。同事觉得好用，问能不能也装一个。把代码发过去，他折腾了一下午才配好环境。过两天工具更新了一个 bug，又得通知所有人重新下载。三个人的团队尚且如此，三十个人的部门呢？"
+    },
+    {
+      "anchor": "section-16",
+      "text": "第二个工具连数据库。写完发现权限是个大问题——这个工具能访问所有表，但需求只是查产品表。限制权限的代码散落在几个函数里，改起来提心吊胆，怕一不小心把别的逻辑弄坏。"
+    },
+    {
+      "anchor": "section-16",
+      "text": "第三个工具接搜索 API。这时候老板说，市场部用的 AI 客户端和开发部不是同一个平台——一个用Claude Desktop，一个用 Gemini。工具要写两遍？"
+    },
+    {
+      "anchor": "section-16",
+      "text": "三个问题不是孤立的。它们指向同一件事：AI 工具缺一个统一的生态底座。MCP 就是在这个背景下诞生的。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "1.3 MCP 如何实现这些目标"
+    },
+    {
+      "anchor": "section-23",
+      "text": "工具复用：不再各写各的"
+    },
+    {
+      "anchor": "section-23",
+      "text": "现实是每个 AI 应用都在重复造轮子——文件操作自己写一套，数据库查询自己写一套，网络搜索自己写一套。三个应用就是三套重复代码。"
+    },
+    {
+      "anchor": "section-23",
+      "text": "MCP 的做法更像 npm：同一个工具，一个人写好发布，其他人一行命令就能装。不用复制代码、不用配环境、不用操心版本更新。"
+    },
+    {
+      "anchor": "section-23",
+      "text": "实际效果"
+    },
+    {
+      "anchor": "section-23",
+      "text": "+-----------------------------+\n| 没有 MCP\n+-----------------------------+\n| 你的 AI 应用 -> 自己写 200行\n| 我的 AI 应用 -> 自己写 200行\n| 他的 AI 应用 -> 自己写 200行\n| 总计：600行重复代码\n+-----------------------------+\n\n          |\n          | MCP Filesystem Server (200行)\n          v\n\n+-----------------------------+\n| 你的 AI 应用 ----+\n| 我的 AI 应用 ----+-> 共享\n| 他的 AI 应用 ----+\n+-----------------------------+\n| 总计：200行，3个应用受益\n+-----------------------------+"
+    },
+    {
+      "anchor": "section-23",
+      "text": "而且 MCP Server 往往是社区维护的——经过了大量测试，比自己从零写的更可靠。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "统一权限：配置即安全边界"
+    },
+    {
+      "anchor": "section-29",
+      "text": "传统 Function Calling 的权限管理藏在代码里。每个工具自己判断该不该给权限，规则散落在各处，不统一也看不见。比如想让文件操作工具只能碰项目目录、别碰个人文件——这个约束写在哪个函数的哪一行里，只有最初写的人知道。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "MCP 把权限控制提到了配置层。启动 Server 时就明确声明它能访问的目录、端口、资源范围——在mcpServers 配置里白纸黑字写清楚，随时查看、随时修改。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "{\n  \"mcpServers\": {\n    \"filesystem\": {\n      \"command\": \"npx\",\n      \"args\": [\n        \"-y\",\n        \"@modelcontextprotocol/server-filesystem\",\n        \"/Users/username/Projects/my-app\"  // 只能访问这个目录\n      ]\n    }\n  }\n}"
+    },
+    {
+      "anchor": "section-29",
+      "text": "文件操作 Server 被限制在 /Users/username/Projects/my-app，其他地方碰不到。权限不再是散落在代码里的零散判断，而是一份可审计的配置。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "标准接入：一个协议通吃"
+    },
+    {
+      "anchor": "section-34",
+      "text": "假设要开发一个 AI 助手，需要文件操作、数据库查询、网络搜索、GitHub 集成。没有 MCP 的话，得分别对接四套 SDK、四种认证方式、四种错误处理逻辑——每加一种能力就多一层复杂度。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "MCP 定义了一套统一的 Client-Server 协议。接入新工具不挑语言、不挑平台，只需要一行命令："
+    },
+    {
+      "anchor": "section-34",
+      "text": "npm install -g @modelcontextprotocol/server-filesystem\nnpm install -g @modelcontextprotocol/server-postgres\nnpm install -g @modelcontextprotocol/server-brave-search\nnpm install -g @modelcontextprotocol/server-github"
+    },
+    {
+      "anchor": "section-34",
+      "text": "四种能力、同一套通信协议、相同的调用方式。AI 应用只需要实现一个 MCP Client，剩下的能力通过Server 生态按需扩展——不再需要为每个新工具单独写集成代码。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "1.4 MCP 的另一面"
+    },
+    {
+      "anchor": "section-39",
+      "text": "MCP 虽然号称开放标准，但 SDK 和官方文档里到处都是 Claude 的痕迹。这不是巧合。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "MCP 是由 Anthropic（Claude 的开发公司）在 2024 年 11 月发布的。严格来说："
+    },
+    {
+      "anchor": "section-39",
+      "text": "+--------------------------------+\n| [v] 开放（代码公开、文档公开）\n| [v] 标准（有明确的协议规范）\n| [x] 但不中立（Anthropic 主导）\n+--------------------------------+"
+    },
+    {
+      "anchor": "section-39",
+      "text": "对比"
+    },
+    {
+      "anchor": "section-39",
+      "text": "传统的开放标准（如 HTTP、JSON）由中立组织（W3C、IETF）制定，多方参与，商业中立。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "但 MCP 更像这些标准："
+    },
+    {
+      "anchor": "section-39",
+      "text": "+----------------------------------------+\n| TypeScript：微软创造，开源但微软主导\n| Kubernetes：Google 创造，CNCF 管理\n| Rust：Mozilla 创造，Foundation 管理\n+----------------------------------------+"
+    },
+    {
+      "anchor": "section-39",
+      "text": "MCP 目前的情况是 Anthropic 主导，虽然完全开源。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "为什么会这样？这反映了 MCP 的诞生背景："
+    },
+    {
+      "anchor": "section-39",
+      "text": "+--------------------------------+\n| MCP 的设计初衷是为 Claude 赋能\n|     |\n|     v\n| 发现这个能力是通用的\n|     |\n|     v\n| 开源成开放标准\n|     |\n|     v\n| 但保留了 Claude 特有特性\n+--------------------------------+"
+    },
+    {
+      "anchor": "section-39",
+      "text": "比如，MCP 中的某些枚举值（如 tool_use 的 stop_reason）直接来自 Claude 的 API 设计。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "1.5 下一节预告"
+    },
+    {
+      "anchor": "section-51",
+      "text": "理解了为什么需要 MCP。下一节会系统拆解 MCP 的核心概念和整体架构，并和传统的 Function Calling 进行对比。"
+    },
+    {
+      "anchor": "section-53",
+      "text": "1.6 ■ 学点英语"
+    },
+    {
+      "anchor": "section-53",
+      "text": "中文 | English | 音标 | 说明\n模型上下文协议 | Model Context Protocol (MCP) | /ˈmɑːdl ˈkɑːntekst ˈproʊtəkɑːl/ | 统一AI应用与外部工具交互的标准化协议\n工具孤岛 | Tool Isolation | /tuːl aɪsəˈleɪʃn/ ˌ | 工具与应用高度耦合，无法在多个AI应用间共享的问题\n标准化协议 | Standardized Protocol | /ˈstændərdaɪzd ˈproʊtəkɑːl/ | 定义统一规范使不同组件可互操作的协议标准\n语言服务器协议 | Language Server Protocol (LSP) | /ˈlæŋɡwɪdʒ ˈsɜːrvər ˈproʊtəkɑːl/ | 标准化编辑器与语言服务之间通信的协议，MCP的灵感来源"
+    }
+  ]
+}

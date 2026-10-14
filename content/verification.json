@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-14",
+  "status": "passed",
+  "documents": 159,
+  "source_pdf_pages": 956,
+  "videos": 3,
+  "reading_pages": 160,
+  "source_files_sha256_verified": 162,
+  "all_local_links_and_search_anchors_valid": true,
+  "all_text_spans_accounted": true,
+  "responsive_browser_check": {
+    "pages": 160,
+    "viewport_width": 390,
+    "failures": []
+  },
+  "functional_checks": [
+    "file:// offline full-text search",
+    "cross-page bookmarks and reading history",
+    "code highlighting, copy and wrapping",
+    "font size and focus mode",
+    "light and dark themes",
+    "image zoom dialog",
+    "original answer disclosure",
+    "reading marker persistence and resume position",
+    "all three video files decode and load",
+    "local HTTP preview"
+  ],
+  "video_durations_seconds": [
+    363.36,
+    463.033333,
+    1522.633333
+  ]
+}

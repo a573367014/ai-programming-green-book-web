@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>接口：Agent 落地的真正瓶颈 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-159">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-7">持续扩展</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 13 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Loop Engineering</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 160</span></div>
+<h1 class="lesson-title">接口：Agent 落地的真正瓶颈</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>4 页原文</span><span>约 5 分钟阅读</span><span class="module-name">Loop Engineering</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-159.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-159.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前两节我们讲了 Loop Engineering 的理念和构件。但有一个问题一直没展开：Agent 再能干，也得碰得到目标系统才行。这一节我们来讨论 Agent 落地中最实际、也最容易被忽视的一个瓶颈——接口。你设计再完美的 Loop，如果目标系统没有开放接口，Agent 就是没有手和脚的人。</p></aside>
+<h2 id="section-1" data-source-page="1">3.1 两种态度，两种误区<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">我观察到一个很有意思的现象。大多数人对 Agent 的能力，要么过于低估，要么过于高估。</p>
+<p data-source-page="1">低估派的做法是：明明可以让 Agent 做的事，非要自己动手。项目里来了一个新 issue，需要分析影响范围，这类人会花 5 分钟自己看代码，而不是想到让 Agent 去做。</p>
+<p data-source-page="1">“这个太复杂了，Agent 做不了。”结果是 Agent 闲着，人类在干 Agent 该干的活。</p>
+<p data-source-page="1">高估派正好相反：觉得 Agent 什么都能干。比如有人想让 Agent 帮他在麦当劳点一份薯条——Agent连麦当劳的系统都进不去，怎么办？没有接口，Agent 就是废物。</p>
+<h2 id="section-6" data-source-page="1">3.2 以麦当劳点餐为例<a class="heading-link" href="#section-6" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">用麦当劳来理解。</p>
+<p data-source-page="1">假设你饿了，想让 Agent 帮你点一份麦辣鸡腿堡套餐。Agent 要做什么？</p>
+<p data-source-page="1">1. 打开麦当劳的点单系统</p>
+<p data-source-page="1">2. 浏览菜单</p>
+<p data-source-page="1">3. 选择套餐并下单</p>
+<p data-source-page="1">4. 支付</p>
+<p data-source-page="1">5. 选择取餐方式</p>
+<p data-source-page="1">每一步对人类来说都很简单，但对 Agent 来说，第一步就卡住了——它怎么“打开麦当劳的点单系统”？</p>
+<p data-source-page="1">如果麦当劳没有开放任何可编程接口，Agent 就只能用浏览器模拟点击，或者用手机模拟操作。这两种方式既不稳定，也无法实现流程的下单。结果就是——还不如你自己来操作。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">要让 Agent 完成流畅的下单，必须是麦当劳提供标准的、适配的接口。这个机器接口我们以前大多数是 RESTful API，现在则是通过 CLI 或者 MCP 来提供。</p>
+<p data-source-page="2">但麦当劳其实提供的有 MCP 接口和 CLI 工具。有了这些，Agent 就能轻松完成——“帮我点一份麦辣鸡腿堡套餐，大份薯条，可乐去冰”。</p>
+<p data-source-page="2">这个例子看起来有点玩笑，但它揭示了一个严肃的问题：很多 ToB 的技术性企业，接口开放程度还不如服务业的麦当劳。</p>
+<h2 id="section-19" data-source-page="2">3.3 企业落地为什么难<a class="heading-link" href="#section-19" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">我在和很多企业交流时发现，Agent 落地的最大障碍不是模型能力不够，不是 Prompt 写不好，而是——企业系统没有接口，或者接口不适合 Agent 调用。</p>
+<p data-source-page="2">常见场景：</p>
+<h2 id="section-22" data-source-page="2">•<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">你想让 Agent 自动处理客户退款，但退款系统只有 Web 界面，没有 API</p>
+<h2 id="section-24" data-source-page="2">•<a class="heading-link" href="#section-24" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">你想让 Agent 每天自动生成销售报表，但数据仓库只支持手动导出</p>
+<h2 id="section-26" data-source-page="2">•<a class="heading-link" href="#section-26" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">你想让 Agent 帮你审批流程，但 OA 系统没有开放审批接口</p>
+<p data-source-page="2">这些问题不是 Agent 能力的问题，是企业基础设施的问题。你让 Agent 去调用一个不存在的接口，就像让一个没有手的人去搬东西，纯搞笑。</p>
+<p data-source-page="2">所以企业 Agent 化的第一步，不是写 Prompt，不是设计 Loop，而是：把接口开放给 Agent。</p>
+<h2 id="section-30" data-source-page="2">3.4 什么接口适合 Agent<a class="heading-link" href="#section-30" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">我在 Hermes 课程里讨论 Shell Engineering 时反复强调，目前来说 CLI + Skill 是最适合 Agent 的接口形式。原因有三：</p>
+<p data-source-page="2">第一，CLI 是结构化的。 每个命令、每个参数都有明确的定义，Agent 不需要猜测怎么调用。</p>
+<p data-source-page="2">第二，CLI 可以组合。 多个 CLI 命令可以串成一条流水线——先查库存，再下单，最后发通知——Agent 可以轻松完成。</p>
+<p data-source-page="2">第三，CLI 不依赖图形界面。 没有验证码，没有 CSS 选择器，没有渲染问题，纯粹的逻辑调用。</p>
+<p data-source-page="2">相比之下：</p>
+<h2 id="section-36" data-source-page="2">•<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">RESTful API 需要 Agent 自己处理认证、拼接 URL、解析响应，出错概率更高</p>
+<h2 id="section-38" data-source-page="2">•<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">MCP 是一种不错的补充，但过于复杂</p>
+<h2 id="section-40" data-source-page="2">•<a class="heading-link" href="#section-40" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">浏览器自动化 是最不推荐的方式，脆弱、不稳定、容易被封</p>
+<p data-source-page="2">所以我的建议是：优先把企业接口封装成 CLI。 如果某个系统已经有 CLI，直接给 Agent 用。如果没有，把它封装成一个 CLI 工具。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-43" data-source-page="3">3.5 小结<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">这一节的核心观点很简单：</p>
+<h2 id="section-45" data-source-page="3">•<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">别低估 Agent——能用 Agent 做的，就别自己动手</p>
+<h2 id="section-47" data-source-page="3">•<a class="heading-link" href="#section-47" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">别高估 Agent——没有接口，Agent 就是废物</p>
+<h2 id="section-49" data-source-page="3">•<a class="heading-link" href="#section-49" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">企业 Agent 化的第一步是开放接口——CLI 优先，MCP 和 API 做补充</p>
+<h2 id="section-51" data-source-page="3">•<a class="heading-link" href="#section-51" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">没有接口就造一个——在外面包一层 CLI，比等系统重构快得多</p>
+<p data-source-page="3">回到最开始的问题：你的 Agent 能不能帮你点麦当劳？答案取决于麦当劳有没有开放接口。如果开放了，Agent 可以；如果没开放，你再怎么设计 Loop 也没用。</p>
+<p data-source-page="3">接口，才是 Agent 落地的第一道坎。</p>
+<h2 id="section-55" data-source-page="3">3.6 ■ 学点英语<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h2>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<figure data-source-page="4"><button class="figure-open" aria-label="放大查看第 4 页图示"><img src="../assets/figures/f30b3dee6af8b1cfde6f2658e616e31b.png" width="898" height="1256" loading="lazy" alt="接口：Agent 落地的真正瓶颈 · 原 PDF 第 4 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-158.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Loop Engineering：积木、文件与工具</strong><small>Loop Engineering</small></a><a class="chapter-neighbor" href="../index.html"><span>返回全书概览</span><strong>继续探索学习目录</strong></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">3.1 两种态度，两种误区</a><a href="#section-6" class="toc-level-2">3.2 以麦当劳点餐为例</a><a href="#section-19" class="toc-level-2">3.3 企业落地为什么难</a><a href="#section-22" class="toc-level-2">•</a><a href="#section-24" class="toc-level-2">•</a><a href="#section-26" class="toc-level-2">•</a><a href="#section-30" class="toc-level-2">3.4 什么接口适合 Agent</a><a href="#section-36" class="toc-level-2">•</a><a href="#section-38" class="toc-level-2">•</a><a href="#section-40" class="toc-level-2">•</a><a href="#section-43" class="toc-level-2">3.5 小结</a><a href="#section-45" class="toc-level-2">•</a><a href="#section-47" class="toc-level-2">•</a><a href="#section-49" class="toc-level-2">•</a><a href="#section-51" class="toc-level-2">•</a><a href="#section-55" class="toc-level-2">3.6 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-159", "title": "接口：Agent 落地的真正瓶颈", "stage": 7, "week": 13, "module": "Loop Engineering", "minutes": 5, "pages": 4, "type": "article"}</script>
+</body></html>

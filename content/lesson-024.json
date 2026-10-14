@@ -1,0 +1,757 @@
+{
+  "id": "lesson-024",
+  "title": "语言模型（三）-语言模型的演进",
+  "code": "1-5",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "语言模型",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/004-语言模型/024-图文-1-5-语言模型（三）-语言模型的演进.pdf",
+  "sha256": "10ba864c73aba283dd8e40b2a797bb405419491c3f9a145b8ccb036407741694",
+  "pdf": "sources/pdf/lesson-024.pdf",
+  "pages": 5,
+  "source_url": "https://class.imooc.com/lesson/5255#mid=104879",
+  "minutes": 8,
+  "excerpt": "上一节，我们了解了语言模型的规律是从数据中学出来的。语言模型是怎么一步步发展到现在这种程度的？早期模型也能学到规律吗？ 本节将回顾语言模型的三代演进史，看它如何从只能记住3个词，进化到能理解整本书。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节，我们了解了语言模型的规律是从数据中学出来的。语言模型是怎么一步步发展到现在这种程度的？早期模型也能学到规律吗？ 本节将回顾语言模型的三代演进史，看它如何从只能记住3个词，进化到能理解整本书。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "10.1 第一代：N-gram模型（1990年代-2000年代）",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "最早的语言模型很\"笨\"：它只看前面几个词。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "比如，一个\"2-gram\"（bigram）模型：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "𝑃 ( 𝑤 2 ∣ 𝑤 1 ) = count ( 𝑤 1 , 𝑤 2 ) count ( 𝑤 1 ) P(w 2  ∣w 1  )= count(w 1  ) count(w 1  ,w 2  ) ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "w1",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "w2",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个公式的意思是：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "分子：在训练数据中，\"很好\"这个组合出现了多少次",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "分母：在训练数据中，\"很\"这个字出现了多少次",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "结果：\"很\"后面跟\"好\"的概率",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "举个具体例子，如果训练数据中：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "\"很\"出现了1000次 \"很好\"出现了350次",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "那么：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "𝑃 ( 𝑤 2 ∣ 𝑤 1 ) = 3 5 0 1 0 0 0 = 0 . 3 5 = 3 5 % P(w 2  ∣w 1  )= 1000 350  =0.35=35%",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但这是有问题的。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象一个句子：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“雨停了，太阳穿过云层撒在湿漉漉的街道上。小女孩蹲下来，仔细看着水洼里的____”",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "要预测下一个词，需要知道“水洼”和前面的“雨停了”有关。但“雨停了”在十几个词之前！一个只看前2-3个词的模型，根本记不住这么远。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "就像一个记忆只有3秒的人，无法理解复杂的对话。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "10.2 第二代：RNN/LSTM模型（2010年代早期）",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "循环神经网络（RNN）试图解决这个问题：用一个“隐藏状态”来记忆历史信息。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "RNN的核心思想",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象一个人在读一篇文章，边读边做笔记：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "读第1个词 → 在笔记本写下要点 → 记忆状态₁ 读第2个词 → 结合记忆状态₁ → 更新笔记 → 记忆状态₂ 读第3个词 → 结合记忆状态₂ → 更新笔记 → 记忆状态₃ …",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "每个词都在前一个记忆的基础上更新，理论上能记住整个历史。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "信息衰减问题",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理论上，RNN可以记住整个历史。但实际上，信息在传递过程中会衰减，就像传话游戏：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "第1个人：“明天早上8点在学校门口集合，带上雨伞和水壶” 第2个人：“明天早上8点在校门口集合，带雨伞和水壶” ← 丢了“学校” 第3个人：“明天早上8点在校门集合，带雨伞” ← 丢了“水壶” 第10个人：“明天见” ← 几乎所有细节都没了",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为每经过一层，信息都要乘以一个小于1的系数（比如0.9）： 0 . 9 1 0 ≈ 0 . 3 5 0.9 10 ≈0.35 0 . 9 1 0 0 ≈ 0 . 0 0 0 0 3 0.9 100 ≈0.00003",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "传到后面，信息几乎就消失殆尽了。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "LSTM的改进",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为了解决这个问题，研究者发明了LSTM（长短期记忆网络），增加了“遗忘门”、“输入门”、“输出门”。就像一个智能笔记本：遗忘门决定哪些旧信息可以忘掉，输入门决定哪些新信息值得记住，输出门决定当前应该关注什么。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "效果是能记住更长的历史，从10-20个词提升到100-200个词。但即使是LSTM，在真正的长文本（数千个词）面前，仍然力不从心。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "就像一个记忆只有20分钟的人，只能看懂一部动漫，却无法理解一部两小时的电影。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "10.3 第三代：Transformer模型（2017年至今）",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "从“传话”到“群聊”",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2017年，Transformer横空出世。它用Self-Attention机制，彻底解决了长程依赖问题。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Transformer不再像以前的模型依赖“传话”的模式，它革命性地把“传话”模式改为了“群聊”：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "10个人在一个微信群里： 小明在群里说：“明天下午3点在图书馆见，记得带笔记本” ↓ 所有人都能直接看到 小红、小李、小王、…、小张：都能直接看到完整消息！ 每个人想回复时，可以直接看到小明说了什么，可以看到所有人的发言。信息不会丢失，每个人都有完整的上下文。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "更进一步，Transformer不仅让所有词互相“看到”，还能让每个词智能地“关注”重点：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "句子：“昨天我在公园里遇到了多年未见的老朋友张三，他现在在上海工作，他很开心” 当处理最后的“他”时：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "list",
+      "text": "RNN：只能依稀记得前面提到过“张三”",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Transformer：能直接“看到”整个句子，并且智能地把注意力集中在“张三”上",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "注意力分配（简化示意）：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "┌────────────────────────────\n│ \"他\"对各个词的注意力权重：\n├────────────────────────────\n│ 昨天：    2%  ← 不太相关\n│ 公园：    1%\n│ 老朋友：  8%\n│ 张三：   70%  ← 高度相关！\n│ 上海：    5%\n│ 工作：   10%\n│ 很：      2%\n│ 开心：    2%\n└────────────────────────────",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "Self-Attention的优势",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "list",
+      "text": "无损传递：任何两个词之间都是直接连接，不需要经过中间层。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "智能筛选：自动计算哪些词重要，把注意力放在关键位置。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "并行计算：所有词可以同时处理，速度快。无限长度（理论上）：不管句子多长，每个词都能“看到”所有其他词。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "回到刚才的例子：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“昨天我在公园里遇到了多年未见的老朋友张三，他看起来很开心，现在在上海工作，他______”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Transformer在预测最后的空白时，可以直接“注意到”“张三”这个名字（指代消解），直接“注意到”“很开心”这个情绪词（情感理解），直接“注意到”“上海工作”（上下文信息）。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "所以它能准确预测：“很满意现在的生活”、“经常回来看看”等合理的续写。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT就是基于Transformer的语言模型。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这也是为什么ChatGPT能够理解长篇幅的上下文（GPT-4支持128,000个token），在对话中记住之前说过的内容，处理复杂的逻辑推理，准确理解指代关系。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为它站在了三代语言模型演进的肩膀上，用Transformer彻底解决了RNN时代的“遗忘”问题。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从传话游戏到群聊，这不仅是技术的进步，更是范式的革命。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "10.4 ■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\nN元模型 | N-gram Model | /ˈen græm ˈmɒdl/ | 基于前n-1个词预测第n个词的统计模型，上下文窗口固定\n循环神经网络 | Recurrent Neural Network (RNN) | /rɪˈkɜːrənt ˈnjʊərəl ˈnetwɜːk/ | 通过链式结构按顺序处理序列的网络，越长越容易遗忘\n长短期记忆网络 | Long Short-Term Memory (LSTM) | /lɒŋ ʃɔːt tɜːm ˈmeməri/ | 引入门控机制缓解信息衰减的改进型RNN\n注意力机制 | Attention Mechanism | /əˈtenʃən ˈmekənɪzəm/ | 让模型在处理序列时动态关注不同位置相关信息的机制\n自注意力机制 | Self-Attention | /self əˈtenʃən/ | 让序列中每个元素直接与所有其他元素交互的机制，Transformer的核心\n缩放点积注意力 | Scaled Dot-Product Attention | /skeɪld dɒt ˈprɒdʌkt ə ˈtenʃən/ | Transformer中计算注意力权重的方式，通过Query 和Key的兼容性决定Value的加权权重\n梯度消失 | Vanishing Gradient | /ˈvænɪʃɪŋ ˈɡreɪdiənt/ | 深层网络中梯度随层数增加指数衰减导致早期层无法有效学习的现象\n上下文窗口 | Context Window | /ˈkɒntekst ˈwɪndəʊ/ | 模型在预测下一个Token时能参考的最大Token数量范围\nTransform er架构 | Transformer | /trænsˈfɔːrmər/ | 基于Self-Attention的架构，支持并行计算和长距离依赖建模",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "N元模型",
+          "N-gram Model",
+          "/ˈen græm ˈmɒdl/",
+          "基于前n-1个词预测第n个词的统计模型，上下文窗口固定"
+        ],
+        [
+          "循环神经网络",
+          "Recurrent Neural Network (RNN)",
+          "/rɪˈkɜːrənt ˈnjʊərəl ˈnetwɜːk/",
+          "通过链式结构按顺序处理序列的网络，越长越容易遗忘"
+        ],
+        [
+          "长短期记忆网络",
+          "Long Short-Term Memory (LSTM)",
+          "/lɒŋ ʃɔːt tɜːm ˈmeməri/",
+          "引入门控机制缓解信息衰减的改进型RNN"
+        ],
+        [
+          "注意力机制",
+          "Attention Mechanism",
+          "/əˈtenʃən ˈmekənɪzəm/",
+          "让模型在处理序列时动态关注不同位置相关信息的机制"
+        ],
+        [
+          "自注意力机制",
+          "Self-Attention",
+          "/self əˈtenʃən/",
+          "让序列中每个元素直接与所有其他元素交互的机制，Transformer的核心"
+        ],
+        [
+          "缩放点积注意力",
+          "Scaled Dot-Product Attention",
+          "/skeɪld dɒt ˈprɒdʌkt ə ˈtenʃən/",
+          "Transformer中计算注意力权重的方式，通过Query 和Key的兼容性决定Value的加权权重"
+        ],
+        [
+          "梯度消失",
+          "Vanishing Gradient",
+          "/ˈvænɪʃɪŋ ˈɡreɪdiənt/",
+          "深层网络中梯度随层数增加指数衰减导致早期层无法有效学习的现象"
+        ],
+        [
+          "上下文窗口",
+          "Context Window",
+          "/ˈkɒntekst ˈwɪndəʊ/",
+          "模型在预测下一个Token时能参考的最大Token数量范围"
+        ],
+        [
+          "Transform er架构",
+          "Transformer",
+          "/trænsˈfɔːrmər/",
+          "基于Self-Attention的架构，支持并行计算和长距离依赖建模"
+        ]
+      ],
+      "page": 5
+    }
+  ],
+  "accounting": {
+    "source_chars": 3362,
+    "represented_chars": 3187,
+    "removed_chars": 175,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 141,
+      "repeated_title": 34
+    }
+  },
+  "videos": [],
+  "order": 25,
+  "headings": [
+    {
+      "title": "10.1 第一代：N-gram模型（1990年代-2000年代）",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "10.2 第二代：RNN/LSTM模型（2010年代早期）",
+      "id": "section-20",
+      "level": 2
+    },
+    {
+      "title": "RNN的核心思想",
+      "id": "section-22",
+      "level": 3
+    },
+    {
+      "title": "信息衰减问题",
+      "id": "section-26",
+      "level": 3
+    },
+    {
+      "title": "LSTM的改进",
+      "id": "section-31",
+      "level": 3
+    },
+    {
+      "title": "10.3 第三代：Transformer模型（2017年至今）",
+      "id": "section-35",
+      "level": 2
+    },
+    {
+      "title": "从“传话”到“群聊”",
+      "id": "section-36",
+      "level": 3
+    },
+    {
+      "title": "Self-Attention的优势",
+      "id": "section-46",
+      "level": 3
+    },
+    {
+      "title": "10.4 ■ 学点英语",
+      "id": "section-58",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节，我们了解了语言模型的规律是从数据中学出来的。语言模型是怎么一步步发展到现在这种程度的？早期模型也能学到规律吗？ 本节将回顾语言模型的三代演进史，看它如何从只能记住3个词，进化到能理解整本书。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "10.1 第一代：N-gram模型（1990年代-2000年代）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "最早的语言模型很\"笨\"：它只看前面几个词。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "比如，一个\"2-gram\"（bigram）模型："
+    },
+    {
+      "anchor": "section-1",
+      "text": "𝑃 ( 𝑤 2 ∣ 𝑤 1 ) = count ( 𝑤 1 , 𝑤 2 ) count ( 𝑤 1 ) P(w 2  ∣w 1  )= count(w 1  ) count(w 1  ,w 2  ) "
+    },
+    {
+      "anchor": "section-1",
+      "text": "w1"
+    },
+    {
+      "anchor": "section-1",
+      "text": "w2"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个公式的意思是："
+    },
+    {
+      "anchor": "section-1",
+      "text": "分子：在训练数据中，\"很好\"这个组合出现了多少次"
+    },
+    {
+      "anchor": "section-1",
+      "text": "分母：在训练数据中，\"很\"这个字出现了多少次"
+    },
+    {
+      "anchor": "section-1",
+      "text": "结果：\"很\"后面跟\"好\"的概率"
+    },
+    {
+      "anchor": "section-1",
+      "text": "举个具体例子，如果训练数据中："
+    },
+    {
+      "anchor": "section-1",
+      "text": "\"很\"出现了1000次 \"很好\"出现了350次"
+    },
+    {
+      "anchor": "section-1",
+      "text": "那么："
+    },
+    {
+      "anchor": "section-1",
+      "text": "𝑃 ( 𝑤 2 ∣ 𝑤 1 ) = 3 5 0 1 0 0 0 = 0 . 3 5 = 3 5 % P(w 2  ∣w 1  )= 1000 350  =0.35=35%"
+    },
+    {
+      "anchor": "section-1",
+      "text": "但这是有问题的。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "想象一个句子："
+    },
+    {
+      "anchor": "section-1",
+      "text": "“雨停了，太阳穿过云层撒在湿漉漉的街道上。小女孩蹲下来，仔细看着水洼里的____”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "要预测下一个词，需要知道“水洼”和前面的“雨停了”有关。但“雨停了”在十几个词之前！一个只看前2-3个词的模型，根本记不住这么远。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "就像一个记忆只有3秒的人，无法理解复杂的对话。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "10.2 第二代：RNN/LSTM模型（2010年代早期）"
+    },
+    {
+      "anchor": "section-20",
+      "text": "循环神经网络（RNN）试图解决这个问题：用一个“隐藏状态”来记忆历史信息。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "RNN的核心思想"
+    },
+    {
+      "anchor": "section-22",
+      "text": "想象一个人在读一篇文章，边读边做笔记："
+    },
+    {
+      "anchor": "section-22",
+      "text": "读第1个词 → 在笔记本写下要点 → 记忆状态₁ 读第2个词 → 结合记忆状态₁ → 更新笔记 → 记忆状态₂ 读第3个词 → 结合记忆状态₂ → 更新笔记 → 记忆状态₃ …"
+    },
+    {
+      "anchor": "section-22",
+      "text": "每个词都在前一个记忆的基础上更新，理论上能记住整个历史。"
+    },
+    {
+      "anchor": "section-26",
+      "text": "信息衰减问题"
+    },
+    {
+      "anchor": "section-26",
+      "text": "理论上，RNN可以记住整个历史。但实际上，信息在传递过程中会衰减，就像传话游戏："
+    },
+    {
+      "anchor": "section-26",
+      "text": "第1个人：“明天早上8点在学校门口集合，带上雨伞和水壶” 第2个人：“明天早上8点在校门口集合，带雨伞和水壶” ← 丢了“学校” 第3个人：“明天早上8点在校门集合，带雨伞” ← 丢了“水壶” 第10个人：“明天见” ← 几乎所有细节都没了"
+    },
+    {
+      "anchor": "section-26",
+      "text": "因为每经过一层，信息都要乘以一个小于1的系数（比如0.9）： 0 . 9 1 0 ≈ 0 . 3 5 0.9 10 ≈0.35 0 . 9 1 0 0 ≈ 0 . 0 0 0 0 3 0.9 100 ≈0.00003"
+    },
+    {
+      "anchor": "section-26",
+      "text": "传到后面，信息几乎就消失殆尽了。"
+    },
+    {
+      "anchor": "section-31",
+      "text": "LSTM的改进"
+    },
+    {
+      "anchor": "section-31",
+      "text": "为了解决这个问题，研究者发明了LSTM（长短期记忆网络），增加了“遗忘门”、“输入门”、“输出门”。就像一个智能笔记本：遗忘门决定哪些旧信息可以忘掉，输入门决定哪些新信息值得记住，输出门决定当前应该关注什么。"
+    },
+    {
+      "anchor": "section-31",
+      "text": "效果是能记住更长的历史，从10-20个词提升到100-200个词。但即使是LSTM，在真正的长文本（数千个词）面前，仍然力不从心。"
+    },
+    {
+      "anchor": "section-31",
+      "text": "就像一个记忆只有20分钟的人，只能看懂一部动漫，却无法理解一部两小时的电影。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "10.3 第三代：Transformer模型（2017年至今）"
+    },
+    {
+      "anchor": "section-36",
+      "text": "从“传话”到“群聊”"
+    },
+    {
+      "anchor": "section-36",
+      "text": "2017年，Transformer横空出世。它用Self-Attention机制，彻底解决了长程依赖问题。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "Transformer不再像以前的模型依赖“传话”的模式，它革命性地把“传话”模式改为了“群聊”："
+    },
+    {
+      "anchor": "section-36",
+      "text": "10个人在一个微信群里： 小明在群里说：“明天下午3点在图书馆见，记得带笔记本” ↓ 所有人都能直接看到 小红、小李、小王、…、小张：都能直接看到完整消息！ 每个人想回复时，可以直接看到小明说了什么，可以看到所有人的发言。信息不会丢失，每个人都有完整的上下文。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "更进一步，Transformer不仅让所有词互相“看到”，还能让每个词智能地“关注”重点："
+    },
+    {
+      "anchor": "section-36",
+      "text": "句子：“昨天我在公园里遇到了多年未见的老朋友张三，他现在在上海工作，他很开心” 当处理最后的“他”时："
+    },
+    {
+      "anchor": "section-36",
+      "text": "RNN：只能依稀记得前面提到过“张三”"
+    },
+    {
+      "anchor": "section-36",
+      "text": "Transformer：能直接“看到”整个句子，并且智能地把注意力集中在“张三”上"
+    },
+    {
+      "anchor": "section-36",
+      "text": "注意力分配（简化示意）："
+    },
+    {
+      "anchor": "section-36",
+      "text": "┌────────────────────────────\n│ \"他\"对各个词的注意力权重：\n├────────────────────────────\n│ 昨天：    2%  ← 不太相关\n│ 公园：    1%\n│ 老朋友：  8%\n│ 张三：   70%  ← 高度相关！\n│ 上海：    5%\n│ 工作：   10%\n│ 很：      2%\n│ 开心：    2%\n└────────────────────────────"
+    },
+    {
+      "anchor": "section-46",
+      "text": "Self-Attention的优势"
+    },
+    {
+      "anchor": "section-46",
+      "text": "无损传递：任何两个词之间都是直接连接，不需要经过中间层。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "智能筛选：自动计算哪些词重要，把注意力放在关键位置。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "并行计算：所有词可以同时处理，速度快。无限长度（理论上）：不管句子多长，每个词都能“看到”所有其他词。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "回到刚才的例子："
+    },
+    {
+      "anchor": "section-46",
+      "text": "“昨天我在公园里遇到了多年未见的老朋友张三，他看起来很开心，现在在上海工作，他______”"
+    },
+    {
+      "anchor": "section-46",
+      "text": "Transformer在预测最后的空白时，可以直接“注意到”“张三”这个名字（指代消解），直接“注意到”“很开心”这个情绪词（情感理解），直接“注意到”“上海工作”（上下文信息）。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "所以它能准确预测：“很满意现在的生活”、“经常回来看看”等合理的续写。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "ChatGPT就是基于Transformer的语言模型。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "这也是为什么ChatGPT能够理解长篇幅的上下文（GPT-4支持128,000个token），在对话中记住之前说过的内容，处理复杂的逻辑推理，准确理解指代关系。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "因为它站在了三代语言模型演进的肩膀上，用Transformer彻底解决了RNN时代的“遗忘”问题。"
+    },
+    {
+      "anchor": "section-46",
+      "text": "从传话游戏到群聊，这不仅是技术的进步，更是范式的革命。"
+    },
+    {
+      "anchor": "section-58",
+      "text": "10.4 ■ 学点英语"
+    },
+    {
+      "anchor": "section-58",
+      "text": "中文 | English | 音标 | 说明\nN元模型 | N-gram Model | /ˈen græm ˈmɒdl/ | 基于前n-1个词预测第n个词的统计模型，上下文窗口固定\n循环神经网络 | Recurrent Neural Network (RNN) | /rɪˈkɜːrənt ˈnjʊərəl ˈnetwɜːk/ | 通过链式结构按顺序处理序列的网络，越长越容易遗忘\n长短期记忆网络 | Long Short-Term Memory (LSTM) | /lɒŋ ʃɔːt tɜːm ˈmeməri/ | 引入门控机制缓解信息衰减的改进型RNN\n注意力机制 | Attention Mechanism | /əˈtenʃən ˈmekənɪzəm/ | 让模型在处理序列时动态关注不同位置相关信息的机制\n自注意力机制 | Self-Attention | /self əˈtenʃən/ | 让序列中每个元素直接与所有其他元素交互的机制，Transformer的核心\n缩放点积注意力 | Scaled Dot-Product Attention | /skeɪld dɒt ˈprɒdʌkt ə ˈtenʃən/ | Transformer中计算注意力权重的方式，通过Query 和Key的兼容性决定Value的加权权重\n梯度消失 | Vanishing Gradient | /ˈvænɪʃɪŋ ˈɡreɪdiənt/ | 深层网络中梯度随层数增加指数衰减导致早期层无法有效学习的现象\n上下文窗口 | Context Window | /ˈkɒntekst ˈwɪndəʊ/ | 模型在预测下一个Token时能参考的最大Token数量范围\nTransform er架构 | Transformer | /trænsˈfɔːrmər/ | 基于Self-Attention的架构，支持并行计算和长距离依赖建模"
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+--- PDF 第 1 页 ---
+第4章 第8节 创意控制与专业翻译器
+来源: https://class.imooc.com/lesson/5269#mid=104909
+阶段: 阶段二: 【实战入门】大模型开发与知识接入
+周: 第4周 理解大模型开发
+模块: 小试牛刀，做一个简单的翻译器
+课节: 图文 1-4 创意控制与专业翻译器
+1-4 创意控制与专业翻译器
+第4章 第8节 创意控制与专业翻译器
+[!TIP] 阅读指南 上一节学习了流式输出和长度控制。现在继续深入——通过temperature、top_p
+调整翻译风格，通过stream_options获取Token统计，最后整合所有参数打造一个专业翻译器。
+8.1 temperature：创意性控制
+在第1章，我们学习了Temperature的原理——它通过调整概率分布的"尖锐度"，控制AI选词的随机
+性。现在看如何在翻译中应用这个原理。
+在翻译时，有时需要直译（准确），有时需要意译（自然）。这个需求可以使用Temperature参数来调
+整。
+参数说明
+temperature：控制输出的随机性/创意性
+取值范围：0.0 - 2.0
+0.0 - 2.0
+默认值：1.0
+1.0
+
+
+--- PDF 第 2 页 ---
+效果对比
+以"今天天气真好，我们去公园散步吧。"翻译为例，看看不同Temperature的效果：
+temperature
+特点
+适用场景
+翻译风格
+- 0.3
+确定性强、一致性高
+技术文档、法律合同
+直译、逐字对应
+- 1.0
+平衡（默认）
+日常对话、新闻
+自然、地道
+- 2.0
+创意性强、多样性高
+文学作品、营销文案
+意译、灵活表达
+实际示例
+text = "今天天气真好，我们去公园散步吧。"
+# temperature=0（直译）
+response = client.chat.completions.create(
+    model="qwen3.6-plus",
+    messages=[{"role": "user", "content": f"翻译成英文：{text}"}],
+    temperature=0.0 # 意译：改为1.5试试
+)
+print(response.choices[0].message.content)
+# 直译输出：Today's weather is really good, let's go to the park for a walk.
+# 意译输出：What a beautiful day! How about a stroll in the park?
+核心要点 temperature 不影响质量，只影响风格。低温确定性高，高温创意性强。
+8.2 top_p：精细控制多样性
+第1章还讲了另一个参数Top-p（核采样），它不是调整整个概率分布，而是动态选择"累积概率达到
+p"的候选词范围。
+top_p：核采样（nucleus sampling），控制候选词范围
+取值范围：0.0 - 1.0
+0.0 - 1.0
+推荐用法
+
+
+--- PDF 第 3 页 ---
+# 推荐：只调一个参数
+response = client.chat.completions.create(
+    model="qwen3.6-plus",
+    messages=[...],
+    temperature=0.7  # 只设置temperature
+)
+# 不推荐：同时调整两个参数（除非很清楚在做什么）
+response = client.chat.completions.create(
+    model="qwen3.6-plus",
+    messages=[...],
+    temperature=0.7,
+    top_p=0.9  # 同时设置会相互影响，难以预测
+)
+典型取值
+top_p=0.9：保留累积概率90%的候选词（稍微收敛）
+top_p=0.5：保留累积概率50%的候选词（明显收敛）
+top_p=0.5
+top_p=1.0：不限制（默认值）
+top_p=1.0
+实用建议：优先调整 temperature，只在需要极致精细控制时才考虑 top_p。
+8.3 流式输出中的Token统计
+在使用流式输出时，可能会发现一个问题：看不到Token消耗统计了。这是因为流式输出默认不返回
+usage信息。
+配置stream_options
+
+
+--- PDF 第 4 页 ---
+response = client.chat.completions.create(
+    model="qwen3.6-plus",
+    messages=[{"role": "user", "content": "翻译这段文本..."}],
+    stream=True,
+    stream_options={"include_usage": True}  # 在流式输出中包含Token统计
+)
+for chunk in response:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="", flush=True)
+    # 最后一个chunk包含usage信息
+    if hasattr(chunk, 'usage') and chunk.usage:
+        print(f"\n\nToken统计：{chunk.usage.total_tokens}个")
+输出示例
+The weather is really nice today, let's go for a walk in the park.
+Token统计：28个
+流式输出默认不返回 usage，需要显式配置 stream_options。
+8.4 完整实战：专业翻译器
+现在，整合所有参数，打造一个专业级翻译器。
+代码参考
+[!TIP] 完整源码参考：samples/chapter4/translator_pro_plus.py
+运行这个翻译器，输入想翻译的文本：
+运行效果
+
+
+--- PDF 第 5 页 ---
+欢迎使用专业翻译器！
+支持的风格：直译/平衡/意译
+--------------------------------------------------
+请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君
+目标语言（默认'英文'）：
+翻译风格（直译/平衡/意译，默认'平衡'）：
+翻译结果：Passing through gardens of flowers, I seldom look back—
+Half for the path of cultivation, half for you.
+Token消耗：102个
+请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君
+目标语言（默认'英文'）：
+翻译风格（直译/平衡/意译，默认'平衡'）：直译
+翻译结果：Passing by gardens of flowers, I lazily look back—
+Half for the sake of cultivation, half for your sake.
+Token消耗：105个
+请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君
+目标语言（默认'英文'）：
+翻译风格（直译/平衡/意译，默认'平衡'）：意译
+翻译结果：Passing through gardens of blossoms, I barely glance back—
+half for the path of cultivation, half for you.
+Token消耗：104个
+max_tokens说明
+源码默认没有设置max_tokens参数。但如果尝试更改max_tokens参数会发现一个问题。
+上述测试结果表明Token消耗大致在100~105个。按照这个思路，将max_tokens设置为50，按理说输
+出应该被截断——50远小于104。
+但实际上模型依然会正确输出翻译。原因在于，max_tokens指的是模型输出的Token，而计算的104个
+Token消耗还包含了输入部分。max_tokens实际上只应用于以下文本：
+这段文本的长度小于50，所以模型输出不会被截断。
+
+
+--- PDF 第 6 页 ---
+8.5 ■ 学点英语
+中文
+English
+音标
+说明
+温度参数
+Temperature
+/ˈtemprətʃər/
+控制AI输出随机性和创意性的核心参数
+核采样
+Top-p (Nucleus
+Sampling)
+/tɑp piː ˈnuːkliəs
+ˈsæmplɪŋ/
+动态选择累积概率达到p的候选词范围
+创意控制
+Creativity Control
+/ˌkriːeɪˈtɪvəti kənˈtroʊl/
+通过temperature等参数调节AI输出风格
+流式选项
+Stream Options
+/striːm ˈɑːpʃənz/
+流式输出中额外配置项（如
+include_usage）
+专业翻译
+器
+Professional Translator
+/prəˈfeʃənl trænsˈleɪtər/
+整合多参数控制实现风格可调的专业翻译
+工具
+8.7 下一节预告
+掌握了API参数后，已经能灵活控制AI的输出。除了调参数，还有什么方法能让AI更准确地理解意图？
+下一节学习 Prompt基础与必要场景——了解提示词工程的适用场景和核心方法。
+Prompt基础与必要场景

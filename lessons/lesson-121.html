@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>技术选型与实现 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-121">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 7 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>MCP通信协议与实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 122</span></div>
+<h1 class="lesson-title">技术选型与实现</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>6 页原文</span><span>约 9 分钟阅读</span><span class="module-name">MCP通信协议与实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-121.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-121.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节做了需求分析和交互流程设计。本节进入技术选型阶段，解释为什么Server 用 Node.js、Client 用 Python，以及项目的整体架构。</p></aside>
+<h2 id="section-1" data-source-page="1">11.1 技术选型：为什么 Server 用 Node.js，Client 用 Python？<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">在开始动手之前，我们需要先回答一个关键问题：用什么语言来实现 MCP Server 和 Client？</p>
+<h3 id="section-3" data-source-page="1">MCP 的语言无关性<a class="heading-link" href="#section-3" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">首先要明确一点：MCP 协议本身是语言无关的。</p>
+<p data-source-page="1">MCP 协议本身是语言无关的</p>
+<p data-source-page="1">回顾之前学习的通信机制：MCP 使用 JSON-RPC 2.0 作为通信协议，这是一个基于 JSON 的标准。只要一门语言能够：</p>
+<p class="list-item" data-source-page="1">处理 JSON 数据</p>
+<p class="list-item" data-source-page="1">通过 stdio 或 HTTP 进行通信</p>
+<p data-source-page="1">它就可以实现 MCP Server 或 Client。</p>
+<p data-source-page="1">理论上的可能性</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">MCP Server 可以用：
+  • Node.js / TypeScript
+  • Python
+  • Go
+  • Rust
+  • Java
+  • C#
+  ... 任何语言都行
+
+MCP Client 也可以用：
+  • Python
+  • Node.js
+  • Go
+  • Rust
+  ... 任何语言都行</code></pre></div>
+<h3 id="section-12" data-source-page="2">为什么官方推荐 Node.js 写 Server<a class="heading-link" href="#section-12" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">虽然理论上可以用任何语言，但实际开发中，Node.js 是 MCP Server 的最佳选择：</p>
+<h2 id="section-14" data-source-page="2">1. 官方 SDK 支持最完善<a class="heading-link" href="#section-14" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">Anthropic 官方提供的 @modelcontextprotocol/sdk 是 TypeScript/Node.js 实现的。使用官方 SDK可以避免很多底层细节的坑。</p>
+<h2 id="section-16" data-source-page="2">2. 生态成熟<a class="heading-link" href="#section-16" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">npm 上已经有大量现成的 MCP Server 可以参考：</p>
+<p class="list-item" data-source-page="2">@modelcontextprotocol/server-filesystem - 文件系统操作</p>
+<p class="list-item" data-source-page="2">@modelcontextprotocol/server-postgres - PostgreSQL 数据库</p>
+<p class="list-item" data-source-page="2">@modelcontextprotocol/server-github - GitHub 集成</p>
+<p data-source-page="2">学习 Node.js 实现后，你可以快速理解和修改这些开源项目。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-22" data-source-page="3">3. 异步 I/O 天然优势<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">MCP Server 需要处理大量的异步操作（读取文件、数据库查询、网络请求），Node.js 的事件循环模型非常适合这种场景。</p>
+<h3 id="section-24" data-source-page="3">为什么 Client 选择 Python<a class="heading-link" href="#section-24" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">对于 AI Client 的开发，Python 是更好的选择：</p>
+<p data-source-page="3">Python 是更好的选择</p>
+<h2 id="section-27" data-source-page="3">1. Python是大模型 生态的事实标准<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h2>
+<p class="list-item" data-source-page="3">通义千问、OpenAI、Anthropic 等主流 大模型 服务都提供官方 Python SDK</p>
+<p class="list-item" data-source-page="3">数据处理库（pandas、numpy）非常成熟</p>
+<p class="list-item" data-source-page="3">机器学习工具链完善</p>
+<h2 id="section-31" data-source-page="3">2. 本书主语言<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">本书的其他章节（RAG、Agent、LangChain 等）都使用 Python，保持一致性可以降低学习成本。</p>
+<h2 id="section-33" data-source-page="3">3. Python 的 MCP Client SDK<a class="heading-link" href="#section-33" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">虽然不如 Node.js 的 Server SDK 完善，但 Python 的 mcp 库已经足够好用：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+
+# 非常简洁的 API
+async with stdio_client(server_params) as (read, write):
+    async with ClientSession(read, write) as session:
+        # 调用 MCP 能力</code></pre></div>
+<h3 id="section-36" data-source-page="3">新手友好的学习路径<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">如果你是新手，看到要同时用两种语言可能会有点担心，但不用慌：</p>
+<p data-source-page="3">对于 Node.js 部分（Server）：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p class="list-item" data-source-page="4">我们的代码非常简洁（主程序不到 200 行）</p>
+<p class="list-item" data-source-page="4">主要是定义数据结构和注册函数</p>
+<p class="list-item" data-source-page="4">不需要深入的 JavaScript 知识</p>
+<p class="list-item" data-source-page="4">关键是理解 MCP 的概念，而非 Node.js 细节</p>
+<p data-source-page="4">对于 Python 部分（Client）：</p>
+<p class="list-item" data-source-page="4">如果你学过本书前面章节，Python 基础已经足够</p>
+<p class="list-item" data-source-page="4">MCP Client 的 API 非常简单</p>
+<p class="list-item" data-source-page="4">重点是理解如何与 LLM 配合</p>
+<p data-source-page="4">学习建议：</p>
+<p data-source-page="4">现在大部分代码已经不需要一行一行手写了，AI 编程助手可以帮你完成大部分重复工作（即 Vibe-Coding）。但这不代表可以完全甩手——最基础的能力是读懂 AI 生成了什么。尤其是涉及企业级或生产环境代码时，纯粹的 Vibe-Coding 几乎无法胜任，你必须自己理解代码逻辑，才能判断 AI 给出的方案是否合理，有问题的部分才能精准修正。</p>
+<p data-source-page="4">好在门槛比过去低了很多：不需要记住每个 API 的参数细节，只需要看明白思路——这里的整体架构是什么样的、数据怎么流转、Server 和 Client 怎么配合。剩下的细节交给 AI 去填充就行。</p>
+<h2 id="section-50" data-source-page="4">11.2 实战项目说明<a class="heading-link" href="#section-50" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">前面几节我们系统学习了 MCP 的理论知识——Resources、Tools、Prompts 三大核心能力，以及它们之间的通信机制。理论的最终目的是为了实践，现在让我们通过一个完整的项目来验证所学。</p>
+<h3 id="section-52" data-source-page="4">项目功能<a class="heading-link" href="#section-52" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">我们将实现一个游戏装备计算助手，它能够：</p>
+<p data-source-page="4">游戏装备计算助手</p>
+<h2 id="section-55" data-source-page="4">1. 查询装备属性（Resources）<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h2>
+<p class="list-item" data-source-page="4">用户询问：“破晓之剑有什么属性？”</p>
+<p class="list-item" data-source-page="4">系统通过 Resources 读取装备数据，返回格式化的装备卡片</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-58" data-source-page="5">2. 计算战斗数值（Tools）<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h2>
+<p class="list-item" data-source-page="5">用户询问：“这把剑能打多少伤害？”</p>
+<p class="list-item" data-source-page="5">系统调用伤害计算工具，执行公式并返回详细结果</p>
+<h2 id="section-61" data-source-page="5">3. 对比装备性能（Tools）<a class="heading-link" href="#section-61" aria-label="链接至本节">#</a></h2>
+<p class="list-item" data-source-page="5">用户询问：“破晓之剑和无锋重剑哪个更强？”</p>
+<p class="list-item" data-source-page="5">系统调用对比工具，给出数据分析和建议</p>
+<h2 id="section-64" data-source-page="5">4. 生成分析报告（Prompts）<a class="heading-link" href="#section-64" aria-label="链接至本节">#</a></h2>
+<p class="list-item" data-source-page="5">用户需要：“给我做一份装备深度分析”</p>
+<p class="list-item" data-source-page="5">系统使用 Prompt 模板，结合 LLM 生成专业报告</p>
+<p data-source-page="5">这个项目完整演示了 MCP 三大核心能力的实际应用。</p>
+<p data-source-page="5">项目目录结构</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">samples/chapter7/mcp_equipment/
+├── README.md                      ← 完整技术文档（必读）
+├── mcp-server/                    ← MCP Server 实现
+│   ├── index.js                   ← Server 主程序
+│   ├── package.json               ← Node.js 依赖配置
+│   └── data/
+│       └── equipments.json        ← 装备数据
+├── ai-client/                     ← AI Client 实现
+│   ├── main.py                    ← Client 主程序
+│   └── requirements.txt           ← Python 依赖配置
+└── .env.example                   ← 环境变量示例</code></pre></div>
+<p data-source-page="5">关于项目的技术架构、源码讲解、环境配置和运行方法，请参考源码目录中的 README.md。这份文档结合了前面章节的理论知识，详细解析了每个模块的实现原理。</p>
+<h2 id="section-71" data-source-page="5">11.3 下一节预告<a class="heading-link" href="#section-71" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">到这里，我们已经完成了一个从零开始的 MCP Server 开发。但每次需要一个新能力，都要从头写一遍MCP Server 吗？答案当然是否定的。MCP 协议最大的价值不在于造轮子，而在于用轮子——整个开源社区已经有大量现成的 MCP Server 可以直接使用。下一节将探讨如何快速找到并使用这些现成的MCP Server，以及如何将自己开发的 MCP Server 发布出去。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<h2 id="section-73" data-source-page="6">11.4 ■ 学点英语<a class="heading-link" href="#section-73" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>技术选型</td><td>Technology Stack Selection</td><td>/tekˈnɑːlədʒi stæk sɪ ˈlekʃn/</td><td>根据场景选择合适的Server和Client开发语言的技术决策</td></tr><tr><td>语言无关性</td><td>Language Agnosticism</td><td>/ˈlæŋɡwɪdʒ æɡnɑː ˌ ˈstɪsɪzəm/</td><td>MCP协议不限制实现语言，任何能处理 JSON的语言都可使用</td></tr><tr><td>SDK 成熟度</td><td>SDK Maturity</td><td>/es diː keɪ məˈtʃʊrəti/</td><td>官方SDK对特定语言的开发工具和类型支持的完善程度</td></tr><tr><td>跨语言通信</td><td>Cross-Language Communication</td><td>/krɔːs ˈlæŋɡwɪdʒ kə mjuːnɪˈkeɪʃn/ ˌ</td><td>Server和Client用不同语言开发，通过标准协议互操作的能力</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-120.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>需求分析与流程</strong><small>MCP通信协议与实战</small></a><a class="chapter-neighbor next" href="lesson-122.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>使用 MCP Server</strong><small>MCP通信协议与实战</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5281#mid=104940" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">11.1 技术选型：为什么 Server 用 Node.js，Client 用 Python？</a><a href="#section-3" class="toc-level-3">MCP 的语言无关性</a><a href="#section-12" class="toc-level-3">为什么官方推荐 Node.js 写 Server</a><a href="#section-14" class="toc-level-2">1. 官方 SDK 支持最完善</a><a href="#section-16" class="toc-level-2">2. 生态成熟</a><a href="#section-22" class="toc-level-2">3. 异步 I/O 天然优势</a><a href="#section-24" class="toc-level-3">为什么 Client 选择 Python</a><a href="#section-27" class="toc-level-2">1. Python是大模型 生态的事实标准</a><a href="#section-31" class="toc-level-2">2. 本书主语言</a><a href="#section-33" class="toc-level-2">3. Python 的 MCP Client SDK</a><a href="#section-36" class="toc-level-3">新手友好的学习路径</a><a href="#section-50" class="toc-level-2">11.2 实战项目说明</a><a href="#section-52" class="toc-level-3">项目功能</a><a href="#section-55" class="toc-level-2">1. 查询装备属性（Resources）</a><a href="#section-58" class="toc-level-2">2. 计算战斗数值（Tools）</a><a href="#section-61" class="toc-level-2">3. 对比装备性能（Tools）</a><a href="#section-64" class="toc-level-2">4. 生成分析报告（Prompts）</a><a href="#section-71" class="toc-level-2">11.3 下一节预告</a><a href="#section-73" class="toc-level-2">11.4 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-121", "title": "技术选型与实现", "stage": 3, "week": 7, "module": "MCP通信协议与实战", "minutes": 9, "pages": 6, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,247 @@
+--- PDF 第 1 页 ---
+第7章 第12节 使用 MCP Server
+来源: https://class.imooc.com/lesson/5281#mid=104941
+阶段: 阶段三: 【工具与协议】让AI连接世界
+周: 第7周 MCP：模型上下文协议
+模块: MCP通信协议与实战
+课节: 图文 1-5 使用 MCP Server
+1-5 使用 MCP Server
+第7章 第12节 使用 MCP Server
+[!TIP] 阅读指南 本节从"造轮子"与"用轮子"的对比切入，介绍如何使用别人已经写好的 MCP
+Server，以及在 Qoder 中通过 MCP 广场和手动安装的方式接入 AntV Chart 的完整流程。
+前面几节我们学习了如何开发 MCP Server，但 MCP 最大的价值不在于造轮子，而在于用轮子——使
+用别人已经写好的 MCP Server，快速为你的 AI 应用增添各种能力。
+12.1 从"造轮子"到"用轮子"
+一个真实的场景
+假如你正在开发一个 AI 编程助手，需要让它具备以下能力：
+读取项目文件
+查询 API 文档
+生成数据可视化图表
+操作 GitHub 仓库
+如果按照第6节的方式，你需要：
+为每个功能开发一个 MCP Server
+定义 Resources、Tools、Prompts
+
+
+--- PDF 第 2 页 ---
+编写业务逻辑
+测试验证
+这样做下来，一个简单的助手可能需要好几天才能搭建起来。
+MCP 生态
+但如果使用现有的 MCP Server，你只需要：
+# 找到需要的 MCP Server（以文件系统 Server 为例）
+npm install -g @modelcontextprotocol/server-filesystem
+# 配置一下
+# 完成！
+几分钟就能拥有完整的功能。这就是 MCP 生态的力量——一次开发，到处可用。
+一次开发，到处可用
+12.2 MCP Server 的使用方式
+官方方案：Claude Desktop
+Claude Desktop 是什么
+MCP 协议由 Anthropic 提出，他们同时开发了一个 AI 桌面应用 Claude Desktop，作为 MCP 协议的
+官方参考实现。
+简单来说，Claude Desktop 就是：
+一个运行在你电脑上的 AI 助手应用（类似 Qoder）
+内置了 Claude 大模型（Anthropic 自家的 AI 模型）
+原生支持 MCP 协议，可以通过配置文件加载各种 MCP Server
+原生支持 MCP 协议
+它的核心价值是：展示了 MCP 协议的标准用法，成为整个 MCP 生态的范例。许多 MCP Server 的文
+档都是以 Claude Desktop 为例来说明如何配置和使用。
+Claude Desktop 的配置方式
+通过编辑配置文件（JSON 格式）添加 MCP Server：
+
+
+--- PDF 第 3 页 ---
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/username/Projects"
+      ]
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "your-token-here"
+      }
+    }
+  }
+}
+配置完成后，Claude Desktop 会自动拉起这些 MCP Server，你就可以在对话中使用这些能力了。你
+都不需要知道这些MCP从哪里来，只需要配置这些协议路径（比如，
+@modelcontextprotocol/server-filesystem）以及其他参数即可。
+对于中文支持和本地化体验，市面上已经有不少支持 MCP 协议的客户端可以选择，例如Qoder、
+CodeBuddy。本书在后面的示例中会用Qoder作为演示，实际开发中可以根据自己的习惯选择任何支
+持 MCP 的客户端。
+国产替代方案：Qoder
+Qoder 原生支持 MCP 协议，可以通过图形化界面配置和管理 MCP Server。但在此之前，更重要的问
+题是：为啥要给一个编程助手安装 MCP？
+原因很简单，因为即使它是 AI，它的能力也有局限性，比如它无法帮你查询 12306 的实时火车票，无
+法读写你的私有数据，无法帮你查看某些内网服务。这些特殊的、AI 做不到但程序能做到的能力，我们
+都可以通过 MCP 来扩展。
+现在几乎所有的主流编程 IDE 都支持一键安装MCP，这几乎是标配。
+
+
+--- PDF 第 4 页 ---
+12.3 实战：在 Qoder 中使用 AntV Chart MCP
+接下来，我们通过一个真实案例，演示如何在 Qoder 中使用已有的 MCP Server。
+最快的方式：Qoder MCP 广场
+在使用 MCP之前，我们需要先找到它。对于 Qoder 用户来说，最快捷的方式是直接使用内置的 MCP
+广场（MCP Square）：
+步骤 1: 点击 Qoder 右上角的用户图标，选择【Qoder 设置】
+步骤 2: 在左侧导航窗格中，选择【MCP服务】
+步骤 3: 切换到【MCP 广场】选项卡
+步骤 4: 浏览可用的 MCP 服务，在目标服务上点击【安装】
+步骤 5: 切换到【我的服务】选项卡确认安装完成
+安装完成后，Qoder 会自动拉起这些 MCP Server。需要注意的是，MCP 功能仅在 Agent 模式下生效
+——在智能会话面板中切换到智能体模式，即可调用已安装的 MCP 工具。
+这是最推荐的方式——无需手动配置，一键安装，开箱即用。
+市场之外：更多 MCP 资源
+但如果 MCP市场里没有你需要的 MCP 呢？没关系，我们可以通过其他途径发现更多资源。
+不过在介绍这些资源之前，先说明一个关键问题：当你发现一个 MCP Server 时，到底需要拿到什么信
+息？
+答案是：npm 包名。
+npm 包名
+就像安装普通的 npm 包一样，MCP Server 也是通过 npm 包名来标识和安装的。比如：
+@modelcontextprotocol/server-filesystem   ← 这就是包名
+@antv/mcp-server-chart                    ← 这也是包名
+1
+2
+当你在 GitHub 或其他地方看到一个 MCP Server 项目时，需要找到两个信息：
+npm 包名（必须） - 用于安装和引用
+配置参数（可选） - 比如需要传入的环境变量或参数
+
+
+--- PDF 第 5 页 ---
+配置参数
+有了 npm 包名，你就可以在任何支持 MCP 的客户端中使用它了。
+开源社区
+GitHub 上有越来越多的开发者在贡献 MCP Server，在 GitHub 上搜索 mcp-server 可以找到大量开
+源项目，比如 Anthropic 官方的 modelcontextprotocol/server-filesystem，以及蚂蚁集团开源的
+antvis/mcp-server-chart 等。
+npm 官方包
+Anthropic 官方维护了一系列 MCP Server，都发布在 npm 上：
+@modelcontextprotocol/server-filesystem  - 文件系统操作
+@modelcontextprotocol/server-postgres    - PostgreSQL 数据库
+@modelcontextprotocol/server-github      - GitHub 集成
+@modelcontextprotocol/server-brave-search - Brave 搜索引擎
+实战案例：AntV Chart MCP
+接下来，我以蚂蚁集团开源的 AntV Chart MCP Server 为例，演示如何在 Qoder 中使用从外部发现的
+MCP。
+这个 MCP 可以为 AI 助手增加数据可视化能力:
+AntV Chart MCP Server
+ ─────────────────────────────────────────
+ ● 项目地址：
+   github.com/antvis/mcp-server-chart
+ ● 核心功能：
+   - 生成 25+ 种图表类型
+   - 柱状图、折线图、饼图、雷达图等
+   - 桑基图、热力图、散点图等高级图表
+ ─────────────────────────────────────────
+在 Qoder 中手动安装 AntV Chart
+步骤 1：打开 MCP 设置
+进入【MCP服务】，点击右上角的 【添加】，在弹出的 JSON 文件中编辑配置。
+步骤 2：添加 MCP Server
+
+
+--- PDF 第 6 页 ---
+在打开的页面添加JSON配置：
+{
+  "mcpServers": {
+    "antv-chart": {                           // ← 自定义的本地名称（随便取）
+      "command": "npx",                       // ← 启动命令（固定）
+      "args": ["-y", "@antv/mcp-server-chart"] // ← npm 包名（核心信息）
+    }
+  }
+}
+配置说明
+"antv-chart" - 你给这个 MCP Server 起的本地名字，可以随便取，仅用于在客户端中识别
+"command": "npx" - 启动命令，使用 npx 来运行 npm 包（固定写法）
+"args": ["-y", "@antv/mcp-server-chart"] - 关键参数： -y：自动确认安装（让 npx 不弹出提示）
+@antv/mcp-server-chart：这就是 npm 包名，也是你在 GitHub/npm 上找到的核心信息
+如果这个 MCP Server 需要额外的参数（比如 API Key），还可以添加 env 字段：
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "your-token-here"    // ← 额外的配置参数
+      }
+    }
+  }
+}
+步骤 3：测试连接
+保存 JSON 文件后，Qoder 会自动拉起 MCP Server。你可以在【我的服务】列表中看到antv-chart已
+经安装成功：
+看看实际效果
+现在我们可以在 Qoder 的对话中使用 AntV Chart 的能力了。
+示例：生成简单柱状图
+
+
+--- PDF 第 7 页 ---
+在 Qoder 的对话中输入：
+请帮我用antv-chart中的工具生成一个柱状图，要求深色主题、手绘风格、精致排版，展示以下数据：
+- 原神：95分
+- 崩坏：星穹铁道：92分
+- 明日方舟：88分
+- 王者荣耀：85分
+Qoder 在收到指令后会调用 antv-chart 帮你生成一张图片:
+示例：主流大语言模型测试分数折线图
+还可以生成更复杂的折线图：
+关键点
+不需要知道 AntV Chart 有哪些工具
+不需要手动指定调用MCP Server中的哪个Tool或者Resources
+Qoder 会自动判断并调用
+只需用自然语言描述需求
+[!NOTE] 从纯粹的内容生成角度看，用后续章节介绍的 Skill 来做这类图表效果会更好、更合适。
+这里用 MCP 演示只是为了展示它的能力——你只需要描述需求，它就能自动调用工具完成。 实
+际上，MCP 最适用的场景是那些需要严谨执行的服务，比如对接麦当劳下单系统、查询航班信
+息、操作数据库等。而内容生成类的任务，后续章节介绍的 Skill 会是更顺手的选择。
+12.4 下一节预告
+学会了使用现成的 MCP Server 后，下一节将讲解如何在自己的应用中通过代码集成 MCP Server，以
+及如何将自己开发的 MCP Server 发布到 npm 上，让更多人受益。
+
+
+--- PDF 第 8 页 ---
+12.5 ■ 学点英语
+中文
+English
+音标
+说明
+造轮子
+Building from
+Scratch
+/ˈbɪldɪŋ frʌm skrætʃ/
+自行开发MCP Server，不依赖社区已有实现
+用轮子
+Reusing Existing
+Tools
+/riːˈjuːzɪŋ ɪɡˈzɪstɪŋ
+tuːlz/
+直接使用社区已经发布的MCP Server快速扩展
+功能
+一键安装
+One-Click Install
+/wʌn klɪk ɪnˈstɔːl/
+通过MCP广场图形界面一键配置并使用MCP
+Server
+自动生命周
+期
+Automatic Lifecycle
+/ˌɔːtəˈmætɪk
+ˈlaɪfsaɪkl/
+AI应用自动管理MCP Server的启动、运行和停
+止
+图片
+![](122-图文-1-5-使用 MCP Server.assets/img-001.png)
+![](122-图文-1-5-使用 MCP Server.assets/img-002.png)
+![](122-图文-1-5-使用 MCP Server.assets/img-003.png)
+![](122-图文-1-5-使用 MCP Server.assets/img-004.png)

@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>LangGraph核心概念 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-130">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-4">框架应用</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 9 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>为什么需要LangGraph</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 131</span></div>
+<h1 class="lesson-title">LangGraph核心概念</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>9 页原文</span><span>约 11 分钟阅读</span><span class="module-name">为什么需要LangGraph</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-130.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-130.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>本节是对 LangGraph 核心概念的「地图说明书」。如果你已经大致理解了为什么需要 LangGraph，但还搞不清它到底由哪些部分组成，可以先快速通读本节，再在实战章节反复回来对照。 接下来，我们会正式进入四大核心概念：State（状态）、Node（节点）、Edge（边） 和 Graph（图）。</p></aside>
+<p data-source-page="1">LangGraph的工作流由四个核心部分组成:</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">State(状态)
+├─ 工作流的&quot;数据容器&quot;
+└─ 记录所有中间结果
+
+Node(节点)
+├─ 工作流的&quot;处理单元&quot;
+└─ 读取State→处理→更新State
+
+Edge(边)
+├─ 节点之间的&quot;连接线&quot;
+└─ 固定边 + 条件边
+
+Graph(图)
+├─ 整个工作流的&quot;容器&quot;
+└─ 组合State + Node + Edge</code></pre></div>
+<p data-source-page="2">让我们逐个深入理解。</p>
+<h2 id="section-4" data-source-page="2">State：工作流的数据中心<a class="heading-link" href="#section-4" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">什么是State</p>
+<p data-source-page="2">State 是一个结构化的数据容器，存储工作流执行过程中的所有信息。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">用写文章的例子类比:</p>
+<p class="list-item" data-source-page="3">State就像一个文件夹</p>
+<p class="list-item" data-source-page="3">记录了搜集的资料、生成的大纲、写好的草稿、润色后的终稿</p>
+<p class="list-item" data-source-page="3">每个节点(搜资料、写大纲、写草稿。…)都会往文件夹里添加新内容</p>
+<h3 id="section-11" data-source-page="3">如何定义State<a class="heading-link" href="#section-11" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">在 LangGraph 中，我们通常使用 Python 的 TypedDict 来定义 State 的结构：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from typing import TypedDict
+
+class ArticleState(TypedDict):
+    &quot;&quot;&quot;文章写作的状态&quot;&quot;&quot;
+    topic: str      # 主题
+    outline: str    # 大纲
+    draft: str      # 草稿
+    final: str      # 终稿</code></pre></div>
+<h3 id="section-14" data-source-page="3">State的特点<a class="heading-link" href="#section-14" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">累积性：State 的字段在执行过程中会不断被填充。执行完一个步骤后，返回的数据会自动合并到 State中，已有的数据会一直保留。</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 初始状态
+{&quot;topic&quot;: &quot;Python异步编程&quot;}
+
+# 第1步后
+{&quot;topic&quot;: &quot;Python异步编程&quot;, &quot;outline&quot;: &quot;1.基础 2.实战...&quot;}
+
+# 第2步后
+{&quot;topic&quot;: &quot;Python异步编程&quot;, &quot;outline&quot;: &quot;1.基础...&quot;, &quot;draft&quot;: &quot;第一章...&quot;}
+
+# 所有中间结果都保留</code></pre></div>
+<h2 id="section-17" data-source-page="3">Node：工作流的处理单元<a class="heading-link" href="#section-17" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">什么是Node</p>
+<p data-source-page="3">Node 是一个普通的 Python 函数，负责处理 State 中的数据。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">它的工作逻辑非常清晰，是一个典型的「输入-处理-输出」过程：</p>
+<p class="list-item" data-source-page="4">输入：Node 接收当前的 State 作为参数。</p>
+<p data-source-page="4">输入</p>
+<p class="list-item" data-source-page="4">处理：函数内部根据需要从 State 中提取数据，进行计算（如调用模型或工具）。</p>
+<p class="list-item" data-source-page="4">输出：计算完成后，返回一个字典，告诉系统需要更新哪些字段。</p>
+<p data-source-page="4">输出</p>
+<p data-source-page="4">你可以把它想象成一个流水线上的工人：从传送带上拿走零件（读取 State），组装好后（处理数据），再把成品放回传送带（返回字典更新 State）。</p>
+<h3 id="section-27" data-source-page="4">Node函数的标准格式<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def node_function(state: ArticleState) -&gt; dict:
+    &quot;&quot;&quot;
+    输入:完整的State对象
+    处理:执行某个具体任务
+    输出:返回需要更新的字段(字典)
+    &quot;&quot;&quot;
+    # 从State读取需要的数据
+    topic = state[&quot;topic&quot;]
+
+    # 执行处理逻辑
+    result = do_something(topic)
+
+    # 返回要更新的字段
+    return {&quot;outline&quot;: result}</code></pre></div>
+<p data-source-page="4">关键要点:</p>
+<p data-source-page="4">关键要点</p>
+<p class="list-item" data-source-page="4">输入参数:必须是State类型</p>
+<p class="list-item" data-source-page="4">返回值:字典，只包含需要更新的字段</p>
+<p class="list-item" data-source-page="4">LangGraph会自动将返回的字典合并到State中</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h3 id="section-34" data-source-page="5">示例：三个Node<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def generate_outline(state: ArticleState):
+    &quot;&quot;&quot;生成大纲节点&quot;&quot;&quot;
+    topic = state[&quot;topic&quot;]
+    outline = f&quot;关于{topic}的大纲:\n1.基础\n2.实战\n3.总结&quot;
+    return {&quot;outline&quot;: outline}
+
+def write_draft(state: ArticleState):
+    &quot;&quot;&quot;写草稿节点&quot;&quot;&quot;
+    outline = state[&quot;outline&quot;]
+    draft = f&quot;根据大纲:\n{outline}\n\n展开内容...&quot;
+    return {&quot;draft&quot;: draft}
+
+def polish(state: ArticleState):
+    &quot;&quot;&quot;润色节点&quot;&quot;&quot;
+    draft = state[&quot;draft&quot;]
+    final = f&quot;润色后:\n{draft}\n\n优化表达...&quot;
+    return {&quot;final&quot;: final}</code></pre></div>
+<h2 id="section-36" data-source-page="5">Edge：节点之间的连接<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">什么是Edge</p>
+<p data-source-page="5">Edge定义了节点之间的执行顺序。</p>
+<p data-source-page="5">用一个旅行的例子，最容易理解:</p>
+<p class="list-item" data-source-page="5">Edge就是景点之间的路线</p>
+<p class="list-item" data-source-page="5">固定边:A景点后一定去B景点</p>
+<p class="list-item" data-source-page="5">条件边:根据天气决定去B还是C</p>
+<h3 id="section-43" data-source-page="5">固定边（add_edge）<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">用于顺序执行，无条件跳转:</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 添加固定边
+workflow.add_edge(&quot;生成大纲&quot;, &quot;写草稿&quot;)
+workflow.add_edge(&quot;写草稿&quot;, &quot;润色&quot;)</code></pre></div>
+<p data-source-page="5">执行流程:</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">生成大纲 → 写草稿 → 润色
+
+1</code></pre></div>
+<h3 id="section-48" data-source-page="6">条件边（add_conditional_edges）<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">根据条件选择下一步:</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def route_next(state):
+    &quot;&quot;&quot;路由函数:决定下一步去哪&quot;&quot;&quot;
+    if state[&quot;quality_score&quot;] &gt; 80:
+        return &quot;发布&quot;
+    else:
+        return &quot;修改&quot;
+
+# 添加条件边
+workflow.add_conditional_edges(
+    &quot;质量检查&quot;,           # 从哪个节点开始
+    route_next,          # 路由函数
+    {                    # 路由映射
+        &quot;发布&quot;: &quot;publish_node&quot;,
+        &quot;修改&quot;: &quot;revise_node&quot;
+    }
+)</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">质量检查 ──┬─ 分数&gt;80 → 发布
+          └─ 分数≤80 → 修改
+
+1
+2</code></pre></div>
+<h2 id="section-52" data-source-page="6">Graph：组装完整工作流<a class="heading-link" href="#section-52" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">Graph是整个工作流的容器，把State、Node、Edge组合起来。</p>
+<p data-source-page="6">旅行例子:</p>
+<p class="list-item" data-source-page="6">Graph就是完整的旅行计划书</p>
+<p class="list-item" data-source-page="6">包含所有景点(Node)、路线(Edge)、记录本(State)</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from langgraph.graph import StateGraph, START, END
+
+# 1. 初始化状态图：必须指定 State 的结构
+workflow = StateGraph(ArticleState)
+
+# 2. 注册节点：name 为唯一标识，func 为处理函数
+workflow.add_node(&quot;生成大纲&quot;, generate_outline)
+workflow.add_node(&quot;写草稿&quot;, write_draft)
+workflow.add_node(&quot;润色&quot;, polish)
+
+# 3. 编排路径：使用 START 和 END 常量定义边界
+workflow.add_edge(START, &quot;生成大纲&quot;)      # 指定入口点
+workflow.add_edge(&quot;生成大纲&quot;, &quot;写草稿&quot;)  # 添加从 start 到 end 的固定连接
+workflow.add_edge(&quot;写草稿&quot;, &quot;润色&quot;)
+workflow.add_edge(&quot;润色&quot;, END)             # 指定终点
+
+# 4. 编译应用：将逻辑图转换为可执行的 Runnable 对象
+app = workflow.compile()
+
+# 5. 调用执行：传入初始数据启动工作流
+result = app.invoke({&quot;topic&quot;: &quot;Python异步编程&quot;})</code></pre></div>
+<h2 id="section-58" data-source-page="7">实战：最简工作流<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">现在让我们完整实现一个两节点的最简工作流，巩固上面的概念。</p>
+<h3 id="section-60" data-source-page="7">场景设计<a class="heading-link" href="#section-60" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">任务:给定一个数字，计算它的平方和立方</p>
+<p data-source-page="7">流程:</p>
+<p data-source-page="7">流程</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">输入数字 → [计算平方] → [计算立方] → 输出结果
+
+1</code></pre></div>
+<p data-source-page="7">核心代码实现</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<aside class="callout" data-source-page="8"><p>完整源码文件: samples/chapter9/simple_langgraph_demo/simple_math_workflow.py</p></aside>
+<p data-source-page="8">在 LangGraph 中构建一个最简工作流（如本例中的数学计算）主要分为四个核心步骤：</p>
+<p class="list-item" data-source-page="8">定义状态（State）：使用 TypedDict 规定数据流转的结构。</p>
+<p data-source-page="8">定义状态（State）</p>
+<p class="list-item" data-source-page="8">定义节点（Node）：编写具体的处理函数（如计算平方、立方）。</p>
+<p data-source-page="8">定义节点（Node）</p>
+<p class="list-item" data-source-page="8">构建图（Graph）：通过 StateGraph 将节点与边（START / END）连接。</p>
+<p class="list-item" data-source-page="8">编译与运行：调用 compile() 生成可执行对象并传入初始数据。</p>
+<p data-source-page="8">编译与运行</p>
+<p data-source-page="8">为了保持正文简洁，建议你直接打开配套的源码文件查看详细实现。代码中包含了详尽的内联注释，展示了状态是如何从输入开始，经过各个节点的计算，最终汇聚成完整结果的。</p>
+<p data-source-page="8">执行结果</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">计算平方:5² = 25
+计算立方:5³ = 125
+
+最终状态:
+{&#x27;number&#x27;: 5, &#x27;square&#x27;: 25, &#x27;cube&#x27;: 125}</code></pre></div>
+<h2 id="section-78" data-source-page="8">State更新机制详解<a class="heading-link" href="#section-78" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">这是很多初学者容易混淆的地方，让我详细说明。</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 初始State
+{&quot;number&quot;: 5}
+
+# 执行&quot;平方&quot;节点后
+# 节点返回:{&quot;square&quot;: 25}
+# LangGraph自动合并 →
+{&quot;number&quot;: 5, &quot;square&quot;: 25}
+
+# 执行&quot;立方&quot;节点后
+# 节点返回:{&quot;cube&quot;: 125}
+# LangGraph自动合并 →
+{&quot;number&quot;: 5, &quot;square&quot;: 25, &quot;cube&quot;: 125}</code></pre></div>
+<p data-source-page="9">规则：</p>
+<p class="list-item" data-source-page="9">节点只需返回新增或修改的字段</p>
+<p data-source-page="9">新增或修改</p>
+<p class="list-item" data-source-page="9">LangGraph自动将返回值合并到State</p>
+<p class="list-item" data-source-page="9">已有字段会保留(累积性)</p>
+<h2 id="section-86" data-source-page="9">■ 学点英语<a class="heading-link" href="#section-86" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="9"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>状态</td><td>State</td><td>/steɪt/</td><td>工作流中结构化的数据容器，存储所有中间结果</td></tr><tr><td>节点</td><td>Node</td><td>/noʊd/</td><td>工作流的处理单元，接收 State 返回更新字典</td></tr><tr><td>边</td><td>Edge</td><td>/edʒ/</td><td>节点间的连接线，分固定边和条件边</td></tr><tr><td>条件路由</td><td>Conditional Routing</td><td>/kənˈdɪʃənəl ˈruːtɪŋ/</td><td>根据当前 State 动态选择下一个执行节点</td></tr></tbody></table></div>
+<h2 id="section-88" data-source-page="9">下节预告<a class="heading-link" href="#section-88" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">下一节，我们将用这些概念构建一个真实的文章写作 Agent，体验 LangGraph 在实战中的强大能力。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-129.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>为什么需要 LangGraph</strong><small>为什么需要LangGraph</small></a><a class="chapter-neighbor next" href="lesson-131.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>文章写作Agent</strong><small>文章写作Agent</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5284#mid=105035" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-4" class="toc-level-2">State：工作流的数据中心</a><a href="#section-11" class="toc-level-3">如何定义State</a><a href="#section-14" class="toc-level-3">State的特点</a><a href="#section-17" class="toc-level-2">Node：工作流的处理单元</a><a href="#section-27" class="toc-level-3">Node函数的标准格式</a><a href="#section-34" class="toc-level-3">示例：三个Node</a><a href="#section-36" class="toc-level-2">Edge：节点之间的连接</a><a href="#section-43" class="toc-level-3">固定边（add_edge）</a><a href="#section-48" class="toc-level-3">条件边（add_conditional_edges）</a><a href="#section-52" class="toc-level-2">Graph：组装完整工作流</a><a href="#section-58" class="toc-level-2">实战：最简工作流</a><a href="#section-60" class="toc-level-3">场景设计</a><a href="#section-78" class="toc-level-2">State更新机制详解</a><a href="#section-86" class="toc-level-2">■ 学点英语</a><a href="#section-88" class="toc-level-2">下节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-130", "title": "LangGraph核心概念", "stage": 4, "week": 9, "module": "为什么需要LangGraph", "minutes": 11, "pages": 9, "type": "article"}</script>
+</body></html>

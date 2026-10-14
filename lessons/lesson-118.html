@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>MCP 通信协议 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-118">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 7 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>MCP通信协议与实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 119</span></div>
+<h1 class="lesson-title">MCP 通信协议</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>8 页原文</span><span>约 13 分钟阅读</span><span class="module-name">MCP通信协议与实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-118.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-118.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面学习了 MCP 的三大核心能力：Resources、Tools 和 Prompts。但有个问题一直没有回答：AI 应用和 MCP Server 之间到底是怎么通信的？ 有同学可能会想：&quot;直接调用函数不就行了吗？比如 server.get_resource(uri)。&quot; 如果你还停留在这种思想，那可能还是没有理解MCP 的核心价值。MCP 本身就是要把工具和应用分离——如果 AI 应用直接调用 Server 的函数，那岂不是又把两者耦合在一起了？那和传统的 Function Calling 有什么区别？ 实际上，MCP Server 更像是一个 HTTP 服务（比如 RESTful API），HTTP服务通常都运行在另外一个进程，甚至根本都不在你的本地计算机上(可能在遥远的服务器上)。 但它和 HTTP 服务又有很大的不同：HTTP 用的是 GET/POST 请求，MCP 用的是什么？ HTTP 跑在 80/443 端口，MCP呢？ HTTP服务器通常借助各类Web 服务器，比如TomCat等，那MCP Server 怎么启动？ HTTP 有 URL 路由，MCP 怎么找到对应的资源或工具？ 这一节深入 MCP 的底层，看看它的通信协议和架构设计。</p></aside>
+<h2 id="section-1" data-source-page="1">8.1 MCP 与 HTTP 的异同<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<h3 id="section-2" data-source-page="1">相同之处：都是 Client-Server 架构<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">MCP 和 HTTP 都采用了 Client-Server 架构：</p>
+<p data-source-page="1">Client-Server 架构</p>
+<p data-source-page="1">HTTP 的世界：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">浏览器（Client）          Web 服务器（Server）
+     │
+     ├─ GET /api/users ──────→
+     │ ←───── 返回 JSON ─────┤
+     │
+     ├─ POST /api/login ─────→
+     │ ←───── 返回 token ────┤</code></pre></div>
+<p data-source-page="2">MCP 的世界：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">AI 应用（Client）         MCP Server
+     │
+     ├─ resources/list ──────→
+     │ ←───── 返回笔记列表 ───┤
+     │
+     ├─ tools/call ─────────→
+     │ ←───── 创建笔记成功 ───┤</code></pre></div>
+<p data-source-page="2">共同特点：</p>
+<p class="list-item" data-source-page="2">Client 发起请求，Server 处理并返回结果</p>
+<p class="list-item" data-source-page="2">Server 是独立运行的，与 Client 解耦合</p>
+<p class="list-item" data-source-page="2">支持多个 Client 连接同一个 Server</p>
+<h3 id="section-13" data-source-page="2">解耦意味着什么<a class="heading-link" href="#section-13" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">「Server 与 Client 解耦合」不仅仅是为了架构整洁——它是 MCP 安全模型的根基。</p>
+<p data-source-page="2">还记得第 3 节 Resources 示例里那句「AI 应用不能直接读本地文件」吗？原因就在这里：如果 AI 应用（Client）能直接读写磁盘，那就意味着一个 LLM 驱动的程序拥有对整个文件系统的完全访问权。prompt 注入、模型判断失误——任何一个环节出问题，都可能导致文件泄露或被篡改。</p>
+<p data-source-page="2">MCP 的做法很明确：AI 应用不碰磁盘。它的角色是编排调度——通过协议向 Server 发请求（“给我authentication.md 的内容”），拿到结果后转发给 LLM，LLM 生成回答后展示给用户。真正打开文件、读取内容、写入改动的物理 I/O 操作，全部发生在 MCP Server 的进程内——Server 在自己的身体里执行 fs.readFile()，而不是让 AI 应用去碰硬盘。Client 能访问什么、不能访问什么，完全由Server 在启动配置中声明——在 mcpServers 里白纸黑字写清楚。</p>
+<p data-source-page="2">用一个简单的类比来记住这个原则：Server 就像一个图书管理员，AI 是读者。读者不能自己进书库翻找，必须告诉管理员要哪本书，管理员去取来。书库的钥匙只在管理员手里。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h3 id="section-18" data-source-page="3">核心差异：通信方式不同<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">虽然都是 Client-Server，但实现方式完全不同：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="3"><table><thead><tr><th scope="col">特性</th><th scope="col">HTTP</th><th scope="col">MCP</th></tr></thead><tbody><tr><td>协议格式</td><td>HTTP/1.1, HTTP/2</td><td>JSON-RPC 2.0</td></tr><tr><td>请求方法</td><td>GET, POST, PUT, DELETE</td><td>统一的 method 字段</td></tr><tr><td>路由方式</td><td>URL 路径（/api/users/123）</td><td>方法名（resources/read）</td></tr><tr><td>传输层</td><td>TCP 端口（80/443）</td><td>stdio / HTTP / WebSocket</td></tr><tr><td>状态码</td><td>200, 404, 500 等</td><td>JSON-RPC 错误码（-32xxx）</td></tr><tr><td>身份认证</td><td>Cookie, JWT, OAuth</td><td>由启动参数控制</td></tr></tbody></table></div>
+<p data-source-page="3">关键区别解读：</p>
+<p data-source-page="3">HTTP 用 URL，MCP 用方法名</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">HTTP 的路由方式：
+GET /api/notes/123      → 获取笔记
+POST /api/notes         → 创建笔记
+DELETE /api/notes/123   → 删除笔记
+
+MCP 的方法调用方式：
+{&quot;method&quot;: &quot;resources/read&quot;, &quot;params&quot;: {&quot;uri&quot;: &quot;file://notes/123&quot;}}
+{&quot;method&quot;: &quot;tools/call&quot;, &quot;params&quot;: {&quot;name&quot;: &quot;create_note&quot;}}
+{&quot;method&quot;: &quot;tools/call&quot;, &quot;params&quot;: {&quot;name&quot;: &quot;delete_note&quot;}}</code></pre></div>
+<p data-source-page="3">HTTP 通过 URL + 请求方法 来区分操作，MCP 通过 方法名 来表达意图。</p>
+<p data-source-page="3">HTTP 跑在端口上，MCP 更灵活</p>
+<p data-source-page="3">MCP 最常用的通信方式是 stdio（标准输入输出）。与需要监听端口、配置路由的 HTTP 不同，stdio直接通过进程的标准流进行数据交换。这种「进程内即通信」的设计，让本地工具免去了端口冲突和网络握手的麻烦，安全性也更高。</p>
+<p data-source-page="3">当然，对于需要跨网络协作的场景，MCP 也完全支持 HTTP+SSE 或 WebSocket。其核心逻辑是：本地工具优先用 stdio，跨网络服务则用网络协议。</p>
+<p data-source-page="3">HTTP 用状态码，MCP 用错误对象</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">HTTP 的错误返回：
+HTTP/1.1 404 Not Found
+{&quot;error&quot;: &quot;Note not found&quot;}
+
+MCP 的错误返回：
+{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;error&quot;: {
+    &quot;code&quot;: -32601,
+    &quot;message&quot;: &quot;Method not found&quot;
+  }
+}</code></pre></div>
+<p data-source-page="4">HTTP 用 HTTP 状态码（200/404/500），MCP 用 JSON-RPC 错误码（-32xxx）。</p>
+<h3 id="section-31" data-source-page="4">为什么 MCP 不直接用 HTTP<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">既然 HTTP 这么成熟，为什么还要折腾这一套？核心原因有三点：</p>
+<p class="list-item" data-source-page="4">极简的本地集成：stdio 无需网络协议栈，对本地文件系统和工具的访问更自然。</p>
+<p data-source-page="4">极简的本地集成</p>
+<p class="list-item" data-source-page="4">RPC 逻辑更契合：AI 调用工具本质上是「执行动作」（RPC），而非「访问资源」（REST）。</p>
+<p class="list-item" data-source-page="4">传输层解耦：MCP 不绑定在特定传输层，可以根据性能和场景在 stdio、WebSocket 之间无缝切换。</p>
+<h2 id="section-37" data-source-page="4">8.2 JSON-RPC 2.0 协议详解<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">我们已经看到 MCP 在架构设计上更倾向于「执行动作」而非「访问资源」，那么它必然需要一套标准化的「对话语言」。正如人类交流需要语法，AI 应用与 MCP Server 之间的对话则完全建立在 JSON-RPC 2.0 协议之上。这一节剥开 MCP 的外壳，直击这套支撑起万千工具调用的底层通信逻辑。</p>
+<h3 id="section-39" data-source-page="4">什么是 JSON-RPC<a class="heading-link" href="#section-39" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">JSON-RPC 是一种轻量级的远程过程调用协议，用 JSON 格式传输数据。</p>
+<p data-source-page="4">轻量级的远程过程调用协议</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<aside class="callout" data-source-page="5"><p>技术的回响 如果你是一位资深开发者，看到这里可能会感到亲切。这种模式在本质上非常接近早年流行的 RPC（Remote Procedure Call）技术。它回归了「指令式」的交互直觉：直接告诉对方我要执行哪个函数，而不是像 REST 那样去操作资源。</p></aside>
+<p data-source-page="5">类比理解：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">传统函数调用（同一进程内）：
+result = calculator.add(5, 3)
+
+远程过程调用（跨进程）：
+发送请求：{&quot;method&quot;: &quot;add&quot;, &quot;params&quot;: [5, 3]}
+接收响应：{&quot;result&quot;: 8}</code></pre></div>
+<p data-source-page="5">JSON-RPC 让跨进程调用函数像本地调用一样简单。</p>
+<h3 id="section-46" data-source-page="5">三种消息类型<a class="heading-link" href="#section-46" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">JSON-RPC 2.0 定义了三种消息：</p>
+<p data-source-page="5">请求（Request）</p>
+<p data-source-page="5">客户端调用服务端的方法：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;create_note&quot;,
+    &quot;arguments&quot;: {
+      &quot;title&quot;: &quot;MCP学习笔记&quot;,
+      &quot;content&quot;: &quot;今天学了JSON-RPC协议&quot;
+    }
+  }
+}</code></pre></div>
+<p data-source-page="5">字段说明：</p>
+<p class="list-item" data-source-page="5">jsonrpc: 协议版本，通常设置为 &quot;2.0&quot;</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p class="list-item" data-source-page="6">id: 请求的唯一标识。服务端返回响应时必须携带相同的 ID，客户端以此来区分这个回复对应的是哪一次请求。</p>
+<p class="list-item" data-source-page="6">method: 要调用的方法名</p>
+<p class="list-item" data-source-page="6">params: 方法参数（可选）</p>
+<p data-source-page="6">响应（Response）</p>
+<p data-source-page="6">服务端返回的结果：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;result&quot;: {
+    &quot;content&quot;: [
+      {
+        &quot;type&quot;: &quot;text&quot;,
+        &quot;text&quot;: &quot;笔记创建成功！文件路径：notes/MCP学习笔记.md&quot;
+      }
+    ]
+  }
+}</code></pre></div>
+<p class="list-item" data-source-page="6">id: 必须与对应请求中的 id 完全一致，否则客户端会认错人。</p>
+<p class="list-item" data-source-page="6">result: 成功时的返回值</p>
+<p class="list-item" data-source-page="6">error: 失败时的错误信息（二选一）</p>
+<p data-source-page="6">错误响应示例：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 1,
+  &quot;error&quot;: {
+    &quot;code&quot;: -32602,
+    &quot;message&quot;: &quot;Invalid params&quot;,
+    &quot;data&quot;: &quot;参数 &#x27;title&#x27; 不能为空&quot;
+  }
+}</code></pre></div>
+<p data-source-page="6">通知（Notification）</p>
+<p data-source-page="6">单向消息，不需要响应：</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;method&quot;: &quot;notifications/resources/updated&quot;,
+  &quot;params&quot;: {
+    &quot;uri&quot;: &quot;file://notes/new_note.md&quot;
+  }
+}</code></pre></div>
+<p data-source-page="7">关键特征： 没有 id 字段，接收方不需要回复。</p>
+<p data-source-page="7">关键特征：</p>
+<p data-source-page="7">使用场景：</p>
+<p class="list-item" data-source-page="7">Server 通知 Client：资源列表更新了</p>
+<p class="list-item" data-source-page="7">Client 通知 Server：用户取消了操作</p>
+<h3 id="section-72" data-source-page="7">标准错误码<a class="heading-link" href="#section-72" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">MCP 遵循 JSON-RPC 2.0 的标准错误码：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">错误码</th><th scope="col">含义</th><th scope="col">说明</th></tr></thead><tbody><tr><td>-32700</td><td>Parse error</td><td>JSON 解析失败</td></tr><tr><td>-32600</td><td>Invalid Request</td><td>请求格式不正确</td></tr><tr><td>-32601</td><td>Method not found</td><td>方法不存在</td></tr><tr><td>-32602</td><td>Invalid params</td><td>参数无效</td></tr><tr><td>-32603</td><td>Internal error</td><td>服务器内部错误</td></tr><tr><td>-32000 到 -32099</td><td>Server error</td><td>自定义服务器错误</td></tr></tbody></table></div>
+<aside class="callout" data-source-page="7"><p>错误码使用规则： 标准错误码（-32768 到 -32000）：由 JSON-RPC 协议预定义，不能修改 用于协议层错误（JSON 解析失败、方法不存在等） MCP Server 必须遵循这些标准 自定义错误码（-32000 到 -32099）：可以自己定义 用于业务逻辑错误（文件不存在、权限不足等） 示例：-32000: 文件不存在 -32001: 权限被拒绝 -32002: 资源已锁定 <strong>建议：</strong>在 MCP Server 中定义自己的错误码常量，保持一致性</p></aside>
+<p data-source-page="7">实际例子：</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;jsonrpc&quot;: &quot;2.0&quot;,
+  &quot;id&quot;: 2,
+  &quot;error&quot;: {
+    &quot;code&quot;: -32601,
+    &quot;message&quot;: &quot;Method not found&quot;,
+    &quot;data&quot;: &quot;方法 &#x27;delete_all_notes&#x27; 不存在，可用方法：create_note, search_notes, 
+add_thoughts&quot;
+  }
+}</code></pre></div>
+<h2 id="section-78" data-source-page="8">8.3 下一节预告<a class="heading-link" href="#section-78" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">了解了 JSON-RPC 的消息格式后，下一个问题是：这些 JSON 消息是怎么从 Client 传到 Server 的？MCP 提供了三种传输层选择——stdio、SSE 和 WebSocket，各有适用场景。下一节将详细讲解它们的工作原理和选择依据，还会介绍 MCP Server 从启动到关闭的完整生命周期。</p>
+<h2 id="section-80" data-source-page="8">8.4 ■ 学点英语<a class="heading-link" href="#section-80" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>JSON-RPC 2.0</td><td>JSON-RPC 2.0</td><td>/ˈdʒeɪsɑːn ɑːr piː siː tuː pɔɪnt oʊ/</td><td>基于JSON的轻量级远程过程调用协议， MCP的基础通信协议</td></tr><tr><td>请求-响应模式</td><td>Request-Response Pattern</td><td>/rɪˈkwest rɪˈspɑːns ˈpætərn/</td><td>Client发送带id的请求，Server返回同id响应的通信模式</td></tr><tr><td>单向通知</td><td>One-Way Notification</td><td>/wʌn weɪ noʊtɪfɪˈkeɪʃn/ ˌ</td><td>不带id的消息，发送方不期待响应的单方向通信</td></tr><tr><td>方法命名空间</td><td>Method Namespace</td><td>/ˈmeθəd ˈneɪmspeɪs/</td><td>用点号分层的命名方式如resources/list、 tools/call</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-117.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Resources + Tools + Prompts 组合</strong><small>Tools、Prompts详解</small></a><a class="chapter-neighbor next" href="lesson-119.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>传输与生命周期</strong><small>MCP通信协议与实战</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5281#mid=104937" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">8.1 MCP 与 HTTP 的异同</a><a href="#section-2" class="toc-level-3">相同之处：都是 Client-Server 架构</a><a href="#section-13" class="toc-level-3">解耦意味着什么</a><a href="#section-18" class="toc-level-3">核心差异：通信方式不同</a><a href="#section-31" class="toc-level-3">为什么 MCP 不直接用 HTTP</a><a href="#section-37" class="toc-level-2">8.2 JSON-RPC 2.0 协议详解</a><a href="#section-39" class="toc-level-3">什么是 JSON-RPC</a><a href="#section-46" class="toc-level-3">三种消息类型</a><a href="#section-72" class="toc-level-3">标准错误码</a><a href="#section-78" class="toc-level-2">8.3 下一节预告</a><a href="#section-80" class="toc-level-2">8.4 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-118", "title": "MCP 通信协议", "stage": 3, "week": 7, "module": "MCP通信协议与实战", "minutes": 13, "pages": 8, "type": "article"}</script>
+</body></html>

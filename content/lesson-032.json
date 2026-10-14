@@ -1,0 +1,1113 @@
+{
+  "id": "lesson-032",
+  "title": "Embedding（三）-意义的数学化",
+  "code": "1-5",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "Embedding",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/005-Embedding/032-图文-1-5-Embedding（三）-意义的数学化.pdf",
+  "sha256": "2aeafd0a1c4652567698e5eb8b2b87196d5dc8a9243a3eeca055bdc89ff42028",
+  "pdf": "sources/pdf/lesson-032.pdf",
+  "pages": 7,
+  "source_url": "https://class.imooc.com/lesson/5257#mid=104883",
+  "minutes": 10,
+  "excerpt": "上一节看到了词向量的神奇性质和学习机制。但这背后隐藏着一个更深刻的问题:这些数字真的代表\"意义\"吗?本节将从哲学角度思考\"什么是猫\",同时看看一些有趣的词向量实验,最后补充余弦相似度的技术细节。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节看到了词向量的神奇性质和学习机制。但这背后隐藏着一个更深刻的问题:这些数字真的代表\"意义\"吗?本节将从哲学角度思考\"什么是猫\",同时看看一些有趣的词向量实验,最后补充余弦相似度的技术细节。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "3.1 意义的数学化",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "读到这里,希望停下来思考一个深刻的问题。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "\"猫\"这个词,是什么?",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "\"猫\"在不同的系统中,有着完全不同的表示方式:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "系统        表示方式                           说明\n─────────────────────────────────────────────────────────\n人类语言     \"猫\"                              汉字符号\n英语        \"cat\"                             字母组合\n计算机      01101110 01011011 00101100        二进制编码\nChatGPT     [0.23, -0.45, 0.67, ..., 0.12]   12288维向量",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "哪一个才是真正的\"猫\"?",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个问题,在哲学上被称为指称问题(Problem of Reference)。20世纪的语言学家费尔迪南·德·索绪尔给出了一个深刻的答案:",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "quote",
+      "text": "“词的意义不在符号本身,而在于它与其他词的关系网络。”",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "真正的\"猫\",不是某个具体的符号或数字,而是一种关系的集合:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "它与\"狗\"的关系(都是动物,都是宠物)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "它与\"鱼\"的关系(捕食关系)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "它与\"吃\"的关系(动词搭配)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "它与\"可爱\"的关系(情感联想)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Embedding做的,正是把这个\"关系的集合\"编码成了数学对象。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在哲学上,这被称为结构主义的观点:一个事物的意义,不在于它本身,而在于它与其他事物的关系网络。Embedding,就是用数学的方式,实现了这个哲学洞见。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就引出了一个有趣的问题:AI真的\"理解\"语言吗?从某种意义上说,是的。AI不需要真的\"见过\"一只猫,也不需要摸过它的毛、听过它的叫声——这些都是人类的感性经验。AI所做的,是在文本中见过数万次\"猫\"这个词与其他词的共现,然后把这些共现规律编码进Embedding向量里。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是一种统计意义上的理解。虽然与人类的感性经验不同,但在语言处理上,这种基于关系网络的理解方式惊人地有效。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "3.2 趣闻1:向量的\"随机炼金术\"",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "向量语义加减法有一个更酷的玩法:拿几个词,把它们随意加减,看看会发生什么。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "选4个词来做实验:火焰、水、夜晚、白天",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. 火焰 + 水",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "Embedding(火焰) + Embedding(水) ≈ Embedding(蒸汽 / 云雾 / 温泉) 火焰:热、能量、动态 水:液体、流动、生命 相加:两种元素的融合 → 产生蒸汽、雾气这种介于两者之间的状态",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "2. 火焰 - 水",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "Embedding(火焰) - Embedding(水) ≈ Embedding(干燥 / 燃烧 / 沙漠) 火焰 - 水 = 去掉\"冷、湿\"的属性 保留:热、干燥、炙烤 结果:极度干燥和炽热的状态 → 沙漠、烈日、干旱",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "3. 夜晚 + 火焰",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "Embedding(夜晚) + Embedding(火焰) ≈ Embedding(篝火 / 烛光 / 星火) 夜晚:黑暗、神秘、静谧 火焰:光明、温暖、跳动 相加:黑暗中的光明 → 篝火晚会、烛光晚餐的浪漫氛围",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "4. 夜晚 - 白天",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "Embedding(夜晚) - Embedding(白天) ≈ Embedding(黑暗 / 阴影 / 月光) 夜晚 - 白天 = 去掉\"光明、活跃\"的成分 强化:黑暗、安静、神秘 结果:纯粹的黑暗概念,或者月光这种微弱的光",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "5. 水 + 夜晚",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "Embedding(水) + Embedding(夜晚) ≈ Embedding(月光下的湖面 / 夜雨 / 深海) 水:流动、平静、反射 夜晚:黑暗、宁静、神秘 相加:宁静而神秘的水域 → 月光下波光粼粼的湖面",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "6. 白天 + 水",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "Embedding(白天) + Embedding(水) ≈ Embedding(清晨的露水 / 海滩 / 喷泉) 白天:明亮、活力、清新 水:清澈、流动、生机 相加:明亮而有生机的水景 → 阳光下的海滩、喷泉",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "7. 火焰 + 夜晚 - 水",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "Embedding(火焰) + Embedding(夜晚) - Embedding(水) ≈ Embedding(干燥的篝火 / 沙漠之夜的营火) 火焰 + 夜晚 = 黑暗中的火光 再减去水 = 去掉湿润、去掉蒸汽 结果:干燥炙热的夜间火焰→ 沙漠中的营火",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "8. 白天 - 夜晚",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "Embedding(白天) - Embedding(夜晚) ≈ Embedding(正午 / 阳光 / 明亮) 白天 - 夜晚 = 去掉所有\"黑暗\"成分 强化:光明、炙热、耀眼 结果:极致的光明 → 正午的烈日",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "3.3 趣闻2:哲学家和工程师的\"百年约会\"",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是一个关于哲学和科学如何殊途同归的故事。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "1916年,瑞士日内瓦",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "瑞士语言学家费尔迪南·德·索绪尔去世后,他的学生整理出版了《普通语言学教程》。书中提出了一个革命性的观点:",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "quote",
+      "text": "“词的意义不在符号本身,而在于它与其他词的差异关系。”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是纯粹的哲学思辨,基于对语言本质的深刻洞察。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2013年,美国加州",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "97年后,Google的工程师Tomas Mikolov和他的团队发明了Word2Vec。他们的目标很实际:如何更高效地让计算机表示词?",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "他们设计了一个算法:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "训练目标:根据上下文预测词 副产品:每个词得到一个12288维向量 惊喜发现:这些向量竟然能做代数运算! 国王 - 男人 + 女人 = 女王",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言学家们震惊了:“这不就是索绪尔说的’关系网络’的数学实现吗?!”",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Word2Vec的发明者们并没有读过索绪尔的理论,他们只是在解决工程问题。但他们用数学和数据,独立地\"发现\"了索绪尔用思辨得出的结论。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "哲学的思辨和科学的实验,常常是从不同路径,抵达同一个真理。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "索绪尔用思辨揭示:语言的本质是关系网络",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Mikolov用数据发现:向量空间能编码这种关系",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "两者相隔近百年,却指向了同一个深层结构",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当一个数学模型与哲学洞见高度一致时,往往说明我们触及了事物的真实本质。这或许就是为什么,AI研究不仅需要工程师,也需要哲学家。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "3.4 余弦相似度",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "本节中多次提到\"相似度\"来衡量两个向量的相似程度,这里用的就是余弦相似度。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "简单理解",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "余弦相似度衡量的是两个向量的方向有多相似,而不是大小。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象两个箭头:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "情况                余弦相似度      说明\n──────────────────────────────────────────────\n两个箭头指向同一方向     1            完全相同\n两个箭头垂直            0            完全无关\n两个箭头方向相反       -1            完全相反",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "数学公式",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "余弦相似度 = 𝐴 ⋅ 𝐵 ∣ 𝐴 ∣ × ∣ 𝐵 ∣ 余弦相似度= ∣A∣×∣B∣ A⋅B ",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "其中:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "𝐴 ⋅ 𝐵 A⋅B = 向量点积(对应位置相乘再相加)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "∣ 𝐴 ∣ ∣A∣ 和 ∣ 𝐵 ∣ ∣B∣ = 两个向量的长度(模)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "具体例子",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "计算\"猫\"和\"狗\"的One-Hot向量相似度:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "向量    表示          说明\n─────────────────────────────────\nA       [1, 0, 0, 0, 0]   \"猫\"\nB       [0, 1, 0, 0, 0]   \"狗\"",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "步1:计算点积",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "𝐴 ⋅ 𝐵 = 1 × 0 + 0 × 1 + 0 × 0 + 0 × 0 + 0 × 0 = 0 A⋅B=1×0+0×1+0×0+0×0+0×0=0",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "步2:计算长度",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "∣ 𝐴 ∣ = 1 2 + 0 2 + 0 2 + 0 2 + 0 2 = 1 ∣A∣= 1 2 +0 2 +0 2 +0 2 +0 2  =1 ∣ 𝐵 ∣ = 0 2 + 1 2+ 0 2 + 0 2 + 0 2 = 1 ∣B∣= 0 2 +1 2 +0 2 +0 2 +0 2  =1",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "步3:计算余弦相似度",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "余弦相似度 = 𝐴 ⋅ 𝐵 ∣ 𝐴 ∣ × ∣ 𝐵 ∣ = 0 1 × 1 = 0 余弦相似度= ∣A∣×∣B∣ A⋅B  = 1×1 0  =0",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "01×1",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "结果为0,说明这两个向量完全垂直,没有任何相似性。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么叫\"余弦\"?",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为它实际上计算的是两个向量之间夹角的余弦值:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "夹角0° → cos(0°) = 1 (完全相同) 夹角90° → cos(90°) = 0 (垂直,无关) 夹角180° → cos(180°) =-1 (完全相反)",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么用余弦相似度?",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "不受长度影响:只看方向,不看大小 向量[1, 2]和向量[2, 4]方向相同,余弦相似度=1 虽然长度不同,但语义方向一致",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "list",
+      "text": "值域固定:总是在-1到1之间,便于比较",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "几何意义清晰:直接对应向量夹角",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在词向量中,关心的正是词的语义方向是否相似,而不是绝对大小,所以余弦相似度是最合适的度量。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.5 下一节预告",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在知道了Embedding是如何把文字变成向量的:每个词都是一个12288维的向量,编码了它的语义。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但这些向量是哪里来的?它们是怎么学会语义的?",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "答案就在下一节:预训练——通过3000亿Token的训练,让模型学会语言规律。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.6 ■ 学点英语",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n指称问题 | Problem of Reference | /ˈprɒbləm əv ˈrefrəns/ | 符号与它所代表的事物之间关系的哲学问题\n结构主义 | Structuralism | /ˈstrʌktʃərəlɪzəm/ | 认为事物的意义来自其与其他事物的关系而非本身的哲学观点\n向量夹角 | Vector Angle | /ˈvektər ˈæŋɡl/ | 两个向量之间的夹角，余弦相似度即夹角的余弦值\n点积 | Dot Product | /dɒt ˈprɒdʌkt/ | 向量对应位置相乘再相加的运算，用于计算余弦相似度\n向量模长 | Vector Norm | /ˈvektər nɔːm/ | 向量的长度（L2范数），从原点到向量终点的距离\nWord2V ec | Word2Vec | /wɜːd tuː vek/ | 2013年Google发布的词向量训练算法，首次展示语义代数性质",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "指称问题",
+          "Problem of Reference",
+          "/ˈprɒbləm əv ˈrefrəns/",
+          "符号与它所代表的事物之间关系的哲学问题"
+        ],
+        [
+          "结构主义",
+          "Structuralism",
+          "/ˈstrʌktʃərəlɪzəm/",
+          "认为事物的意义来自其与其他事物的关系而非本身的哲学观点"
+        ],
+        [
+          "向量夹角",
+          "Vector Angle",
+          "/ˈvektər ˈæŋɡl/",
+          "两个向量之间的夹角，余弦相似度即夹角的余弦值"
+        ],
+        [
+          "点积",
+          "Dot Product",
+          "/dɒt ˈprɒdʌkt/",
+          "向量对应位置相乘再相加的运算，用于计算余弦相似度"
+        ],
+        [
+          "向量模长",
+          "Vector Norm",
+          "/ˈvektər nɔːm/",
+          "向量的长度（L2范数），从原点到向量终点的距离"
+        ],
+        [
+          "Word2V ec",
+          "Word2Vec",
+          "/wɜːd tuː vek/",
+          "2013年Google发布的词向量训练算法，首次展示语义代数性质"
+        ]
+      ],
+      "page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "3.8 推荐阅读",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Efficient Estimation of Word Representations in Vector Space (Word2Vec论文, 2013)",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Tomas Mikolov等人发表的Word2Vec原始论文,首次展示了词向量的语义代数特性(国王 - 男人 + 女人= 女王)。论文写得很清楚,数学部分不复杂,重点在于展示这一发现的惊人之处。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    }
+  ],
+  "accounting": {
+    "source_chars": 4579,
+    "represented_chars": 4366,
+    "removed_chars": 213,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 163,
+      "repeated_title": 50
+    }
+  },
+  "videos": [],
+  "order": 33,
+  "headings": [
+    {
+      "title": "3.1 意义的数学化",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "3.2 趣闻1:向量的\"随机炼金术\"",
+      "id": "section-18",
+      "level": 2
+    },
+    {
+      "title": "1. 火焰 + 水",
+      "id": "section-21",
+      "level": 2
+    },
+    {
+      "title": "2. 火焰 - 水",
+      "id": "section-23",
+      "level": 2
+    },
+    {
+      "title": "3. 夜晚 + 火焰",
+      "id": "section-25",
+      "level": 2
+    },
+    {
+      "title": "4. 夜晚 - 白天",
+      "id": "section-27",
+      "level": 2
+    },
+    {
+      "title": "5. 水 + 夜晚",
+      "id": "section-29",
+      "level": 2
+    },
+    {
+      "title": "6. 白天 + 水",
+      "id": "section-31",
+      "level": 2
+    },
+    {
+      "title": "7. 火焰 + 夜晚 - 水",
+      "id": "section-33",
+      "level": 2
+    },
+    {
+      "title": "8. 白天 - 夜晚",
+      "id": "section-35",
+      "level": 2
+    },
+    {
+      "title": "3.3 趣闻2:哲学家和工程师的\"百年约会\"",
+      "id": "section-37",
+      "level": 2
+    },
+    {
+      "title": "3.4 余弦相似度",
+      "id": "section-54",
+      "level": 2
+    },
+    {
+      "title": "3.5 下一节预告",
+      "id": "section-84",
+      "level": 2
+    },
+    {
+      "title": "3.6 ■ 学点英语",
+      "id": "section-88",
+      "level": 2
+    },
+    {
+      "title": "3.8 推荐阅读",
+      "id": "section-90",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节看到了词向量的神奇性质和学习机制。但这背后隐藏着一个更深刻的问题:这些数字真的代表\"意义\"吗?本节将从哲学角度思考\"什么是猫\",同时看看一些有趣的词向量实验,最后补充余弦相似度的技术细节。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "3.1 意义的数学化"
+    },
+    {
+      "anchor": "section-1",
+      "text": "读到这里,希望停下来思考一个深刻的问题。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "\"猫\"这个词,是什么?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "\"猫\"在不同的系统中,有着完全不同的表示方式:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "系统        表示方式                           说明\n─────────────────────────────────────────────────────────\n人类语言     \"猫\"                              汉字符号\n英语        \"cat\"                             字母组合\n计算机      01101110 01011011 00101100        二进制编码\nChatGPT     [0.23, -0.45, 0.67, ..., 0.12]   12288维向量"
+    },
+    {
+      "anchor": "section-1",
+      "text": "哪一个才是真正的\"猫\"?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个问题,在哲学上被称为指称问题(Problem of Reference)。20世纪的语言学家费尔迪南·德·索绪尔给出了一个深刻的答案:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "“词的意义不在符号本身,而在于它与其他词的关系网络。”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "真正的\"猫\",不是某个具体的符号或数字,而是一种关系的集合:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它与\"狗\"的关系(都是动物,都是宠物)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它与\"鱼\"的关系(捕食关系)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它与\"吃\"的关系(动词搭配)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它与\"可爱\"的关系(情感联想)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Embedding做的,正是把这个\"关系的集合\"编码成了数学对象。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "在哲学上,这被称为结构主义的观点:一个事物的意义,不在于它本身,而在于它与其他事物的关系网络。Embedding,就是用数学的方式,实现了这个哲学洞见。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这就引出了一个有趣的问题:AI真的\"理解\"语言吗?从某种意义上说,是的。AI不需要真的\"见过\"一只猫,也不需要摸过它的毛、听过它的叫声——这些都是人类的感性经验。AI所做的,是在文本中见过数万次\"猫\"这个词与其他词的共现,然后把这些共现规律编码进Embedding向量里。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这是一种统计意义上的理解。虽然与人类的感性经验不同,但在语言处理上,这种基于关系网络的理解方式惊人地有效。"
+    },
+    {
+      "anchor": "section-18",
+      "text": "3.2 趣闻1:向量的\"随机炼金术\""
+    },
+    {
+      "anchor": "section-18",
+      "text": "向量语义加减法有一个更酷的玩法:拿几个词,把它们随意加减,看看会发生什么。"
+    },
+    {
+      "anchor": "section-18",
+      "text": "选4个词来做实验:火焰、水、夜晚、白天"
+    },
+    {
+      "anchor": "section-21",
+      "text": "1. 火焰 + 水"
+    },
+    {
+      "anchor": "section-21",
+      "text": "Embedding(火焰) + Embedding(水) ≈ Embedding(蒸汽 / 云雾 / 温泉) 火焰:热、能量、动态 水:液体、流动、生命 相加:两种元素的融合 → 产生蒸汽、雾气这种介于两者之间的状态"
+    },
+    {
+      "anchor": "section-23",
+      "text": "2. 火焰 - 水"
+    },
+    {
+      "anchor": "section-23",
+      "text": "Embedding(火焰) - Embedding(水) ≈ Embedding(干燥 / 燃烧 / 沙漠) 火焰 - 水 = 去掉\"冷、湿\"的属性 保留:热、干燥、炙烤 结果:极度干燥和炽热的状态 → 沙漠、烈日、干旱"
+    },
+    {
+      "anchor": "section-25",
+      "text": "3. 夜晚 + 火焰"
+    },
+    {
+      "anchor": "section-25",
+      "text": "Embedding(夜晚) + Embedding(火焰) ≈ Embedding(篝火 / 烛光 / 星火) 夜晚:黑暗、神秘、静谧 火焰:光明、温暖、跳动 相加:黑暗中的光明 → 篝火晚会、烛光晚餐的浪漫氛围"
+    },
+    {
+      "anchor": "section-27",
+      "text": "4. 夜晚 - 白天"
+    },
+    {
+      "anchor": "section-27",
+      "text": "Embedding(夜晚) - Embedding(白天) ≈ Embedding(黑暗 / 阴影 / 月光) 夜晚 - 白天 = 去掉\"光明、活跃\"的成分 强化:黑暗、安静、神秘 结果:纯粹的黑暗概念,或者月光这种微弱的光"
+    },
+    {
+      "anchor": "section-29",
+      "text": "5. 水 + 夜晚"
+    },
+    {
+      "anchor": "section-29",
+      "text": "Embedding(水) + Embedding(夜晚) ≈ Embedding(月光下的湖面 / 夜雨 / 深海) 水:流动、平静、反射 夜晚:黑暗、宁静、神秘 相加:宁静而神秘的水域 → 月光下波光粼粼的湖面"
+    },
+    {
+      "anchor": "section-31",
+      "text": "6. 白天 + 水"
+    },
+    {
+      "anchor": "section-31",
+      "text": "Embedding(白天) + Embedding(水) ≈ Embedding(清晨的露水 / 海滩 / 喷泉) 白天:明亮、活力、清新 水:清澈、流动、生机 相加:明亮而有生机的水景 → 阳光下的海滩、喷泉"
+    },
+    {
+      "anchor": "section-33",
+      "text": "7. 火焰 + 夜晚 - 水"
+    },
+    {
+      "anchor": "section-33",
+      "text": "Embedding(火焰) + Embedding(夜晚) - Embedding(水) ≈ Embedding(干燥的篝火 / 沙漠之夜的营火) 火焰 + 夜晚 = 黑暗中的火光 再减去水 = 去掉湿润、去掉蒸汽 结果:干燥炙热的夜间火焰→ 沙漠中的营火"
+    },
+    {
+      "anchor": "section-35",
+      "text": "8. 白天 - 夜晚"
+    },
+    {
+      "anchor": "section-35",
+      "text": "Embedding(白天) - Embedding(夜晚) ≈ Embedding(正午 / 阳光 / 明亮) 白天 - 夜晚 = 去掉所有\"黑暗\"成分 强化:光明、炙热、耀眼 结果:极致的光明 → 正午的烈日"
+    },
+    {
+      "anchor": "section-37",
+      "text": "3.3 趣闻2:哲学家和工程师的\"百年约会\""
+    },
+    {
+      "anchor": "section-37",
+      "text": "这是一个关于哲学和科学如何殊途同归的故事。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "1916年,瑞士日内瓦"
+    },
+    {
+      "anchor": "section-37",
+      "text": "瑞士语言学家费尔迪南·德·索绪尔去世后,他的学生整理出版了《普通语言学教程》。书中提出了一个革命性的观点:"
+    },
+    {
+      "anchor": "section-37",
+      "text": "“词的意义不在符号本身,而在于它与其他词的差异关系。”"
+    },
+    {
+      "anchor": "section-37",
+      "text": "这是纯粹的哲学思辨,基于对语言本质的深刻洞察。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "2013年,美国加州"
+    },
+    {
+      "anchor": "section-37",
+      "text": "97年后,Google的工程师Tomas Mikolov和他的团队发明了Word2Vec。他们的目标很实际:如何更高效地让计算机表示词?"
+    },
+    {
+      "anchor": "section-37",
+      "text": "他们设计了一个算法:"
+    },
+    {
+      "anchor": "section-37",
+      "text": "训练目标:根据上下文预测词 副产品:每个词得到一个12288维向量 惊喜发现:这些向量竟然能做代数运算! 国王 - 男人 + 女人 = 女王"
+    },
+    {
+      "anchor": "section-37",
+      "text": "语言学家们震惊了:“这不就是索绪尔说的’关系网络’的数学实现吗?!”"
+    },
+    {
+      "anchor": "section-37",
+      "text": "Word2Vec的发明者们并没有读过索绪尔的理论,他们只是在解决工程问题。但他们用数学和数据,独立地\"发现\"了索绪尔用思辨得出的结论。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "哲学的思辨和科学的实验,常常是从不同路径,抵达同一个真理。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "索绪尔用思辨揭示:语言的本质是关系网络"
+    },
+    {
+      "anchor": "section-37",
+      "text": "Mikolov用数据发现:向量空间能编码这种关系"
+    },
+    {
+      "anchor": "section-37",
+      "text": "两者相隔近百年,却指向了同一个深层结构"
+    },
+    {
+      "anchor": "section-37",
+      "text": "当一个数学模型与哲学洞见高度一致时,往往说明我们触及了事物的真实本质。这或许就是为什么,AI研究不仅需要工程师,也需要哲学家。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "3.4 余弦相似度"
+    },
+    {
+      "anchor": "section-54",
+      "text": "本节中多次提到\"相似度\"来衡量两个向量的相似程度,这里用的就是余弦相似度。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "简单理解"
+    },
+    {
+      "anchor": "section-54",
+      "text": "余弦相似度衡量的是两个向量的方向有多相似,而不是大小。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "想象两个箭头:"
+    },
+    {
+      "anchor": "section-54",
+      "text": "情况                余弦相似度      说明\n──────────────────────────────────────────────\n两个箭头指向同一方向     1            完全相同\n两个箭头垂直            0            完全无关\n两个箭头方向相反       -1            完全相反"
+    },
+    {
+      "anchor": "section-54",
+      "text": "数学公式"
+    },
+    {
+      "anchor": "section-54",
+      "text": "余弦相似度 = 𝐴 ⋅ 𝐵 ∣ 𝐴 ∣ × ∣ 𝐵 ∣ 余弦相似度= ∣A∣×∣B∣ A⋅B "
+    },
+    {
+      "anchor": "section-54",
+      "text": "其中:"
+    },
+    {
+      "anchor": "section-54",
+      "text": "𝐴 ⋅ 𝐵 A⋅B = 向量点积(对应位置相乘再相加)"
+    },
+    {
+      "anchor": "section-54",
+      "text": "∣ 𝐴 ∣ ∣A∣ 和 ∣ 𝐵 ∣ ∣B∣ = 两个向量的长度(模)"
+    },
+    {
+      "anchor": "section-54",
+      "text": "具体例子"
+    },
+    {
+      "anchor": "section-54",
+      "text": "计算\"猫\"和\"狗\"的One-Hot向量相似度:"
+    },
+    {
+      "anchor": "section-54",
+      "text": "向量    表示          说明\n─────────────────────────────────\nA       [1, 0, 0, 0, 0]   \"猫\"\nB       [0, 1, 0, 0, 0]   \"狗\""
+    },
+    {
+      "anchor": "section-54",
+      "text": "步1:计算点积"
+    },
+    {
+      "anchor": "section-54",
+      "text": "𝐴 ⋅ 𝐵 = 1 × 0 + 0 × 1 + 0 × 0 + 0 × 0 + 0 × 0 = 0 A⋅B=1×0+0×1+0×0+0×0+0×0=0"
+    },
+    {
+      "anchor": "section-54",
+      "text": "步2:计算长度"
+    },
+    {
+      "anchor": "section-54",
+      "text": "∣ 𝐴 ∣ = 1 2 + 0 2 + 0 2 + 0 2 + 0 2 = 1 ∣A∣= 1 2 +0 2 +0 2 +0 2 +0 2  =1 ∣ 𝐵 ∣ = 0 2 + 1 2+ 0 2 + 0 2 + 0 2 = 1 ∣B∣= 0 2 +1 2 +0 2 +0 2 +0 2  =1"
+    },
+    {
+      "anchor": "section-54",
+      "text": "步3:计算余弦相似度"
+    },
+    {
+      "anchor": "section-54",
+      "text": "余弦相似度 = 𝐴 ⋅ 𝐵 ∣ 𝐴 ∣ × ∣ 𝐵 ∣ = 0 1 × 1 = 0 余弦相似度= ∣A∣×∣B∣ A⋅B  = 1×1 0  =0"
+    },
+    {
+      "anchor": "section-54",
+      "text": "01×1"
+    },
+    {
+      "anchor": "section-54",
+      "text": "结果为0,说明这两个向量完全垂直,没有任何相似性。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "为什么叫\"余弦\"?"
+    },
+    {
+      "anchor": "section-54",
+      "text": "因为它实际上计算的是两个向量之间夹角的余弦值:"
+    },
+    {
+      "anchor": "section-54",
+      "text": "夹角0° → cos(0°) = 1 (完全相同) 夹角90° → cos(90°) = 0 (垂直,无关) 夹角180° → cos(180°) =-1 (完全相反)"
+    },
+    {
+      "anchor": "section-54",
+      "text": "为什么用余弦相似度?"
+    },
+    {
+      "anchor": "section-54",
+      "text": "不受长度影响:只看方向,不看大小 向量[1, 2]和向量[2, 4]方向相同,余弦相似度=1 虽然长度不同,但语义方向一致"
+    },
+    {
+      "anchor": "section-54",
+      "text": "值域固定:总是在-1到1之间,便于比较"
+    },
+    {
+      "anchor": "section-54",
+      "text": "几何意义清晰:直接对应向量夹角"
+    },
+    {
+      "anchor": "section-54",
+      "text": "在词向量中,关心的正是词的语义方向是否相似,而不是绝对大小,所以余弦相似度是最合适的度量。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "3.5 下一节预告"
+    },
+    {
+      "anchor": "section-84",
+      "text": "现在知道了Embedding是如何把文字变成向量的:每个词都是一个12288维的向量,编码了它的语义。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "但这些向量是哪里来的?它们是怎么学会语义的?"
+    },
+    {
+      "anchor": "section-84",
+      "text": "答案就在下一节:预训练——通过3000亿Token的训练,让模型学会语言规律。"
+    },
+    {
+      "anchor": "section-88",
+      "text": "3.6 ■ 学点英语"
+    },
+    {
+      "anchor": "section-88",
+      "text": "中文 | English | 音标 | 说明\n指称问题 | Problem of Reference | /ˈprɒbləm əv ˈrefrəns/ | 符号与它所代表的事物之间关系的哲学问题\n结构主义 | Structuralism | /ˈstrʌktʃərəlɪzəm/ | 认为事物的意义来自其与其他事物的关系而非本身的哲学观点\n向量夹角 | Vector Angle | /ˈvektər ˈæŋɡl/ | 两个向量之间的夹角，余弦相似度即夹角的余弦值\n点积 | Dot Product | /dɒt ˈprɒdʌkt/ | 向量对应位置相乘再相加的运算，用于计算余弦相似度\n向量模长 | Vector Norm | /ˈvektər nɔːm/ | 向量的长度（L2范数），从原点到向量终点的距离\nWord2V ec | Word2Vec | /wɜːd tuː vek/ | 2013年Google发布的词向量训练算法，首次展示语义代数性质"
+    },
+    {
+      "anchor": "section-90",
+      "text": "3.8 推荐阅读"
+    },
+    {
+      "anchor": "section-90",
+      "text": "Efficient Estimation of Word Representations in Vector Space (Word2Vec论文, 2013)"
+    },
+    {
+      "anchor": "section-90",
+      "text": "Tomas Mikolov等人发表的Word2Vec原始论文,首次展示了词向量的语义代数特性(国王 - 男人 + 女人= 女王)。论文写得很清楚,数学部分不复杂,重点在于展示这一发现的惊人之处。"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "id": "lesson-016",
+  "title": "选择练习 · 1-4",
+  "code": "1-4",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "文字接龙的游戏",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/003-文字接龙的游戏/016-练习-1-4-选择练习.pdf",
+  "sha256": "18587508ab949550bb4aef681c63a1e37558ffbd5197dc442af4d89fd664667e",
+  "pdf": "sources/pdf/lesson-016.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5254#mid=104950",
+  "minutes": 1,
+  "excerpt": "Softmax将原始得分转换为概率分布时，具有\"得分越高概率越大\"且\"所有概率和为1\"的特性。结合原文中\"extremely small gradients\"的描述，Softmax饱和对模型训练最直接的影响是什么？ (延展题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "Softmax计算耗时显著增加",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Softmax将原始得分转换为概率分布时，具有\"得分越高概率越大\"且\"所有概率和为1\"的特性。结合原文中\"extremely small gradients\"的描述，Softmax饱和对模型训练最直接的影响是什么？ (延展题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "B",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "输出概率分布变得更加均匀、信息量下降",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "C",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "反向传播时参数更新幅度接近零，训练几乎停滞",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "D",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "概率不再满足和为1的性质",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 305,
+    "represented_chars": 182,
+    "removed_chars": 123,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 120,
+      "repeated_title": 3
+    }
+  },
+  "videos": [],
+  "order": 17,
+  "headings": [
+    {
+      "title": "B",
+      "id": "section-2",
+      "level": 2
+    },
+    {
+      "title": "C",
+      "id": "section-4",
+      "level": 2
+    },
+    {
+      "title": "D",
+      "id": "section-6",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "Softmax计算耗时显著增加"
+    },
+    {
+      "anchor": "article-start",
+      "text": "Softmax将原始得分转换为概率分布时，具有\"得分越高概率越大\"且\"所有概率和为1\"的特性。结合原文中\"extremely small gradients\"的描述，Softmax饱和对模型训练最直接的影响是什么？ (延展题)"
+    },
+    {
+      "anchor": "section-2",
+      "text": "B"
+    },
+    {
+      "anchor": "section-2",
+      "text": "输出概率分布变得更加均匀、信息量下降"
+    },
+    {
+      "anchor": "section-4",
+      "text": "C"
+    },
+    {
+      "anchor": "section-4",
+      "text": "反向传播时参数更新幅度接近零，训练几乎停滞"
+    },
+    {
+      "anchor": "section-6",
+      "text": "D"
+    },
+    {
+      "anchor": "section-6",
+      "text": "概率不再满足和为1的性质"
+    }
+  ]
+}

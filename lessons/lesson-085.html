@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>理解大模型开发（二）-实战篇 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-085">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 4 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>理解大模型开发</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 086</span></div>
+<h1 class="lesson-title">理解大模型开发（二）-实战篇</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 10 分钟阅读</span><span class="module-name">理解大模型开发</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-085.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-085.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一章我们建立了认知框架：大模型擅长理解和生成，但不擅长确定性计算。现在的问题是，如何在真实系统中落地？ 本章将通过一个完整的智能客服案例，展示AI和传统技术如何协作。然后讨论两种LLM接入方式的选择策略，最后探讨从确定性编程到概率性编程的思维转变。 这是从理论到实践的关键一步。</p></aside>
+<h2 id="section-1" data-source-page="1">3.1 混合架构：智能客服案例<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">用一个完整的例子，展示AI和传统技术如何协作。</p>
+<p data-source-page="1">假设要做一个电商网站的智能客服。用户可能会问：</p>
+<p class="list-item" data-source-page="1">“我的订单什么时候发货？”</p>
+<p class="list-item" data-source-page="1">“这件衣服有XL码吗？”</p>
+<p class="list-item" data-source-page="1">“可以退货吗？”</p>
+<p data-source-page="1">纯靠AI来回答？成本高，而且容易出错（AI可能&quot;编造&quot;一个订单状态）。</p>
+<p data-source-page="1">更好的方案是:让AI和传统技术接力完成任务。 下述流程里会有少量的代码，你无需研究，这里只是希望同学们提前感受下调用LLM的代码风格。</p>
+<h3 id="section-9" data-source-page="1">四棒接力赛<a class="heading-link" href="#section-9" aria-label="链接至本节">#</a></h3>
+<p class="list-item" data-source-page="1">第一棒:AI理解意图</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">用户输入:“我的订单什么时候发货?”</p>
+<p data-source-page="2">调用大模型API,识别意图:</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">response = client.chat.completions.create(
+    model=&quot;gpt-4&quot;,
+    messages=[
+        {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是意图分类助手，判断用户意图，只返回：查询订单、查
+询商品、退换货、支付问题、其他&quot;},
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;我的订单什么时候发货?&quot;}
+    ]
+)
+# 返回：&quot;查询订单&quot;</code></pre></div>
+<p data-source-page="2">大模型把自然语言&quot;翻译&quot;成了明确的意图标签。</p>
+<p class="list-item" data-source-page="2">第二棒:传统技术提取信息</p>
+<p data-source-page="2">识别出是&quot;查询订单&quot;后，需要找到订单号。</p>
+<p data-source-page="2">假设用户的完整输入是：“我的订单号：2024011500123”。</p>
+<p data-source-page="2">这不需要LLM，用正则表达式就行:</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">import re
+
+user_message = &quot;请帮我查一下订单2024011500123的物流状态&quot;
+order_number = re.search(r&#x27;\d{10,}&#x27;, user_message)
+# 提取出：2024011500123</code></pre></div>
+<p data-source-page="2">快速、准确、成本为零。</p>
+<p class="list-item" data-source-page="2">第三棒:传统技术查询数据</p>
+<p data-source-page="2">拿到订单号，去数据库查询:</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">order = db.query(&quot;SELECT * FROM orders WHERE id = ?&quot;, order_number)
+
+1</code></pre></div>
+<p data-source-page="2">返回:</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;status&quot;: &quot;已发货&quot;,
+  &quot;tracking&quot;: &quot;SF1234567890&quot;,
+  &quot;eta&quot;: &quot;1月15日&quot;
+}</code></pre></div>
+<p data-source-page="3">数据库查询是确定的、精确的、可靠的。订单状态来自真实数据，不会出错。</p>
+<p class="list-item" data-source-page="3">第四棒: LLM生成回复</p>
+<p data-source-page="3">最后，把结构化数据转化为友好的自然语言:</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">response = client.chat.completions.create(
+    model=&quot;gpt-4&quot;,
+    messages=[
+        {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是客服助手，根据订单信息生成友好回复&quot;},
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: f&quot;订单状态:{order[&#x27;status&#x27;]}, 物流单号:
+{order[&#x27;tracking&#x27;]}, 预计送达:{order[&#x27;eta&#x27;]}&quot;}
+    ]
+)
+
+# 返回：&quot;您的订单已发货，物流单号是SF1234567890，预计1月15日送达，请注意查收！&quot;</code></pre></div>
+<p data-source-page="3">我们可以看到在这个过程中，LLM只是一个辅助角色，协助主系统完成它不擅长的事情（自然语言分析）：</p>
+<p class="list-item" data-source-page="3">把模糊的用户语言提炼成确定的意图：“查询订单”。</p>
+<p class="list-item" data-source-page="3">把数据库里的冷冰冰的数据翻译成人类更喜欢的自然语言。</p>
+<p data-source-page="3">但主要的处理逻辑依然是传统系统在主导。</p>
+<h2 id="section-34" data-source-page="3">3.2 两种LLM接入方式<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">确定了哪些功能需要LLM，下一个问题是：怎么接入LLM?</p>
+<p data-source-page="3">怎么接入LLM?</p>
+<p data-source-page="3">目前主流的方式有两种:调用LLM API,或者自己部署模型。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h3 id="section-38" data-source-page="4">方式一:调用API<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">各大大模型厂商(OpenAI、Google、DeepSeek、阿里等)都提供了API(Application Programming Interface，应用程序编程接口)服务。你只需要几行代码就可以完成调用：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from openai import OpenAI
+
+client = OpenAI(api_key=&quot;你的密钥&quot;)
+
+response = client.chat.completions.create(
+    model=&quot;gpt-5&quot;,
+    messages=[
+        {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;帮我写一段商品介绍&quot;}
+    ]
+)
+
+print(response.choices[0].message.content)</code></pre></div>
+<p data-source-page="4">就这么简单。不需要GPU服务器，不需要下载数十GB的模型文件，不需要研究推理优化。</p>
+<p data-source-page="4">这种方式好处包括：零基础设施投入，模型自动升级（可以看到，上述代码里我们指定了model=&quot;gpt-5&quot;），按需付费。但也有缺点：调用量大时成本高，数据要发送到云端存在隐私风险，无法深度定制。</p>
+<h3 id="section-43" data-source-page="4">方式二:自建模型<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">下载开源模型(如Meta的LLaMA、阿里的Qwen(通义千问)、深度求索的DeepSeek),部署到自己的服务器上。</p>
+<p data-source-page="4">优势包括：数据不出本地，隐私可控；长期成本低，只有电费和硬件折旧；可以微调模型，适配特定领域。</p>
+<p data-source-page="4">劣势也很明显：前期投入太大，一台好的GPU服务器可能要几十万；技术门槛高，需要掌握模型部署、量化、推理优化；需要专人维护；开源模型能力通常弱于顶级商业模型。</p>
+<h3 id="section-47" data-source-page="4">如何选择?<a class="heading-link" href="#section-47" aria-label="链接至本节">#</a></h3>
+<aside class="callout" data-source-page="4"><p>个人开发者 / 小团队 / 创业公司 → 先用API,快速验证产品 数据敏感行业(医疗、金融、政务) 调用量巨大(每天百万次以上) 需要深度定制 → 考虑自建 不确定? → 从API开始，等业务稳定后再决定</p></aside>
+<p data-source-page="4">很多公司采用混合方案:</p>
+<p data-source-page="4">混合方案</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p class="list-item" data-source-page="5">日常的、标准的任务用自建模型(成本低)</p>
+<p class="list-item" data-source-page="5">复杂的、偶尔的任务调用顶级API(能力强)</p>
+<p data-source-page="5">就像平时自己做饭，偶尔请客去餐厅。</p>
+<h2 id="section-54" data-source-page="5">3.3 思维方式的转变<a class="heading-link" href="#section-54" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">使用LLM开发应用，最大的挑战不是技术，而是思维方式的转变。</p>
+<p data-source-page="5">思维方式的转变</p>
+<p class="list-item" data-source-page="5">传统编程是确定性的世界</p>
+<p data-source-page="5">在传统编程中，一切都是确定的:</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def calculate_total(price, quantity):
+    return price * quantity
+
+1
+2</code></pre></div>
+<p data-source-page="5">输入相同，输出必然相同。10元一件，买3件，永远是30元。不会今天是30,明天变成29.8。</p>
+<p data-source-page="5">你能精确控制每一个逻辑分支，能预测每一行代码的行为。调试的时候，找到出错的那一行，改掉，问题就解决了。</p>
+<p data-source-page="5">这种确定性，给了我们掌控感。</p>
+<p class="list-item" data-source-page="5">LLM是概率性的世界</p>
+<p data-source-page="5">但大模型不是这样。</p>
+<p data-source-page="5">你让LLM写一段商品介绍:</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">response = ai.generate(&quot;给这款防晒霜写个介绍&quot;)
+
+1</code></pre></div>
+<p data-source-page="5">&quot;给这款防晒霜写个介绍&quot;</p>
+<p data-source-page="5">第一次调用，它可能写:“这款防晒霜清爽不油腻，适合夏日使用。”</p>
+<p data-source-page="5">第二次调用，同样的输入，它可能写:“轻盈质地，SPF50+高倍防护，让你的肌肤远离紫外线伤害。”内容不一样，但都算&quot;对&quot;。这就是AI的概率性——它不是在&quot;计算&quot;答案，而是在&quot;生成&quot;内容。每次生成，都从概率分布中采样，所以结果可能不同。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">观点需要从三个方面转变。</p>
+<p class="list-item" data-source-page="6">接受不完美</p>
+<p data-source-page="6">LLM偶尔会&quot;胡说八道&quot;。需要加上验证机制：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">response = ai.generate(&quot;...&quot;)
+
+# 检查生成的内容是否合理
+if not is_valid(response):
+    # 重试,或使用备用方案
+    response = fallback_response</code></pre></div>
+<p class="list-item" data-source-page="6">学会&quot;引导&quot;而非&quot;控制&quot;</p>
+<p data-source-page="6">不能说的：&quot;给我生成长度恰好50个字的介绍。&quot;只能说的：“请写一段大约50字左右的介绍。”</p>
+<p data-source-page="6">LLM可能生成48个字，可能53个字，甚至偶尔70个字。没法精确控制，只能通过优化提示词来引导它靠近期望。</p>
+<p class="list-item" data-source-page="6">持续监控和迭代</p>
+<p data-source-page="6">AI的表现会波动。用户的需求也在变化。需要持续观察哪些回复用户不满意，哪些场景AI处理得不好，提示词是否需要调整，是否需要换用更强的模型。</p>
+<p data-source-page="6">这和传统的&quot;写完代码就稳定运行&quot;完全不同。LLM应用更像一个需要持续照料的花园，而不是一台一次装配好就能永久运转的机器。</p>
+<p data-source-page="6">但这也意味着，新的可能性。</p>
+<p data-source-page="6">正是因为AI的&quot;不确定性&quot;，它才有了&quot;创造性&quot;。它能写出你没想到的文案，能发现你没注意到的模式，能给出你没考虑过的方案。</p>
+<p data-source-page="6">从确定性到概率性，不是退步，而是进化。我们学会了与一种新的智能共处，学会了在&quot;引导&quot;中发挥它的潜力，也在这个过程中，重新思考什么是&quot;控制&quot;，什么是&quot;协作&quot;。</p>
+<h2 id="section-83" data-source-page="6">3.4 下节预告<a class="heading-link" href="#section-83" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">理解了LLM的定位、架构和思维方式后，你可能已经跃跃欲试：</p>
+<p data-source-page="6">那么，如何真正跟大模型&quot;对上话&quot;？</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">你需要什么？API密钥？代码库？服务器？第一次调用会遇到哪些坑？怎么验证是否调用成功？</p>
+<p data-source-page="7">下一节《第一次API调用》，我们将从零开始，一步步带你完成第一次与LLM的真实对话。</p>
+<h2 id="section-88" data-source-page="7">3.5 ■ 学点英语<a class="heading-link" href="#section-88" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>混合架构</td><td>Hybrid Architecture</td><td>/ˈhaɪbrɪd ˈɑːrkɪtektʃər/</td><td>AI和传统技术接力协作的系统架构模式</td></tr><tr><td>四棒接力赛</td><td>Four-Baton Relay</td><td>/fɔːr ˈbætn ˈriːleɪ/</td><td>AI理解意图→传统提取信息→传统查询数据→LLM 生成回复的协作流程</td></tr><tr><td>调用API</td><td>API Calling</td><td>/ˈeɪpiːaɪ ˈkɔːlɪŋ/</td><td>通过API调用云端大模型，零基础设施投入的接入方式</td></tr><tr><td>自建模型</td><td>Self-Hosted Model</td><td>/self ˈhoʊstɪd ˈmɑːdl/</td><td>下载开源模型部署到自有服务器，数据不出本地</td></tr><tr><td>概率性编程</td><td>Probabilistic Programming</td><td>/ prɑːbəbɪˈlɪstɪk ˌ ˈproʊɡræmɪŋ/</td><td>接受AI输出的不确定性，通过引导而非控制的开发范式</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-084.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>理解大模型开发（一）</strong><small>理解大模型开发</small></a><a class="chapter-neighbor next" href="lesson-086.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>准备工作与环境搭建</strong><small>准备工作与环境搭建</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5267#mid=104904" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">3.1 混合架构：智能客服案例</a><a href="#section-9" class="toc-level-3">四棒接力赛</a><a href="#section-34" class="toc-level-2">3.2 两种LLM接入方式</a><a href="#section-38" class="toc-level-3">方式一:调用API</a><a href="#section-43" class="toc-level-3">方式二:自建模型</a><a href="#section-47" class="toc-level-3">如何选择?</a><a href="#section-54" class="toc-level-2">3.3 思维方式的转变</a><a href="#section-83" class="toc-level-2">3.4 下节预告</a><a href="#section-88" class="toc-level-2">3.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-085", "title": "理解大模型开发（二）-实战篇", "stage": 2, "week": 4, "module": "理解大模型开发", "minutes": 10, "pages": 7, "type": "article"}</script>
+</body></html>

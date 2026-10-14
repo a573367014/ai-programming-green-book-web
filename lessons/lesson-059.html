@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>涌现能力（一）-令人震撼的发现 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-059">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 3 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>涌现能力</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 060</span></div>
+<h1 class="lesson-title">涌现能力（一）-令人震撼的发现</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 9 分钟阅读</span><span class="module-name">涌现能力</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-059.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-059.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面七节，我们深入了解了ChatGPT是如何一步步被&quot;教&quot;出来的：预训练教会了它语言，监督微调教会了它任务，RLHF教会了它价值观。 现在，一个更加神秘、更加令人惊叹的现象出现了——一个连研究者们自己都没完全想到的现象。 当语言模型的规模达到一定程度时，它会突然展现出一些从未被明确&quot;教过&quot;的能力。 这就像是，教一个孩子识字、阅读、理解句子，然后有一天，突然发现他学会了写诗——虽然从未教过他&quot;如何写诗&quot;，但这个能力自己&quot;涌现&quot;出来了。这种现象，在AI领域被称为&quot;涌现能力&quot;(Emergent Abilities)或&quot;涌现现象&quot;(Emergence)。 上篇通过具体的例子，让你直观感受什么是涌现能力，以及它有多么震撼。 中篇将探讨&quot;为什么会涌现&quot;以及Scaling Laws。 下篇将讨论涌现的局限性和哲学思考。</p></aside>
+<h2 id="section-1" data-source-page="1">4.1 从一个具体例子开始<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">在正式定义之前，先用一个具体的例子，建立直觉。</p>
+<p data-source-page="1">GPT-3之前的模型：不会算术</p>
+<p data-source-page="1">早期的语言模型（比如GPT-2，1.5亿参数），如果你问它：</p>
+<aside class="callout" data-source-page="1"><p>问题：“23 + 47 = ?” GPT-2的回答: “23 + 47 = 60” ← 错误!(正确答案是70) 或者: “23 +47 = 70” ← 偶尔对 &quot;23 + 47 = 69&quot; ← 但大多数时候错</p></aside>
+<p data-source-page="1">准确率大约只有5-10%,基本上是在&quot;瞎猜&quot;。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">GPT-3 （1750亿参数）：突然会算了</p>
+<p data-source-page="2">但当模型规模扩大到GPT-3时，同样的问题：</p>
+<aside class="callout" data-source-page="2"><p>问题：“23 + 47 = ?” GPT-3的回答: “70” ← 正确!</p></aside>
+<p data-source-page="2">GPT-3的回答: “70” ← 正确!</p>
+<p data-source-page="2">准确率跃升到80-90%。</p>
+<p data-source-page="2">关键的问题是：没有人教过GPT-3如何做加法。</p>
+<p data-source-page="2">没有人教过GPT-3如何做加法。</p>
+<p data-source-page="2">训练数据中，确实包含了很多涉及数字和计算的文本:</p>
+<aside class="callout" data-source-page="2"><p>“总共花费23美元加上47美元的税，等于70美元” “23个苹果加上47个苹果，一共有70个苹果” …</p></aside>
+<p data-source-page="2">但这些只是自然语言文本，没有人明确告诉模型：“这是加法，你应该学会计算”。</p>
+<p data-source-page="2">模型只是在做它一直在做的事：预测下一个词。</p>
+<p data-source-page="2">预测下一个词</p>
+<p data-source-page="2">然而，当模型规模足够大时，它从这些文本模式中，自己&quot;悟&quot;出了加法的规律。</p>
+<p data-source-page="2">这，就是涌现。</p>
+<h2 id="section-21" data-source-page="2">4.2 什么是涌现能力<a class="heading-link" href="#section-21" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">现在，让我给出一个更正式的定义。</p>
+<p data-source-page="2">涌现能力(Emergent Abilities)：</p>
+<aside class="callout" data-source-page="2"><p>当模型规模超过某个阈值时，突然出现的、在小规模模型中几乎不存在的能力。</p></aside>
+<p data-source-page="2">这个定义有几个关键点：</p>
+<p data-source-page="2">关键点1：突然性不是线性增长，而是跃迁式的。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">+------------------
+|  小模型
+|  几乎不会
+|  (准确率接近0)
++------------------
+        |
+        | 增大规模
+        v
++------------------
+|  中等模型
+|  还是几乎不会
+|  (准确率仍很低)
++------------------
+        |
+        | 继续增大
+        v
++------------------
+|  大模型
+|  突然就会了!
+|  (准确率大幅跃升)
++------------------</code></pre></div>
+<p data-source-page="3">关键点2：未被明确训练</p>
+<p data-source-page="3">这些能力不是通过&quot;专门训练&quot;获得的，而是从通用的语言建模任务中&quot;涌现&quot;出来的。</p>
+<p data-source-page="3">关键点3：规模依赖</p>
+<p data-source-page="3">必须达到一定规模，才会出现。小模型无论怎么训练，都不会有这些能力。</p>
+<p data-source-page="3">让我用一个物理学的类比:</p>
+<aside class="callout" data-source-page="3"><p>水的状态: 0°C以上：液态 0°C:突然变成固态(冰) 这个转变是突然的，不是渐进的。 你不会说&quot;半液态半固态&quot;。 温度(类比模型规模)达到某个阈值， 整个系统的性质发生质变。</p></aside>
+<p data-source-page="3">涌现能力，就像水的相变。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-35" data-source-page="4">4.3 令人震撼的发现<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">2022年，Google的研究团队发表了一篇题为《Emergent Abilities of Large Language Models》的论文，系统地研究了大语言模型的涌现能力。</p>
+<p data-source-page="4">他们发现，至少有几十种能力表现出了明显的涌现特征。其中有几个最令人印象深刻的例子。</p>
+<h3 id="section-38" data-source-page="4">算术推理<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">我们刚才已经看到了简单加法的例子。但涌现的不仅仅是加法，还有更复杂的数学推理。</p>
+<p data-source-page="4">例子：多步算术</p>
+<aside class="callout" data-source-page="4"><p>问题： “小明有23个苹果，他给了小红7个，然后又买了15个。小明现在有多少个苹果?” 需要的步骤: 23 - 7 = 16 16 + 15 = 31 GPT-2 (1.5亿参数): 回答：“小明有很多苹果” ← 完全不会GPT-3 (1750亿参数): 回答：“31个” ← 正确！</p></aside>
+<p data-source-page="4">例子：百分比计算</p>
+<aside class="callout" data-source-page="4"><p>问题： “如果一件商品原价100元，打八折，再减10元，最后价格是多少?” 需要: 100 × 0.8 =80 80 - 10 = 70 GPT-3能够正确回答：70元</p></aside>
+<h3 id="section-44" data-source-page="4">逻辑推理<a class="heading-link" href="#section-44" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">例子：三段论推理</p>
+<aside class="callout" data-source-page="4"><p>前提1：所有的猫都是哺乳动物 前提2：Tom是一只猫 问题：Tom是哺乳动物吗？ 小模型: 可能回答:“Tom是一个名字” 或 “猫很可爱” ← 答非所问 大模型: 回答：“是的，Tom是哺乳动物。因为所有猫都是哺乳动物，而Tom是猫， 所以Tom也是哺乳动物。” ← 完整的逻辑链条</p></aside>
+<p data-source-page="4">例子：反事实推理</p>
+<aside class="callout" data-source-page="4"><p>问题： “如果拿破仑在滑铁卢战役中获胜，欧洲历史会如何不同?” 小模型: “拿破仑是法国皇帝。…” ← 只是陈述事实 大模型: “如果拿破仑获胜，法国可能会保持其在欧洲的主导地位，维也纳体系 可能不会形成，欧洲的君主制复辟可能会被推迟。…” ← 进行反事实推理</p></aside>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h3 id="section-49" data-source-page="5">代码理解和生成<a class="heading-link" href="#section-49" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这可能是最令人惊讶的涌现能力之一。</p>
+<p data-source-page="5">记住:GPT-3的训练目标只是&quot;预测下一个词&quot;,没有人教它&quot;编程&quot;。</p>
+<p data-source-page="5">但是:</p>
+<aside class="callout" data-source-page="5"><p>问题： “用Python写一个函数，检查一个数是否是质数” GPT-3的回答: def is_prime(n): if n &lt;2: return False for i in range(2, int(n ** 0.5) + 1): if n % i == 0: return False return True ← 完全正确的代码!</p></aside>
+<p data-source-page="5">更令人惊讶的是，它还能:</p>
+<p data-source-page="5">理解代码</p>
+<aside class="callout" data-source-page="5"><p>给它一段代码: def mystery(n): if n &lt;= 1: return n return mystery(n-1) + mystery(n-2) 问:“这个函数做什么?” GPT-3:&quot;这是一个计算斐波那契数列的递归函数。&quot; ← 正确理解了代码逻辑!</p></aside>
+<p data-source-page="5">修复代码错误</p>
+<aside class="callout" data-source-page="5"><p>给它一段有bug的代码，它能指出错误并修正。</p></aside>
+<h3 id="section-59" data-source-page="5">语言翻译（对于低资源语言）<a class="heading-link" href="#section-59" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这个更微妙，但同样惊人。</p>
+<p data-source-page="5">GPT-3的训练数据主要是英语(93%),其他语言占比很小。对于某些&quot;低资源语言&quot;(如孟加拉语),训练数据极少。</p>
+<p data-source-page="5">但GPT-3仍然能够:</p>
+<aside class="callout" data-source-page="5"><p>英语 → 孟加拉语 的翻译 即使训练数据中这种翻译对极少 它似乎学会了: 英语的语义 孟加拉语的语法 如何在两者之间建立映射 这三个能力组合起来，产生了&quot;翻译&quot;这个涌现能力</p></aside>
+<h3 id="section-64" data-source-page="5">常识推理<a class="heading-link" href="#section-64" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">例子:物理常识</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<aside class="callout" data-source-page="6"><p>问题： “如果你把一个玻璃杯从桌子上推下去，会发生什么?” 小模型: “玻璃杯会移动” ← 技术上正确，但太肤浅 大模型: &quot;玻璃杯会掉到地上，由于玻璃很脆，很可能会摔碎。&quot; ← 展现了对重力、物体易碎性的理解</p></aside>
+<p data-source-page="6">例子:社会常识</p>
+<aside class="callout" data-source-page="6"><p>问题： “如果你在电影院大声说话，会怎么样?” 大模型: &quot;其他观众可能会感到不满或要求你安静，因为这会打扰他们观影。 在某些情况下，工作人员可能会要求你离开。&quot; ← 理解社会规范和后果</p></aside>
+<h3 id="section-69" data-source-page="6">多步骤任务规划<a class="heading-link" href="#section-69" aria-label="链接至本节">#</a></h3>
+<aside class="callout" data-source-page="6"><p>问题： “我想学习机器学习，但我只有高中数学基础。请给我一个6个月的学习计划。” 大模型能够: 评估现状(高中数学) 识别差距(需要线性代数、微积分、概率论) 规划阶段: 第1-2月:补数学基础第3-4月:学习Python和基础算法 第4-5月:学习机器学习基础 第6月:做项目巩固 提供具体资源 这种多步骤、有层次的规划能力，是涌现的。</p></aside>
+<h2 id="section-71" data-source-page="6">4.4 下节预告<a class="heading-link" href="#section-71" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">上篇让你直观感受了涌现能力的震撼，但你可能有疑问：</p>
+<aside class="callout" data-source-page="6"><p>为什么会涌现？ 是魔法吗？还是有什么科学原理？ 如果我们能理解&quot;为什么&quot;，能不能更好地利用它？</p></aside>
+<p data-source-page="6">中篇将深入探讨涌现的机制，揭示4个理论假说，以及一个让整个AI界疯狂的数学定律——Scaling Laws。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-75" data-source-page="7">4.5 ■ 学点英语<a class="heading-link" href="#section-75" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>涌现能力</td><td>Emergent Abilities</td><td>/ɪˈmɜːdʒənt ə ˈbɪlətiz/</td><td>模型规模跨过某阈值时突然出现的、在小模型中几乎不存在的能力</td></tr><tr><td>涌现</td><td>Emergence</td><td>/ɪˈmɜːdʒəns/</td><td>整体展现出局部不具备的性质，跨层级的新特性</td></tr><tr><td>阈值</td><td>Threshold</td><td>/ˈθreʃhəʊld/</td><td>触发质变的临界点，规模跨过后能力跃迁</td></tr><tr><td>相变</td><td>Phase Transition</td><td>/feɪz trænˈzɪʃn/</td><td>物理学术语，比喻涌现的非线性跃迁特征</td></tr><tr><td>算术推理</td><td>Arithmetic Reasoning</td><td>/əˈrɪθmətɪk ˈriːzənɪŋ/</td><td>模型执行加减乘除与多步计算的能力</td></tr><tr><td>反事实推理</td><td>Counterfactual Reasoning</td><td>/ kaʊntəˈfæktʃuəl ˌ ˈriːzənɪŋ/</td><td>&quot;如果……会怎样&quot;的假设性推理</td></tr><tr><td>三段论</td><td>Syllogism</td><td>/ˈsɪlədʒɪzəm/</td><td>由大前提、小前提和结论组成的逻辑推理形式</td></tr><tr><td>低资源语言</td><td>Low-resource Language</td><td>/ləʊ rɪˈsɔːrs ˈlæŋɡwɪdʒ/</td><td>训练语料稀少的小语种，如孟加拉语</td></tr><tr><td>递归函数</td><td>Recursive Function</td><td>/rɪˈkɜːrsɪv ˈfʌŋkʃn/</td><td>在自身定义中调用自身的函数，如斐波那契数列</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-058.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>扩展练习 · 1-9</strong><small>RLHF</small></a><a class="chapter-neighbor next" href="lesson-060.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-2</strong><small>涌现能力</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5261#mid=104893" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">4.1 从一个具体例子开始</a><a href="#section-21" class="toc-level-2">4.2 什么是涌现能力</a><a href="#section-35" class="toc-level-2">4.3 令人震撼的发现</a><a href="#section-38" class="toc-level-3">算术推理</a><a href="#section-44" class="toc-level-3">逻辑推理</a><a href="#section-49" class="toc-level-3">代码理解和生成</a><a href="#section-59" class="toc-level-3">语言翻译（对于低资源语言）</a><a href="#section-64" class="toc-level-3">常识推理</a><a href="#section-69" class="toc-level-3">多步骤任务规划</a><a href="#section-71" class="toc-level-2">4.4 下节预告</a><a href="#section-75" class="toc-level-2">4.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-059", "title": "涌现能力（一）-令人震撼的发现", "stage": 1, "week": 3, "module": "涌现能力", "minutes": 9, "pages": 7, "type": "article"}</script>
+</body></html>

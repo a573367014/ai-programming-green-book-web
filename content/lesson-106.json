@@ -1,0 +1,657 @@
+{
+  "id": "lesson-106",
+  "title": "为什么需要Function Calling",
+  "code": "1-1",
+  "stage": 3,
+  "week": 6,
+  "week_title": "Function Calling：工具调用机制",
+  "module": "Function Calling的本质",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/001-第6周 Function Calling：工具调用机制/001-Function Calling的本质/106-图文-1-1-为什么需要Function Calling.pdf",
+  "sha256": "34ea1d3e51fb76f58feffdba36b8f4831990070d3cc64d83bfef0528a7c893b0",
+  "pdf": "sources/pdf/lesson-106.pdf",
+  "pages": 8,
+  "source_url": "https://class.imooc.com/lesson/5275#mid=104925",
+  "minutes": 11,
+  "excerpt": "前面学习的大模型只能输出文本，无法完成实际操作。这一节引入Function Calling的概念——让AI不仅能\"说\"，还能\"做\"。从电影《Her》的畅想出发，分析传统LLM的局限，介绍Function Calling的工作模式、能力范围和限制，最后讨论它与RAG的关系。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 前面学习的大模型只能输出文本，无法完成实际操作。这一节引入Function Calling的概念——让AI不仅能\"说\"，还能\"做\"。从电影《Her》的畅想出发，分析传统LLM的局限，介绍Function Calling的工作模式、能力范围和限制，最后讨论它与RAG的关系。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "1.1 从电影《Her》说起",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2014年奥斯卡获奖影片《Her》，讲述了主人公西奥多与人工智能萨曼莎（Samantha）的故事。影片里有大量人与人工智能的对话。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "当西奥多说：\"帮我整理一下今天的邮件。\"萨曼莎立刻读取邮箱，分类整理，删除垃圾邮件。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当西奥多说：\"帮我查一下去海边的路线。\"萨曼莎调用地图系统，规划最佳路线，还贴心地查询了天气。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "当西奥多说：\"帮我把这封信发给出版社。\"萨曼莎直接发送邮件，并设置了后续提醒。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "萨曼莎不只会\"陪西奥多聊天\"，更会\"帮他做事\"。而前面章节学到的AI，更像是\"只会对话的朋友\"——它能理解用户的心情、回答问题，但无法真正完成任务。Function Calling 就是让AI从\"聊天伙伴\"变成\"智能助手\"的关键技术。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "1.2 传统LLM的困境",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目前学过的大模型有一个共同的局限：只能输出文本，无法执行操作。换句话说，它们只能\"说\"，不能\"做\"。下面两个场景可以直观感受到这种局限。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "比如查询天气，当用户问\"明天上海天气怎么样？\"时，传统 LLM 会这样回答：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "抱歉，我的知识截止到２０２３年１０月，无法提供实时天气信息。\n建议您查看天气预报网站或APP。\n\n1\n2",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "明明有天气 API 可用，AI 却帮不上忙。再比如设置提醒，当用户说\"提醒我明天下午３点开会\"时，它也只能这样回答：",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "code",
+      "text": "好的，请您在日历应用中设置明天下午３点的会议提醒。\n\n1",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI 只会\"教用户怎么做\"，而不是\"帮用户做\"。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么会这样？根源在于传统 LLM 的工作模式被困在\"文本输入 → 文本输出\"这样一条封闭的回路里。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它的知识停留在训练截止那一刻——查不到今天的天气，也看不到此刻的股价。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它没有执行器——没法真的把邮件发出去，也没法替你按下提醒的闹钟。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它更没有伸向外部世界的手——专业计算工具、数据库、文件系统，它都摸不到。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它就像一个只能说话、没有手脚的助手。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它就像一个只能说话、没有手脚的助手",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.3 Function Calling：赋予AI行动能力",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Function Calling 让LLM不仅能\"说\"，还能\"做\"。通过调用外部函数、工具或API，大模型能够完成需要实际操作的任务——相当于给它装上了\"手脚\"。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "它的工作模式是这样的：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户输入（文本）\n    ↓\nLLM分析：需要什么工具？\n    ↓\n调用外部函数（获取数据/执行操作）\n    ↓\nLLM基于函数结果生成回答\n    ↓\n输出最终答案（文本）",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面用一段伪代码快速体验一下，场景是查询明天上海的天气：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# ═══════════════════════════════════════\n#  场景：查询明天上海的天气\n# ═══════════════════════════════════════\n\n# 1. 用户提问\nuser_input = \"明天上海天气怎么样？\"\n\n# 2. 定义可用的工具\ntools = [\n    {\n        \"name\": \"get_weather\",\n        \"description\": \"获取指定城市的天气信息\",\n        \"parameters\": {\n            \"city\": \"城市名称\",\n            \"date\": \"日期（如：明天、后天、2025-12-15）\"\n        }\n    }\n]\n\n# 3. LLM分析并决定调用工具\nresponse = llm.chat(\n    message=user_input,\n    tools=tools  # 告诉LLM有哪些工具可用\n)\n\n# 4. LLM返回：我需要调用get_weather\nresponse = {\n    \"tool_call\": {\n        \"name\": \"get_weather\",\n        \"arguments\": {\n            \"city\": \"上海\",\n            \"date\": \"明天\"\n        }\n    }\n}\n\n# 5. 执行实际的函数调用\ndef get_weather(city, date):\n    # 这里调用真实的天气API\n    api_result = call_weather_api(city, date)\n    return api_result\n\nresult = get_weather(\"上海\", \"明天\")\n# result = {\n#     \"city\": \"上海\",\n#     \"date\": \"2026-01-16\",\n#     \"temperature\": \"15-22℃\",\n#     \"weather\": \"晴\",\n#     \"wind\": \"北风3级\"\n# }\n\n# 6. 把函数结果返回给LLM\nfinal_answer = llm.chat(\n    message=user_input,\n    tool_result=result\n)\n\n# 7. LLM生成最终回答\nprint(final_answer)\n# \"明天上海晴天，气温15-22℃，北风3级，\n#  是个适合出行的好天气！建议穿薄外套。\"",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "在这一流程中，LLM 的角色发生了本质变化。它先理解意图并识别出需要调用的工具（get_weather），随后精准地提取出查询所需的参数（上海、明天）。在实际调用天气 API 获取真实数据后，LLM 最终基于这些实时信息生成准确的自然语言回答。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "完整流程可以用下图表示：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.4 Function Calling能做什么",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理论上，只要能写出函数，LLM 就能调用它。这意味着无论是天气、地图、数据库等第三方 API，还是自行实现的文件操作、数据处理等业务逻辑，甚至是对硬件设备的控制和系统命令的执行，都可以交给LLM 来驱动。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "但实践中有几个限制需要注意。首先是安全风险，不要把危险操作暴露给 LLM 调用——如果 LLM 误解了用户的意图（例如将\"清理一下\"理解为删除所有数据），或者遭遇 Prompt 注入攻击，执行了恶意代码或越权转账，后果将是灾难性的。因此需要遵循严格的安全原则：对于查询天气、搜索信息等只读操作，可以放心交给 AI；但对于删除数据、修改配置等破坏性操作，以及转账、支付等资金相关操作，必须引入人工确认机制；至于修改密码、授权等敏感权限操作，绝不应让 LLM 直接调用。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "其次是成本与性能。LLM 调用本身和高昂的第三方 API 费用带来成本压力；而模型判断加上 API 响应所需的时间，使得它在毫秒级响应的实时性场景中并不适用；此外 LLM 仍存在准确性风险，可能会误判函数或提取错误参数，因此必须做好完善的错误处理。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "说完限制，再来看实践中的典型应用。下图按风险级别由低到高，展示了 Function Calling 的适合与不适合场景：",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "code",
+      "text": "Function Calling 应用场景\n                      (按风险级别从低到高)\n\n【安全区】只读操作 - 放心使用\n  ◆ 查询天气           ◆ 搜索信息           ◆ 数学计算\n  ◆ 股票行情           ◆ 新闻资讯           ◆ 数据库查询\n  ◆ 地图导航           ◆ 汇率转换           ◆ 单位换算\n\n         ↓ 风险逐渐增加\n\n【谨慎区】写操作 - 需要确认机制\n  ▲ 发送邮件           ▲ 设置提醒           ▲ 创建日程\n  ▲ 文件读取           ▲ 保存笔记           ▲ 生成报表\n  ▲ 数据分析           ▲ 智能推荐           ▲ 内容生成\n\n         ↓ 风险持续上升\n\n【危险区】破坏性操作 - 严格限制或禁止\n  ✗ 删除数据           ✗ 修改配置           ✗ 执行代码\n  ✗ 转账支付           ✗ 修改密码           ✗ 授权操作\n  ✗ 系统命令           ✗ 数据库写入         ✗ 文件删除\n\n【核心原则】\n  可逆操作  ──→  可以自动执行\n  不可逆操作 ──→  必须人工确认\n  高风险操作 ──→  严格限制或禁止",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "1.5 与RAG的关系",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "RAG 和 Function Calling 都是让大模型突破自身局限的手段，但解决的问题不同。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "RAG的核心是让AI拥有专属知识库，解决的是\"知识\"问题：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "让AI拥有专属知识库\n→ 回答专业问题\n→ 解决\"知识\"问题",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型场景包括企业知识库问答、技术文档查询、法律条文检索，核心能力是检索 + 生成。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "本章学的Function Calling，核心是让AI拥有行动能力，解决的是\"能力\"问题：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "让AI拥有行动能力\n→ 执行实际操作\n→ 解决\"能力\"问题",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型场景包括调用API获取数据、操作系统和应用、控制外部设备，核心能力是判断 + 调用。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "两者结合",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "把两者结合起来，就能组成真正的AI助手。以一个智能客服场景为例：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "真正的AI助手",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户：\"我想退货\"\n\n流程：\n1. RAG检索退货政策（知识）\n2. Function Calling查询订单信息（能力）\n3. Function Calling创建退货申请（能力）\n4. 基于政策+订单信息生成回答（综合）\n\n回答：\n\"您的订单#12345符合7天无理由退货政策。\n已为您创建退货申请，退货单号：RT789。\n请在3天内将商品寄回，预计5个工作日退款到账。\n需要我帮您预约快递上门取件吗？\"",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "1.6 下一节预告",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "既然 Function Calling 如此强大，大模型究竟是如何实现这一点的？它是如何做到在没有运行代码的情况下，精准判断该调用哪个函数并提取出正确参数的？下一节，我们将深入探索 Function Calling 的工作原理。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "1.7 ■ 学点英语",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n函数调用机制 | Function Calling | /ˈfʌŋkʃn ˈkɔːlɪŋ/ | 让LLM不仅能输出文本，还能调用外部函数执行实际操作\n安全分级 | Security Classification | /sɪˈkjʊərəti klæsɪfɪ ˌ ˈkeɪʃn/ | 按操作风险程度将FC能力分为安全区/谨慎区/危险区\n只读操作 | Read-only Operation | /riːd ˈəʊnli ɒpə ˌ ˈreɪʃn/ | 不改变系统状态的数据查询类操作，可放心交给AI\n工具调用 | Tool Call | /tuːl kɔːl/ | LLM以结构化JSON形式返回的、指示代码执行特定函数的指令",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "函数调用机制",
+          "Function Calling",
+          "/ˈfʌŋkʃn ˈkɔːlɪŋ/",
+          "让LLM不仅能输出文本，还能调用外部函数执行实际操作"
+        ],
+        [
+          "安全分级",
+          "Security Classification",
+          "/sɪˈkjʊərəti klæsɪfɪ ˌ ˈkeɪʃn/",
+          "按操作风险程度将FC能力分为安全区/谨慎区/危险区"
+        ],
+        [
+          "只读操作",
+          "Read-only Operation",
+          "/riːd ˈəʊnli ɒpə ˌ ˈreɪʃn/",
+          "不改变系统状态的数据查询类操作，可放心交给AI"
+        ],
+        [
+          "工具调用",
+          "Tool Call",
+          "/tuːl kɔːl/",
+          "LLM以结构化JSON形式返回的、指示代码执行特定函数的指令"
+        ]
+      ],
+      "page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "![](106-图文-1-1-为什么需要Function Calling.assets/img-001.png)",
+      "page": 8,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 4696,
+    "represented_chars": 4455,
+    "removed_chars": 241,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 187,
+      "repeated_title": 54
+    }
+  },
+  "videos": [],
+  "order": 107,
+  "headings": [
+    {
+      "title": "1.1 从电影《Her》说起",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "1.2 传统LLM的困境",
+      "id": "section-7",
+      "level": 2
+    },
+    {
+      "title": "1.3 Function Calling：赋予AI行动能力",
+      "id": "section-20",
+      "level": 2
+    },
+    {
+      "title": "1.4 Function Calling能做什么",
+      "id": "section-28",
+      "level": 2
+    },
+    {
+      "title": "1.5 与RAG的关系",
+      "id": "section-34",
+      "level": 2
+    },
+    {
+      "title": "1.6 下一节预告",
+      "id": "section-46",
+      "level": 2
+    },
+    {
+      "title": "1.7 ■ 学点英语",
+      "id": "section-48",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-50",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "前面学习的大模型只能输出文本，无法完成实际操作。这一节引入Function Calling的概念——让AI不仅能\"说\"，还能\"做\"。从电影《Her》的畅想出发，分析传统LLM的局限，介绍Function Calling的工作模式、能力范围和限制，最后讨论它与RAG的关系。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "1.1 从电影《Her》说起"
+    },
+    {
+      "anchor": "section-1",
+      "text": "2014年奥斯卡获奖影片《Her》，讲述了主人公西奥多与人工智能萨曼莎（Samantha）的故事。影片里有大量人与人工智能的对话。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "当西奥多说：\"帮我整理一下今天的邮件。\"萨曼莎立刻读取邮箱，分类整理，删除垃圾邮件。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "当西奥多说：\"帮我查一下去海边的路线。\"萨曼莎调用地图系统，规划最佳路线，还贴心地查询了天气。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "当西奥多说：\"帮我把这封信发给出版社。\"萨曼莎直接发送邮件，并设置了后续提醒。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "萨曼莎不只会\"陪西奥多聊天\"，更会\"帮他做事\"。而前面章节学到的AI，更像是\"只会对话的朋友\"——它能理解用户的心情、回答问题，但无法真正完成任务。Function Calling 就是让AI从\"聊天伙伴\"变成\"智能助手\"的关键技术。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "1.2 传统LLM的困境"
+    },
+    {
+      "anchor": "section-7",
+      "text": "目前学过的大模型有一个共同的局限：只能输出文本，无法执行操作。换句话说，它们只能\"说\"，不能\"做\"。下面两个场景可以直观感受到这种局限。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "比如查询天气，当用户问\"明天上海天气怎么样？\"时，传统 LLM 会这样回答："
+    },
+    {
+      "anchor": "section-7",
+      "text": "抱歉，我的知识截止到２０２３年１０月，无法提供实时天气信息。\n建议您查看天气预报网站或APP。\n\n1\n2"
+    },
+    {
+      "anchor": "section-7",
+      "text": "明明有天气 API 可用，AI 却帮不上忙。再比如设置提醒，当用户说\"提醒我明天下午３点开会\"时，它也只能这样回答："
+    },
+    {
+      "anchor": "section-7",
+      "text": "好的，请您在日历应用中设置明天下午３点的会议提醒。\n\n1"
+    },
+    {
+      "anchor": "section-7",
+      "text": "AI 只会\"教用户怎么做\"，而不是\"帮用户做\"。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "为什么会这样？根源在于传统 LLM 的工作模式被困在\"文本输入 → 文本输出\"这样一条封闭的回路里。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "它的知识停留在训练截止那一刻——查不到今天的天气，也看不到此刻的股价。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "它没有执行器——没法真的把邮件发出去，也没法替你按下提醒的闹钟。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "它更没有伸向外部世界的手——专业计算工具、数据库、文件系统，它都摸不到。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "它就像一个只能说话、没有手脚的助手。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "它就像一个只能说话、没有手脚的助手"
+    },
+    {
+      "anchor": "section-20",
+      "text": "1.3 Function Calling：赋予AI行动能力"
+    },
+    {
+      "anchor": "section-20",
+      "text": "Function Calling 让LLM不仅能\"说\"，还能\"做\"。通过调用外部函数、工具或API，大模型能够完成需要实际操作的任务——相当于给它装上了\"手脚\"。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "它的工作模式是这样的："
+    },
+    {
+      "anchor": "section-20",
+      "text": "用户输入（文本）\n    ↓\nLLM分析：需要什么工具？\n    ↓\n调用外部函数（获取数据/执行操作）\n    ↓\nLLM基于函数结果生成回答\n    ↓\n输出最终答案（文本）"
+    },
+    {
+      "anchor": "section-20",
+      "text": "下面用一段伪代码快速体验一下，场景是查询明天上海的天气："
+    },
+    {
+      "anchor": "section-20",
+      "text": "# ═══════════════════════════════════════\n#  场景：查询明天上海的天气\n# ═══════════════════════════════════════\n\n# 1. 用户提问\nuser_input = \"明天上海天气怎么样？\"\n\n# 2. 定义可用的工具\ntools = [\n    {\n        \"name\": \"get_weather\",\n        \"description\": \"获取指定城市的天气信息\",\n        \"parameters\": {\n            \"city\": \"城市名称\",\n            \"date\": \"日期（如：明天、后天、2025-12-15）\"\n        }\n    }\n]\n\n# 3. LLM分析并决定调用工具\nresponse = llm.chat(\n    message=user_input,\n    tools=tools  # 告诉LLM有哪些工具可用\n)\n\n# 4. LLM返回：我需要调用get_weather\nresponse = {\n    \"tool_call\": {\n        \"name\": \"get_weather\",\n        \"arguments\": {\n            \"city\": \"上海\",\n            \"date\": \"明天\"\n        }\n    }\n}\n\n# 5. 执行实际的函数调用\ndef get_weather(city, date):\n    # 这里调用真实的天气API\n    api_result = call_weather_api(city, date)\n    return api_result\n\nresult = get_weather(\"上海\", \"明天\")\n# result = {\n#     \"city\": \"上海\",\n#     \"date\": \"2026-01-16\",\n#     \"temperature\": \"15-22℃\",\n#     \"weather\": \"晴\",\n#     \"wind\": \"北风3级\"\n# }\n\n# 6. 把函数结果返回给LLM\nfinal_answer = llm.chat(\n    message=user_input,\n    tool_result=result\n)\n\n# 7. LLM生成最终回答\nprint(final_answer)\n# \"明天上海晴天，气温15-22℃，北风3级，\n#  是个适合出行的好天气！建议穿薄外套。\""
+    },
+    {
+      "anchor": "section-20",
+      "text": "在这一流程中，LLM 的角色发生了本质变化。它先理解意图并识别出需要调用的工具（get_weather），随后精准地提取出查询所需的参数（上海、明天）。在实际调用天气 API 获取真实数据后，LLM 最终基于这些实时信息生成准确的自然语言回答。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "完整流程可以用下图表示："
+    },
+    {
+      "anchor": "section-28",
+      "text": "1.4 Function Calling能做什么"
+    },
+    {
+      "anchor": "section-28",
+      "text": "理论上，只要能写出函数，LLM 就能调用它。这意味着无论是天气、地图、数据库等第三方 API，还是自行实现的文件操作、数据处理等业务逻辑，甚至是对硬件设备的控制和系统命令的执行，都可以交给LLM 来驱动。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "但实践中有几个限制需要注意。首先是安全风险，不要把危险操作暴露给 LLM 调用——如果 LLM 误解了用户的意图（例如将\"清理一下\"理解为删除所有数据），或者遭遇 Prompt 注入攻击，执行了恶意代码或越权转账，后果将是灾难性的。因此需要遵循严格的安全原则：对于查询天气、搜索信息等只读操作，可以放心交给 AI；但对于删除数据、修改配置等破坏性操作，以及转账、支付等资金相关操作，必须引入人工确认机制；至于修改密码、授权等敏感权限操作，绝不应让 LLM 直接调用。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "其次是成本与性能。LLM 调用本身和高昂的第三方 API 费用带来成本压力；而模型判断加上 API 响应所需的时间，使得它在毫秒级响应的实时性场景中并不适用；此外 LLM 仍存在准确性风险，可能会误判函数或提取错误参数，因此必须做好完善的错误处理。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "说完限制，再来看实践中的典型应用。下图按风险级别由低到高，展示了 Function Calling 的适合与不适合场景："
+    },
+    {
+      "anchor": "section-28",
+      "text": "Function Calling 应用场景\n                      (按风险级别从低到高)\n\n【安全区】只读操作 - 放心使用\n  ◆ 查询天气           ◆ 搜索信息           ◆ 数学计算\n  ◆ 股票行情           ◆ 新闻资讯           ◆ 数据库查询\n  ◆ 地图导航           ◆ 汇率转换           ◆ 单位换算\n\n         ↓ 风险逐渐增加\n\n【谨慎区】写操作 - 需要确认机制\n  ▲ 发送邮件           ▲ 设置提醒           ▲ 创建日程\n  ▲ 文件读取           ▲ 保存笔记           ▲ 生成报表\n  ▲ 数据分析           ▲ 智能推荐           ▲ 内容生成\n\n         ↓ 风险持续上升\n\n【危险区】破坏性操作 - 严格限制或禁止\n  ✗ 删除数据           ✗ 修改配置           ✗ 执行代码\n  ✗ 转账支付           ✗ 修改密码           ✗ 授权操作\n  ✗ 系统命令           ✗ 数据库写入         ✗ 文件删除\n\n【核心原则】\n  可逆操作  ──→  可以自动执行\n  不可逆操作 ──→  必须人工确认\n  高风险操作 ──→  严格限制或禁止"
+    },
+    {
+      "anchor": "section-34",
+      "text": "1.5 与RAG的关系"
+    },
+    {
+      "anchor": "section-34",
+      "text": "RAG 和 Function Calling 都是让大模型突破自身局限的手段，但解决的问题不同。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "RAG的核心是让AI拥有专属知识库，解决的是\"知识\"问题："
+    },
+    {
+      "anchor": "section-34",
+      "text": "让AI拥有专属知识库\n→ 回答专业问题\n→ 解决\"知识\"问题"
+    },
+    {
+      "anchor": "section-34",
+      "text": "典型场景包括企业知识库问答、技术文档查询、法律条文检索，核心能力是检索 + 生成。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "本章学的Function Calling，核心是让AI拥有行动能力，解决的是\"能力\"问题："
+    },
+    {
+      "anchor": "section-34",
+      "text": "让AI拥有行动能力\n→ 执行实际操作\n→ 解决\"能力\"问题"
+    },
+    {
+      "anchor": "section-34",
+      "text": "典型场景包括调用API获取数据、操作系统和应用、控制外部设备，核心能力是判断 + 调用。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "两者结合"
+    },
+    {
+      "anchor": "section-34",
+      "text": "把两者结合起来，就能组成真正的AI助手。以一个智能客服场景为例："
+    },
+    {
+      "anchor": "section-34",
+      "text": "真正的AI助手"
+    },
+    {
+      "anchor": "section-34",
+      "text": "用户：\"我想退货\"\n\n流程：\n1. RAG检索退货政策（知识）\n2. Function Calling查询订单信息（能力）\n3. Function Calling创建退货申请（能力）\n4. 基于政策+订单信息生成回答（综合）\n\n回答：\n\"您的订单#12345符合7天无理由退货政策。\n已为您创建退货申请，退货单号：RT789。\n请在3天内将商品寄回，预计5个工作日退款到账。\n需要我帮您预约快递上门取件吗？\""
+    },
+    {
+      "anchor": "section-46",
+      "text": "1.6 下一节预告"
+    },
+    {
+      "anchor": "section-46",
+      "text": "既然 Function Calling 如此强大，大模型究竟是如何实现这一点的？它是如何做到在没有运行代码的情况下，精准判断该调用哪个函数并提取出正确参数的？下一节，我们将深入探索 Function Calling 的工作原理。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "1.7 ■ 学点英语"
+    },
+    {
+      "anchor": "section-48",
+      "text": "中文 | English | 音标 | 说明\n函数调用机制 | Function Calling | /ˈfʌŋkʃn ˈkɔːlɪŋ/ | 让LLM不仅能输出文本，还能调用外部函数执行实际操作\n安全分级 | Security Classification | /sɪˈkjʊərəti klæsɪfɪ ˌ ˈkeɪʃn/ | 按操作风险程度将FC能力分为安全区/谨慎区/危险区\n只读操作 | Read-only Operation | /riːd ˈəʊnli ɒpə ˌ ˈreɪʃn/ | 不改变系统状态的数据查询类操作，可放心交给AI\n工具调用 | Tool Call | /tuːl kɔːl/ | LLM以结构化JSON形式返回的、指示代码执行特定函数的指令"
+    },
+    {
+      "anchor": "section-50",
+      "text": "图片"
+    },
+    {
+      "anchor": "section-50",
+      "text": "![](106-图文-1-1-为什么需要Function Calling.assets/img-001.png)"
+    }
+  ]
+}

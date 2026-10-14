@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Prompt基础与必要场景 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-091">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 4 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Prompt基础与必要场景</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 092</span></div>
+<h1 class="lesson-title">Prompt基础与必要场景</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>8 页原文</span><span>约 10 分钟阅读</span><span class="module-name">Prompt基础与必要场景</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-091.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-091.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节学习了API参数控制。但参数调得再好，如果提示词写不清楚，AI的回答仍然可能不尽如人意。本节从基础开始——理解什么是提示词、提示词工程，以及真正需要它的场景。</p></aside>
+<h2 id="section-1" data-source-page="1">9.1 什么是提示词（Prompt）<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">提示词，就是对AI说的话</p>
+<p data-source-page="1">我们之前在API调用案例里已经用到过提示词，只是没有明确它叫&quot;提示词（Prompt）。提示词的质量，直接决定了AI回答的质量。</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">messages = [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;把这句话翻译成英文&quot;}  # ←content 这就是提示词
+]</code></pre></div>
+<p data-source-page="1">想象你在跟一个非常聪明但不了解你的助手对话：</p>
+<p class="list-item" data-source-page="1">你说&quot;翻译这段文字&quot;——助手虽然知道要翻译，但不知道翻译成什么语言、什么风格</p>
+<p class="list-item" data-source-page="1">你说&quot;把这段文字翻译成英文，要专业严谨的风格，只给我翻译结果&quot;——助手立刻明白了所有要求</p>
+<p data-source-page="1">第一句话就是糟糕的提示词，第二句话就是优秀的提示词。</p>
+<p data-source-page="1">糟糕的提示词优秀的提示词</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">提示词并非越多越好</p>
+<p data-source-page="2">既然第二句话更详细，那提示词是不是越多越好？未必。</p>
+<p data-source-page="2">未必。</p>
+<p data-source-page="2">提示词设计其实是一门平衡的艺术：给太少，AI不知道你要什么，可能答非所问；给得刚好，清晰、精准，AI精准命中需求；给太多，不只是消耗Token多，过多的内容反而会干扰AI思考，让质量下降。</p>
+<p data-source-page="2">一个反例</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 看似详细，实则冗余的提示词
+# 重复表达、优先级不清、缺乏结构
+&quot;&quot;&quot;请帮我翻译下面这段文字。我需要的是英文翻译，翻译的时候请注意语法的准确性，
+同时也要考虑语义的完整性，另外在翻译过程中如果遇到专业术语要用专业的表达方式，
+还有就是不要添加多余的解释说明，因为我只需要翻译结果就可以了，
+格式上也要保持简洁，不需要额外的排版和修饰。&quot;&quot;&quot;
+
+# 简洁高效的提示词
+# 优点：结构清晰、重点突出、易于理解
+&quot;&quot;&quot;把这段文字翻译成英文：
+- 专业严谨的风格
+- 只返回翻译结果，不要解释&quot;&quot;&quot;</code></pre></div>
+<p data-source-page="2">好的提示词特征</p>
+<p class="list-item" data-source-page="2">明确但不啰嗦：说清楚要求，但不过度解释</p>
+<p class="list-item" data-source-page="2">结构化表达：用列表、分点，让AI快速抓住重点</p>
+<p class="list-item" data-source-page="2">关键信息优先：最重要的要求放在前面</p>
+<p class="list-item" data-source-page="2">避免歧义：用具体描述代替模糊词汇</p>
+<p data-source-page="2">在接下来的内容中，我们会系统学习这些技巧。</p>
+<h2 id="section-22" data-source-page="2">9.2 什么是提示词工程（Prompt Engineering）<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">既然提示词这么重要，如何设计出优秀的提示词，就成了一门技术——这就是提示词工程。</p>
+<p data-source-page="2">提示词工程包括：</p>
+<p class="list-item" data-source-page="2">如何清晰地表达需求</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p class="list-item" data-source-page="3">如何提供必要的背景信息</p>
+<p class="list-item" data-source-page="3">如何规范输出格式</p>
+<p class="list-item" data-source-page="3">如何引导AI的思考过程</p>
+<p data-source-page="3">初级提示词</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">写一个排序函数
+
+1</code></pre></div>
+<p data-source-page="3">过于简单，AI回复容易跑偏。</p>
+<p data-source-page="3">优化后</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">写一个快速排序函数，包含注释
+
+1</code></pre></div>
+<p data-source-page="3">AI给你：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def quick_sort(arr):
+    &quot;&quot;&quot;快速排序实现&quot;&quot;&quot;
+    if len(arr) &lt;= 1:
+        return arr
+    pivot = arr[len(arr) // 2]  # 选择中间元素作为基准
+    left = [x for x in arr if x &lt; pivot]    # 小于基准的元素
+    middle = [x for x in arr if x == pivot] # 等于基准的元素
+    right = [x for x in arr if x &gt; pivot]   # 大于基准的元素
+    return quick_sort(left) + middle + quick_sort(right)</code></pre></div>
+<p data-source-page="3">有注释更容易理解，这是最初级的提示词工程——明确说明要求。这是基础，还远远谈不上&quot;提示词工程&quot;。</p>
+<p data-source-page="3">研究表明，好的提示词能让普通模型超越顶级模型，且优化成本远低于模型训练或参数调优。</p>
+<p data-source-page="3">这就是为什么提示词工程成为了AI应用开发者的必修课。</p>
+<p data-source-page="3">必修课</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-40" data-source-page="4">9.3 不是任何时候都需要提示词工程<a class="heading-link" href="#section-40" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">不需要提示词工程的场景</p>
+<p data-source-page="4">如果你只是想：</p>
+<p class="list-item" data-source-page="4">向AI问知识：“什么是RESTful API？”</p>
+<p class="list-item" data-source-page="4">闲聊天：“今天天气怎么样？”</p>
+<p class="list-item" data-source-page="4">获取灵感：“给我一些项目想法”</p>
+<p data-source-page="4">直接问就好。过度设计提示词反而是累赘：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 过度设计（没必要）
+&quot;&quot;&quot;你是一位资深的软件架构师，拥有20年的行业经验，擅长Web开发。
+请用通俗易懂的语言，结合实际例子，详细解释以下概念...
+
+问题：什么是RESTful API？
+&quot;&quot;&quot;
+
+# 直接问（够用）
+&quot;什么是RESTful API？用例子说明一下&quot;</code></pre></div>
+<p data-source-page="4">原因很简单</p>
+<p data-source-page="4">AI本身就很擅长解释知识，复杂的提示词反而增加思考成本，容易产生不相干的&quot;废话&quot;。</p>
+<p data-source-page="4">这种场景下，自然对话才是最好的方式。</p>
+<p data-source-page="4">自然对话才是最好的方式</p>
+<p data-source-page="4">必须使用提示词工程的场景</p>
+<p data-source-page="4">一旦需要精确控制AI的输出，提示词工程就变得至关重要。典型场景包括：</p>
+<p data-source-page="4">精确控制AI的输出</p>
+<p class="list-item" data-source-page="4">场景1：多模态生成</p>
+<p data-source-page="4">当使用AI生成图像、视频、音频时，提示词工程的重要性成倍放大：</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 图像生成（如Midjourney、DALL-E、Stable Diffusion）
+糟糕Prompt：&quot;一只猫&quot;
+→ 得到普通照片，风格不可控
+
+优秀Prompt：&quot;一只蓬松的橙色猫坐在窗台上，黄昏时分的光线，电影级构图，景深效果，4K画质，照片
+级真实感&quot;
+→ 得到电影级画质，风格精准
+
+# 视频生成（如Sora、Runway）
+糟糕Prompt：&quot;海滩日落&quot;
+→ 画面普通，镜头运动不可控
+
+优秀Prompt：&quot;宁静海滩的日落场景，慢速跟随镜头，海浪轻轻翻滚，温暖的橙色天空，镜头从左向右移
+动，24帧率，电影感&quot;
+→ 镜头语言、节奏、氛围全部可控</code></pre></div>
+<p data-source-page="5">有的人用AI一张满意的图片都很难生成，但有的人确可以用AI进行漫画、电影的创造。差距主要还是在提示词塑造能力上。</p>
+<p data-source-page="5">多模态生成对Prompt的依赖</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">特点</th><th scope="col">文本生成</th><th scope="col">多模态生成</th></tr></thead><tbody><tr><td>可调整性</td><td>生成后可以再改</td><td>生成后几乎无法修改</td></tr><tr><td>成本</td><td>几分钱/次</td><td>几块钱/次，试错成本高</td></tr><tr><td>生成时间</td><td>几秒</td><td>几分钟到几十分钟</td></tr><tr><td>结果随机性</td><td>较小</td><td>非常大，同一Prompt生成10次都不同</td></tr></tbody></table></div>
+<p data-source-page="5">多模态的生成和修改成本更高。越是这样，提示词工程就越重要。</p>
+<p class="list-item" data-source-page="5">场景2：代码生成</p>
+<p data-source-page="5">生成代码时，细微的Prompt差异会导致结果大相径庭：</p>
+<aside class="callout" data-source-page="5"><p>写一个API调用函数</p></aside>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">import requests
+
+def call_api(url):
+    response = requests.get(url)
+    return response.json()</code></pre></div>
+<p data-source-page="6">可能不符合项目规范；没有错误处理、重试、日志。</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">使用httpx库编写一个HTTP API调用函数，要求：
+1. 支持GET/POST方法
+2. 超时时间30秒
+3. 失败重试3次，指数退避
+4. 记录详细日志（请求/响应/错误）
+5. 返回JSON数据，异常时抛出自定义异常
+6. 添加类型注解和docstring</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">import httpx
+#......
+logger = logging.getLogger(__name__)
+
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+def call_api(url: str, method: str = &quot;GET&quot;, data: Dict[str, Any] = None) -&gt; Dict[str, 
+Any]:
+    &quot;&quot;&quot;
+    HTTP API调用函数，支持重试和日志记录
+    Args:
+        url: API地址
+    Returns:
+        JSON响应数据
+    Raises:
+        APIError: API调用失败
+    &quot;&quot;&quot;
+    try:
+        logger.info(f&quot;请求 {method} {url}, data={data}&quot;)
+
+    except httpx.HTTPError as e:
+        logger.error(f&quot;API调用失败: {e}&quot;)
+        raise APIError(f&quot;API调用失败: {e}&quot;) from e</code></pre></div>
+<p data-source-page="6">代码包含完整的错误处理、重试、日志、类型注解。</p>
+<p class="list-item" data-source-page="6">场景3：应用系统集成</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">当把大模型集成到应用系统中时，Prompt需要像接口文档一样严格定义输出：</p>
+<p class="list-item" data-source-page="7">数据格式（JSON、XML、CSV等）</p>
+<p class="list-item" data-source-page="7">字段名称（用英文还是中文？用下划线还是驼峰？）</p>
+<p class="list-item" data-source-page="7">字段类型（数字、字符串、布尔值、数组）</p>
+<p class="list-item" data-source-page="7">数据结构（嵌套层级、数组元素）</p>
+<p class="list-item" data-source-page="7">特殊处理（空值如何表示？日期格式？）</p>
+<p data-source-page="7">举个例子</p>
+<p data-source-page="7">传统API返回固定的JSON结构：</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;temperature&quot;: 25,
+  &quot;humidity&quot;: 60,
+  &quot;condition&quot;: &quot;sunny&quot;
+}</code></pre></div>
+<p data-source-page="7">AI API如果不用Prompt控制，返回的是自然语言：</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">今天天气不错，气温25°C，阳光明媚...
+
+1</code></pre></div>
+<p data-source-page="7">通过Prompt精确控制，可以让AI返回指定格式、字段名、类型的JSON：</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;temperature&quot;: 25,           // 数字类型，不带单位
+  &quot;humidity&quot;: 60,              // 数字类型（百分比）
+  &quot;condition&quot;: &quot;sunny&quot;,        // 字符串，小写英文
+  &quot;feel_like&quot;: &quot;comfortable&quot;,  // 指定字段名用下划线
+  &quot;advice&quot;: [                  // 数组类型
+    &quot;适合户外活动&quot;,
+    &quot;注意防晒&quot;
+  ]
+}</code></pre></div>
+<p data-source-page="7">格式细节的重要性</p>
+<p data-source-page="7">假设程序需要解析天气数据：</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<p class="list-item" data-source-page="8">如果AI返回&quot;temperature&quot;: &quot;25度&quot;（字符串带单位），int()转换会报错</p>
+<p class="list-item" data-source-page="8">如果字段名是&quot;Temperature&quot;而你用data[&quot;temperature&quot;]，程序会崩溃</p>
+<h2 id="section-88" data-source-page="8">9.4 下一节预告<a class="heading-link" href="#section-88" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">了解了需要提示词工程的场景后，接下来系统学习Prompt的五要素——角色、任务、上下文、格式、约束，这是设计优秀提示词的核心框架。</p>
+<h2 id="section-90" data-source-page="8">9.5 ■ 学点英语<a class="heading-link" href="#section-90" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>提示词</td><td>Prompt</td><td>/prɑːmpt/</td><td>用户向AI发送的指令或问题文本</td></tr><tr><td>提示词工程</td><td>Prompt Engineering</td><td>/prɑːmpt endʒɪˈnɪrɪŋ/ ˌ</td><td>设计和优化提示词以控制AI输出的技术</td></tr><tr><td>多模态生成</td><td>Multimodal Generation</td><td>/ mʌltiˈmoʊdl dʒenə ˌ ˌ ˈreɪʃn/</td><td>AI生成图像、视频、音频等多类型内容</td></tr><tr><td>代码生成</td><td>Code Generation</td><td>/koʊd dʒenəˈreɪʃn/ ˌ</td><td>通过自然语言描述让AI自动编写代码</td></tr><tr><td>应用集成</td><td>System Integration</td><td>/ˈsɪstəm ɪntɪˈɡreɪʃn/ ˌ</td><td>将大模型接入应用程序系统的开发过程</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-090.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>创意控制与专业翻译器</strong><small>小试牛刀，做一个简单的翻译器</small></a><a class="chapter-neighbor next" href="lesson-092.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Prompt五要素</strong><small>Prompt基础与必要场景</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5270#mid=104910" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">9.1 什么是提示词（Prompt）</a><a href="#section-22" class="toc-level-2">9.2 什么是提示词工程（Prompt Engineering）</a><a href="#section-40" class="toc-level-2">9.3 不是任何时候都需要提示词工程</a><a href="#section-88" class="toc-level-2">9.4 下一节预告</a><a href="#section-90" class="toc-level-2">9.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-091", "title": "Prompt基础与必要场景", "stage": 2, "week": 4, "module": "Prompt基础与必要场景", "minutes": 10, "pages": 8, "type": "article"}</script>
+</body></html>

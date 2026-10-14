@@ -1,0 +1,885 @@
+{
+  "id": "lesson-136",
+  "title": "Skill 核心概念",
+  "code": "1-1",
+  "stage": 5,
+  "week": 10,
+  "week_title": "Skill：可复用技能封装",
+  "module": "Skill核心概念与扩展能力",
+  "type": "article",
+  "repo_path": "005-阶段五 【能力封装】可复用技能/001-第10周 Skill：可复用技能封装/002-Skill核心概念与扩展能力/003-图文-1-1-Skill 核心概念.pdf",
+  "sha256": "7613ec6cdd9d105fc402d48808bf98e5feec9c035626a01a8fca39164b6d1cee",
+  "pdf": "sources/pdf/lesson-136.pdf",
+  "pages": 11,
+  "source_url": "https://class.imooc.com/lesson/5287#mid=105136",
+  "minutes": 13,
+  "excerpt": "上一节我们了解了 Skill 的生态和获取途径。现在，深入学习 Skill 的核心概念，掌握它的工作原理和设计哲学。 本章演示环境： 本章所有示例和操作步骤基于 Qoder 进行演示。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们了解了 Skill 的生态和获取途径。现在，深入学习 Skill 的核心概念，掌握它的工作原理和设计哲学。 本章演示环境： 本章所有示例和操作步骤基于 Qoder 进行演示。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "Skill 基础",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "Skill 的组成",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一个完整的 Skill 由以下部分组成:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "my-skill/                  ← Skill 目录\n  ├─ SKILL.md              ← 核心文件(必需)\n  │   ├─ YAML 元数据        ← 名称、描述\n  │   └─ Markdown 正文      ← 详细指令\n  │\n  ├─ reference.md           ← 参考文档(可选)\n  ├─ examples.md            ← 示例代码(可选)\n  │\n  ├─ scripts/               ← 工具脚本(可选)\n  │   ├─ helper.py\n  │   └─ formatter.sh\n  │\n  └─ templates/             ← 模板文件(可选)\n      └─ template.txt",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "SKILL.md 是唯一必需的文件",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "其他文件都是可选的，用于补充说明",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "文件组织灵活，根据需要添加",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Skill vs 其他概念",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对比一下 Skill 和其他常见概念的区别:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "SKILL.md 文件结构",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在详细学习 SKILL.md 的标准格式。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "文件结构概览",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "---\n# ════════════════════════════════════════\n#  YAML Frontmatter (元数据区)\n# ════════════════════════════════════════\nname: skill-name\ndescription: 简短描述,说明这个 Skill 做什么、何时使用\n---\n\n# ════════════════════════════════════════\n#  Markdown Body (正文区)\n# ════════════════════════════════════════\n\n# Skill 名称\n\n## 使用场景\n说明什么情况下应该使用这个 Skill\n\n## 核心指令\n详细的操作步骤和规范\n\n## 示例\n具体的使用示例\n\n## 参考资料\n链接到其他相关文档",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "yaml"
+    },
+    {
+      "kind": "h3",
+      "text": "YAML Frontmatter 详解",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "YAML 元数据区包含 Skill 的基本信息：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "---\nname: python-best-practices\ndescription: Python 开发最佳实践，包括代码规范、类型注解、文档字符串。当编写或审查 Python 代\n码时使用\n---",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "yaml"
+    },
+    {
+      "kind": "paragraph",
+      "text": "标准 YAML 只有两个字段——name 和 description。以下逐一说明。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "字段说明",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "name（必需）\n─────────────────────────────────────────────────────────\n  • Skill 的唯一标识符\n  • 只能使用：小写字母、数字、连字符\n  • 长度限制：最多 64 个字符\n  • 命名建议：使用描述性名称，如 code-review、git-commit\n\n  ✓ 好的命名：\n    python-dev\n    api-design\n    code-review\n\n  × 不好的命名：\n    Skill1（不具描述性）\n    Python_Dev（不能用下划线）\n    code review（不能有空格）\ndescription（必需）\n─────────────────────────────────────────────────────────\n  • 这是 Skill 的触发入口——AI 靠它判断何时加载这个 Skill\n  • 长度限制：最多 1024 个字符\n  • 必须包含：\n    1. 这个 Skill 做什么\n    2. 何时应该使用（触发条件）\n    3. 触发关键词（帮助 AI 匹配用户意图）\n\n  ✓ 好的 description：\n  \"专业的代码审查助手，检查安全漏洞、性能问题、代码规范。\n   当用户要求审查、review、检查代码时使用\"\n\n  × 不好的 description：\n  \"帮助写代码\"（太模糊，AI 不知道何时触发）\n\n  关键理解：description 是 AI 在决定「要不要加载这个 Skill」时\n  唯一能看到的信息。正文内容只有在 Skill 被触发后才加载。\n  因此，触发关键词必须写在 description 里，而不是写在正文中。\n\n  实际项目中通常直接嵌入触发标记：\n\n  \"图书正文格式规范。用于编写/优化图书章节，确保：结构清晰、\n   去AI味、符合出版标准。触发：(1)创建新章节 (2)修改现有文档\n   (3)去除AI痕迹 (4)规范化格式\"",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "早期 Skill 规范中还有一个实验性字段 allowed-tools，用于限制 Skill 激活后的工具权限。但当前主流标准已不再推荐此字段——AI 本身就能根据任务判断该用什么工具，不需要人为约束。一个标准的Skill，YAML 区只需要 name 和 description。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h3",
+      "text": "Markdown 正文区详解",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "相对于YAML的严格，正文区比较随意，主要是用非结构化的文本描述Skill的内容，可以按需组织:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例模板",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# Python 开发最佳实践\n\n## 使用场景\n当编写、修改或审查 Python 代码时使用此 Skill\n\n## 代码规范\n\n### 格式化\n- 使用 Black 自动格式化\n- 行长度限制为 88 字符\n- 使用 4 空格缩进\n\n### 命名规范\n- 类名: PascalCase (UserManager)\n- 函数/变量: snake_case (get_user, user_id)\n- 常量: UPPER_SNAKE_CASE (MAX_RETRY)\n\n## 错误处理\n- 明确捕获具体异常,避免裸 except\n- 关键操作必须有 try-except\n- 记录错误日志\n\n## 参考资料\n更多详情请参考 [advanced.md](advanced.md)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "组织建议",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "好的 Skill 正文结构:\n  ├─ 使用场景 (让 AI 知道何时用)\n  ├─ 核心规则 (必须遵守的标准)\n  ├─ 示例代码 (展示正确用法)\n  ├─ 常见错误 (避免踩坑)\n  └─ 参考链接 (深入学习)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果想看一个真实项目中完整的 SKILL.md 文件，可以回顾上一节我们安装并使用的 Humanizer 技能——它就是一份高质量的 Skill 参考范本。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h2",
+      "text": "Skill 的触发机制",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解 Skill 如何被触发是很重要的。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "自动触发与手动触发",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Skill 的理想工作方式是自动触发。AI 根据用户说的话，在后台匹配 description 中的关键词，判断是否需要加载某个 Skill。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "code",
+      "text": "用户: \"帮我审查这段代码\"\n  ↓\nAI 看到 \"审查\" 关键词\n  ↓\n匹配到 code-review Skill 的 description\n  ↓\n自动加载并应用这个 Skill\n  ↓\n整个过程中用户不需要手动指定任何东西",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这套机制设计得很优雅——AI 替用户判断该用什么工具，用户只管提需求。但坦白说，自动触发在实际中并不总是可靠的，它受几个因素影响：",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "list",
+      "text": "AI 工具的实现——有的客户端对 Skill 的支持比较完善（如 Claude Code），有的则偏弱，触发率因人而异",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "list",
+      "text": "大模型本身的能力——高端模型对意图的识别更准确，低端模型则容易\"听不懂\"",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "大模型本身的能力",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "工作环境的复杂度——同时加载了多个 Skill 时，AI 可能匹配错或漏匹配",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "工作环境的复杂度",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "description 的清晰度——这个下面会专门展开",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "description 的清晰度",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "所以，当自动触发不生效时，手动调用 Skill 是完全合理的做法。Slash 命令 /skill-name 就是为此设计的。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "code",
+      "text": "/code-review 帮我审查这段代码\n/humanizer 帮我去掉AI痕迹\n\n1\n2",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "手动触发不是错误，而是自动触发的有效补充。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一句话总结：自动触发是理想，手动触发是后路。它们之间不是对错关系，而是互补关系。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "触发决策过程",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI 在决定是否触发一个 Skill 时，大致经过以下判断链：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "1. 分析用户意图\n   └─ 用户想做什么？\n\n2. 检查 Skill 库\n   └─ 哪些 Skill 的 description 可能匹配？\n\n3. 相关性评分\n   └─ 这个 Skill 对当前任务的帮助程度\n\n4. 决定是否加载\n   └─ 如果相关性高，则加载 Skill 正文\n\n5. 执行任务\n   └─ 按照 Skill 的指导完成任务",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个过程中，步骤 2 和 3 是最不稳定的环节。如果 description 写得模糊，或者模型本身对语义理解不够好，匹配就可能失败。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "几种典型情况",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "情况1: 明确匹配\n\n用户: \"帮我生成 Git 提交消息\"\n                ↓\n        关键词: \"Git 提交消息\"\n                ↓\n   匹配 Skill: git-commit-message\n   description: \"生成规范的 Git 提交消息...\"\n                ↓\n            触发\n情况2: 隐含匹配\n\n用户: \"我改了登录功能,帮我写个 commit\"\n                ↓\n        关键词: \"commit\"（隐含在描述中）\n                ↓\n   匹配 Skill: git-commit-message\n   description: \"...当用户提到 commit...\"\n                ↓\n            触发",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "情况3: 不匹配\n\n用户: \"今天天气怎么样?\"\n                ↓\n     关键词: \"天气\"\n                ↓\n  没有匹配的 Skill\n                ↓\n         不触发任何 Skill",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "情况4: 自动触发失败，手动补位\n\n用户: \"帮我写个 commit 消息\"（说了但 AI 没反应）\n                ↓\n        手动输入:\n        /code-review 帮我生成 commit 消息\n                ↓\n            正常触发",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "情况 4 在实际使用中很常见。碰到自动触发不生效时，直接用 / 命令调用就好，不需要纠结。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "提高触发准确率",
+      "page": 9,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "自动触发靠的是 description，所以 description 写得越精准，触发越可靠。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不够好的 description：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "\"代码审查工具\"\n\n1",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题：太简单，AI 不知道何时用；缺少触发关键词；没有说明使用场景。",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "优秀的 description：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "\"专业的代码审查助手，检查安全漏洞、性能问题、代码规范、\n 最佳实践。当用户要求审查(review)、检查(check)、\n 评估(evaluate)代码质量时使用\"",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "优点：说明了功能（检查什么）；列出了触发关键词（review, check, evaluate）；明确了使用场景（代码质量检查）；帮助 AI 准确匹配。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "paragraph",
+      "text": "编写技巧",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Description 公式:\n\n[功能描述] + [触发关键词] + [使用场景]\n\n示例:\n\"Python 开发最佳实践,\n 包括代码规范、类型注解、文档字符串。\n 当编写、修改、审查 Python 代码时使用,\n 也可用于代码重构和质量提升\"",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "但即使是写得最好的 description，也不能保证 100% 触发。触发率始终受到工具实现、模型能力、上下文环境等因素影响。所以既要认真写好 description，又要接受手动触发作为正常的后路——这两者并不矛盾。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\nYAML元数据区 | YAML Frontmatter | /ˈjæml frʌnt mætər/ ˌ | SKILL.md顶部的元数据区，用---包围，包含name和 description两个必需字段\n名称字段 | Name | /neɪm/ | Skill的唯一标识符，只能使用小写字母、数字和连字符，最多64字符\n描述字段 | Description | /dɪˈskrɪpʃn/ | Skill的触发入口，AI靠它判断何时加载，需包含触发关键词\n触发机制 | Trigger Mechanism | /ˈtrɪɡər ˈmekənɪzəm/ | AI根据用户意图自动匹配Skill的过程，先匹配description 再加载正文",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "YAML元数据区",
+          "YAML Frontmatter",
+          "/ˈjæml frʌnt mætər/ ˌ",
+          "SKILL.md顶部的元数据区，用---包围，包含name和 description两个必需字段"
+        ],
+        [
+          "名称字段",
+          "Name",
+          "/neɪm/",
+          "Skill的唯一标识符，只能使用小写字母、数字和连字符，最多64字符"
+        ],
+        [
+          "描述字段",
+          "Description",
+          "/dɪˈskrɪpʃn/",
+          "Skill的触发入口，AI靠它判断何时加载，需包含触发关键词"
+        ],
+        [
+          "触发机制",
+          "Trigger Mechanism",
+          "/ˈtrɪɡər ˈmekənɪzəm/",
+          "AI根据用户意图自动匹配Skill的过程，先匹配description 再加载正文"
+        ]
+      ],
+      "page": 11
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "前面讨论的 Skill 都停留在文本指引层面——AI 读规则，然后自己执行。但遇到需要实际操作的任务（如文件转换、API 调用）时，光靠文本不够。下一节我们来探讨 Skill 如何调用工具和脚本，让 AI 不仅能\"想\"，还能\"做\"。",
+      "page": 11,
+      "size": 11.25,
+      "end_page": 11
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "![](003-图文-1-1-Skill 核心概念.assets/img-001.png)",
+      "page": 11,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 5467,
+    "represented_chars": 5282,
+    "removed_chars": 185,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 140,
+      "repeated_title": 24,
+      "code_line_number_artifact": 21
+    }
+  },
+  "videos": [],
+  "order": 137,
+  "headings": [
+    {
+      "title": "Skill 基础",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "Skill 的组成",
+      "id": "section-2",
+      "level": 3
+    },
+    {
+      "title": "SKILL.md 文件结构",
+      "id": "section-10",
+      "level": 2
+    },
+    {
+      "title": "文件结构概览",
+      "id": "section-12",
+      "level": 3
+    },
+    {
+      "title": "YAML Frontmatter 详解",
+      "id": "section-14",
+      "level": 3
+    },
+    {
+      "title": "Markdown 正文区详解",
+      "id": "section-21",
+      "level": 3
+    },
+    {
+      "title": "Skill 的触发机制",
+      "id": "section-28",
+      "level": 2
+    },
+    {
+      "title": "自动触发与手动触发",
+      "id": "section-30",
+      "level": 3
+    },
+    {
+      "title": "触发决策过程",
+      "id": "section-45",
+      "level": 3
+    },
+    {
+      "title": "提高触发准确率",
+      "id": "section-54",
+      "level": 3
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-65",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-67",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-69",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们了解了 Skill 的生态和获取途径。现在，深入学习 Skill 的核心概念，掌握它的工作原理和设计哲学。 本章演示环境： 本章所有示例和操作步骤基于 Qoder 进行演示。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Skill 基础"
+    },
+    {
+      "anchor": "section-2",
+      "text": "Skill 的组成"
+    },
+    {
+      "anchor": "section-2",
+      "text": "一个完整的 Skill 由以下部分组成:"
+    },
+    {
+      "anchor": "section-2",
+      "text": "my-skill/                  ← Skill 目录\n  ├─ SKILL.md              ← 核心文件(必需)\n  │   ├─ YAML 元数据        ← 名称、描述\n  │   └─ Markdown 正文      ← 详细指令\n  │\n  ├─ reference.md           ← 参考文档(可选)\n  ├─ examples.md            ← 示例代码(可选)\n  │\n  ├─ scripts/               ← 工具脚本(可选)\n  │   ├─ helper.py\n  │   └─ formatter.sh\n  │\n  └─ templates/             ← 模板文件(可选)\n      └─ template.txt"
+    },
+    {
+      "anchor": "section-2",
+      "text": "SKILL.md 是唯一必需的文件"
+    },
+    {
+      "anchor": "section-2",
+      "text": "其他文件都是可选的，用于补充说明"
+    },
+    {
+      "anchor": "section-2",
+      "text": "文件组织灵活，根据需要添加"
+    },
+    {
+      "anchor": "section-2",
+      "text": "Skill vs 其他概念"
+    },
+    {
+      "anchor": "section-2",
+      "text": "对比一下 Skill 和其他常见概念的区别:"
+    },
+    {
+      "anchor": "section-10",
+      "text": "SKILL.md 文件结构"
+    },
+    {
+      "anchor": "section-10",
+      "text": "现在详细学习 SKILL.md 的标准格式。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "文件结构概览"
+    },
+    {
+      "anchor": "section-12",
+      "text": "---\n# ════════════════════════════════════════\n#  YAML Frontmatter (元数据区)\n# ════════════════════════════════════════\nname: skill-name\ndescription: 简短描述,说明这个 Skill 做什么、何时使用\n---\n\n# ════════════════════════════════════════\n#  Markdown Body (正文区)\n# ════════════════════════════════════════\n\n# Skill 名称\n\n## 使用场景\n说明什么情况下应该使用这个 Skill\n\n## 核心指令\n详细的操作步骤和规范\n\n## 示例\n具体的使用示例\n\n## 参考资料\n链接到其他相关文档"
+    },
+    {
+      "anchor": "section-14",
+      "text": "YAML Frontmatter 详解"
+    },
+    {
+      "anchor": "section-14",
+      "text": "YAML 元数据区包含 Skill 的基本信息："
+    },
+    {
+      "anchor": "section-14",
+      "text": "---\nname: python-best-practices\ndescription: Python 开发最佳实践，包括代码规范、类型注解、文档字符串。当编写或审查 Python 代\n码时使用\n---"
+    },
+    {
+      "anchor": "section-14",
+      "text": "标准 YAML 只有两个字段——name 和 description。以下逐一说明。"
+    },
+    {
+      "anchor": "section-14",
+      "text": "字段说明"
+    },
+    {
+      "anchor": "section-14",
+      "text": "name（必需）\n─────────────────────────────────────────────────────────\n  • Skill 的唯一标识符\n  • 只能使用：小写字母、数字、连字符\n  • 长度限制：最多 64 个字符\n  • 命名建议：使用描述性名称，如 code-review、git-commit\n\n  ✓ 好的命名：\n    python-dev\n    api-design\n    code-review\n\n  × 不好的命名：\n    Skill1（不具描述性）\n    Python_Dev（不能用下划线）\n    code review（不能有空格）\ndescription（必需）\n─────────────────────────────────────────────────────────\n  • 这是 Skill 的触发入口——AI 靠它判断何时加载这个 Skill\n  • 长度限制：最多 1024 个字符\n  • 必须包含：\n    1. 这个 Skill 做什么\n    2. 何时应该使用（触发条件）\n    3. 触发关键词（帮助 AI 匹配用户意图）\n\n  ✓ 好的 description：\n  \"专业的代码审查助手，检查安全漏洞、性能问题、代码规范。\n   当用户要求审查、review、检查代码时使用\"\n\n  × 不好的 description：\n  \"帮助写代码\"（太模糊，AI 不知道何时触发）\n\n  关键理解：description 是 AI 在决定「要不要加载这个 Skill」时\n  唯一能看到的信息。正文内容只有在 Skill 被触发后才加载。\n  因此，触发关键词必须写在 description 里，而不是写在正文中。\n\n  实际项目中通常直接嵌入触发标记：\n\n  \"图书正文格式规范。用于编写/优化图书章节，确保：结构清晰、\n   去AI味、符合出版标准。触发：(1)创建新章节 (2)修改现有文档\n   (3)去除AI痕迹 (4)规范化格式\""
+    },
+    {
+      "anchor": "section-14",
+      "text": "早期 Skill 规范中还有一个实验性字段 allowed-tools，用于限制 Skill 激活后的工具权限。但当前主流标准已不再推荐此字段——AI 本身就能根据任务判断该用什么工具，不需要人为约束。一个标准的Skill，YAML 区只需要 name 和 description。"
+    },
+    {
+      "anchor": "section-21",
+      "text": "Markdown 正文区详解"
+    },
+    {
+      "anchor": "section-21",
+      "text": "相对于YAML的严格，正文区比较随意，主要是用非结构化的文本描述Skill的内容，可以按需组织:"
+    },
+    {
+      "anchor": "section-21",
+      "text": "示例模板"
+    },
+    {
+      "anchor": "section-21",
+      "text": "# Python 开发最佳实践\n\n## 使用场景\n当编写、修改或审查 Python 代码时使用此 Skill\n\n## 代码规范\n\n### 格式化\n- 使用 Black 自动格式化\n- 行长度限制为 88 字符\n- 使用 4 空格缩进\n\n### 命名规范\n- 类名: PascalCase (UserManager)\n- 函数/变量: snake_case (get_user, user_id)\n- 常量: UPPER_SNAKE_CASE (MAX_RETRY)\n\n## 错误处理\n- 明确捕获具体异常,避免裸 except\n- 关键操作必须有 try-except\n- 记录错误日志\n\n## 参考资料\n更多详情请参考 [advanced.md](advanced.md)"
+    },
+    {
+      "anchor": "section-21",
+      "text": "组织建议"
+    },
+    {
+      "anchor": "section-21",
+      "text": "好的 Skill 正文结构:\n  ├─ 使用场景 (让 AI 知道何时用)\n  ├─ 核心规则 (必须遵守的标准)\n  ├─ 示例代码 (展示正确用法)\n  ├─ 常见错误 (避免踩坑)\n  └─ 参考链接 (深入学习)"
+    },
+    {
+      "anchor": "section-21",
+      "text": "如果想看一个真实项目中完整的 SKILL.md 文件，可以回顾上一节我们安装并使用的 Humanizer 技能——它就是一份高质量的 Skill 参考范本。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "Skill 的触发机制"
+    },
+    {
+      "anchor": "section-28",
+      "text": "理解 Skill 如何被触发是很重要的。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "自动触发与手动触发"
+    },
+    {
+      "anchor": "section-30",
+      "text": "Skill 的理想工作方式是自动触发。AI 根据用户说的话，在后台匹配 description 中的关键词，判断是否需要加载某个 Skill。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "用户: \"帮我审查这段代码\"\n  ↓\nAI 看到 \"审查\" 关键词\n  ↓\n匹配到 code-review Skill 的 description\n  ↓\n自动加载并应用这个 Skill\n  ↓\n整个过程中用户不需要手动指定任何东西"
+    },
+    {
+      "anchor": "section-30",
+      "text": "这套机制设计得很优雅——AI 替用户判断该用什么工具，用户只管提需求。但坦白说，自动触发在实际中并不总是可靠的，它受几个因素影响："
+    },
+    {
+      "anchor": "section-30",
+      "text": "AI 工具的实现——有的客户端对 Skill 的支持比较完善（如 Claude Code），有的则偏弱，触发率因人而异"
+    },
+    {
+      "anchor": "section-30",
+      "text": "大模型本身的能力——高端模型对意图的识别更准确，低端模型则容易\"听不懂\""
+    },
+    {
+      "anchor": "section-30",
+      "text": "大模型本身的能力"
+    },
+    {
+      "anchor": "section-30",
+      "text": "工作环境的复杂度——同时加载了多个 Skill 时，AI 可能匹配错或漏匹配"
+    },
+    {
+      "anchor": "section-30",
+      "text": "工作环境的复杂度"
+    },
+    {
+      "anchor": "section-30",
+      "text": "description 的清晰度——这个下面会专门展开"
+    },
+    {
+      "anchor": "section-30",
+      "text": "description 的清晰度"
+    },
+    {
+      "anchor": "section-30",
+      "text": "所以，当自动触发不生效时，手动调用 Skill 是完全合理的做法。Slash 命令 /skill-name 就是为此设计的。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "/code-review 帮我审查这段代码\n/humanizer 帮我去掉AI痕迹\n\n1\n2"
+    },
+    {
+      "anchor": "section-30",
+      "text": "手动触发不是错误，而是自动触发的有效补充。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "一句话总结：自动触发是理想，手动触发是后路。它们之间不是对错关系，而是互补关系。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "触发决策过程"
+    },
+    {
+      "anchor": "section-45",
+      "text": "AI 在决定是否触发一个 Skill 时，大致经过以下判断链："
+    },
+    {
+      "anchor": "section-45",
+      "text": "1. 分析用户意图\n   └─ 用户想做什么？\n\n2. 检查 Skill 库\n   └─ 哪些 Skill 的 description 可能匹配？\n\n3. 相关性评分\n   └─ 这个 Skill 对当前任务的帮助程度\n\n4. 决定是否加载\n   └─ 如果相关性高，则加载 Skill 正文\n\n5. 执行任务\n   └─ 按照 Skill 的指导完成任务"
+    },
+    {
+      "anchor": "section-45",
+      "text": "这个过程中，步骤 2 和 3 是最不稳定的环节。如果 description 写得模糊，或者模型本身对语义理解不够好，匹配就可能失败。"
+    },
+    {
+      "anchor": "section-45",
+      "text": "几种典型情况"
+    },
+    {
+      "anchor": "section-45",
+      "text": "情况1: 明确匹配\n\n用户: \"帮我生成 Git 提交消息\"\n                ↓\n        关键词: \"Git 提交消息\"\n                ↓\n   匹配 Skill: git-commit-message\n   description: \"生成规范的 Git 提交消息...\"\n                ↓\n            触发\n情况2: 隐含匹配\n\n用户: \"我改了登录功能,帮我写个 commit\"\n                ↓\n        关键词: \"commit\"（隐含在描述中）\n                ↓\n   匹配 Skill: git-commit-message\n   description: \"...当用户提到 commit...\"\n                ↓\n            触发"
+    },
+    {
+      "anchor": "section-45",
+      "text": "情况3: 不匹配\n\n用户: \"今天天气怎么样?\"\n                ↓\n     关键词: \"天气\"\n                ↓\n  没有匹配的 Skill\n                ↓\n         不触发任何 Skill"
+    },
+    {
+      "anchor": "section-45",
+      "text": "情况4: 自动触发失败，手动补位\n\n用户: \"帮我写个 commit 消息\"（说了但 AI 没反应）\n                ↓\n        手动输入:\n        /code-review 帮我生成 commit 消息\n                ↓\n            正常触发"
+    },
+    {
+      "anchor": "section-45",
+      "text": "情况 4 在实际使用中很常见。碰到自动触发不生效时，直接用 / 命令调用就好，不需要纠结。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "提高触发准确率"
+    },
+    {
+      "anchor": "section-54",
+      "text": "自动触发靠的是 description，所以 description 写得越精准，触发越可靠。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "不够好的 description："
+    },
+    {
+      "anchor": "section-54",
+      "text": "\"代码审查工具\"\n\n1"
+    },
+    {
+      "anchor": "section-54",
+      "text": "问题：太简单，AI 不知道何时用；缺少触发关键词；没有说明使用场景。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "优秀的 description："
+    },
+    {
+      "anchor": "section-54",
+      "text": "\"专业的代码审查助手，检查安全漏洞、性能问题、代码规范、\n 最佳实践。当用户要求审查(review)、检查(check)、\n 评估(evaluate)代码质量时使用\""
+    },
+    {
+      "anchor": "section-54",
+      "text": "优点：说明了功能（检查什么）；列出了触发关键词（review, check, evaluate）；明确了使用场景（代码质量检查）；帮助 AI 准确匹配。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "编写技巧"
+    },
+    {
+      "anchor": "section-54",
+      "text": "Description 公式:\n\n[功能描述] + [触发关键词] + [使用场景]\n\n示例:\n\"Python 开发最佳实践,\n 包括代码规范、类型注解、文档字符串。\n 当编写、修改、审查 Python 代码时使用,\n 也可用于代码重构和质量提升\""
+    },
+    {
+      "anchor": "section-54",
+      "text": "但即使是写得最好的 description，也不能保证 100% 触发。触发率始终受到工具实现、模型能力、上下文环境等因素影响。所以既要认真写好 description，又要接受手动触发作为正常的后路——这两者并不矛盾。"
+    },
+    {
+      "anchor": "section-65",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-65",
+      "text": "中文 | English | 音标 | 说明\nYAML元数据区 | YAML Frontmatter | /ˈjæml frʌnt mætər/ ˌ | SKILL.md顶部的元数据区，用---包围，包含name和 description两个必需字段\n名称字段 | Name | /neɪm/ | Skill的唯一标识符，只能使用小写字母、数字和连字符，最多64字符\n描述字段 | Description | /dɪˈskrɪpʃn/ | Skill的触发入口，AI靠它判断何时加载，需包含触发关键词\n触发机制 | Trigger Mechanism | /ˈtrɪɡər ˈmekənɪzəm/ | AI根据用户意图自动匹配Skill的过程，先匹配description 再加载正文"
+    },
+    {
+      "anchor": "section-67",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-67",
+      "text": "前面讨论的 Skill 都停留在文本指引层面——AI 读规则，然后自己执行。但遇到需要实际操作的任务（如文件转换、API 调用）时，光靠文本不够。下一节我们来探讨 Skill 如何调用工具和脚本，让 AI 不仅能\"想\"，还能\"做\"。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "图片"
+    },
+    {
+      "anchor": "section-69",
+      "text": "![](003-图文-1-1-Skill 核心概念.assets/img-001.png)"
+    }
+  ]
+}

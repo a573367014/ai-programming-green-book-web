@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>语言模型（一）-什么是语言模型 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-020">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>语言模型</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 021</span></div>
+<h1 class="lesson-title">语言模型（一）-什么是语言模型</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 10 分钟阅读</span><span class="module-name">语言模型</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-020.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-020.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<h2 id="section-0" data-source-page="1">8.1 阅读指南<a class="heading-link" href="#section-0" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">前面几节，我们了解了ChatGPT如何玩文字接龙游戏。现在，让我们稍微正式一点，引入一个经常听到的术语：语言模型（Language Model）。这个词听起来很学术，但理解之后会发现它并不神秘。</p>
+<h2 id="section-2" data-source-page="1">8.2 人类理解世界的方式<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">在谈&quot;语言模型&quot;之前，先聊聊&quot;模型&quot;这个词本身。</p>
+<p data-source-page="1">我们生活在一个复杂得难以想象的世界里。为了理解这个世界，人类发明了一种强大的工具：用简化的数学来描述复杂的现实，这就是&quot;模型&quot;。</p>
+<p data-source-page="1">物理学中的模型</p>
+<p data-source-page="1">比如，一个小孩抛出一个球，球划出一道弧线落地。这个简单的动作，背后涉及无数的物理因素：球的材质、空气阻力、地球引力、风速、温度……</p>
+<p data-source-page="1">但牛顿给了我们一个优雅的模型：</p>
+<div class="math-line" data-source-page="1">h = v<sub>0</sub>t − <span class="fraction"><span>1</span><span>2</span></span>gt<sup>2</sup><details class="formula-source"><summary>查看原文公式文本</summary><p>ℎ = 𝑣 0 𝑡 − 1 2 𝑔 𝑡 2 h=v 0  t− 2 1  gt 2 · t2 · v0</p></details></div>
+<p data-source-page="1">这个公式忽略了无数细节，却能相当准确地预测球的轨迹。这就是模型的力量：用简单的数学，抓住现象的本质。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">气象学中的模型</p>
+<p data-source-page="2">再比如，明天会不会下雨？这涉及大气中数万亿个分子的运动，地球自转，太阳辐射……</p>
+<p data-source-page="2">气象学家建立的模型，用几千个方程，数百万个数据点，模拟大气的运动，最终给出：</p>
+<aside class="callout" data-source-page="2"><p>明天降雨概率：65%</p></aside>
+<p data-source-page="2">不完美，但有用。这就是模型的价值：</p>
+<aside class="callout" data-source-page="2"><p>在复杂中找到规律，在不确定中给出预测。</p></aside>
+<p data-source-page="2">那么，&quot;语言模型&quot;呢？</p>
+<p data-source-page="2">类似地，人类语言是一个极其复杂的现象。当发一条朋友圈&quot;今天emo了&quot;，这背后涉及：</p>
+<p class="list-item" data-source-page="2">成长经历（学会了中文和网络文化）</p>
+<p class="list-item" data-source-page="2">情绪状态（正处于低落或失落的心境）</p>
+<p class="list-item" data-source-page="2">表达意图（想分享这种心情但不想说得太直白）</p>
+<p class="list-item" data-source-page="2">语言的演化历史（&quot;emo&quot;从英文emotional缩略而来，在中文网络语境中变成动词）</p>
+<p class="list-item" data-source-page="2">文化的共同理解（同龄人知道这不是&quot;真的很悲伤&quot;，而是一种轻松的自嘲）</p>
+<p data-source-page="2">这么复杂的现象，怎么用数学来描述呢？似乎不可能。</p>
+<p data-source-page="2">但语言模型给了我们一个数学的角度：把语言看作一个概率过程。</p>
+<p data-source-page="2">概率过程</p>
+<h2 id="section-28" data-source-page="2">8.3 语言模型的数学定义<a class="heading-link" href="#section-28" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">现在，给出一个正式的定义：</p>
+<aside class="callout" data-source-page="2"><p>语言模型，就是对语言概率分布的数学建模。</p></aside>
+<p data-source-page="2">什么意思？拆解一下。</p>
+<p data-source-page="2">语言是随机过程想象一下，正在写一篇文章。写到&quot;今天天气&quot;这四个字之后，下一个词可能是：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p class="list-item" data-source-page="3">“真好”（可能性比较大）</p>
+<p class="list-item" data-source-page="3">“很好”（也挺常见）</p>
+<p class="list-item" data-source-page="3">“糟糕”（也有可能）</p>
+<p class="list-item" data-source-page="3">“紫色”（几乎不可能）</p>
+<p data-source-page="3">下一个词不是确定的，而是有多种可能性，每种可能性有一个概率。</p>
+<p data-source-page="3">语言模型计算概率</p>
+<p data-source-page="3">语言模型做的事情，就是用数学方法，计算出这个概率分布：</p>
+<div class="math-line" data-source-page="3">P(w ∣ C)<details class="formula-source"><summary>查看原文公式文本</summary><p>𝑃 ( 𝑤 ∣ 𝐶 ) P(w∣C) · ( · ) · w</p></details></div>
+<p data-source-page="3">这个符号读作：“在给定前文的条件下，某个词出现的概率”。</p>
+<p data-source-page="3">具体例子：</p>
+<aside class="callout" data-source-page="3"><p>𝑃 ( 真好 ∣ 今天天气 ) = 0 . 3 5 P(真好∣今天天气)=0.35 𝑃 ( 很好 ∣ 今天天气 ) = 0 . 2 5 P(很好∣今天天气)=0.25 𝑃 ( 不错 ∣ 今天天气 ) = 0 . 1 5 P(不错∣今天天气)=0.15 𝑃 ( 糟糕 ∣ 今天天气 ) = 0 .0 8 P(糟糕∣今天天气)=0.08 𝑃 ( 紫色 ∣ 今天天气 ) = 0 . 0 0 0 1 P(紫色∣今天天气)=0.0001</p></aside>
+<p data-source-page="3">这个概率分布，就是对&quot;人类在这个上下文中会说什么&quot;的数学建模。</p>
+<p data-source-page="3">为什么叫&quot;建模&quot;？</p>
+<p data-source-page="3">因为这个概率分布不是随意的，它反映了语言的内在规律。</p>
+<p data-source-page="3">继续用&quot;今天天气&quot;这个例子来说明：</p>
+<p data-source-page="3">规律一：语法约束</p>
+<div class="math-line" data-source-page="3">为什么 P(紫色 ∣ 今天天气) = 0.0001 这么低？<details class="formula-source"><summary>查看原文公式文本</summary><p>为什么 𝑃 ( 紫色 ∣ 今天天气 ) = 0 . 0 0 0 1 P(紫色∣今天天气)=0.0001 这么低？</p></details></div>
+<p data-source-page="3">因为中文语法不允许&quot;天气&quot;后面接颜色词。语言模型学会了这个规律，所以给了极低的概率。</p>
+<p data-source-page="3">再看一个例子：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<aside class="callout" data-source-page="4"><p>𝑃 ( 吃 ∣ 我喜欢 ) = 0 . 1 5 P(吃∣我喜欢)=0.15 𝑃 ( 苹果 ∣ 我喜欢 ) = 0 . 1 2 P(苹果∣我喜欢)=0.12𝑃 ( 的 ∣ 我喜欢 ) = 0 . 0 0 1 P(的∣我喜欢)=0.001</p></aside>
+<p data-source-page="4">为什么&quot;的&quot;概率这么低？因为&quot;我喜欢的&quot;这种说法不符合中文语法（虽然口语中偶尔也有，但很罕见）。</p>
+<p data-source-page="4">规律二：语义连贯</p>
+<aside class="callout" data-source-page="4"><p>𝑃 ( 爬树 ∣ 猫会 ) = 0 . 1 8 P(爬树∣猫会)=0.18 𝑃 ( 飞 ∣ 猫会 ) = 0 . 0 0 1 P(飞∣猫会)=0.001</p></aside>
+<p data-source-page="4">为什么&quot;飞&quot;概率这么低？因为在现实世界中，猫不会飞。语言模型从数据中学会了这个常识。</p>
+<p data-source-page="4">规律三：上下文相关</p>
+<p data-source-page="4">想象这个场景：</p>
+<aside class="callout" data-source-page="4"><p>前文A：&quot;我买了一部新手机，它的____&quot; 前文B：“我做了一道菜，它的____”</p></aside>
+<p data-source-page="4">虽然都是&quot;它的&quot;，但下一个词的概率分布完全不同。</p>
+<aside class="callout" data-source-page="4"><p>𝑃 ( 屏幕 ∣ … 它的 ) = 0 . 2 5 P(屏幕∣…它的)=0.25 𝑃 ( 味道 ∣ … 它的 ) = 0 . 0 0 1 P(味道∣…它的)=0.001</p></aside>
+<aside class="callout" data-source-page="4"><p>𝑃 ( 味道 ∣ … 它的 ) = 0 . 3 0 P(味道∣…它的)=0.30 𝑃 ( 屏幕 ∣ … 它的 ) = 0 . 0 0 1 P(屏幕∣…它的)=0.001</p></aside>
+<p data-source-page="4">语言模型会根据更前的上下文（手机 vs 菜）来调整概率。</p>
+<p data-source-page="4">小结：</p>
+<p data-source-page="4">语言模型就是用数学的方式，把这些规律&quot;编码&quot;进概率分布中。这就是为什么我们说，语言模型是对语言的&quot;建模&quot;。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-69" data-source-page="5">8.4 冷知识：香农游戏——语言模型的&quot;祖先&quot;（1948年）<a class="heading-link" href="#section-69" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">你可能没想到，语言模型的思想，早在1948年就被提出了——比ChatGPT早了75年！</p>
+<p data-source-page="5">克劳德·香农是谁？</p>
+<p data-source-page="5">克劳德·香农（Claude Shannon），信息论之父，现代数字通信的奠基人。他在1948年发表了一篇划时代的论文《通信的数学理论》，奠定了整个信息时代的理论基础。</p>
+<p data-source-page="5">但很少有人知道，他在这篇论文中，还提出了一个有趣的&quot;游戏&quot;。</p>
+<p data-source-page="5">香农游戏：人类版的&quot;预测下一个词&quot;</p>
+<p data-source-page="5">香农做了一个实验：</p>
+<aside class="callout" data-source-page="5"><p>给你一段英文文本的开头（来自小说《名利场》）： “THE ROOM WAS NOT VERY LIGHT A SMALL OBLONG READI___” 请你猜下一个字母是什么？ 如果猜对了，继续猜下一个；如果猜错了，告诉你正确答案，然后继续。 记录你猜对/猜错的次数。</p></aside>
+<p data-source-page="5">他让志愿者玩这个游戏，发现了一个惊人的规律：</p>
+<p data-source-page="5">人类能够相当准确地预测下一个字母！</p>
+<p data-source-page="5">例如：</p>
+<aside class="callout" data-source-page="5"><p>“THE ROOM WAS NOT VERY LIGHT A SMALL OBLONG READI___” 大部分人会猜：N, G →“READING” (阅读/阅览室) 人类的大脑，自动学会了英语的： 语法规律（“a small” 后面通常是名词） 语义规律（房间不是很明亮，可能是阅览室或类似地方） 统计规律（“readi” 开头，最常见的是 “reading”）</p></aside>
+<p data-source-page="5">这和语言模型有什么关系？</p>
+<p data-source-page="5">香农的核心洞察是：语言不是随机的，而是有规律的。这种规律可以用概率来描述。</p>
+<p data-source-page="5">语言不是随机的，而是有规律的。这种规律可以用概率来描述。</p>
+<p data-source-page="5">他甚至给出了一个数学公式，计算英语的&quot;熵&quot;（Entropy）——衡量语言的不确定性：</p>
+<div class="math-line" data-source-page="5">H = −∑ P(x) log P(x)<details class="formula-source"><summary>查看原文公式文本</summary><p>𝐻 = − ∑ 𝑃 ( 𝑥 ) log ⁡ 𝑃 ( 𝑥 ) H=−∑P(x)logP(x)</p></details></div>
+<p data-source-page="5">这就是现代语言模型的数学基础。</p>
+<p data-source-page="5">从香农游戏到ChatGPT对比一下：</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<aside class="callout" data-source-page="6"><p>香农游戏（1948）： 人类根据经验，猜下一个字母 依靠的是大脑中积累的语言统计规律ChatGPT（2022）： AI根据训练数据，预测下一个词 依靠的是1750亿参数中编码的语言统计规律 本质是一样的，都是在建模： 𝑃 ( 下一个 ∣ 前文 ) P(下一个∣前文)</p></aside>
+<p data-source-page="6">香农的预言</p>
+<p data-source-page="6">更神奇的是，香农在1948年就预言了：</p>
+<aside class="callout" data-source-page="6"><p>“如果我们能够精确计算语言的概率分布，我们就能制造出一台’写作机器’，它能够生成像人类一样的文本。”</p></aside>
+<p data-source-page="6">这不就是ChatGPT吗？！</p>
+<p data-source-page="6">一个有趣的对比</p>
+<aside class="callout" data-source-page="6"><p>1948年，香农用人类志愿者做实验： 任务：预测下一个字母 处理速度：约1个字母/秒 准确率：60-70% “参数量”：一个人类大脑 2023年，ChatGPT： 任务：预测下一个词/字母 处理速度：约100个词/秒（约500倍于人类） 准确率：在简单文本上接近90%，超过人类 参数量：1750亿</p></aside>
+<p data-source-page="6">75年后，用机器实现了香农的梦想，而且远超他的预期。</p>
+<p data-source-page="6">如果香农还活着……</p>
+<p data-source-page="6">克劳德·香农于2001年去世，享年84岁。他没能看到ChatGPT的诞生。</p>
+<p data-source-page="6">但如果他还活着，看到自己75年前的理论，最终变成了改变世界的AI产品，他会说什么呢？</p>
+<p data-source-page="6">也许他会说：“我早就知道了。数学不会骗人。”</p>
+<p data-source-page="6">每当用ChatGPT的时候，不妨想一想：75年前，一个天才数学家，已经在纸上勾勒出了这一切的蓝图。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-101" data-source-page="7">8.5 ■ 学点英语<a class="heading-link" href="#section-101" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>语言模型</td><td>Language Model</td><td>/ˈlæŋɡwɪdʒ ˈmɒdl/</td><td>对语言序列概率分布进行建模的数学模型</td></tr><tr><td>条件概率</td><td>Conditional Probability</td><td>/kənˈdɪʃənl prɒbə ˌ ˈbɪləti/</td><td>在已知某事件发生的条件下另一事件发生的概率，记为P(词</td></tr><tr><td>联合概率</td><td>Joint Probability</td><td>/dʒɔɪnt prɒbə ˌ ˈbɪləti/</td><td>多个事件同时发生的概率，记为P(词1,词2,…,词n)</td></tr><tr><td>概率分布</td><td>Probability Distribution</td><td>/ prɒbəˈbɪləti ˌ dɪstrɪˈbjuːʃən/ ˌ</td><td>描述随机变量所有可能取值及其概率的函数，语言模型的核心输出对象</td></tr><tr><td>香农游戏</td><td>Shannon Game</td><td>/ˈʃænən ɡeɪm/</td><td>香农在1948年提出的根据前文预测下一个字母的思想实验，语言模型概念的雏形</td></tr><tr><td>自回归生成</td><td>Autoregressive Generation</td><td>/ɔːtoʊrɪˈɡresɪv dʒenəˈreɪʃən/ ˌ</td><td>从左到右逐词生成文本序列的过程，每一步依赖之前已生成的全部内容</td></tr><tr><td>下一 Token预测</td><td>Next-Token Prediction</td><td>/nekst ˈtoʊkən prɪ ˈdɪkʃən/</td><td>语言模型根据已有Token序列预测下一个Token的核心训练任务和目标</td></tr><tr><td>信息熵</td><td>Entropy</td><td>/ˈentrəpi/</td><td>衡量信息不确定性的度量单位，香农提出的核心概念</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-019.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-7</strong><small>文字接龙的游戏</small></a><a class="chapter-neighbor next" href="lesson-021.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-2</strong><small>语言模型</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5255#mid=104877" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-0" class="toc-level-2">8.1 阅读指南</a><a href="#section-2" class="toc-level-2">8.2 人类理解世界的方式</a><a href="#section-28" class="toc-level-2">8.3 语言模型的数学定义</a><a href="#section-69" class="toc-level-2">8.4 冷知识：香农游戏——语言模型的&quot;祖先&quot;（1948年）</a><a href="#section-101" class="toc-level-2">8.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-020", "title": "语言模型（一）-什么是语言模型", "stage": 1, "week": 1, "module": "语言模型", "minutes": 10, "pages": 7, "type": "article"}</script>
+</body></html>

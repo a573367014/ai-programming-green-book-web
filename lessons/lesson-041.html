@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>监督微调（一）-概念与本质 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-041">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 2 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>监督微调</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 042</span></div>
+<h1 class="lesson-title">监督微调（一）-概念与本质</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>3 页原文</span><span>约 4 分钟阅读</span><span class="module-name">监督微调</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-041.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-041.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面五节，了解了ChatGPT的本质:一个1750亿参数的函数，通过预测下一个词来工作，在3000亿个词的海量文本上预训练而成。 但直接使用预训练完成的GPT-3,问它:“如何学习编程?”,它可能会给出各种奇怪的回答。因为纯预训练模型只学会了一件事:预测下一个词。它把你的问题当成了一篇文章的开头，继续往下&quot;接龙&quot;。它不知道你在提问，不知道要给出答案，更不知道什么是&quot;好的答案&quot;。 这就是预训练的局限:通才，但不会做具体任务。 这一节，看看如何把一个&quot;只会接龙&quot;的语言模型，变成一个&quot;会回答问题&quot;的对话助手。这个过程叫做监督微调(Supervised Fine-Tuning, SFT)。</p></aside>
+<h2 id="section-1" data-source-page="1">7.1 预训练模型没有任务意识<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">让我先带你深入理解这个问题的本质。</p>
+<p data-source-page="1">预训练模型在做什么</p>
+<p data-source-page="1">在预训练阶段，模型读了无数篇文章、网页、书籍。它学会了一个能力:在任何上下文后面，预测最可能的下一个词。</p>
+<p data-source-page="1">但它没有学会区分:</p>
+<p class="list-item" data-source-page="1">哪些是问题，哪些是陈述</p>
+<p class="list-item" data-source-page="1">哪些需要回答，哪些不需要</p>
+<p class="list-item" data-source-page="1">什么是好的答案，什么是坏的答案</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">比如：</p>
+<aside class="callout" data-source-page="2"><p>用户输入:“太阳是什么时候开始绕着地球转的?”</p></aside>
+<p data-source-page="2">预训练模型可能的回答:</p>
+<aside class="callout" data-source-page="2"><p>“太阳是什么时候开始绕着地球转的?这是一个关于天文学历史的问题。 在古代，人们确实认为太阳绕着地球转，这被称为’地心说’…”</p></aside>
+<p data-source-page="2">模型把问题当成文章开头，继续&quot;接龙&quot;</p>
+<p data-source-page="2">但其实正常情况，大模型应该指出这是一个常识性的错误。造成这种错误回答的原因是因为只经过预训练的大模型缺少任务理解能力。它无法理解&quot;问答&quot;是一种特定的交互模式，无法理解用户的意图和期待，也不理解什么样的回答是有帮助的。</p>
+<p data-source-page="2">这些，需要通过监督微调来教会模型。</p>
+<h2 id="section-16" data-source-page="2">7.2 什么是监督微调<a class="heading-link" href="#section-16" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">监督微调(Supervised Fine-Tuning)是指:</p>
+<aside class="callout" data-source-page="2"><p>在预训练模型的基础上，使用人工标注的问答对进行额外训练，让模型学会&quot;回答问题&quot;这个具体任务。</p></aside>
+<p data-source-page="2">如果说预训练是&quot;博览群书&quot;,那么监督微调就是&quot;针对性训练&quot;。预训练阶段的大模型像一个博学的人，读过无数书籍，能力知识丰富，但不知道怎么&quot;对话&quot;。</p>
+<p data-source-page="2">这类似一个学富五车的学者，知识渊博，但不会教学。这点和我们程序员很像，很多程序员技术很牛，但未必能给初学者讲清楚。</p>
+<p data-source-page="2">而监督微调阶段，模型会学习如何回答问题，变成一个&quot;问答助手&quot;。比如：学会识别问题，组织答案，保持有帮助的语气。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<aside class="callout" data-source-page="3"><b>补充说明</b><p>为什么叫&quot;监督&quot; 因为每一条训练数据都有人类提供的正确答案，就像老师在&quot;监督&quot;学生学习一样。模型的每一步都有&quot;标准答案&quot;来指导，不是自己摸索。 这和上一节讨论的预训练不同：预训练是自监督——答案在原文里，不需要人工标注。几乎不需要人工参与，这也是为什么预训练可以大规模进行，而监督微调一般规模远比预训练小。</p></aside>
+<h2 id="section-23" data-source-page="3">7.3 ■ 学点英语<a class="heading-link" href="#section-23" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="3"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>监督微调</td><td>Supervised Fine- Tuning (SFT)</td><td>/ suːpərvaɪzd faɪn ˌ ˈtjuːnɪŋ/</td><td>用人工标注的问答对在预训练模型上做针对性训练</td></tr><tr><td>任务意识</td><td>Task Awareness</td><td>/tæsk əˈweərnəs/</td><td>模型理解和区分不同任务类型（问答、翻译、续写等）的能力</td></tr><tr><td>指令遵循</td><td>Instruction Following</td><td>/ɪnˈstrʌkʃən ˈfɒləʊɪŋ/</td><td>模型理解和执行人类指令的能力</td></tr><tr><td>问答对</td><td>Q&amp;A Pair</td><td>/kjuː ænd eɪ peər/</td><td>由问题与高质量答案组成的训练数据单元</td></tr><tr><td>人类标注</td><td>Human Annotation</td><td>/ˈhjuːmən ænə ˌ ˈteɪʃən/</td><td>由人工为训练数据提供正确答案或质量评分的流程</td></tr></tbody></table></div>
+<h2 id="section-25" data-source-page="3">7.5 下一节预告<a class="heading-link" href="#section-25" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">上一节了解了监督微调的概念：在预训练模型基础上，用人工标注的问答对进行额外训练。</p>
+<p data-source-page="3">本节将系统分解监督微调的过程，看看数据从哪里来、模型如何学习、参数如何更新。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-040.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>扩展练习 · 1-7</strong><small>预训练</small></a><a class="chapter-neighbor next" href="lesson-042.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-2</strong><small>监督微调</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5259#mid=104887" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">7.1 预训练模型没有任务意识</a><a href="#section-16" class="toc-level-2">7.2 什么是监督微调</a><a href="#section-23" class="toc-level-2">7.3 ■ 学点英语</a><a href="#section-25" class="toc-level-2">7.5 下一节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-041", "title": "监督微调（一）-概念与本质", "stage": 1, "week": 2, "module": "监督微调", "minutes": 4, "pages": 3, "type": "article"}</script>
+</body></html>

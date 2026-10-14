@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Loop Engineering：积木、文件与工具 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-158">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-7">持续扩展</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 13 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Loop Engineering</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 159</span></div>
+<h1 class="lesson-title">Loop Engineering：积木、文件与工具</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>9 页原文</span><span>约 15 分钟阅读</span><span class="module-name">Loop Engineering</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-158.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-158.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节我们讲了为什么需要 Loop Engineering——让 AI 从“等指令的执行者”变成“自己找活干的成员”。这一节我们来拆解它的具体构造：六个积木块怎么组合、一个 Loop 怎么运转。</p></aside>
+<h2 id="section-1" data-source-page="1">2.1 六个积木<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="1"><b>阅读提示</b><p>来源说明以下“六个积木”框架，是我综合了以下来源之后归纳出来的 LE 框架要素</p></aside>
+<h2 id="section-3" data-source-page="1">•<a class="heading-link" href="#section-3" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Cobus Greyling 的 loop-engineering 仓库</code></pre></div>
+<h2 id="section-5" data-source-page="1">•<a class="heading-link" href="#section-5" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">Addy Osmani 的博客</p>
+<h2 id="section-7" data-source-page="1">•<a class="heading-link" href="#section-7" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">Codex CLI 的相关实践</p>
+<p data-source-page="1">Loop Engineering 把“Agent 怎么自动工作”拆成了六个可以组合的积木块。理解了这六个积木，你就理解了整个体系。</p>
+<h3 id="section-10" data-source-page="1">积木一：调度（Scheduling / Automation）<a class="heading-link" href="#section-10" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">类比： 手机闹钟。</p>
+<p data-source-page="1">做什么： 让 Loop 在指定时间自动启动。比如每天早上 9 点跑一次，或者每次有人提 PR 的时候跑一次。</p>
+<p data-source-page="1">用什么实现： GitHub Actions 的定时触发（cron），或者系统级的 cron / systemd timer。</p>
+<p data-source-page="1">没有调度，Loop 就不是 Loop——它只是一次性的任务。调度是让 Loop 真正“循环”起来的那个心跳。</p>
+<h3 id="section-15" data-source-page="1">积木二：技能（Skills）<a class="heading-link" href="#section-15" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">技能的作用很明确：给 Agent 一份持久的“知识文件”，告诉它这个项目的规则、约定、怎么做某件事。Skill 保存在文件里，Agent 每次干活前先读 Skill，不会忘记。</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">举个例子： 你写一个 skills/loop-triage.md ，告诉 Agent “issue 带 bug 标签的优先级最</code></pre></div>
+<p data-source-page="1">高，feature request 先放到讨论区”。Agent 每次处理 issue 都会遵守这个指南。</p>
+<p data-source-page="1">Skills 也是把“意图”从一次性的对话中解放出来的关键。我在第 10 章详细讲过 Skill 的原理，这里的用法异曲同工。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">这里顺便提一下，上个小节，我们演示了一段 Prompt，看起来和这里的 Skill 功能类似。那么这里为什么又换成了 Skill？</p>
+<p data-source-page="2">如果你有这个疑问，说明你对 Agent 的体系还没有理解的很清楚。</p>
+<p data-source-page="2">Prompt 更多的是一次性的，他不具备复用性。适合执行一些临时的、零散的任务。如果是需要长期维护、打磨的任务，那么 Skill 更合适。</p>
+<p data-source-page="2">如果你看过我的 Hermes 课就会知道，Prompt 大部分的时候会沉淀为 Skill，从临时性的提示词变成知识资产。</p>
+<h3 id="section-24" data-source-page="2">积木三：隔离工作区（Worktrees）<a class="heading-link" href="#section-24" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">类比： 给实习生一个“临时工位”，干砸了不影响正式办公室。</p>
+<p data-source-page="2">做什么： 每次 Agent 尝试修改代码，先创建一个独立的 git worktree（相当于临时分支加独立目录）。在这个隔离区里随便改。改好了合回去；改砸了直接扔掉，不动主线。</p>
+<p data-source-page="2">为什么需要这个？ 一旦你跑多个 Agent 并行工作，文件冲突就会成为最大的失败原因。两个 Agent 同时写同一个文件，和两个工程师同时改同一行代码没有区别。Worktree 从根本上解决了这个问题——每个 Agent 有自己的工作副本，互不干扰。</p>
+<p data-source-page="2">举个例子</p>
+<p data-source-page="2">Agent 尝试修一个 bug：</p>
+<p data-source-page="2">创建 worktree → 在 worktree 里改代码 → 跑测试 → 测试过了合回 main → 测试没过直接删worktree，main 不受影响。</p>
+<p data-source-page="2">至于怎么创建 worktree，我觉得看到这里应该不是什么问题了——如果你不会，直接告诉你的Agent，让他来创建。</p>
+<h3 id="section-32" data-source-page="2">积木四：接口——让 Agent 有手有脚<a class="heading-link" href="#section-32" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">类比： 给实习生配了电脑，但没装任何软件。他只能干坐着。</p>
+<p data-source-page="2">做什么： Agent 要操作一个外部平台（GitHub、数据库、Slack、飞书），前提是那个平台提供了可编程的接口。没有接口，Agent 就什么也做不了——它没有手也没有脚。</p>
+<p data-source-page="2">什么接口？ 三种方式，按推荐顺序：</p>
+<h2 id="section-36" data-source-page="2">•<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">CLI（推荐）： 命令行工具，Agent 可以直接调用。公共平台通常有官方的 CLI（GitHub CLI、Vercel CLI、AWS CLI 等），自己公司内网的服务也可以封装成 CLI。CLI 的详细设计可以参考我的Hermes 课程中关于 CLI 封装的内容。</p>
+<h2 id="section-38" data-source-page="2">•<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">MCP： 通过 Model Context Protocol 连接，我们在第 7 章详细讲过。MCP 的好处是 Agent 可以直接理解工具的描述和参数，不需要额外解释。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-40" data-source-page="3">•<a class="heading-link" href="#section-40" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">RESTful API： 最传统的方式，Agent 直接发 HTTP 请求。但相比 CLI 和 MCP，Agent 需要自己处理认证、拼接 URL、解析响应，出错概率更高。</p>
+<p data-source-page="3">一个简单的判断标准：如果某个平台没有开放 CLI 或 API，Agent 就碰不到它。你给 Agent 配的接口越多，它能做的事就越多——接口就是它的手和脚。</p>
+<p data-source-page="3">关于接口这个话题——为什么它是企业 Agent 化最大的瓶颈，没有接口怎么办、为什么推荐 CLI 而不是 MCP 或 RESTful API——我们在第三节单独展开讨论。</p>
+<h3 id="section-44" data-source-page="3">积木五：子智能体（Sub-agents）<a class="heading-link" href="#section-44" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">类比： 一个干活（Maker），一个检查（Checker）。不能让同一个人又写代码又自己检查——那等于没检查。</p>
+<p data-source-page="3">做什么： 把一个 Loop 里的工作拆成两个 Agent 完成。Implementer Agent 负责写代码，Verifier Agent 负责跑测试、检查结果。写代码的和检查的不是同一个人，避免“自欺欺人”。</p>
+<p data-source-page="3">为什么这一点在 Loop 里特别重要？ 因为 Loop 是在你不在场的时候运行的。如果只有一个 Agent 既写又查，它对自己的代码总是太宽容了。一个独立的 Verifier 是你能放心走开的唯一理由。</p>
+<h3 id="section-48" data-source-page="3">积木六：记忆/状态（Memory / State）<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">类比： 贴在墙上的工作日志——谁看了都知道现在是什么状态、上次干了什么。</p>
+<p data-source-page="3">做什么： 让 Agent 的状态不依赖对话上下文。上下文会被清空，但文件不会。状态存在文件里——</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">STATE.md 记录当前状态，loop-run-log.md 记录每次运行的日志。Agent 每次醒来先读这两</code></pre></div>
+<p data-source-page="3">个文件，就知道“我是谁、我在哪、我要干什么”。</p>
+<p data-source-page="3">为什么这很重要？ 我在第 11 章讲 Agent 记忆系统时说过，模型会忘记一切。但仓库不会。把记忆放在磁盘上，而不是上下文里，是每一个长期运行的 Agent 都依赖的核心技巧。</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">举个例子： STATE.md 记录“上次运行时间：2026-07-26 08:47，高优先级待办：无”。Agent 早
+上 9 点被闹钟叫醒，先看 STATE.md ，知道一切正常，跳过，等下一轮。</code></pre></div>
+<p data-source-page="3">强烈建议，这里的设计参考我们之前讲解的 LangGraph 的设计。</p>
+<h3 id="section-56" data-source-page="3">一个 Loop 究竟怎么运转<a class="heading-link" href="#section-56" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">把六个积木拼起来，一个标准 Loop 的流程是这样的：</p>
+<p data-source-page="3">第 1 步  Schedule（闹钟响了）</p>
+<p data-source-page="3">         定时触发 Loop</p>
+<p data-source-page="3">第 2 步  Triage（看工作日志）Agent 读取 LOOP.md + STATE.md，</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">         确定“我今天该干什么”</p>
+<p data-source-page="4">第 3 步  Worktree（开个临时工位）</p>
+<p data-source-page="4">         创建隔离的 git worktree，随便改</p>
+<p data-source-page="4">第 4 步  Implement + Verify（干活 + 检查）</p>
+<p data-source-page="4">         Implementer Agent 动手改代码</p>
+<p data-source-page="4">         Verifier Agent 跑测试 + gate 检查</p>
+<p data-source-page="4">第 5 步  Gate Check（安全检查）</p>
+<p data-source-page="4">         loop-gate 机械检查：这次改动有没有碰</p>
+<p data-source-page="4">         .env、secrets、migrations 等禁区？</p>
+<p data-source-page="4">第 6 步  Human Gate（危险操作送来给你看）</p>
+<p data-source-page="4">         安全操作（.md 文件）→ 自动合</p>
+<p data-source-page="4">         危险操作（碰到禁区）→ 暂停，等人拍板</p>
+<p data-source-page="4">第 7 步  Update State（写工作日志）</p>
+<p data-source-page="4">         更新 STATE.md + loop-run-log.md</p>
+<p data-source-page="4">         汇报干了什么，花了多少 token</p>
+<p data-source-page="4">第 8 步  回到第 1 步，等下一轮闹钟</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">注意第 5 步和第 6 步的区别。第 5 步是机械检查——由 loop-gate 工具硬性对照 gate.yaml 文</code></pre></div>
+<p data-source-page="4">件，不允许任何 Agent 绕过。第 6 步是人工判断——安全操作自动执行，危险操作暂停等待你拍板。这两层合在一起，既保证了速度，又守住了底线。</p>
+<h2 id="section-79" data-source-page="4">2.2 三个核心文件<a class="heading-link" href="#section-79" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Cobus Greyling 在 loop-engineering 仓库中定义了三个核心文件作为参考。需要说明的是，这</code></pre></div>
+<p data-source-page="4">不是官方标准——每个人都可以根据自己的项目需求设计文件结构，这三个文件只是目前社区里最常用的实践。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h3 id="section-82" data-source-page="5">LOOP.md —— “岗位职责说明书”<a class="heading-link" href="#section-82" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这是整个 Loop 的定义文件。它写了：</p>
+<h2 id="section-84" data-source-page="5">•<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">这个项目有哪些 Loop（Daily Triage、PR Babysitter、Dependency Sweeper 等）</p>
+<h2 id="section-86" data-source-page="5">•<a class="heading-link" href="#section-86" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">每个 Loop 的岗位职责是什么、用什么 skill、什么节奏、自动化到什么程度</p>
+<h2 id="section-88" data-source-page="5">•<a class="heading-link" href="#section-88" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">多个 Loop 之间的优先级（哪个先跑哪个后跑）</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Agent 每次都从看 LOOP.md 开始。LOOP.md 自己也在 git 里，可以版本管理。</code></pre></div>
+<h3 id="section-91" data-source-page="5">STATE.md —— “工作日志”<a class="heading-link" href="#section-91" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这是 Loop 自动维护的状态文件。它写了：</p>
+<h2 id="section-93" data-source-page="5">•<a class="heading-link" href="#section-93" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">上次运行时间</p>
+<h2 id="section-95" data-source-page="5">•<a class="heading-link" href="#section-95" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">当前有什么高优先级的事要做</p>
+<h2 id="section-97" data-source-page="5">•<a class="heading-link" href="#section-97" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">有什么正在观察的事（还没决定要不要做）</p>
+<h2 id="section-99" data-source-page="5">•<a class="heading-link" href="#section-99" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">有什么低优先级的“噪音”（先不管）</p>
+<p data-source-page="5">Agent 每次都更新这个文件。人类每周看一次，决定下一步方向。</p>
+<h3 id="section-102" data-source-page="5">gate.yaml —— “禁区地图”<a class="heading-link" href="#section-102" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这是机器可读的安全规则。它写了：</p>
+<h2 id="section-104" data-source-page="5">•<a class="heading-link" href="#section-104" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">绝对不许碰的路径（denylist）：.env 、/secrets/ 、auth/** 、payments/** 等</code></pre></div>
+<h2 id="section-106" data-source-page="5">•<a class="heading-link" href="#section-106" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">可以自动合并的路径（autoMergeAllowlist）：.md 文件、测试文件
+loop-gate check 命令会在每次 Agent 想改代码时，机械地对照这个文件。这保证了对安全规则</code></pre></div>
+<p data-source-page="5">的强制执行——不是靠 Agent 自觉，是靠程序硬挡。</p>
+<h2 id="section-109" data-source-page="5">2.3 配套工具：Cobus Greyling 的 CLI 实现<a class="heading-link" href="#section-109" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">Loop Engineering 目前没有所谓的官方标准。事实上，包括 Skill 在内，都不是什么标准，现在的 AI发展还处于草莽时代，这和传统的 Web W3C 不一样。每个人都可以根据自己的需求来构建工具链。</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">作为参考，Cobus Greyling 在 loop-engineering 仓库中提供了一套完整的 CLI 工具集，每个工
+具都可以用 npx 一行命令调用。下面介绍这套实现，方便你理解一个完整的工具链大概长什么样：</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<figure data-source-page="6"><button class="figure-open" aria-label="放大查看第 6 页图示"><img src="../assets/figures/952f66de5a48541958a9530f53db6bcf.png" width="688" height="1518" loading="lazy" alt="Loop Engineering：积木、文件与工具 · 原 PDF 第 6 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<p data-source-page="6">这套工具的设计思路很清晰：每一步都有对应的工具，每个工具只做一件事。 它们可以独立使用，也可以组合成完整的自动化流水线。当然，这只是 Cobus 个人的实现思路——你可以照搬，也可以只借鉴其中一部分，或者完全自己从头写一套。</p>
+<aside class="callout" data-source-page="6"><b>阅读提示</b><p>你可能觉得这个仓库的 Stars 不多，这很正常。因为类似 LE 这种机制，他很难有一套通用的标准，所以每个人都会根据自己的具体情况来实现。所以上面给出这个仓库的参考，也是方便大家理解LE，而不是照抄。</p></aside>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-115" data-source-page="7">2.4 Loop Engineering 和 /goal 的区别<a class="heading-link" href="#section-115" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">我在 Hermes 课程里讲解过 /goal 模式是怎么使用的。那么一个很自然的问题，LE 和 /goal 有</code></pre></div>
+<p data-source-page="7">什么区别吗？看起来都像是让 Agent 自己完成任务。</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">区别非常大。/goal 的目的是为了让 Agent 完成一个任务。但是 Loop 的目的是让 Agent 接管你某
+个方向的工作。他们的切面不同，你可以在 Loop 里使用 /goal 模式。
+Codex CLI 和 Hermes 都有 /goal 命令（Hermes 在 v0.13.0 引入，称作“Ralph loop”，直接受 
+Codex CLI 的启发）。很多人把 Loop Engineering 和 /goal 搞混，因为它们都涉及“Agent 自动工</code></pre></div>
+<p data-source-page="7">作”。但它们的本质不同。</p>
+<figure data-source-page="7"><button class="figure-open" aria-label="放大查看第 7 页图示"><img src="../assets/figures/1fa5cd199fdaca771dba954a64e69acd.png" width="688" height="958" loading="lazy" alt="Loop Engineering：积木、文件与工具 · 原 PDF 第 7 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<h2 id="section-121" data-source-page="7">2.5 三阶段升级路线<a class="heading-link" href="#section-121" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">LE 是一项高自由的模式，这意味着它必然伴随着高风险。他只适合有丰富开发和运维经验的人。新手还是老老实实的逐步提升，不要一开始就追求全自动或者半自动。</p>
+<p data-source-page="7">建议分阶段逐步提升。</p>
+<h3 id="section-124" data-source-page="7">第一阶段：L1 —— 只看不动<a class="heading-link" href="#section-124" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Loop 每天跑一次，输出报告到 STATE.md 。Agent 只分析问题（“今天有 3 个新 issue，其中 1 个
+像 bug”），不自动做任何操作。人类每周审查 STATE.md ，决定下一步。</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<p data-source-page="8">适用：刚接入 Loop 的项目，还没建立信任。</p>
+<h3 id="section-127" data-source-page="8">第二阶段：L2 —— 自动做低风险的事<a class="heading-link" href="#section-127" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">低风险操作（补丁升级、issue 分类、markdown 文件编辑）自动执行。高风险操作（数据库迁移、支付模块改动）暂停等人确认。</p>
+<p data-source-page="8">适用：Loop Ready Score 60+，信任度中等。</p>
+<h3 id="section-130" data-source-page="8">第三阶段：L3 —— 高自主<a class="heading-link" href="#section-130" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">大部分操作自动完成。人类只看异常报告。Loop Ready Score 80+。</p>
+<p data-source-page="8">适用：成熟项目，已跑 L2 一个月以上无事故。</p>
+<h2 id="section-133" data-source-page="8">2.6 如何开始自己的 Loop Engineering？<a class="heading-link" href="#section-133" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">如果看到这里，你还需要我来为你写一个示例，这可能说明你还是没有适应 Agent 时代。在这里我几乎无法给你一个可以运行的 LE。</p>
+<p data-source-page="8">实际上，我认为你应该先设想一个最简单的场景：修改某份文档。以我的一个工作场景为例子，我的《绿皮书》教材里可能会存在一些错别字或者过时的内容。而当我发现这些错别字时，或者读者提出了比较好的建议，我会把这些建议直接推送到 github 上。</p>
+<p data-source-page="8">这就是一个最小的 LE 案例——让你的 LE 去解决这些 issue。反复打磨这个案例，一直到他能稳定的运行。然后再进一步的升级到 L2。</p>
+<p data-source-page="8">此外，不建议直接使用上文提到的仓库，而是在理解这个仓库的基础上不断的把新的机制加入到你自己的 Loop 里。</p>
+<p data-source-page="8">那么说了这么多，怎么开始？非常简单，以第 1 节我们给出的 Prompt 为基础，修改一下，将其交给你的 Hermes、Codex、Qoder 等 Agent，他们会帮你设定 Loop，这几乎就是他们的本职工作。至于他怎么实现的，如果你没有兴趣可以不管，如果你有兴趣，可以让这些 Agent 讲给你听。</p>
+<h2 id="section-139" data-source-page="8">2.7 小结<a class="heading-link" href="#section-139" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">Loop Engineering 的核心要点：</p>
+<h2 id="section-141" data-source-page="8">•<a class="heading-link" href="#section-141" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">核心理念： 从“手动 prompt Agent”升级为“设计自动运行的循环系统”</p>
+<h2 id="section-143" data-source-page="8">•<a class="heading-link" href="#section-143" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">六个积木： 调度、技能、隔离工作区、连接器、子智能体、记忆/状态</p>
+<h2 id="section-145" data-source-page="8">•<a class="heading-link" href="#section-145" aria-label="链接至本节">#</a></h2>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">三个核心文件： LOOP.md （岗位职责说明书）、STATE.md （工作日志）、gate.yaml</code></pre></div>
+<p data-source-page="8">（禁区地图）</p>
+<h2 id="section-148" data-source-page="8">•<a class="heading-link" href="#section-148" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">三阶段信任： L1 只看不动 → L2 自动低风险 → L3 高自主</p>
+<h2 id="section-150" data-source-page="8">•<a class="heading-link" href="#section-150" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">配套工具： 八个独立 npm CLI 工具，覆盖初始化、审计、成本估算、安全门禁等</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h2 id="section-152" data-source-page="9">•<a class="heading-link" href="#section-152" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">与 Goal Engineering 的关系： Loop 做持续维护，Goal 做一次性任务，两者互补</p>
+<h2 id="section-154" data-source-page="9">•<a class="heading-link" href="#section-154" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">与 Shell Engineering 的关系： Shell 搭框架，Loop 让框架自己转起来</p>
+<p data-source-page="9">值得强调的是，Loop Engineering 不只是一项革新，更是一种思维方式的转变。正如 Addy Osmani在博客结尾说的：</p>
+<p data-source-page="9">“两个人在同一个 Loop 上可能得到完全相反的结果——一个人用它加速自己深入理解的工作，另一个人用它逃避理解工作。Loop 不知道区别，但你知道。”</p>
+<p data-source-page="9">设计 Loop 的难度不在于写代码，而在于你是否真的愿意——也有能力——从“操作员”变成“监督员”。</p>
+<h2 id="section-159" data-source-page="9">2.8 ■ 学点英语<a class="heading-link" href="#section-159" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="9"><button class="figure-open" aria-label="放大查看第 9 页图示"><img src="../assets/figures/5c29c27f4a238373d4f014d37a226c13.png" width="898" height="1142" loading="lazy" alt="Loop Engineering：积木、文件与工具 · 原 PDF 第 9 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-157.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Loop Engineering：让AI Agent自己转起来的工程方法论</strong><small>Loop Engineering</small></a><a class="chapter-neighbor next" href="lesson-159.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>接口：Agent 落地的真正瓶颈</strong><small>Loop Engineering</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">2.1 六个积木</a><a href="#section-3" class="toc-level-2">•</a><a href="#section-5" class="toc-level-2">•</a><a href="#section-7" class="toc-level-2">•</a><a href="#section-10" class="toc-level-3">积木一：调度（Scheduling / Automation）</a><a href="#section-15" class="toc-level-3">积木二：技能（Skills）</a><a href="#section-24" class="toc-level-3">积木三：隔离工作区（Worktrees）</a><a href="#section-32" class="toc-level-3">积木四：接口——让 Agent 有手有脚</a><a href="#section-36" class="toc-level-2">•</a><a href="#section-38" class="toc-level-2">•</a><a href="#section-40" class="toc-level-2">•</a><a href="#section-44" class="toc-level-3">积木五：子智能体（Sub-agents）</a><a href="#section-48" class="toc-level-3">积木六：记忆/状态（Memory / State）</a><a href="#section-56" class="toc-level-3">一个 Loop 究竟怎么运转</a><a href="#section-79" class="toc-level-2">2.2 三个核心文件</a><a href="#section-82" class="toc-level-3">LOOP.md —— “岗位职责说明书”</a><a href="#section-84" class="toc-level-2">•</a><a href="#section-86" class="toc-level-2">•</a><a href="#section-88" class="toc-level-2">•</a><a href="#section-91" class="toc-level-3">STATE.md —— “工作日志”</a><a href="#section-93" class="toc-level-2">•</a><a href="#section-95" class="toc-level-2">•</a><a href="#section-97" class="toc-level-2">•</a><a href="#section-99" class="toc-level-2">•</a><a href="#section-102" class="toc-level-3">gate.yaml —— “禁区地图”</a><a href="#section-104" class="toc-level-2">•</a><a href="#section-106" class="toc-level-2">•</a><a href="#section-109" class="toc-level-2">2.3 配套工具：Cobus Greyling 的 CLI 实现</a><a href="#section-115" class="toc-level-2">2.4 Loop Engineering 和 /goal 的区别</a><a href="#section-121" class="toc-level-2">2.5 三阶段升级路线</a><a href="#section-124" class="toc-level-3">第一阶段：L1 —— 只看不动</a><a href="#section-127" class="toc-level-3">第二阶段：L2 —— 自动做低风险的事</a><a href="#section-130" class="toc-level-3">第三阶段：L3 —— 高自主</a><a href="#section-133" class="toc-level-2">2.6 如何开始自己的 Loop Engineering？</a><a href="#section-139" class="toc-level-2">2.7 小结</a><a href="#section-141" class="toc-level-2">•</a><a href="#section-143" class="toc-level-2">•</a><a href="#section-145" class="toc-level-2">•</a><a href="#section-148" class="toc-level-2">•</a><a href="#section-150" class="toc-level-2">•</a><a href="#section-152" class="toc-level-2">•</a><a href="#section-154" class="toc-level-2">•</a><a href="#section-159" class="toc-level-2">2.8 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-158", "title": "Loop Engineering：积木、文件与工具", "stage": 7, "week": 13, "module": "Loop Engineering", "minutes": 15, "pages": 9, "type": "article"}</script>
+</body></html>

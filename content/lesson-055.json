@@ -1,0 +1,45 @@
+{
+  "id": "lesson-055",
+  "title": "扩展练习 · 1-6",
+  "code": "1-6",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "RLHF",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/008-RLHF/055-图文-1-6-扩展练习.pdf",
+  "sha256": "694dae5277bbcffb682eff86d573e6fd42d90530e3a07d7a77a99ced4381667e",
+  "pdf": "sources/pdf/lesson-055.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5260#mid=104972",
+  "minutes": 1,
+  "excerpt": "",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1-6 图文节-慕课网体系课",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 145,
+    "represented_chars": 14,
+    "removed_chars": 131,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 131
+    }
+  },
+  "videos": [],
+  "order": 56,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1-6 图文节-慕课网体系课"
+    }
+  ]
+}

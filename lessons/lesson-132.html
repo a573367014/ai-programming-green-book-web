@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>条件分支与循环 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-132">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-4">框架应用</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 9 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>文章写作Agent</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 133</span></div>
+<h1 class="lesson-title">条件分支与循环</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>11 页原文</span><span>约 9 分钟阅读</span><span class="module-name">文章写作Agent</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-132.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-132.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节我们构建了一个简单的文章写作工作流：大纲 → 草稿 → 润色，三步顺序执行。但在实际应用中，我们常需要工作流“会思考、会判断”： 生成的草稿质量不够？循环重试→ 回到生成节点。 用户问题类型不同？条件分支 → 选择不同路径。 检测到敏感内容？转人工审核 → 跳转特定节点。 本节将学习两个核心机制： 循环 (Loop)：指向前面的节点，重复执行。 分支 (Branch)：指向不同后续节点，分流处理。</p></aside>
+<h2 id="section-1" data-source-page="1">从固定流程到动态决策<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<h3 id="section-2" data-source-page="1">第3节的局限<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">回顾第3节的工作流：</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">START → 大纲 → 草稿 → 润色 → END
+
+1</code></pre></div>
+<p data-source-page="1">1</p>
+<p data-source-page="1">这是一条固定的单行道：</p>
+<p data-source-page="1">固定的单行道</p>
+<p class="list-item" data-source-page="1">[√] 流程清晰，执行可预测。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p class="list-item" data-source-page="2">[×] 无法根据中间结果调整路径。</p>
+<p class="list-item" data-source-page="2">[×] 草稿质量差也只能继续润色。</p>
+<p class="list-item" data-source-page="2">[×] 无法处理异常情况。</p>
+<h3 id="section-12" data-source-page="2">两种动态机制<a class="heading-link" href="#section-12" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">实际项目中，我们需要两种能力：</p>
+<p data-source-page="2">循环能力：向后指，重复执行</p>
+<p data-source-page="2">循环能力</p>
+<p data-source-page="2">循环特征：</p>
+<p data-source-page="2">循环特征</p>
+<p class="list-item" data-source-page="2">质量检查 → 草稿：指向前面的节点。</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">质量检查 → 草稿</code></pre></div>
+<p class="list-item" data-source-page="2">形成有向有环图。</p>
+<p data-source-page="2">有向有环图</p>
+<p class="list-item" data-source-page="2">节点可能执行多次。</p>
+<p data-source-page="2">执行多次</p>
+<p class="list-item" data-source-page="2">必须有退出条件（避免死循环）。</p>
+<p data-source-page="2">退出条件</p>
+<p data-source-page="2">分支能力：向前指，分流处理</p>
+<p data-source-page="2">分支能力</p>
+<p data-source-page="2">分支特征：</p>
+<p data-source-page="2">分支特征</p>
+<p class="list-item" data-source-page="2">分类 → [技术/闲聊/人工]：指向不同后续节点。</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">分类 → [技术/闲聊/人工]</code></pre></div>
+<p class="list-item" data-source-page="2">形成有向无环图 (DAG)。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">有向无环图 (DAG)</p>
+<p class="list-item" data-source-page="3">每个节点最多执行一次。</p>
+<p data-source-page="3">最多执行一次</p>
+<p class="list-item" data-source-page="3">多条路径互不交叉，各自通向终点。</p>
+<p data-source-page="3">互不交叉</p>
+<h2 id="section-38" data-source-page="3">条件边 (Conditional Edges)<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<h3 id="section-39" data-source-page="3">核心概念<a class="heading-link" href="#section-39" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">条件边允许根据 State 动态选择下一个节点：</p>
+<p data-source-page="3">条件边</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 固定边: 永远走同一条路
+builder.add_edge(&quot;A&quot;, &quot;B&quot;)  # A → B
+
+# 条件边: 根据 State 选择路径
+builder.add_conditional_edges(
+    &quot;A&quot;,                    # 起始节点
+    routing_function,       # 路由函数(判断逻辑)
+    {                       # 路由映射表
+        &quot;路径1&quot;: &quot;B&quot;,
+        &quot;路径2&quot;: &quot;C&quot;,
+        &quot;路径3&quot;: END
+    }
+)</code></pre></div>
+<p data-source-page="3">路由函数示例：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def routing_function(state: MyState) -&gt; str:
+    &quot;&quot;&quot;根据 State 返回路径名称&quot;&quot;&quot;
+    if state[&quot;score&quot;] &gt; 80:
+        return &quot;路径1&quot;  # 走向节点 B
+    elif state[&quot;score&quot;] &gt; 60:
+        return &quot;路径2&quot;  # 走向节点 C
+    else:
+        return &quot;路径3&quot;  # 结束流程</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-45" data-source-page="4">实战案例 1：循环重试机制<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">需求分析</p>
+<p data-source-page="4">场景：文章写作 Agent 的质量自动检查。</p>
+<p data-source-page="4">场景</p>
+<p data-source-page="4">核心需求：实现循环重试机制。</p>
+<p data-source-page="4">核心需求</p>
+<p class="list-item" data-source-page="4">草稿生成后，自动检查质量。</p>
+<p class="list-item" data-source-page="4">质量合格（字数 800-1500） → 进入润色。</p>
+<p class="list-item" data-source-page="4">质量不合格 → 循环回到草稿节点重新生成。</p>
+<p data-source-page="4">循环回到草稿节点</p>
+<p class="list-item" data-source-page="4">最多重试 3 次，超限则强制进入润色。</p>
+<aside class="callout" data-source-page="4"><p>完整源码路径: samples/chapter9/article_writer/article_writer_with_loop.py</p></aside>
+<p data-source-page="4">工作流结构可视化：</p>
+<p data-source-page="4">工作流结构可视化</p>
+<h3 id="section-59" data-source-page="4">关键代码实现<a class="heading-link" href="#section-59" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">在 LangGraph v0.2+ 中，我们使用 START 和 END 常量来定义图的边界。以下是核心编排逻辑：</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from langgraph.graph import StateGraph, START, END
+
+# 1. 路由函数：根据字数和重试次数决定路径
+def check_quality_route(state: ArticleState) -&gt; str:
+    draft = state[&quot;draft&quot;]
+    retry_count = state.get(&quot;retry_count&quot;, 0)
+    word_count = len(draft)
+
+    if 800 &lt;= word_count &lt;= 1500:
+        return &quot;polish&quot;  # 合格 -&gt; 润色
+    elif retry_count &gt;= 3:
+        return &quot;polish&quot;  # 达到重试上限 -&gt; 强制进入润色
+    else:
+        return &quot;retry&quot;   # 不合格 -&gt; 重试
+
+# 2. 构建图
+builder = StateGraph(ArticleState)
+
+builder.add_node(&quot;大纲&quot;, generate_outline)
+builder.add_node(&quot;草稿&quot;, write_draft)
+builder.add_node(&quot;质量检查&quot;, quality_check)
+builder.add_node(&quot;润色&quot;, polish_article)
+
+# 定义流程
+builder.add_edge(START, &quot;大纲&quot;)
+builder.add_edge(&quot;大纲&quot;, &quot;草稿&quot;)
+builder.add_edge(&quot;草稿&quot;, &quot;质量检查&quot;)
+
+# 添加条件边实现循环
+builder.add_conditional_edges(
+    &quot;质量检查&quot;,
+    check_quality_route,
+    {
+        &quot;retry&quot;: &quot;草稿&quot;,   # 路由返回 &quot;retry&quot; 时回到 &quot;草稿&quot; 节点
+        &quot;polish&quot;: &quot;润色&quot;  # 路由返回 &quot;polish&quot; 时进入 &quot;润色&quot; 节点
+    }
+)
+
+builder.add_edge(&quot;润色&quot;, END)</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<h2 id="section-62" data-source-page="6">实战案例 2：条件分支路由<a class="heading-link" href="#section-62" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">场景：智能客服系统的分类分发。</p>
+<p data-source-page="6">核心需求：实现多路径分支。</p>
+<p data-source-page="6">多路径分支</p>
+<p class="list-item" data-source-page="6">技术问题 → 走向 查文档 节点。</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">查文档</code></pre></div>
+<p class="list-item" data-source-page="6">闲聊问候 → 走向 闲聊回复 节点。</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">闲聊回复</code></pre></div>
+<p class="list-item" data-source-page="6">无法分类 → 走向 转人工 节点。</p>
+<aside class="callout" data-source-page="6"><p>完整源码路径: samples/chapter9/article_writer/question_router.py</p></aside>
+<p data-source-page="6">分支路由通常用于将任务分发给不同的专业处理节点：</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def question_router(state: CustomerState) -&gt; str:
+    category = state[&quot;category&quot;]
+    if &quot;技术&quot; in category:
+        return &quot;technical&quot;
+    elif &quot;闲聊&quot; in category:
+        return &quot;casual&quot;
+    else:
+        return &quot;human&quot;
+
+builder = StateGraph(CustomerState)
+
+# 添加节点...
+builder.add_node(&quot;分类&quot;, classify_question)
+builder.add_node(&quot;查文档&quot;, search_docs)
+builder.add_node(&quot;闲聊&quot;, casual_reply)
+builder.add_node(&quot;转人工&quot;, transfer_human)
+
+builder.add_edge(START, &quot;分类&quot;)
+
+# 添加条件分支
+builder.add_conditional_edges(
+    &quot;分类&quot;,
+    question_router,
+    {
+        &quot;technical&quot;: &quot;查文档&quot;,
+        &quot;casual&quot;: &quot;闲聊&quot;,
+        &quot;human&quot;: &quot;转人工&quot;
+    }
+)
+
+# 所有分支最终汇聚到结束
+builder.add_edge(&quot;查文档&quot;, END)
+builder.add_edge(&quot;闲聊&quot;, END)
+builder.add_edge(&quot;转人工&quot;, END)</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-74" data-source-page="8">■ 学点英语<a class="heading-link" href="#section-74" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>条件边</td><td>Conditional Edge</td><td>/kənˈdɪʃənəl edʒ/</td><td>根据 State 动态决定下一步的边，实现分支和循环</td></tr><tr><td>路由函数</td><td>Routing Function</td><td>/ˈruːtɪŋ ˈfʌŋkʃn/</td><td>读取 State 返回路径名称的判断逻辑</td></tr><tr><td>重试机制</td><td>Retry Mechanism</td><td>/ˈriːtraɪ ˈmekənɪzəm/</td><td>条件循环 + 最大次数约束的容错模式</td></tr><tr><td>有向无环图 vs 有向有环图</td><td>DAG vs Cyclic Graph</td><td>/diː eɪ dʒiː ˈvɜːrsəs ˈsaɪklɪk ɡræf/</td><td>分支形成 DAG，循环形成有环图</td></tr></tbody></table></div>
+<h2 id="section-76" data-source-page="8">下节预告<a class="heading-link" href="#section-76" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">到目前为止，我们构建的都是全自动工作流：一旦启动，Agent 会按照预设的路径一路执行到底。但在真实的生产环境中，这种&quot;完全自动化&quot;往往是危险的。</p>
+<p data-source-page="8">回想一下第3节的文章写作 Agent。虽然我们实现了大纲生成、草稿撰写、润色优化的完整流程，但有一个关键问题：AI 生成的每一步内容，真的可以直接用吗？</p>
+<p data-source-page="8">答案是否定的。真正可靠的工作流应该是：LLM 生成 → 人工审核/修改 → 继续执行。</p>
+<p data-source-page="8">下一节，我们将学习 LangGraph 最强大的特性之一——人工介入（Human-in-the-Loop）：</p>
+<p class="list-item" data-source-page="8">如何在关键节点暂停工作流，等待人工决策。</p>
+<p class="list-item" data-source-page="8">如何在人工审核后，继续执行后续流程。</p>
+<p class="list-item" data-source-page="8">如何实现「AI 高效生成 + 人类精准把关」的完美协作。</p>
+<h2 id="section-84" data-source-page="8">图片<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="8"><button class="figure-open" aria-label="放大查看第 8 页图示"><img src="../assets/figures/e5b6f49ce9f20c6fc18962157d34de14.png" width="1964" height="432" loading="lazy" alt="条件分支与循环 · 原 PDF 第 8 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<figure data-source-page="9"><button class="figure-open" aria-label="放大查看第 9 页图示"><img src="../assets/figures/fe8896cdfbacc08d88c9f22af806f2b2.png" width="1572" height="684" loading="lazy" alt="条件分支与循环 · 原 PDF 第 9 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<figure data-source-page="10"><button class="figure-open" aria-label="放大查看第 10 页图示"><img src="../assets/figures/45847d959e0e17f57993011833441030.png" width="962" height="1558" loading="lazy" alt="条件分支与循环 · 原 PDF 第 10 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-131.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>文章写作Agent</strong><small>文章写作Agent</small></a><a class="chapter-neighbor next" href="lesson-133.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>人工介入(Human-in-the-Loop)</strong><small>文章写作Agent</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5285#mid=105037" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">从固定流程到动态决策</a><a href="#section-2" class="toc-level-3">第3节的局限</a><a href="#section-12" class="toc-level-3">两种动态机制</a><a href="#section-38" class="toc-level-2">条件边 (Conditional Edges)</a><a href="#section-39" class="toc-level-3">核心概念</a><a href="#section-45" class="toc-level-2">实战案例 1：循环重试机制</a><a href="#section-59" class="toc-level-3">关键代码实现</a><a href="#section-62" class="toc-level-2">实战案例 2：条件分支路由</a><a href="#section-74" class="toc-level-2">■ 学点英语</a><a href="#section-76" class="toc-level-2">下节预告</a><a href="#section-84" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-132", "title": "条件分支与循环", "stage": 4, "week": 9, "module": "文章写作Agent", "minutes": 9, "pages": 11, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,123 @@
+{
+  "id": "lesson-057",
+  "title": "选择练习 · 1-8",
+  "code": "1-8",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "RLHF",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/008-RLHF/057-练习-1-8-选择练习.pdf",
+  "sha256": "27962ca043c73d171ade5402571ce787638221fb49b91c00744318902512827f",
+  "pdf": "sources/pdf/lesson-057.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5260#mid=104974",
+  "minutes": 1,
+  "excerpt": "奖励模型奖励\"让人满意\"的回答，于是模型学会说好听的话而非正确的话——优化目标与真实目标之间存在错位",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "模型在预训练阶段没有读过足够多的批评性文本",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "B",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "奖励模型奖励\"让人满意\"的回答，于是模型学会说好听的话而非正确的话——优化目标与真实目标之间存在错位",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "C",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "标注员人数太少，覆盖不到所有话题",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "D",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "强化学习的学习率设置过大",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 221,
+    "represented_chars": 102,
+    "removed_chars": 119,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 118,
+      "repeated_title": 1
+    }
+  },
+  "videos": [],
+  "order": 58,
+  "headings": [
+    {
+      "title": "B",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "C",
+      "id": "section-3",
+      "level": 2
+    },
+    {
+      "title": "D",
+      "id": "section-5",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "模型在预训练阶段没有读过足够多的批评性文本"
+    },
+    {
+      "anchor": "section-1",
+      "text": "B"
+    },
+    {
+      "anchor": "section-1",
+      "text": "奖励模型奖励\"让人满意\"的回答，于是模型学会说好听的话而非正确的话——优化目标与真实目标之间存在错位"
+    },
+    {
+      "anchor": "section-3",
+      "text": "C"
+    },
+    {
+      "anchor": "section-3",
+      "text": "标注员人数太少，覆盖不到所有话题"
+    },
+    {
+      "anchor": "section-5",
+      "text": "D"
+    },
+    {
+      "anchor": "section-5",
+      "text": "强化学习的学习率设置过大"
+    }
+  ]
+}

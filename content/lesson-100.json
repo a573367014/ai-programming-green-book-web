@@ -1,0 +1,1507 @@
+{
+  "id": "lesson-100",
+  "title": "游戏知识问答系统",
+  "code": "1-1",
+  "stage": 2,
+  "week": 5,
+  "week_title": "RAG：知识接入技术",
+  "module": "第一个RAG应用：游戏知识问答系统",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/002-第5周 RAG：知识接入技术/007-第一个RAG应用：游戏知识问答系统/100-图文-1-1-游戏知识问答系统.pdf",
+  "sha256": "b3d89feeb36a850d26478f5317866307e88fb6901d6fd07eb4b7490ba94fbe58",
+  "pdf": "sources/pdf/lesson-100.pdf",
+  "pages": 12,
+  "source_url": "https://class.imooc.com/lesson/5273#mid=104919",
+  "minutes": 16,
+  "excerpt": "理论讲了这么多，该动手了。 这一节做一个真实的RAG应用——游戏知识问答助手。 《原神》玩家经常遇到各种问题：可莉的毕业武器是什么？胡桃的最优配装是什么？这个助手能从海量的游戏攻略、角色图鉴、玩家心得中找到最准确的答案。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 理论讲了这么多，该动手了。 这一节做一个真实的RAG应用——游戏知识问答助手。 《原神》玩家经常遇到各种问题：可莉的毕业武器是什么？胡桃的最优配装是什么？这个助手能从海量的游戏攻略、角色图鉴、玩家心得中找到最准确的答案。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "7.1 《原神》角色知识库问答系统",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "做一个简易的《原神》角色知识库问答系统",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "数据资料",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "角色图鉴（角色介绍、属性、技能）",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "武器资料（武器类型、基础属性、特效）",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "圣遗物搭配（套装效果、推荐搭配）",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "玩家攻略（配队思路、输出手法）",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "功能",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用户问：“胡桃用什么武器最好？”",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "系统检索相关资料",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "AI基于真实数据给出专业回答",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.2 技术思路",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "回顾一下第2节讲的RAG流程：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "准备数据 → 文档分块 → 向量化存储 → 用户提问 → 检索+生成\n\n1",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "1",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "今天把这5步全部走一遍。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "技术栈",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "向量数据库：Chroma",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "向量数据库",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Embedding模型：通义千问Embedding",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Embedding模型",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "大模型：Qwen3.6-plus",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "大模型",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "编程语言：Python",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "编程语言",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "两阶段设计",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在正式开始之前，先理解一个重要的概念：RAG系统分为离线构建和在线查询两个阶段。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这两个词来自软件系统的设计模式：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "离线（Offline）：在用户访问之前就提前做好的准备工作，就像餐厅在开门前把食材都切好、调料都配好。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "list",
+      "text": "在线（Online）：用户实际访问时执行的操作，就像客人点菜后厨师现场烹饪。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在线（Online）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在RAG系统中：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "离线程序：build_kb.py，提前把文档向量化存好，只运行一次",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "build_kb.py",
+      "page": 3,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "离线程序",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "在线程序：query.py，每次用户提问时运行，负责检索和回答",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "query.py",
+      "page": 3,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "在线程序",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "离线阶段（只运行一次）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "读取原始文档 文档分块 向量化（调用Embedding API） 存储到向量数据库 输出：持久化的向量数据库",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "在线阶段（每次查询都运行）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "加载已有的向量数据库 用户提问 检索相关文档 生成回答 输出：用户得到答案",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "加载已有的向量数据库",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用户提问",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "检索相关文档",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "生成回答 输出：用户得到答案",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "生成回答",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "输出：用户得到答案",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果每次用户提问都重新向量化所有文档，完全没有必要，因为文档内容没变，向量也不会变。离线程序只需成功执行一次，把文本向量化存入数据库即可。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "项目文件结构",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "game-rag/\n├── data/                    # 原始数据\n│   ├── 胡桃.txt\n│   ├── 可莉.txt\n│   ├── 钟离.txt\n│   └── 甘雨.txt\n├── build_kb.py              # 离线：构建知识库（运行一次）\n├── query.py                 # 在线：问答系统（每次查询运行）\n└── chroma_db/               # 向量数据库（自动生成）\n    └── ...",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整项目代码参考：samples/chapter5/game-rag/",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.3 离线构建",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "离线构建脚本负责读取文档、分块、向量化、存储。这个脚本只需要运行一次。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个脚本只需要运行一次",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter5/game-rag/build_kb.py",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "按照RAG的流程，来看实现中的关键点。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "配置区",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "API_KEY = os.getenv(\"DASHSCOPE_API_KEY\", \"sk-xxxxxxxxxxxx\")\nAPI_BASE = \"https://dashscope.aliyuncs.com/compatible-mode/v1\"\n\nSCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))\nDATA_DIR = os.path.join(SCRIPT_DIR, \"data\")\nDB_PATH = os.path.join(SCRIPT_DIR, \"chroma_db\")",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "环境变量优先：使用 os.getenv() 从环境变量读取API Key，避免硬编码泄露（强烈建议在生产环境使用这种方式）",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "路径变量：SCRIPT_DIR/DATA_DIR/DB_PATH 是目录和路径定义，不是API配置。它们属于脚本的\"基础设施\"，后面会被复用到多个地方",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h3",
+      "text": "文档分块函数",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "def split_document(file_path):\n    \"\"\"读取文档并按空行分块\"\"\"\n    with open(file_path, 'r', encoding='utf-8') as f:\n        content = f.read()\n    return [chunk.strip() for chunk in content.split('\\n\\n') if chunk.strip()]",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "按空行切分：split('\\n\\n') 利用数据文件的结构化特点",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "按空行切分",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "过滤空块：if chunk.strip() 避免空内容进入数据库",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "过滤空块",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "简单高效：对于结构化数据，简单的字符串切分就够了。如果是普通文档（如PDF、Word），可能需要使用NLP工具（spaCy、LangChain等）进行智能分句。但我们给出的示例数据已经用【】标记和空行预处理好了",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h3",
+      "text": "创建客户端与Embedding函数",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "# 创建持久化客户端\nclient = chromadb.PersistentClient(path=DB_PATH)\n\nqwen_ef = embedding_functions.OpenAIEmbeddingFunction(\n    api_key=API_KEY,\n    api_base=API_BASE,\n    model_name=\"text-embedding-v2\"\n)\n\ncollection = client.create_collection(\n    name=\"genshin_knowledge\",\n    embedding_function=qwen_ef,  # 注入Embedding函数\n    metadata={\"hnsw:space\": \"cosine\"}  # 使用余弦相似度\n)",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "持久化客户端：PersistentClient(path=DB_PATH) 告诉Chroma数据存到磁盘上chroma_db目录，而不是临时内存。下次启动时可以重新加载",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "list",
+      "text": "依赖注入模式：Chroma不需要手动调用Embedding API，只需配置函数 qwen_ef",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "自动调用：在 collection.add() 时，Chroma会自动调用 qwen_ef 进行向量化",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "余弦相似度：\"hnsw:space\": \"cosine\" 适合文本检索场景",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "批量加载文档",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "all_chunks, all_metadata, all_ids = [], [], []\n\ntxt_files = [f for f in os.listdir(DATA_DIR) if f.endswith('.txt')]\nfor filename in txt_files:\n    character_name = filename.replace('.txt', '')\n    file_path = os.path.join(DATA_DIR, filename)\n\n    chunks = split_document(file_path)\n\n    # 批量构建当前文件的所有数据\n    all_chunks.extend(chunks)\n    all_metadata.extend([\n        {\"character\": character_name, \"source\": filename, \"chunk_id\": i}\n        for i in range(len(chunks))\n    ])\n    all_ids.extend([f\"{character_name}_{i}\" for i in range(len(chunks))])",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "元数据设计：character、source、chunk_id 三个字段，方便检索后追溯",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "唯一ID：f\"{character_name}_{i}\" 确保每个文档块都有唯一标识",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "列表推导式：使用 extend() 配合列表推导，代码简洁",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "extend()",
+      "page": 6,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "列表推导式",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "分批向量化存储",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "batch_size = 25  # Qwen API限制每批最多25个文本\n\nfor i in range(0, len(all_chunks), batch_size):\n    collection.add(\n        documents=all_chunks[i:i+batch_size],\n        metadatas=all_metadata[i:i+batch_size],\n        ids=all_ids[i:i+batch_size]\n    )",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "API限制：通义千问Embedding API一次最多处理25个文本，必须分批",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "直接传文本：Chroma会自动调用 qwen_ef 进行向量化，不需要手动调用",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "直接传文本",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "成本优化：44个文档块分2次API调用，之后就不再需要",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "成本优化",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "运行效果",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "$ python build_kb.py\n\n开始构建知识库...\n处理文件: 钟离.txt\n处理文件: 胡桃.txt\n处理文件: 可莉.txt\n处理文件: 甘雨.txt\n\n正在向量化 44 个文档块...\n处理第 1 批（25 个文档块）...\n处理第 2 批（19 个文档块）...\n\n知识库构建完成！\n数据库位置: ./chroma_db\n总文档块数: 44\n角色数量: 4",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "7.4 在线查询",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在线查询脚本负责加载知识库、检索、生成回答。这个脚本每次用户查询时运行。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个脚本每次用户查询时运行",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter5/game-rag/query.py",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "继续按照RAG的流程，来看实现中的关键点。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "加载知识库",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "def load_knowledge_base():\n    \"\"\"加载已有的向量知识库\"\"\"\n    client = chromadb.PersistentClient(path=DB_PATH)\n\n    # 配置Embedding（必须与构建时一致）\n    qwen_ef = embedding_functions.OpenAIEmbeddingFunction(\n        api_key=API_KEY,\n        api_base=API_BASE,\n        model_name=\"text-embedding-v2\"\n    )\n\n    # 获取集合（不是create，而是get）\n    collection = client.get_collection(\n        name=\"genshin_knowledge\",\n        embedding_function=qwen_ef\n    )\n\n    return collection",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "get 而非 create：使用 get_collection() 而不是 create_collection()，加载已有数据",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "非常快：加载只需0.1秒，因为不需要向量化，只是读取元数据",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "非常快",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Embedding一致性：查询时使用的Embedding函数必须和构建时一致。因为查询时Chroma会用这个函数把问题向量化，然后和知识库中的向量计算相似度",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "code",
+      "text": "def ask_question(collection, query):\n    \"\"\"基于RAG回答问题\"\"\"\n    # 检索相关文档\n    results = collection.query(\n        query_texts=[query],\n        n_results=3\n    )\n    retrieved_docs = results['documents'][0]\n\n    # 构造上下文\n    context = \"\\n\\n\".join([\n        f\"【参考资料{i+1}】\\n{doc}\"\n        for i, doc in enumerate(retrieved_docs)\n    ])",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "自动向量化：Chroma会自动调用 qwen_ef 把问题向量化",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "自动向量化",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Top-3检索：n_results=3 返回最相关的3个文档块",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Top-3检索",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "构造Prompt",
+      "page": 9,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "prompt = f\"\"\"你是一个《原神》游戏助手，请基于以下参考资料回答用户的问题。\n\n参考资料：\n{context}\n\n用户问题：{query}\n\n回答要求：\n1. 基于参考资料回答，不要编造信息\n2. 回答要专业但不失亲和力\n3. 如果有多个选择，要说明优先级\n4. 可以适当补充游戏常识\n\n\"\"\"",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "角色定位：“你是一个《原神》游戏助手”，让AI进入角色",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "角色定位",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "明确指令：要求基于资料回答，不要编造，减少幻觉。这是RAG非常核心的意义——让大模型基于查询到的资料来回答，而不是直接凭记忆生成。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "h3",
+      "text": "调用大模型",
+      "page": 10,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "client = OpenAI(api_key=API_KEY, base_url=API_BASE)\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": prompt}],\n    temperature=0.7\n)\n\nreturn response.choices[0].message.content",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "temperature=0.7：适度创造性，既不僵化也不过分发散",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "单轮对话：每次都是新对话，没有历史记忆（可扩展）",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "单轮对话",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "主程序：交互式问答",
+      "page": 10,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "def main():\n    # 加载知识库（只加载一次）\n    collection = load_knowledge_base()\n\n    # 交互式问答\n    while True:\n        query = input(\"你：\").strip()\n        if query in ['退出', 'quit', 'exit']:\n            break\n\n        if not query:\n            continue\n\n        answer = ask_question(collection, query)\n        print(f\"\\n助手：{answer}\\n\")",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "只加载一次：知识库在循环外加载，多次查询复用",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "空输入过滤：if not query: continue 避免空查询",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "空输入过滤",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "退出机制：支持中英文多种退出方式",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "退出机制",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "$ python query.py\n\n==================================================\n《原神》知识问答助手\n==================================================\n\n正在加载知识库...\n知识库加载完成\n\n开始对话（输入'退出'结束）\n\n你：胡桃用什么武器最好？\n\n助手：胡桃的最佳武器推荐如下：\n\n毕业武器（首选）\n**护摩之杖**（五星）\n- 基础攻击：608\n- 副属性：暴击伤害66.2%\n- 特效：生命值转化攻击力，完美契合胡桃机制\n\n替代选择\n**龙吟**（五星）适合暴伤型配装\n**决斗之枪**（四星）平民神器，性价比高\n\n建议：有护摩优先护摩，没有可以用龙吟或决斗之枪。",
+      "page": 11,
+      "size": 9.75,
+      "end_page": 11,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "测试：超出知识库范围",
+      "page": 11,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "问：明天会下雨吗？\n答：哎呀，旅行者，关于\"明天会不会下雨\"这个问题，我得老实告诉你——我的参考资料里可没有天气预报\n功能哦！😅。不过既然你提到了\"雨\"，咱们倒是可以聊聊《原神》里的角色配队！比如在甘雨的冻结队\n中，行秋或莫娜就能提供稳定的水元素附着，配合甘雨的冰箭打出\"冻结\"反应，\n\n1\n2",
+      "page": 11,
+      "size": 9.75,
+      "end_page": 11,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "7.5 下一节预告",
+      "page": 12,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "到这里，已经用不到200行代码实现了一个能跑的RAG应用。但现实中的文档不会这么规整——100页的PDF、扫描版、双栏排版、表格跨页……该怎么切？切得太大，检索不精准；切得太小，语义不完整。下一节来看文档分块这门艺术，看看它是如何决定RAG系统的生死。",
+      "page": 12,
+      "size": 11.25,
+      "end_page": 12
+    },
+    {
+      "kind": "h2",
+      "text": "7.6 ■ 学点英语",
+      "page": 12,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n知识库 | Knowledge Base | /ˈnɑːlɪdʒ beɪs/ | 存储结构化/非结构化文档的系统，RAG检索的数据来源\n元数据 | Metadata | /ˈmetədeɪtə/ | 描述数据的数据，如文档来源、类型、标签、时间等\n语义相关度 | Semantic Relevance | /sɪˈmæntɪk ˈreləvəns/ | 检索结果与用户查询之间的语义匹配程度\n上下文质量 | Context Quality | /ˈkɑːntekst ˈkwɑːləti/ | 传给AI的检索结果的相关性和完整性度量",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "知识库",
+          "Knowledge Base",
+          "/ˈnɑːlɪdʒ beɪs/",
+          "存储结构化/非结构化文档的系统，RAG检索的数据来源"
+        ],
+        [
+          "元数据",
+          "Metadata",
+          "/ˈmetədeɪtə/",
+          "描述数据的数据，如文档来源、类型、标签、时间等"
+        ],
+        [
+          "语义相关度",
+          "Semantic Relevance",
+          "/sɪˈmæntɪk ˈreləvəns/",
+          "检索结果与用户查询之间的语义匹配程度"
+        ],
+        [
+          "上下文质量",
+          "Context Quality",
+          "/ˈkɑːntekst ˈkwɑːləti/",
+          "传给AI的检索结果的相关性和完整性度量"
+        ]
+      ],
+      "page": 12
+    }
+  ],
+  "accounting": {
+    "source_chars": 7034,
+    "represented_chars": 6840,
+    "removed_chars": 194,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 157,
+      "repeated_title": 37
+    }
+  },
+  "videos": [],
+  "order": 101,
+  "headings": [
+    {
+      "title": "7.1 《原神》角色知识库问答系统",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "7.2 技术思路",
+      "id": "section-12",
+      "level": 2
+    },
+    {
+      "title": "7.3 离线构建",
+      "id": "section-53",
+      "level": 2
+    },
+    {
+      "title": "配置区",
+      "id": "section-58",
+      "level": 3
+    },
+    {
+      "title": "文档分块函数",
+      "id": "section-62",
+      "level": 3
+    },
+    {
+      "title": "创建客户端与Embedding函数",
+      "id": "section-69",
+      "level": 3
+    },
+    {
+      "title": "批量加载文档",
+      "id": "section-75",
+      "level": 3
+    },
+    {
+      "title": "分批向量化存储",
+      "id": "section-82",
+      "level": 3
+    },
+    {
+      "title": "运行效果",
+      "id": "section-89",
+      "level": 3
+    },
+    {
+      "title": "7.4 在线查询",
+      "id": "section-91",
+      "level": 2
+    },
+    {
+      "title": "加载知识库",
+      "id": "section-96",
+      "level": 3
+    },
+    {
+      "title": "构造Prompt",
+      "id": "section-107",
+      "level": 3
+    },
+    {
+      "title": "调用大模型",
+      "id": "section-112",
+      "level": 3
+    },
+    {
+      "title": "主程序：交互式问答",
+      "id": "section-117",
+      "level": 3
+    },
+    {
+      "title": "测试：超出知识库范围",
+      "id": "section-125",
+      "level": 3
+    },
+    {
+      "title": "7.5 下一节预告",
+      "id": "section-127",
+      "level": 2
+    },
+    {
+      "title": "7.6 ■ 学点英语",
+      "id": "section-129",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "理论讲了这么多，该动手了。 这一节做一个真实的RAG应用——游戏知识问答助手。 《原神》玩家经常遇到各种问题：可莉的毕业武器是什么？胡桃的最优配装是什么？这个助手能从海量的游戏攻略、角色图鉴、玩家心得中找到最准确的答案。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "7.1 《原神》角色知识库问答系统"
+    },
+    {
+      "anchor": "section-1",
+      "text": "做一个简易的《原神》角色知识库问答系统"
+    },
+    {
+      "anchor": "section-1",
+      "text": "数据资料"
+    },
+    {
+      "anchor": "section-1",
+      "text": "角色图鉴（角色介绍、属性、技能）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "武器资料（武器类型、基础属性、特效）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "圣遗物搭配（套装效果、推荐搭配）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "玩家攻略（配队思路、输出手法）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "功能"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用户问：“胡桃用什么武器最好？”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "系统检索相关资料"
+    },
+    {
+      "anchor": "section-1",
+      "text": "AI基于真实数据给出专业回答"
+    },
+    {
+      "anchor": "section-12",
+      "text": "7.2 技术思路"
+    },
+    {
+      "anchor": "section-12",
+      "text": "回顾一下第2节讲的RAG流程："
+    },
+    {
+      "anchor": "section-12",
+      "text": "准备数据 → 文档分块 → 向量化存储 → 用户提问 → 检索+生成\n\n1"
+    },
+    {
+      "anchor": "section-12",
+      "text": "1"
+    },
+    {
+      "anchor": "section-12",
+      "text": "今天把这5步全部走一遍。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "技术栈"
+    },
+    {
+      "anchor": "section-12",
+      "text": "向量数据库：Chroma"
+    },
+    {
+      "anchor": "section-12",
+      "text": "向量数据库"
+    },
+    {
+      "anchor": "section-12",
+      "text": "Embedding模型：通义千问Embedding"
+    },
+    {
+      "anchor": "section-12",
+      "text": "Embedding模型"
+    },
+    {
+      "anchor": "section-12",
+      "text": "大模型：Qwen3.6-plus"
+    },
+    {
+      "anchor": "section-12",
+      "text": "大模型"
+    },
+    {
+      "anchor": "section-12",
+      "text": "编程语言：Python"
+    },
+    {
+      "anchor": "section-12",
+      "text": "编程语言"
+    },
+    {
+      "anchor": "section-12",
+      "text": "两阶段设计"
+    },
+    {
+      "anchor": "section-12",
+      "text": "在正式开始之前，先理解一个重要的概念：RAG系统分为离线构建和在线查询两个阶段。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "这两个词来自软件系统的设计模式："
+    },
+    {
+      "anchor": "section-12",
+      "text": "离线（Offline）：在用户访问之前就提前做好的准备工作，就像餐厅在开门前把食材都切好、调料都配好。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "在线（Online）：用户实际访问时执行的操作，就像客人点菜后厨师现场烹饪。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "在线（Online）"
+    },
+    {
+      "anchor": "section-12",
+      "text": "在RAG系统中："
+    },
+    {
+      "anchor": "section-12",
+      "text": "离线程序：build_kb.py，提前把文档向量化存好，只运行一次"
+    },
+    {
+      "anchor": "section-12",
+      "text": "build_kb.py"
+    },
+    {
+      "anchor": "section-12",
+      "text": "离线程序"
+    },
+    {
+      "anchor": "section-12",
+      "text": "在线程序：query.py，每次用户提问时运行，负责检索和回答"
+    },
+    {
+      "anchor": "section-12",
+      "text": "query.py"
+    },
+    {
+      "anchor": "section-12",
+      "text": "在线程序"
+    },
+    {
+      "anchor": "section-12",
+      "text": "离线阶段（只运行一次）"
+    },
+    {
+      "anchor": "section-12",
+      "text": "读取原始文档 文档分块 向量化（调用Embedding API） 存储到向量数据库 输出：持久化的向量数据库"
+    },
+    {
+      "anchor": "section-12",
+      "text": "在线阶段（每次查询都运行）"
+    },
+    {
+      "anchor": "section-12",
+      "text": "加载已有的向量数据库 用户提问 检索相关文档 生成回答 输出：用户得到答案"
+    },
+    {
+      "anchor": "section-12",
+      "text": "加载已有的向量数据库"
+    },
+    {
+      "anchor": "section-12",
+      "text": "用户提问"
+    },
+    {
+      "anchor": "section-12",
+      "text": "检索相关文档"
+    },
+    {
+      "anchor": "section-12",
+      "text": "生成回答 输出：用户得到答案"
+    },
+    {
+      "anchor": "section-12",
+      "text": "生成回答"
+    },
+    {
+      "anchor": "section-12",
+      "text": "输出：用户得到答案"
+    },
+    {
+      "anchor": "section-12",
+      "text": "如果每次用户提问都重新向量化所有文档，完全没有必要，因为文档内容没变，向量也不会变。离线程序只需成功执行一次，把文本向量化存入数据库即可。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "项目文件结构"
+    },
+    {
+      "anchor": "section-12",
+      "text": "game-rag/\n├── data/                    # 原始数据\n│   ├── 胡桃.txt\n│   ├── 可莉.txt\n│   ├── 钟离.txt\n│   └── 甘雨.txt\n├── build_kb.py              # 离线：构建知识库（运行一次）\n├── query.py                 # 在线：问答系统（每次查询运行）\n└── chroma_db/               # 向量数据库（自动生成）\n    └── ..."
+    },
+    {
+      "anchor": "section-12",
+      "text": "完整项目代码参考：samples/chapter5/game-rag/"
+    },
+    {
+      "anchor": "section-53",
+      "text": "7.3 离线构建"
+    },
+    {
+      "anchor": "section-53",
+      "text": "离线构建脚本负责读取文档、分块、向量化、存储。这个脚本只需要运行一次。"
+    },
+    {
+      "anchor": "section-53",
+      "text": "这个脚本只需要运行一次"
+    },
+    {
+      "anchor": "section-53",
+      "text": "完整源码参考：samples/chapter5/game-rag/build_kb.py"
+    },
+    {
+      "anchor": "section-53",
+      "text": "按照RAG的流程，来看实现中的关键点。"
+    },
+    {
+      "anchor": "section-58",
+      "text": "配置区"
+    },
+    {
+      "anchor": "section-58",
+      "text": "API_KEY = os.getenv(\"DASHSCOPE_API_KEY\", \"sk-xxxxxxxxxxxx\")\nAPI_BASE = \"https://dashscope.aliyuncs.com/compatible-mode/v1\"\n\nSCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))\nDATA_DIR = os.path.join(SCRIPT_DIR, \"data\")\nDB_PATH = os.path.join(SCRIPT_DIR, \"chroma_db\")"
+    },
+    {
+      "anchor": "section-58",
+      "text": "环境变量优先：使用 os.getenv() 从环境变量读取API Key，避免硬编码泄露（强烈建议在生产环境使用这种方式）"
+    },
+    {
+      "anchor": "section-58",
+      "text": "路径变量：SCRIPT_DIR/DATA_DIR/DB_PATH 是目录和路径定义，不是API配置。它们属于脚本的\"基础设施\"，后面会被复用到多个地方"
+    },
+    {
+      "anchor": "section-62",
+      "text": "文档分块函数"
+    },
+    {
+      "anchor": "section-62",
+      "text": "def split_document(file_path):\n    \"\"\"读取文档并按空行分块\"\"\"\n    with open(file_path, 'r', encoding='utf-8') as f:\n        content = f.read()\n    return [chunk.strip() for chunk in content.split('\\n\\n') if chunk.strip()]"
+    },
+    {
+      "anchor": "section-62",
+      "text": "按空行切分：split('\\n\\n') 利用数据文件的结构化特点"
+    },
+    {
+      "anchor": "section-62",
+      "text": "按空行切分"
+    },
+    {
+      "anchor": "section-62",
+      "text": "过滤空块：if chunk.strip() 避免空内容进入数据库"
+    },
+    {
+      "anchor": "section-62",
+      "text": "过滤空块"
+    },
+    {
+      "anchor": "section-62",
+      "text": "简单高效：对于结构化数据，简单的字符串切分就够了。如果是普通文档（如PDF、Word），可能需要使用NLP工具（spaCy、LangChain等）进行智能分句。但我们给出的示例数据已经用【】标记和空行预处理好了"
+    },
+    {
+      "anchor": "section-69",
+      "text": "创建客户端与Embedding函数"
+    },
+    {
+      "anchor": "section-69",
+      "text": "# 创建持久化客户端\nclient = chromadb.PersistentClient(path=DB_PATH)\n\nqwen_ef = embedding_functions.OpenAIEmbeddingFunction(\n    api_key=API_KEY,\n    api_base=API_BASE,\n    model_name=\"text-embedding-v2\"\n)\n\ncollection = client.create_collection(\n    name=\"genshin_knowledge\",\n    embedding_function=qwen_ef,  # 注入Embedding函数\n    metadata={\"hnsw:space\": \"cosine\"}  # 使用余弦相似度\n)"
+    },
+    {
+      "anchor": "section-69",
+      "text": "持久化客户端：PersistentClient(path=DB_PATH) 告诉Chroma数据存到磁盘上chroma_db目录，而不是临时内存。下次启动时可以重新加载"
+    },
+    {
+      "anchor": "section-69",
+      "text": "依赖注入模式：Chroma不需要手动调用Embedding API，只需配置函数 qwen_ef"
+    },
+    {
+      "anchor": "section-69",
+      "text": "自动调用：在 collection.add() 时，Chroma会自动调用 qwen_ef 进行向量化"
+    },
+    {
+      "anchor": "section-69",
+      "text": "余弦相似度：\"hnsw:space\": \"cosine\" 适合文本检索场景"
+    },
+    {
+      "anchor": "section-75",
+      "text": "批量加载文档"
+    },
+    {
+      "anchor": "section-75",
+      "text": "all_chunks, all_metadata, all_ids = [], [], []\n\ntxt_files = [f for f in os.listdir(DATA_DIR) if f.endswith('.txt')]\nfor filename in txt_files:\n    character_name = filename.replace('.txt', '')\n    file_path = os.path.join(DATA_DIR, filename)\n\n    chunks = split_document(file_path)\n\n    # 批量构建当前文件的所有数据\n    all_chunks.extend(chunks)\n    all_metadata.extend([\n        {\"character\": character_name, \"source\": filename, \"chunk_id\": i}\n        for i in range(len(chunks))\n    ])\n    all_ids.extend([f\"{character_name}_{i}\" for i in range(len(chunks))])"
+    },
+    {
+      "anchor": "section-75",
+      "text": "元数据设计：character、source、chunk_id 三个字段，方便检索后追溯"
+    },
+    {
+      "anchor": "section-75",
+      "text": "唯一ID：f\"{character_name}_{i}\" 确保每个文档块都有唯一标识"
+    },
+    {
+      "anchor": "section-75",
+      "text": "列表推导式：使用 extend() 配合列表推导，代码简洁"
+    },
+    {
+      "anchor": "section-75",
+      "text": "extend()"
+    },
+    {
+      "anchor": "section-75",
+      "text": "列表推导式"
+    },
+    {
+      "anchor": "section-82",
+      "text": "分批向量化存储"
+    },
+    {
+      "anchor": "section-82",
+      "text": "batch_size = 25  # Qwen API限制每批最多25个文本\n\nfor i in range(0, len(all_chunks), batch_size):\n    collection.add(\n        documents=all_chunks[i:i+batch_size],\n        metadatas=all_metadata[i:i+batch_size],\n        ids=all_ids[i:i+batch_size]\n    )"
+    },
+    {
+      "anchor": "section-82",
+      "text": "API限制：通义千问Embedding API一次最多处理25个文本，必须分批"
+    },
+    {
+      "anchor": "section-82",
+      "text": "直接传文本：Chroma会自动调用 qwen_ef 进行向量化，不需要手动调用"
+    },
+    {
+      "anchor": "section-82",
+      "text": "直接传文本"
+    },
+    {
+      "anchor": "section-82",
+      "text": "成本优化：44个文档块分2次API调用，之后就不再需要"
+    },
+    {
+      "anchor": "section-82",
+      "text": "成本优化"
+    },
+    {
+      "anchor": "section-89",
+      "text": "运行效果"
+    },
+    {
+      "anchor": "section-89",
+      "text": "$ python build_kb.py\n\n开始构建知识库...\n处理文件: 钟离.txt\n处理文件: 胡桃.txt\n处理文件: 可莉.txt\n处理文件: 甘雨.txt\n\n正在向量化 44 个文档块...\n处理第 1 批（25 个文档块）...\n处理第 2 批（19 个文档块）...\n\n知识库构建完成！\n数据库位置: ./chroma_db\n总文档块数: 44\n角色数量: 4"
+    },
+    {
+      "anchor": "section-91",
+      "text": "7.4 在线查询"
+    },
+    {
+      "anchor": "section-91",
+      "text": "在线查询脚本负责加载知识库、检索、生成回答。这个脚本每次用户查询时运行。"
+    },
+    {
+      "anchor": "section-91",
+      "text": "这个脚本每次用户查询时运行"
+    },
+    {
+      "anchor": "section-91",
+      "text": "完整源码参考：samples/chapter5/game-rag/query.py"
+    },
+    {
+      "anchor": "section-91",
+      "text": "继续按照RAG的流程，来看实现中的关键点。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "加载知识库"
+    },
+    {
+      "anchor": "section-96",
+      "text": "def load_knowledge_base():\n    \"\"\"加载已有的向量知识库\"\"\"\n    client = chromadb.PersistentClient(path=DB_PATH)\n\n    # 配置Embedding（必须与构建时一致）\n    qwen_ef = embedding_functions.OpenAIEmbeddingFunction(\n        api_key=API_KEY,\n        api_base=API_BASE,\n        model_name=\"text-embedding-v2\"\n    )\n\n    # 获取集合（不是create，而是get）\n    collection = client.get_collection(\n        name=\"genshin_knowledge\",\n        embedding_function=qwen_ef\n    )\n\n    return collection"
+    },
+    {
+      "anchor": "section-96",
+      "text": "get 而非 create：使用 get_collection() 而不是 create_collection()，加载已有数据"
+    },
+    {
+      "anchor": "section-96",
+      "text": "非常快：加载只需0.1秒，因为不需要向量化，只是读取元数据"
+    },
+    {
+      "anchor": "section-96",
+      "text": "非常快"
+    },
+    {
+      "anchor": "section-96",
+      "text": "Embedding一致性：查询时使用的Embedding函数必须和构建时一致。因为查询时Chroma会用这个函数把问题向量化，然后和知识库中的向量计算相似度"
+    },
+    {
+      "anchor": "section-96",
+      "text": "def ask_question(collection, query):\n    \"\"\"基于RAG回答问题\"\"\"\n    # 检索相关文档\n    results = collection.query(\n        query_texts=[query],\n        n_results=3\n    )\n    retrieved_docs = results['documents'][0]\n\n    # 构造上下文\n    context = \"\\n\\n\".join([\n        f\"【参考资料{i+1}】\\n{doc}\"\n        for i, doc in enumerate(retrieved_docs)\n    ])"
+    },
+    {
+      "anchor": "section-96",
+      "text": "自动向量化：Chroma会自动调用 qwen_ef 把问题向量化"
+    },
+    {
+      "anchor": "section-96",
+      "text": "自动向量化"
+    },
+    {
+      "anchor": "section-96",
+      "text": "Top-3检索：n_results=3 返回最相关的3个文档块"
+    },
+    {
+      "anchor": "section-96",
+      "text": "Top-3检索"
+    },
+    {
+      "anchor": "section-107",
+      "text": "构造Prompt"
+    },
+    {
+      "anchor": "section-107",
+      "text": "prompt = f\"\"\"你是一个《原神》游戏助手，请基于以下参考资料回答用户的问题。\n\n参考资料：\n{context}\n\n用户问题：{query}\n\n回答要求：\n1. 基于参考资料回答，不要编造信息\n2. 回答要专业但不失亲和力\n3. 如果有多个选择，要说明优先级\n4. 可以适当补充游戏常识\n\n\"\"\""
+    },
+    {
+      "anchor": "section-107",
+      "text": "角色定位：“你是一个《原神》游戏助手”，让AI进入角色"
+    },
+    {
+      "anchor": "section-107",
+      "text": "角色定位"
+    },
+    {
+      "anchor": "section-107",
+      "text": "明确指令：要求基于资料回答，不要编造，减少幻觉。这是RAG非常核心的意义——让大模型基于查询到的资料来回答，而不是直接凭记忆生成。"
+    },
+    {
+      "anchor": "section-112",
+      "text": "调用大模型"
+    },
+    {
+      "anchor": "section-112",
+      "text": "client = OpenAI(api_key=API_KEY, base_url=API_BASE)\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": prompt}],\n    temperature=0.7\n)\n\nreturn response.choices[0].message.content"
+    },
+    {
+      "anchor": "section-112",
+      "text": "temperature=0.7：适度创造性，既不僵化也不过分发散"
+    },
+    {
+      "anchor": "section-112",
+      "text": "单轮对话：每次都是新对话，没有历史记忆（可扩展）"
+    },
+    {
+      "anchor": "section-112",
+      "text": "单轮对话"
+    },
+    {
+      "anchor": "section-117",
+      "text": "主程序：交互式问答"
+    },
+    {
+      "anchor": "section-117",
+      "text": "def main():\n    # 加载知识库（只加载一次）\n    collection = load_knowledge_base()\n\n    # 交互式问答\n    while True:\n        query = input(\"你：\").strip()\n        if query in ['退出', 'quit', 'exit']:\n            break\n\n        if not query:\n            continue\n\n        answer = ask_question(collection, query)\n        print(f\"\\n助手：{answer}\\n\")"
+    },
+    {
+      "anchor": "section-117",
+      "text": "只加载一次：知识库在循环外加载，多次查询复用"
+    },
+    {
+      "anchor": "section-117",
+      "text": "空输入过滤：if not query: continue 避免空查询"
+    },
+    {
+      "anchor": "section-117",
+      "text": "空输入过滤"
+    },
+    {
+      "anchor": "section-117",
+      "text": "退出机制：支持中英文多种退出方式"
+    },
+    {
+      "anchor": "section-117",
+      "text": "退出机制"
+    },
+    {
+      "anchor": "section-117",
+      "text": "$ python query.py\n\n==================================================\n《原神》知识问答助手\n==================================================\n\n正在加载知识库...\n知识库加载完成\n\n开始对话（输入'退出'结束）\n\n你：胡桃用什么武器最好？\n\n助手：胡桃的最佳武器推荐如下：\n\n毕业武器（首选）\n**护摩之杖**（五星）\n- 基础攻击：608\n- 副属性：暴击伤害66.2%\n- 特效：生命值转化攻击力，完美契合胡桃机制\n\n替代选择\n**龙吟**（五星）适合暴伤型配装\n**决斗之枪**（四星）平民神器，性价比高\n\n建议：有护摩优先护摩，没有可以用龙吟或决斗之枪。"
+    },
+    {
+      "anchor": "section-125",
+      "text": "测试：超出知识库范围"
+    },
+    {
+      "anchor": "section-125",
+      "text": "问：明天会下雨吗？\n答：哎呀，旅行者，关于\"明天会不会下雨\"这个问题，我得老实告诉你——我的参考资料里可没有天气预报\n功能哦！😅。不过既然你提到了\"雨\"，咱们倒是可以聊聊《原神》里的角色配队！比如在甘雨的冻结队\n中，行秋或莫娜就能提供稳定的水元素附着，配合甘雨的冰箭打出\"冻结\"反应，\n\n1\n2"
+    },
+    {
+      "anchor": "section-127",
+      "text": "7.5 下一节预告"
+    },
+    {
+      "anchor": "section-127",
+      "text": "到这里，已经用不到200行代码实现了一个能跑的RAG应用。但现实中的文档不会这么规整——100页的PDF、扫描版、双栏排版、表格跨页……该怎么切？切得太大，检索不精准；切得太小，语义不完整。下一节来看文档分块这门艺术，看看它是如何决定RAG系统的生死。"
+    },
+    {
+      "anchor": "section-129",
+      "text": "7.6 ■ 学点英语"
+    },
+    {
+      "anchor": "section-129",
+      "text": "中文 | English | 音标 | 说明\n知识库 | Knowledge Base | /ˈnɑːlɪdʒ beɪs/ | 存储结构化/非结构化文档的系统，RAG检索的数据来源\n元数据 | Metadata | /ˈmetədeɪtə/ | 描述数据的数据，如文档来源、类型、标签、时间等\n语义相关度 | Semantic Relevance | /sɪˈmæntɪk ˈreləvəns/ | 检索结果与用户查询之间的语义匹配程度\n上下文质量 | Context Quality | /ˈkɑːntekst ˈkwɑːləti/ | 传给AI的检索结果的相关性和完整性度量"
+    }
+  ]
+}

@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>参数的演化 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-011">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>ChatGPT的本质</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 012</span></div>
+<h1 class="lesson-title">参数的演化</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>15 页原文</span><span>约 20 分钟阅读</span><span class="module-name">ChatGPT的本质</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-011.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-011.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<h2 id="section-0" data-source-page="1">3.1 参数的演化:从&quot;记住答案&quot;到&quot;理解规律&quot;<a class="heading-link" href="#section-0" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">前面我们讲了训练的原理:模型通过调整参数,让预测越来越准确。但这里有一个关键问题:</p>
+<p data-source-page="1">模型是在&quot;死记硬背答案&quot;,还是真的&quot;学会了语言规律&quot;?</p>
+<p data-source-page="1">让我用具体例子帮你理解这个区别。</p>
+<h3 id="section-4" data-source-page="1">两种学习方式的对比<a class="heading-link" href="#section-4" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">想象你在学英语:</p>
+<p class="list-item" data-source-page="1">方式一：死记硬背</p>
+<p data-source-page="1">看到问题：&quot;The cat ___ fish.&quot; 记住答案：“eats”</p>
+<p data-source-page="1">看到问题：&quot;The dog ___ bones.&quot; 记住答案：“eats”</p>
+<p data-source-page="1">看到问题：&quot;The bird ___ seeds.&quot; 记住答案：“eats”</p>
+<p data-source-page="1">你只是把每个问题和答案对应起来，但不知道为什么。</p>
+<p class="list-item" data-source-page="1">方式二：理解规律</p>
+<p data-source-page="1">看到多个例子后，你逐渐意识到：</p>
+<p class="list-item" data-source-page="1">“猫”、“狗”、&quot;鸟&quot;都是动物</p>
+<p class="list-item" data-source-page="1">它们后面用 “eats” 而不是 “eat”</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p class="list-item" data-source-page="2">这是&quot;第三人称单数加s&quot;的规律</p>
+<p data-source-page="2">现在遇到新问题：&quot;The rabbit ___ carrots.&quot; 你能推断：应该是 “eats”，虽然没见过这个具体句子</p>
+<p data-source-page="2"><strong>这两种方式的区别在哪？</strong>关键在于泛化能力——死记硬背只能处理见过的问题，而理解规律能应对没见过的新情境。</p>
+<h3 id="section-18" data-source-page="2">模型的学习方式：从记忆到泛化<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">如果你是GPT的设计者，面对数十亿GB的训练文本，你会让模型采用哪种学习方式？</p>
+<p data-source-page="2">直觉上，方式一似乎更简单——见过什么就记住什么。但实际上，这条路根本走不通：</p>
+<p data-source-page="2">这条路根本走不通</p>
+<p data-source-page="2"><strong>为什么死记硬背行不通？</strong>主要有三个原因：</p>
+<p class="list-item" data-source-page="2">训练数据太庞大 数十亿GB的文本，包含无数种表达方式，即使1750亿个参数也记不住每个句子。</p>
+<p class="list-item" data-source-page="2">见过的永远是有限的 互联网有无穷多的新表达，用户的提问千奇百怪，死记硬背只能应付训练集。</p>
+<p class="list-item" data-source-page="2">泛化才是真正的智能 人类不是记住每个句子，而是掌握了语言的规律，模型也必须这样做。</p>
+<p data-source-page="2">所以，GPT别无选择，只能采用方式二——理解规律。</p>
+<p data-source-page="2">换句话说：参数存储的不是答案，而是知识。</p>
+<p data-source-page="2">参数存储的不是答案，而是知识</p>
+<p data-source-page="2">知识是抽象的规律，答案只是规律的具体体现。模型学会了规律，就能应对无穷变化的问题——这才是真正的智能。这也是为什么ChatGPT或者同类大模型感觉很聪明的原因。</p>
+<h3 id="section-30" data-source-page="2">参数演化的实例：从随机到规律<a class="heading-link" href="#section-30" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">让我用一个具体例子展示这个过程。</p>
+<p data-source-page="2">假设有一组参数负责处理&quot;动物吃什么&quot;的关联：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">参数组 = [0.0123, -0.0456, 0.0789, ...]（随机值）
+模型不知道任何关联
+
+1
+2
+参数组 = [0.0125, -0.0454, 0.0791, ...]
+微调了一点点，但还是看不出规律
+
+1
+2</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">参数组 = [0.0345, -0.0234, 0.1567, ...]
+模型开始&quot;意识到&quot;：动物和食物之间有关联
+
+1
+2</code></pre></div>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">参数组 = [0.2567, -0.1234, 0.4321, ...]
+模型已经&quot;学会&quot;了规律：</code></pre></div>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 看到&quot;猫&quot;，会想到&quot;鱼&quot;</code></pre></div>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 看到&quot;狗&quot;，会想到&quot;骨头&quot;</code></pre></div>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 甚至遇到没见过的动物，也能推测其食物</code></pre></div>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">参数组 = [0.3124, -0.0987, 0.5678, ...]（稳定下来）
+这些参数现在编码了&quot;动物-食物&quot;的语义关联
+
+1
+2</code></pre></div>
+<aside class="callout" data-source-page="3"><b>补充说明</b><p>补充说明：什么是&quot;累计遇到1000次&quot;？ 这里的&quot;1000次&quot;不是指连续1000次出现同一个句子，而是指： 在整个训练过程中，模型累计遇到了1000次包含&quot;猫-鱼&quot;这种语义关联的文本。 这些文本可能是各种不同的表述： “猫吃鱼” “猫喜欢吃鱼” “小猫咪正在吃一条鱼” “这只猫抓了一条鱼” “猫的食物通常是鱼” … 而且这些文本分散在整个训练数据集的不同位置，不是连续出现的。</p></aside>
+<p data-source-page="3">参数不是记住了&quot;猫→鱼&quot;这个答案，而是学会了&quot;动物与其食物之间有关联&quot;这个规律。</p>
+<h3 id="section-42" data-source-page="3">训练完成：参数固化<a class="heading-link" href="#section-42" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">经过数周的训练，花费数百万美元的算力，1750亿个参数终于稳定下来。</p>
+<p data-source-page="3">这时，训练停止，参数被&quot;冻结&quot;:</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<aside class="callout" data-source-page="4"><p>参数₁ = 0.2341 ← 固定了 参数₂ = -0.5678 ← 固定了 … 参数₁₇₅₀₀₀₀₀₀₀₀₀ = 0.8901 ← 固定了</p></aside>
+<p data-source-page="4">这就是我们今天使用的ChatGPT。</p>
+<p data-source-page="4">当你问它问题时，它不会再调整参数，而是用这1750亿个已经训练好的参数，计算你的问题的答案。就像一个学生读完了所有的书，考试结束了，知识已经内化在脑海里，不会再变了。</p>
+<h2 id="section-48" data-source-page="4">3.2 黑箱问题：没有人知道每个参数的含义<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">这里有一个有趣的事实：</p>
+<p data-source-page="4">虽然我们知道这1750亿个参数存储了语言知识，但没有人能确切地说出每个参数代表什么。</p>
+<p data-source-page="4">这些参数是通过训练&quot;自然涌现&quot;出来的，而不是人工设计的。我们能看到整体的效果（ChatGPT能流畅对话），但很难解释局部的机制（为什么参数₂₃₄₅₆₇这个位置恰好是0.5678这个值）。</p>
+<p data-source-page="4">让我深入探讨一下这个&quot;不可解释性&quot;问题，因为它触及了现代AI的一个根本性困境。</p>
+<h3 id="section-53" data-source-page="4">人类创造了自己也不完全理解的工具<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h3>
+<aside class="callout" data-source-page="4"><p>你问一个AI工程师：“为什么ChatGPT对这个问题给出这样的答案？” 工程师：“因为那1750亿个参数经过计算，产生了这个答案。” 你：“为什么是这个答案？” 工程师：“因为参数是这样设置的。” 你：“为什么参数是这样设置的？” 工程师：“因为训练数据和优化算法让它收敛到这个状态。” 你：“但具体哪个参数负责哪部分逻辑？” 工程师：&quot;……我们不知道。&quot;</p></aside>
+<p data-source-page="4">这不是开玩笑。<strong>我们真的不知道每个参数到底在做什么。</strong>具体来说，我们无法精确地回答：</p>
+<p class="list-item" data-source-page="4">参数₂₃₄₅₆₇为什么是0.5678而不是0.5679</p>
+<p class="list-item" data-source-page="4">这个参数具体编码了什么知识</p>
+<p class="list-item" data-source-page="4">修改这个参数会导致什么变化</p>
+<p data-source-page="4">为什么会这样？关键在于知识的分布式存储。&quot;猫吃鱼&quot;这个知识，不是存储在某一个参数里，而是存储在可能数百万个参数的组合中：</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">参数₁₂₃  =  0.23  ┓
+参数₄₅₆  = -0.45  ┃
+参数₇₈₉  =  0.67  ┣━━ → 这些参数的组合
+...               ┃      共同编码了&quot;猫-鱼&quot;关系
+参数₉₉₉₉ =  0.12  ┛</code></pre></div>
+<p data-source-page="5">就像全息图：每一小块都包含整幅图像的信息，但都很模糊；只有组合起来，才能看清完整的图像。</p>
+<h3 id="section-62" data-source-page="5">与人类大脑的惊人相似<a class="heading-link" href="#section-62" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这让我想起人类大脑的一个有趣对比：</p>
+<p data-source-page="5">这个相似性，是巧合吗？还是说，分布式表示是智能系统的必然特征？</p>
+<p data-source-page="5">分布式表示是智能系统的必然特征</p>
+<h3 id="section-66" data-source-page="5">不可解释性的后果<a class="heading-link" href="#section-66" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这种不可解释性，带来了深刻的问题：</p>
+<p class="list-item" data-source-page="5">安全性问题</p>
+<aside class="callout" data-source-page="5"><p>如果我们不知道模型&quot;为什么&quot;这样回答？ 我们怎么确保它不会给出危险的建议？ 我们怎么预防它被恶意利用？</p></aside>
+<p class="list-item" data-source-page="5">可信度问题</p>
+<aside class="callout" data-source-page="5"><p>在医疗、法律等关键领域： &quot;这个AI说这个病人需要手术&quot; 医生：&quot;为什么？“ AI：“我的1750亿个参数计算出来的&quot; 医生：”……” ← 敢相信吗？</p></aside>
+<p class="list-item" data-source-page="5">调试困难</p>
+<aside class="callout" data-source-page="5"><p>当模型出错时： 传统软件：可以定位到具体哪一行代码有bug ChatGPT：是1750亿个参数中的哪些出了问题？无从查起</p></aside>
+<h3 id="section-74" data-source-page="5">可解释AI：尝试打开黑箱<a class="heading-link" href="#section-74" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">正因为这个问题如此重要，“可解释AI”(Explainable AI, XAI)成为了一个热门研究领域。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">研究者们在尝试：</p>
+<p class="list-item" data-source-page="6">机制解释:理解Transformer内部的计算流程</p>
+<p data-source-page="6">机制解释</p>
+<p class="list-item" data-source-page="6">特征可视化:把抽象的参数变成人类能理解的概念</p>
+<p data-source-page="6">特征可视化</p>
+<p class="list-item" data-source-page="6">因果分析:找出&quot;哪些输入导致了哪些输出&quot;</p>
+<p data-source-page="6">因果分析</p>
+<p data-source-page="6">但坦白说，进展缓慢。1750亿个参数的复杂性，可能已经超出了人类完全理解的能力边界。</p>
+<h3 id="section-84" data-source-page="6">我们理解自己的思维过程吗？<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">当你读到这里，决定&quot;嗯，这个例子很好理解&quot;，这个判断是怎么在你脑海中形成的？你能说出具体是哪860亿个神经元中的哪些，以什么方式产生了这个想法吗？</p>
+<p data-source-page="6">不能。</p>
+<p data-source-page="6">人类的思维，对人类自己来说，也是一个黑箱。我们能感受到思维的结果，但很难追溯思维的过程。</p>
+<p data-source-page="6">也许，&quot;理解&quot;本身就有层次：</p>
+<p class="list-item" data-source-page="6">使用层面的理解:我知道怎么用它 ✓</p>
+<p data-source-page="6">使用层面的理解</p>
+<p class="list-item" data-source-page="6">功能层面的理解:我知道它能做什么 ✓</p>
+<p data-source-page="6">功能层面的理解</p>
+<p class="list-item" data-source-page="6">机制层面的理解:我知道它为什么这样工作 ?</p>
+<p data-source-page="6">机制层面的理解</p>
+<p class="list-item" data-source-page="6">原子层面的理解:我知道每个部件的精确作用 ✗</p>
+<p data-source-page="6">原子层面的理解</p>
+<p data-source-page="6">对ChatGPT，我们有前两层的理解，但第三第四层很模糊。对人脑，我们也是如此。这或许说明：复杂智能系统，必然带有某种程度的不可解释性。</p>
+<p data-source-page="6">而我们，正在学习与这种不确定性共处——既利用AI的强大能力，又警惕它的不可预测性。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-99" data-source-page="7">3.3 关于大模型参数数量：一个持续增长的天文数字<a class="heading-link" href="#section-99" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">我们一直在说&quot;1750亿个参数&quot;，这里需要明确说明一下：</p>
+<p data-source-page="7">1750亿是GPT-3的参数量，这是在2020年公开的数据。而现在你用的ChatGPT，已经升级到了GPT-5.5（2026年4月发布），参数量已经远超这个数字。</p>
+<p data-source-page="7">GPT-5.5是OpenAI迄今最智能的模型，核心突破在于大幅升级的Agent智能体能力，能精准理解用户模糊指令，自主规划、调用工具完成复杂任务。</p>
+<p data-source-page="7">未来，这个数字可能还会继续增长。但无论数字多大，本质不变：它们都是用参数存储知识，通过训练学习语言规律的函数。</p>
+<h3 id="section-104" data-source-page="7">各代GPT模型的参数量<a class="heading-link" href="#section-104" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">GPT-1 (2018):      1.17亿参数
+GPT-2 (2019):      15亿参数         ← 增长13倍
+GPT-3 (2020):      1750亿参数       ← 增长117倍
+GPT-3.5 (2022):    未公开（估计1750亿左右）
+GPT-4 (2023):      未公开
+GPT-5 (2025):      未公开
+GPT-5.1 (2025.11): 未公开
+GPT-5.5 (2026.04): 未公开（最新旗舰）</code></pre></div>
+<h3 id="section-106" data-source-page="7">为什么OpenAI不公开新版本的参数量？<a class="heading-link" href="#section-106" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">从GPT-4开始，OpenAI就不再公布参数量了。官方解释是：</p>
+<p class="list-item" data-source-page="7">竞争原因:参数量是核心竞争力，不想被竞争对手知道</p>
+<p data-source-page="7">竞争原因</p>
+<p class="list-item" data-source-page="7">安全考虑:避免恶意攻击者利用模型结构信息</p>
+<p data-source-page="7">安全考虑</p>
+<p data-source-page="7">根据一些分析和泄露信息：</p>
+<p class="list-item" data-source-page="7">GPT-4估计: 1万亿-10万亿参数</p>
+<p data-source-page="7">GPT-4估计</p>
+<p class="list-item" data-source-page="7">GPT-5/5.1: 完全未知，可能更多，也可能优化了架构</p>
+<p data-source-page="7">GPT-5/5.1</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<p class="list-item" data-source-page="8">GPT-5.5: 完全未知（2026年4月发布，核心突破在Agent能力）</p>
+<h3 id="section-118" data-source-page="8">大模型参数量对比与符号解释<a class="heading-link" href="#section-118" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Google:
+├─ PaLM (2022):        5400亿参数
+├─ PaLM 2 (2023):      未公开
+├─ Gemini Ultra (2024): 未公开
+├─ Gemini 2.5 (2025):   未公开
+└─ Gemini 3 Pro (2025): 未公开
+
+Anthropic:
+├─ Claude 3 (2024):     未公开
+├─ Claude 4 (2025):     未公开
+└─ Claude Opus 4.5 (2025): 未公开（旗舰）
+
+国内：
+├─ 阿里通义千问：
+│  ├─ Qwen3-Max (2025):  超万亿参数（旗舰）
+│  ├─ Qwen3-235B (MoE):  总参数2350亿，激活220亿
+│  ├─ Qwen3-Next (2025): 总参数800亿，仅激活30亿
+│  ├─ Qwen3.5-Plus:      多模态，速度更快
+│  └─ Qwen3.6系列 (2026): Max/Plus/Flash
+│
+├─ DeepSeek:
+│  ├─ DeepSeek-V3 (2024):    总参数6710亿
+│  ├─ DeepSeek-V3.2 (2025):  总参数6850亿
+│  ├─ DeepSeek-V4-Pro (2026): 总参数1.6万亿，每token激活490亿（开源旗舰）
+│  └─ DeepSeek-V4-Flash (2026): 总参数2840亿，每token激活130亿（高效开源）
+│
+└─ 智谱:
+   ├─ GLM-4 (2024):   未公开
+   └─ GLM-5 (2026):   未公开</code></pre></div>
+<p data-source-page="8">目前，除了DeepSeek还在坚持全模型版本开源，其他大模型都或多或少呈现初了闭源的趋势，比如阿里的Qwen，Qwen 3.6 Plus，就没有开源了。</p>
+<p data-source-page="8">商业模型一般都不会公布参数的具体数量；只有开源的模型可以确切的知道其参数数量。</p>
+<h3 id="section-122" data-source-page="8">模型命名中的参数量标识<a class="heading-link" href="#section-122" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">在大模型领域，我们经常看到这样的命名：</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Qwen3-235B
+Llama-70B
+GPT-3 (175B)</code></pre></div>
+<p data-source-page="9">这些B、M、T是什么意思？</p>
+<p data-source-page="9">这是参数数量的国际通用缩写：</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">M (Million)  = 百万   = 10⁶   = 1,000,000
+B (Billion)  = 十亿   = 10⁹   = 1,000,000,000
+T (Trillion) = 万亿   = 10¹²  = 1,000,000,000,000</code></pre></div>
+<p data-source-page="9">换算示例：</p>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">117M  = 117百万  = 1.17亿参数
+70B   = 70十亿   = 700亿参数
+175B  = 175十亿  = 1750亿参数
+235B  = 235十亿  = 2350亿参数
+1.8T  = 1.8万亿  = 1万8千亿参数</code></pre></div>
+<p data-source-page="9">所以：</p>
+<p class="list-item" data-source-page="9">Qwen3-235B 表示这个模型有 2350亿个参数</p>
+<p data-source-page="9">2350亿个参数</p>
+<p class="list-item" data-source-page="9">Llama-70B 表示这个模型有 700亿个参数</p>
+<p data-source-page="9">Llama-70B</p>
+<p data-source-page="9">700亿个参数</p>
+<p class="list-item" data-source-page="9">GPT-3 (175B) 表示这个模型有 1750亿个参数</p>
+<p data-source-page="9">GPT-3 (175B)</p>
+<h3 id="section-138" data-source-page="9">模型架构：Dense vs MoE<a class="heading-link" href="#section-138" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">在很多模型列表中，有些模型标注了&quot;MoE&quot;（比如我们前面列举的一些模型）,有些是&quot;Dense&quot;。这是两种不同的架构设计。作为程序员，我们未必需要深入了解具体的架构，但需要知道他们的大致概念。</p>
+<p data-source-page="9"><strong>Dense架构（传统架构）</strong>是最常见的架构，GPT-3、GPT-4、Claude都采用这种方式：</p>
+<p class="list-item" data-source-page="9">每次推理使用全部参数</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<p class="list-item" data-source-page="10">比如GPT-3有1750亿参数，每次回答问题都要用到全部1750亿</p>
+<p data-source-page="10"><strong>MoE架构（混合专家模型）</strong>则是一种更高效的设计。MoE全称Mixture of Experts（混合专家模型）：</p>
+<p class="list-item" data-source-page="10">模型包含多个&quot;专家&quot;子网络</p>
+<p class="list-item" data-source-page="10">每次推理只激活部分专家</p>
+<p class="list-item" data-source-page="10">不同问题激活不同专家</p>
+<h3 id="section-147" data-source-page="10">举例对比<a class="heading-link" href="#section-147" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Qwen3-235B (MoE, 2025):
+总参数：2350亿
+实际激活：约220亿
+优势：速度接近220亿参数的模型，但能力接近2350亿
+
+Qwen3-Next (MoE, 2025):
+总参数：800亿
+实际激活：仅30亿
+优势：极致效率，用极小激活参数实现旗舰级性能
+
+DeepSeek-V3 (MoE, 2024):
+总参数：6710亿
+实际激活：约370亿
+优势：超大参数量，但推理成本可控
+
+DeepSeek-V4-Pro (MoE, 2026):
+总参数：1.6万亿
+实际激活：约490亿
+优势：万亿级开源旗舰，性能逼近顶级闭源模型
+
+DeepSeek-V4-Flash (MoE, 2026):
+总参数：2840亿
+实际激活：约130亿
+优势：极致高效，用更少激活参数实现强大性能</code></pre></div>
+<h3 id="section-149" data-source-page="10">两种架构各有优势<a class="heading-link" href="#section-149" aria-label="链接至本节">#</a></h3>
+<p data-source-page="10">MoE的优劣势：</p>
+<p class="list-item" data-source-page="10">参数量大，能力强</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<p class="list-item" data-source-page="11">推理时只激活部分参数，速度快</p>
+<p class="list-item" data-source-page="11">计算成本和内存占用相对可控</p>
+<p data-source-page="11">劣势：</p>
+<p class="list-item" data-source-page="11">训练复杂度高，需要精心调优专家路由</p>
+<p class="list-item" data-source-page="11">不同专家可能学到不均衡的知识</p>
+<p class="list-item" data-source-page="11">对某些问题可能比Dense模型表现差</p>
+<p data-source-page="11">Dense的优劣势：</p>
+<p class="list-item" data-source-page="11">架构成熟，训练稳定</p>
+<p class="list-item" data-source-page="11">所有参数协同工作，整体性强</p>
+<p class="list-item" data-source-page="11">不需要复杂的专家路由机制，实现简单</p>
+<p class="list-item" data-source-page="11">GPT-4、Claude等顶级模型都采用Dense架构</p>
+<p class="list-item" data-source-page="11">推理时必须使用全部参数，计算量大</p>
+<p class="list-item" data-source-page="11">相同参数量下，推理速度比MoE慢</p>
+<p class="list-item" data-source-page="11">内存占用高，部署成本更高</p>
+<h2 id="section-166" data-source-page="11">3.4 冷知识与趣闻<a class="heading-link" href="#section-166" aria-label="链接至本节">#</a></h2>
+<h3 id="section-167" data-source-page="11">冷知识1：ChatGPT并不会因为你的使用而变聪明<a class="heading-link" href="#section-167" aria-label="链接至本节">#</a></h3>
+<p data-source-page="11">很多人以为ChatGPT会&quot;学习&quot;你的对话，变得越来越聪明。</p>
+<p data-source-page="11">真相是：完全不会。</p>
+<p data-source-page="11">ChatGPT的生命周期分两个阶段：</p>
+<p data-source-page="11">当GPT-3训练好后，那么他的参数就&quot;冻结&quot;了；GPT-4则需要重新再训练。</p>
+<p data-source-page="11">这解释了为什么：</p>
+<p class="list-item" data-source-page="11">ChatGPT不会记住你之前的对话 参数固定，不存储新信息 每次对话都是独立的（除非在同一个会话中，这涉及到上下文，我们后面会讨论，但模型本身是没有记忆能力的）</p>
+<p class="list-item" data-source-page="11">ChatGPT不会学习新知识 参数固定，不会更新 知识截止日期是训练时的数据截止日期</p>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<p class="list-item" data-source-page="12">你今天用和明天用，ChatGPT完全一样 1750亿个参数一个不变 除非OpenAI发布新版本（那是全新的模型）</p>
+<p data-source-page="12">那OpenAI会不会优化参数？</p>
+<aside class="callout" data-source-page="12"><p>✗ 不会微调老模型:GPT-3训练完就固定了 ✓ 会训练新模型:GPT-4有更多参数，更强能力 ✗ 用户对话不改变模型:你的使用不会调整参数 ✓ 会发布新版本:但那是全新的模型，不是调整老模型</p></aside>
+<p data-source-page="12">如果ChatGPT真的能从每个用户的对话中学习，全球每天数亿次对话，每次都要实时调整那1750亿个参数，计算量和成本都会是天文数字，完全无法承受！</p>
+<p data-source-page="12">所以，参数固定不仅是设计选择，也是工程必须。</p>
+<p data-source-page="12">参数固定不仅是设计选择，也是工程必须</p>
+<aside class="callout" data-source-page="12"><b>阅读提示</b><p>你可以问任何一个大模型：你的训练数据截止日期是什么时候？ 目前，大部分的模型训练日期都在2024~2025年。他们的共性就是会落后于当前时间。</p></aside>
+<h3 id="section-182" data-source-page="12">冷知识二：参数越多越好？没那么简单<a class="heading-link" href="#section-182" aria-label="链接至本节">#</a></h3>
+<p data-source-page="12">很多人以为：参数越多，模型就越聪明。</p>
+<p data-source-page="12">但参数太多也会带来麻烦。</p>
+<p data-source-page="12">一个班级的学生从30人增加到300人：</p>
+<aside class="callout" data-source-page="12"><p>每个人都需要座位 → 教室要大10倍 每个人都需要吃饭 → 食堂要大10倍 每个人都需要考试 → 改卷时间长10倍</p></aside>
+<p data-source-page="12">参数也是一样：</p>
+<p class="list-item" data-source-page="12">训练成本爆炸</p>
+<p class="list-item" data-source-page="12">GPT-2 (15亿参数): 训练花费 约几万美元</p>
+<p class="list-item" data-source-page="12">GPT-3 (1750亿参数): 训练花费 约500万美元</p>
+<p class="list-item" data-source-page="12">GPT-4 (未公开): 训练花费 估计上亿美元</p>
+<p data-source-page="12">参数量每增长一个数量级 → 成本可能增长10-100。</p>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<p class="list-item" data-source-page="13">推理速度变慢</p>
+<aside class="callout" data-source-page="13"><p>参数多 = 计算量大 = 回答得慢</p></aside>
+<p data-source-page="13">这就是为什么GPT-4比GPT-3.5慢，同样的问题，GPT-4要&quot;思考&quot;更久</p>
+<p class="list-item" data-source-page="13">容易&quot;死记硬背&quot;</p>
+<aside class="callout" data-source-page="13"><p>参数太多 = 记忆力太好，反而成了坏事</p></aside>
+<p data-source-page="13">想象你准备数学考试：</p>
+<p data-source-page="13">理解规律（好学生）：</p>
+<aside class="callout" data-source-page="13"><p>见过：3 + 5 = 8 推广：a + b = b + a （加法交换律） 新题：99 + 1 = ? → 轻松解答</p></aside>
+<p data-source-page="13">死记硬背（参数过多的模型）：</p>
+<aside class="callout" data-source-page="13"><p>背下：3+5=8，4+6=10，7+2=9…… 记忆：把见过的10000道题答案都背下来 新题：99 + 1 =? → 没背过，不会做！</p></aside>
+<p data-source-page="13">这就是&quot;过拟合&quot;：模型记住了训练数据的每个细节，但没学会背后的通用规律，遇到新情况就傻眼了。</p>
+<p data-source-page="13"><strong>那为什么还要做大模型？因为语言太复杂了，小模型确实应付不来。</strong>但最近出现了一个新的趋势：</p>
+<aside class="callout" data-source-page="13"><p>新思路：&quot;小而精&quot;模型 例如 LLaMA 2 (70亿参数), Mistral (7.3亿参数): 参数少，训练快，运行快但通过更好的训练方法，能力也不差 普通电脑都能跑起来 LLaMA 2 70B 甚至能接近 GPT-3.5 的能力</p></aside>
+<p data-source-page="13">不是参数越多越好，而是要找到&quot;恰到好处&quot;的平衡点——既能干活，又不太费钱费电。</p>
+<h2 id="section-207" data-source-page="13">3.5 下一节预告<a class="heading-link" href="#section-207" aria-label="链接至本节">#</a></h2>
+<p data-source-page="13">现在你已经知道：ChatGPT是一个拥1750亿个参数的函数,通过训练学会了语言规律。</p>
+<span class="source-page-anchor" id="pdf-page-14"></span>
+<p data-source-page="14">但它具体是怎么工作的？当你问它一个问题,它是怎么生成这些答案的？</p>
+<p data-source-page="14">答案就在下一节：文字接龙游戏。</p>
+<h2 id="section-211" data-source-page="14">3.6 扩展阅读<a class="heading-link" href="#section-211" aria-label="链接至本节">#</a></h2>
+<p data-source-page="14">Language Models are Few-Shot Learners (GPT-3论文， 2020)</p>
+<p data-source-page="14">OpenAI发布的GPT-3官方论文，详细介绍了1750亿参数模型的训练过程、能力表现和局限性。论文展示了当参数量从15亿（GPT-2）跃升到1750亿（GPT-3）时带来的质变。虽然有一定技术深度，但配有大量实例，能让你从第一手资料理解&quot;规模为什么重要&quot;。</p>
+<h2 id="section-214" data-source-page="14">3.7 ■ 学点英语<a class="heading-link" href="#section-214" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="14"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>参数</td><td>Parameter</td><td>/pəˈræmɪtər/</td><td>模型中的可调整变量，训练后冻结固定</td></tr><tr><td>泛化</td><td>Generalization</td><td>/ dʒenrəlaɪˈzeɪʃən/ ˌ</td><td>从训练数据学习规律并应用到新数据的能力</td></tr><tr><td>过拟合</td><td>Overfitting</td><td>/ oʊvərˈfɪtɪŋ/ ˌ</td><td>模型过度记忆训练数据细节而丧失泛化能力</td></tr><tr><td>分布式表示</td><td>Distributed Representation</td><td>/dɪˈstrɪbjuːtɪd reprɪzen ˌ ˈteɪʃən/</td><td>知识分散存储在多个参数的组合中，非单个参数独立编码</td></tr><tr><td>推理</td><td>Inference</td><td>/ˈɪnfərəns/</td><td>用训练好的模型对新输入进行计算并输出结果</td></tr><tr><td>黑箱问题</td><td>Black Box Problem</td><td>/blæk bɑːks ˈprɑːbləm/</td><td>难以解释模型内部决策过程的困境</td></tr><tr><td>可解释AI</td><td>Explainable AI (XAI)</td><td>/ɪkˈsplænəbl eɪ aɪ/</td><td>旨在让AI决策过程可理解的研究领域</td></tr><tr><td>参数冻结</td><td>Parameter Freezing</td><td>/pəˈræmɪtər ˈfriːzɪŋ/</td><td>训练完成后固定参数不再更新的过程</td></tr><tr><td>Dense架构</td><td>Dense Architecture</td><td>/dens ˈɑːrkɪtektʃər/</td><td>每次推理使用全部参数的模型架构</td></tr><tr><td>MoE</td><td>Mixture of Experts</td><td>/ˈmɪkstʃər əv ˈekspɜːrts/</td><td>混合专家模型，每次推理只激活部分参数的架构</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-15"></span>
+<h2 id="section-216" data-source-page="15">图片<a class="heading-link" href="#section-216" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="15"><button class="figure-open" aria-label="放大查看第 15 页图示"><img src="../assets/figures/0f97b4f6cd47e93916ae770180651841.png" width="2384" height="1430" loading="lazy" alt="参数的演化 · 原 PDF 第 15 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-010.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-6</strong><small>ChatGPT的本质</small></a><a class="chapter-neighbor next" href="lesson-012.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-8</strong><small>ChatGPT的本质</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5253#mid=104872" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-0" class="toc-level-2">3.1 参数的演化:从&quot;记住答案&quot;到&quot;理解规律&quot;</a><a href="#section-4" class="toc-level-3">两种学习方式的对比</a><a href="#section-18" class="toc-level-3">模型的学习方式：从记忆到泛化</a><a href="#section-30" class="toc-level-3">参数演化的实例：从随机到规律</a><a href="#section-42" class="toc-level-3">训练完成：参数固化</a><a href="#section-48" class="toc-level-2">3.2 黑箱问题：没有人知道每个参数的含义</a><a href="#section-53" class="toc-level-3">人类创造了自己也不完全理解的工具</a><a href="#section-62" class="toc-level-3">与人类大脑的惊人相似</a><a href="#section-66" class="toc-level-3">不可解释性的后果</a><a href="#section-74" class="toc-level-3">可解释AI：尝试打开黑箱</a><a href="#section-84" class="toc-level-3">我们理解自己的思维过程吗？</a><a href="#section-99" class="toc-level-2">3.3 关于大模型参数数量：一个持续增长的天文数字</a><a href="#section-104" class="toc-level-3">各代GPT模型的参数量</a><a href="#section-106" class="toc-level-3">为什么OpenAI不公开新版本的参数量？</a><a href="#section-118" class="toc-level-3">大模型参数量对比与符号解释</a><a href="#section-122" class="toc-level-3">模型命名中的参数量标识</a><a href="#section-138" class="toc-level-3">模型架构：Dense vs MoE</a><a href="#section-147" class="toc-level-3">举例对比</a><a href="#section-149" class="toc-level-3">两种架构各有优势</a><a href="#section-166" class="toc-level-2">3.4 冷知识与趣闻</a><a href="#section-167" class="toc-level-3">冷知识1：ChatGPT并不会因为你的使用而变聪明</a><a href="#section-182" class="toc-level-3">冷知识二：参数越多越好？没那么简单</a><a href="#section-207" class="toc-level-2">3.5 下一节预告</a><a href="#section-211" class="toc-level-2">3.6 扩展阅读</a><a href="#section-214" class="toc-level-2">3.7 ■ 学点英语</a><a href="#section-216" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-011", "title": "参数的演化", "stage": 1, "week": 1, "module": "ChatGPT的本质", "minutes": 20, "pages": 15, "type": "article"}</script>
+</body></html>

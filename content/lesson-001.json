@@ -1,0 +1,69 @@
+{
+  "id": "lesson-001",
+  "title": "《程序员AI编程绿皮书》配套题库使用说明",
+  "code": "1-2",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "序与前言",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/001-序与前言/001-图文-1-2-《程序员AI编程绿皮书》配套题库使用说明.pdf",
+  "sha256": "fa8af0f802fc545146c91b0c3ee25228a6aff34eeb22e44d1f1d812358bda967",
+  "pdf": "sources/pdf/lesson-001.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5252#mid=104992",
+  "minutes": 1,
+  "excerpt": "为打造更完整的学习闭环，逻辑帧团队为本课学员定制开发了 AI 编程配套题库：题库内含 300 道精编习题，覆盖选择题、判断题、阅读思考题、简答题等多元题型。",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "为打造更完整的学习闭环，逻辑帧团队为本课学员定制开发了 AI 编程配套题库：题库内含 300 道精编习题，覆盖选择题、判断题、阅读思考题、简答题等多元题型。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "内容全面覆盖 Agent 工程师核心理论知识，既可用作课后知识点巩固，也可作为 Agent 岗位面试的理论面试素材。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "题库直达地址：https://www.logamee.com/imooc/ai-greenbook 注意：初次使用请先完成账号注册，再登录体验。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 383,
+    "represented_chars": 208,
+    "removed_chars": 175,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 141,
+      "repeated_title": 34
+    }
+  },
+  "videos": [],
+  "order": 2,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "为打造更完整的学习闭环，逻辑帧团队为本课学员定制开发了 AI 编程配套题库：题库内含 300 道精编习题，覆盖选择题、判断题、阅读思考题、简答题等多元题型。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "内容全面覆盖 Agent 工程师核心理论知识，既可用作课后知识点巩固，也可作为 Agent 岗位面试的理论面试素材。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "题库直达地址：https://www.logamee.com/imooc/ai-greenbook 注意：初次使用请先完成账号注册，再登录体验。"
+    }
+  ]
+}

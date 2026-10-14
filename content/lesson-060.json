@@ -1,0 +1,67 @@
+{
+  "id": "lesson-060",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "涌现能力",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/009-涌现能力/060-练习-1-2-选择练习.pdf",
+  "sha256": "41506bcec16f81d7fc5b881f2b7c8f03d48d2558efcd5e48d96f41246eb7e20e",
+  "pdf": "sources/pdf/lesson-060.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5261#mid=104977",
+  "minutes": 1,
+  "excerpt": "涌现能力的定义强调\"当模型规模超过某个阈值时突然出现\"。以下哪个选项最贴近这个\"突然\"的含义？(复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "涌现能力的定义强调\"当模型规模超过某个阈值时突然出现\"。以下哪个选项最贴近这个\"突然\"的含义？(复习题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 模型准确率随参数量平滑线性增长 B. 增加训练数据比扩大模型规模更能促成涌现 C. 在同一规模下，只要多训练几轮准确率就会变好 D. 能力曲线呈现跃迁式变化——小规模几乎不会，达到某个阈值后大幅跳升",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 330,
+    "represented_chars": 157,
+    "removed_chars": 173,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 173
+    }
+  },
+  "videos": [],
+  "order": 61,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "涌现能力的定义强调\"当模型规模超过某个阈值时突然出现\"。以下哪个选项最贴近这个\"突然\"的含义？(复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 模型准确率随参数量平滑线性增长 B. 增加训练数据比扩大模型规模更能促成涌现 C. 在同一规模下，只要多训练几轮准确率就会变好 D. 能力曲线呈现跃迁式变化——小规模几乎不会，达到某个阈值后大幅跳升"
+    }
+  ]
+}

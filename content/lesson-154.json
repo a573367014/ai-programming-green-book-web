@@ -1,0 +1,693 @@
+{
+  "id": "lesson-154",
+  "title": "CrewAI实战解析：程序1题目生成器",
+  "code": "1-3",
+  "stage": 6,
+  "week": 12,
+  "week_title": "Multi-Agent：多智能体协作",
+  "module": "CrewAI 实战",
+  "type": "article",
+  "repo_path": "006-阶段六 【智能体】从单体到多体/002-第12周 Multi-Agent：多智能体协作/007-CrewAI 实战/019-图文-1-3-CrewAI实战解析：程序1题目生成器.pdf",
+  "sha256": "27735fbb32527a469ea2ba0a489b5bf305904f23c8302b52efc9725d1a33ecb0",
+  "pdf": "sources/pdf/lesson-154.pdf",
+  "pages": 10,
+  "source_url": "https://class.imooc.com/lesson/5293#mid=105159",
+  "minutes": 10,
+  "excerpt": "上一节我们了解了系统概览和学习目标。本节重点讲解程序1（question_generator.py），通过它深入理解CrewAI三大核心组件：Crew、Agent、Task的协作关系。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们了解了系统概览和学习目标。本节重点讲解程序1（question_generator.py），通过它深入理解CrewAI三大核心组件：Crew、Agent、Task的协作关系。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "业务流程回顾",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序1实现了从教学大纲到题库的完整流程：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "─────────────────────────────────────────\n  阶段1: 设计题目框架\n  • AI决策：分析大纲，规划题目结构\n  • 输出：题目设计方案\n─────────────────────────────────────────\n  阶段2: 生成具体题目\n  • AI决策：生成题目内容和选项\n  • 输出：JSON格式题目\n─────────────────────────────────────────\n  阶段3: 数据持久化\n  • 传统业务：保存到 data/questions.json\n─────────────────────────────────────────",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "CrewAI三大组件的角色分工",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在CrewAI框架中，Crew、Agent、Task各司其职，形成了清晰的三层协作结构：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "三大组件的职责：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "三大组件的职责",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "组件 | 类比角色 | 职责 | 程序1实例\nCrew | 项目经理 | 统筹全局，决定执行模式 | ExerciseCrew（Sequential模式）\nAgent | 专业员工 | 具备专业能力，执行任务 | 题目生成专家（QuestionExpert）\nTask | 具体工作 | 明确目标和输出要求 | Task1: 设计框架 Task2: 生成题目",
+      "rows": [
+        [
+          "组件",
+          "类比角色",
+          "职责",
+          "程序1实例"
+        ],
+        [
+          "Crew",
+          "项目经理",
+          "统筹全局，决定执行模式",
+          "ExerciseCrew（Sequential模式）"
+        ],
+        [
+          "Agent",
+          "专业员工",
+          "具备专业能力，执行任务",
+          "题目生成专家（QuestionExpert）"
+        ],
+        [
+          "Task",
+          "具体工作",
+          "明确目标和输出要求",
+          "Task1: 设计框架 Task2: 生成题目"
+        ]
+      ],
+      "page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "用团队协作来理解三者关系：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用团队协作来理解三者关系",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象一个软件公司的项目团队：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "ExerciseCrew（团队）\n  ├─ 角色：项目经理\n  ├─ 持有资源：题目生成专家（员工）、LLM（工具）\n  └─ 核心职责：\n      • 创建工单（Task1、Task2）\n      • 分配给员工（Agent）\n      • 决定执行顺序（Sequential模式）\n      • 管理工单流转（Task1输出 → Task2输入）\n\nQuestionExpert（员工）\n  ├─ 角色：Python教育专家\n  ├─ 技能：编程教学、题目设计\n  └─ 工作方式：\n      • 接收工单（Task）\n      • 调用工具（LLM）完成工作\n      • 提交成果（输出结果）\n\nTask1 & Task2（工单）\n  ├─ Task1工单内容：\n  │   • 任务：分析大纲，设计题目框架\n  │   • 指派给：QuestionExpert\n  │   • 要求：输出Markdown设计方案\n  │\n  └─ Task2工单内容：\n      • 任务：根据Task1方案生成具体题目\n      • 指派给：QuestionExpert\n      • 依赖：必须等Task1完成\n      • 要求：输出JSON格式题目",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "在程序1中的实际运作：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在程序1中的实际运作",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "ExerciseCrew创建工单： task1 = create_design_task(self.question_expert, syllabus) task2 =create_generate_task(self.question_expert, task1.output) 1 2 代码块 项目经理说：“我需要两个工单，Task1设计框架，Task2生成题目”",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "ExerciseCrew分配工单给员工：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ExerciseCrew分配工单给员工",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "crew = Crew(\n    agents=[self.question_expert],  # 员工名单\n    tasks=[task1, task2],            # 工单列表\n    process=Process.sequential       # 工单顺序：先Task1，再Task2\n)",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "项目经理说：“QuestionExpert，这两个工单都给你，按顺序做”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "QuestionExpert执行工单： 拿到Task1工单 → 调用LLM → 输出设计方案 拿到Task2工单 → 使用Task1结果 → 调用LLM → 输出JSON题目",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "ExerciseCrew收集成果： result = crew.kickoff() # 启动团队工作，等待完成 1 代码块 项目经理说：“开始干活！等你们都做完我收成果”",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键理解：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键理解",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Crew不干活：它只负责协调，不直接调用LLM",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Crew不干活",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Agent干活：真正调用LLM的是Agent",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent干活",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Task是指令：Task里的description就是给Agent的工作说明书",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "description",
+      "page": 4,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Task是指令",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Sequential保证顺序：Crew确保Task2等Task1完成后才开始",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Sequential保证顺序",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "代码实现：从组件到协作",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让我们看看这三个组件如何在代码中协同工作。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤1：定义Agent（专业员工）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# agents/question_expert.py\n\ndef create_question_expert(llm) -> Agent:\n    \"\"\"创建题目生成专家Agent\"\"\"\n    return Agent(\n        role=\"Python编程练习题生成专家\",\n        goal=\"根据教学大纲设计高质量的Python编程练习题\",\n        backstory=\"\"\"\n        你是一位经验丰富的Python教育专家，深刻理解初学者的学习路径。\n        你擅长将复杂概念转化为清晰的练习题，帮助学生循序渐进地掌握知识。\n        \"\"\",\n        llm=llm,\n        verbose=True\n    )",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键点：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键点",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "role: Agent的身份定位",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "goal: Agent的工作目标",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "backstory: Agent的专业背景（影响决策风格）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "llm: Agent使用的语言模型",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤2：定义Task（具体工作）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# tasks/question_tasks.py\n\ndef create_design_task(agent: Agent, syllabus: str) -> Task:\n    \"\"\"创建Task1：设计题目框架\"\"\"\n    return Task(\n        description=f\"\"\"\n        基于以下教学大纲，设计练习题的整体框架：\n\n        {syllabus}\n\n        要求：\n        1. 分析大纲的知识点层次\n        2. 规划题目的难度梯度\n        3. 设计题目类型分布\n        \"\"\",\n        expected_output=\"题目框架设计方案（Markdown格式）\",\n        agent=agent  # 指定由哪个Agent执行\n    )\n\ndef create_generate_task(agent: Agent, design_result: str) -> Task:\n    \"\"\"创建Task2：生成具体题目（依赖Task1输出）\"\"\"\n    return Task(\n        description=f\"\"\"\n        根据以下设计方案，生成5道选择题：\n\n        {design_result}\n\n        要求：\n        1. 严格遵循JSON格式\n        2. 每题4个选项（A/B/C/D）\n        3. 包含详细解析\n        \"\"\",\n        expected_output=\"题目列表（JSON格式）\",\n        agent=agent,\n        context=[design_result]  # 依赖Task1的输出\n    )",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "description: 任务的详细说明（这是给Agent看的Prompt）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "expected_output: 明确输出格式",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "agent: 绑定执行者",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "context: 任务间依赖关系（Task2需要Task1的结果）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤3：Crew协调执行（项目经理）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# crews/exercise_crew.py\n\nclass ExerciseCrew:\n    \"\"\"统一的Crew，负责协调所有阶段\"\"\"\n\n    def __init__(self, llm):\n        self.llm = llm\n        self.question_expert = create_question_expert(llm)\n\n    def run_question_generation(self, syllabus: str) -> str:\n        \"\"\"\n        程序1调用：执行题目生成流程（Sequential模式）\n        \"\"\"\n        # 创建两个Task\n        task1 = create_design_task(self.question_expert, syllabus)\n        task2 = create_generate_task(self.question_expert, task1.output)\n\n        # 创建Crew并执行\n        crew = Crew(\n            agents=[self.question_expert],\n            tasks=[task1, task2],\n            process=Process.sequential,  # Sequential模式\n            verbose=True\n        )\n\n        result = crew.kickoff()\n        return result",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "python"
+    },
+    {
+      "kind": "list",
+      "text": "agents: 参与的Agent列表（程序1只需1个Agent）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "tasks: 任务列表（按执行顺序排列）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "process=Process.sequential: 指定执行模式",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "kickoff(): 启动执行",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节我们将学习程序2，看看Hierarchical模式如何协调多个Agent并行工作，以及如何将传统代码与AI决策完美融合。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/98f4d4fb5c67d6dea9b37ff251d2599d.png",
+      "width": 892,
+      "height": 1350,
+      "page": 9
+    }
+  ],
+  "accounting": {
+    "source_chars": 4410,
+    "represented_chars": 4210,
+    "removed_chars": 200,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 2,
+    "removals": {
+      "export_metadata": 158,
+      "repeated_title": 42
+    }
+  },
+  "videos": [],
+  "order": 155,
+  "headings": [
+    {
+      "title": "业务流程回顾",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "CrewAI三大组件的角色分工",
+      "id": "section-4",
+      "level": 2
+    },
+    {
+      "title": "代码实现：从组件到协作",
+      "id": "section-33",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-55",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-57",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们了解了系统概览和学习目标。本节重点讲解程序1（question_generator.py），通过它深入理解CrewAI三大核心组件：Crew、Agent、Task的协作关系。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "业务流程回顾"
+    },
+    {
+      "anchor": "section-1",
+      "text": "程序1实现了从教学大纲到题库的完整流程："
+    },
+    {
+      "anchor": "section-1",
+      "text": "─────────────────────────────────────────\n  阶段1: 设计题目框架\n  • AI决策：分析大纲，规划题目结构\n  • 输出：题目设计方案\n─────────────────────────────────────────\n  阶段2: 生成具体题目\n  • AI决策：生成题目内容和选项\n  • 输出：JSON格式题目\n─────────────────────────────────────────\n  阶段3: 数据持久化\n  • 传统业务：保存到 data/questions.json\n─────────────────────────────────────────"
+    },
+    {
+      "anchor": "section-4",
+      "text": "CrewAI三大组件的角色分工"
+    },
+    {
+      "anchor": "section-4",
+      "text": "在CrewAI框架中，Crew、Agent、Task各司其职，形成了清晰的三层协作结构："
+    },
+    {
+      "anchor": "section-4",
+      "text": "三大组件的职责："
+    },
+    {
+      "anchor": "section-4",
+      "text": "三大组件的职责"
+    },
+    {
+      "anchor": "section-4",
+      "text": "组件 | 类比角色 | 职责 | 程序1实例\nCrew | 项目经理 | 统筹全局，决定执行模式 | ExerciseCrew（Sequential模式）\nAgent | 专业员工 | 具备专业能力，执行任务 | 题目生成专家（QuestionExpert）\nTask | 具体工作 | 明确目标和输出要求 | Task1: 设计框架 Task2: 生成题目"
+    },
+    {
+      "anchor": "section-4",
+      "text": "用团队协作来理解三者关系："
+    },
+    {
+      "anchor": "section-4",
+      "text": "用团队协作来理解三者关系"
+    },
+    {
+      "anchor": "section-4",
+      "text": "想象一个软件公司的项目团队："
+    },
+    {
+      "anchor": "section-4",
+      "text": "ExerciseCrew（团队）\n  ├─ 角色：项目经理\n  ├─ 持有资源：题目生成专家（员工）、LLM（工具）\n  └─ 核心职责：\n      • 创建工单（Task1、Task2）\n      • 分配给员工（Agent）\n      • 决定执行顺序（Sequential模式）\n      • 管理工单流转（Task1输出 → Task2输入）\n\nQuestionExpert（员工）\n  ├─ 角色：Python教育专家\n  ├─ 技能：编程教学、题目设计\n  └─ 工作方式：\n      • 接收工单（Task）\n      • 调用工具（LLM）完成工作\n      • 提交成果（输出结果）\n\nTask1 & Task2（工单）\n  ├─ Task1工单内容：\n  │   • 任务：分析大纲，设计题目框架\n  │   • 指派给：QuestionExpert\n  │   • 要求：输出Markdown设计方案\n  │\n  └─ Task2工单内容：\n      • 任务：根据Task1方案生成具体题目\n      • 指派给：QuestionExpert\n      • 依赖：必须等Task1完成\n      • 要求：输出JSON格式题目"
+    },
+    {
+      "anchor": "section-4",
+      "text": "在程序1中的实际运作："
+    },
+    {
+      "anchor": "section-4",
+      "text": "在程序1中的实际运作"
+    },
+    {
+      "anchor": "section-4",
+      "text": "ExerciseCrew创建工单： task1 = create_design_task(self.question_expert, syllabus) task2 =create_generate_task(self.question_expert, task1.output) 1 2 代码块 项目经理说：“我需要两个工单，Task1设计框架，Task2生成题目”"
+    },
+    {
+      "anchor": "section-4",
+      "text": "ExerciseCrew分配工单给员工："
+    },
+    {
+      "anchor": "section-4",
+      "text": "ExerciseCrew分配工单给员工"
+    },
+    {
+      "anchor": "section-4",
+      "text": "crew = Crew(\n    agents=[self.question_expert],  # 员工名单\n    tasks=[task1, task2],            # 工单列表\n    process=Process.sequential       # 工单顺序：先Task1，再Task2\n)"
+    },
+    {
+      "anchor": "section-4",
+      "text": "项目经理说：“QuestionExpert，这两个工单都给你，按顺序做”"
+    },
+    {
+      "anchor": "section-4",
+      "text": "QuestionExpert执行工单： 拿到Task1工单 → 调用LLM → 输出设计方案 拿到Task2工单 → 使用Task1结果 → 调用LLM → 输出JSON题目"
+    },
+    {
+      "anchor": "section-4",
+      "text": "ExerciseCrew收集成果： result = crew.kickoff() # 启动团队工作，等待完成 1 代码块 项目经理说：“开始干活！等你们都做完我收成果”"
+    },
+    {
+      "anchor": "section-4",
+      "text": "关键理解："
+    },
+    {
+      "anchor": "section-4",
+      "text": "关键理解"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Crew不干活：它只负责协调，不直接调用LLM"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Crew不干活"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Agent干活：真正调用LLM的是Agent"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Agent干活"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Task是指令：Task里的description就是给Agent的工作说明书"
+    },
+    {
+      "anchor": "section-4",
+      "text": "description"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Task是指令"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Sequential保证顺序：Crew确保Task2等Task1完成后才开始"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Sequential保证顺序"
+    },
+    {
+      "anchor": "section-33",
+      "text": "代码实现：从组件到协作"
+    },
+    {
+      "anchor": "section-33",
+      "text": "让我们看看这三个组件如何在代码中协同工作。"
+    },
+    {
+      "anchor": "section-33",
+      "text": "步骤1：定义Agent（专业员工）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "# agents/question_expert.py\n\ndef create_question_expert(llm) -> Agent:\n    \"\"\"创建题目生成专家Agent\"\"\"\n    return Agent(\n        role=\"Python编程练习题生成专家\",\n        goal=\"根据教学大纲设计高质量的Python编程练习题\",\n        backstory=\"\"\"\n        你是一位经验丰富的Python教育专家，深刻理解初学者的学习路径。\n        你擅长将复杂概念转化为清晰的练习题，帮助学生循序渐进地掌握知识。\n        \"\"\",\n        llm=llm,\n        verbose=True\n    )"
+    },
+    {
+      "anchor": "section-33",
+      "text": "关键点："
+    },
+    {
+      "anchor": "section-33",
+      "text": "关键点"
+    },
+    {
+      "anchor": "section-33",
+      "text": "role: Agent的身份定位"
+    },
+    {
+      "anchor": "section-33",
+      "text": "goal: Agent的工作目标"
+    },
+    {
+      "anchor": "section-33",
+      "text": "backstory: Agent的专业背景（影响决策风格）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "llm: Agent使用的语言模型"
+    },
+    {
+      "anchor": "section-33",
+      "text": "步骤2：定义Task（具体工作）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "# tasks/question_tasks.py\n\ndef create_design_task(agent: Agent, syllabus: str) -> Task:\n    \"\"\"创建Task1：设计题目框架\"\"\"\n    return Task(\n        description=f\"\"\"\n        基于以下教学大纲，设计练习题的整体框架：\n\n        {syllabus}\n\n        要求：\n        1. 分析大纲的知识点层次\n        2. 规划题目的难度梯度\n        3. 设计题目类型分布\n        \"\"\",\n        expected_output=\"题目框架设计方案（Markdown格式）\",\n        agent=agent  # 指定由哪个Agent执行\n    )\n\ndef create_generate_task(agent: Agent, design_result: str) -> Task:\n    \"\"\"创建Task2：生成具体题目（依赖Task1输出）\"\"\"\n    return Task(\n        description=f\"\"\"\n        根据以下设计方案，生成5道选择题：\n\n        {design_result}\n\n        要求：\n        1. 严格遵循JSON格式\n        2. 每题4个选项（A/B/C/D）\n        3. 包含详细解析\n        \"\"\",\n        expected_output=\"题目列表（JSON格式）\",\n        agent=agent,\n        context=[design_result]  # 依赖Task1的输出\n    )"
+    },
+    {
+      "anchor": "section-33",
+      "text": "description: 任务的详细说明（这是给Agent看的Prompt）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "expected_output: 明确输出格式"
+    },
+    {
+      "anchor": "section-33",
+      "text": "agent: 绑定执行者"
+    },
+    {
+      "anchor": "section-33",
+      "text": "context: 任务间依赖关系（Task2需要Task1的结果）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "步骤3：Crew协调执行（项目经理）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "# crews/exercise_crew.py\n\nclass ExerciseCrew:\n    \"\"\"统一的Crew，负责协调所有阶段\"\"\"\n\n    def __init__(self, llm):\n        self.llm = llm\n        self.question_expert = create_question_expert(llm)\n\n    def run_question_generation(self, syllabus: str) -> str:\n        \"\"\"\n        程序1调用：执行题目生成流程（Sequential模式）\n        \"\"\"\n        # 创建两个Task\n        task1 = create_design_task(self.question_expert, syllabus)\n        task2 = create_generate_task(self.question_expert, task1.output)\n\n        # 创建Crew并执行\n        crew = Crew(\n            agents=[self.question_expert],\n            tasks=[task1, task2],\n            process=Process.sequential,  # Sequential模式\n            verbose=True\n        )\n\n        result = crew.kickoff()\n        return result"
+    },
+    {
+      "anchor": "section-33",
+      "text": "agents: 参与的Agent列表（程序1只需1个Agent）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "tasks: 任务列表（按执行顺序排列）"
+    },
+    {
+      "anchor": "section-33",
+      "text": "process=Process.sequential: 指定执行模式"
+    },
+    {
+      "anchor": "section-33",
+      "text": "kickoff(): 启动执行"
+    },
+    {
+      "anchor": "section-55",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-55",
+      "text": "下一节我们将学习程序2，看看Hierarchical模式如何协调多个Agent并行工作，以及如何将传统代码与AI决策完美融合。"
+    },
+    {
+      "anchor": "section-57",
+      "text": "图片"
+    }
+  ]
+}

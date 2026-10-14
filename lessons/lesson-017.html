@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>文字接龙（三）-简单任务背后的复杂智能 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-017">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>文字接龙的游戏</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 018</span></div>
+<h1 class="lesson-title">文字接龙（三）-简单任务背后的复杂智能</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>7 页原文</span><span>约 9 分钟阅读</span><span class="module-name">文字接龙的游戏</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-017.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-017.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<h2 id="section-0" data-source-page="1">6.1 阅读指南<a class="heading-link" href="#section-0" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="1"><p>前两节，我们了解了ChatGPT如何玩文字接龙游戏，以及概率分布是如何计算的。 现在大模型的能力我们都有目共睹。但这里有一个深刻的悖论： 为什么一个看似简单的&quot;预测下一个词&quot;任务，能产生如此智能的表现？ 在这一节，我们将探讨这个悖论，并理解自回归机制及其缺陷。</p></aside>
+<h2 id="section-2" data-source-page="1">6.2 简单的任务，复杂的智能<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">读到这里，可能有个疑问——第一次了解这个机制时，也有同样的疑问：</p>
+<p data-source-page="1">就这？预测下一个词？这么简单的任务，怎么能训练出ChatGPT这样看起来&quot;智能&quot;的系统？</p>
+<p data-source-page="1">这个疑问很合理。毕竟，&quot;预测下一个词&quot;听起来像是一个小学生都能理解的游戏，怎么会需要1750亿个参数？怎么会需要花费几百万美元训练？但实际上要把这个&quot;简单&quot;的任务做好，需要的能力一点都不简单。</p>
+<p data-source-page="1">例子一：理解多义词</p>
+<p data-source-page="1">看这个句子：</p>
+<aside class="callout" data-source-page="1"><p>“他拿起一只笔，笔______”</p></aside>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">这个问题怎么填？</p>
+<p data-source-page="2">这个问题的难点在于：“笔”这个词有歧义。</p>
+<p class="list-item" data-source-page="2">它可以是书写工具（笔尖、笔帽）</p>
+<p class="list-item" data-source-page="2">也可以是抽象概念（笔迹、笔法）</p>
+<p data-source-page="2">如果模型理解成物理对象，可能会填&quot;尖&quot;、“帽”； 如果理解成写作行为，应该填&quot;迹&quot;、“触”。</p>
+<p data-source-page="2">因为前面提到“拿起”，这是一个物理动作。一个好的模型，应该给“尖”或“帽”更高的概率。</p>
+<p data-source-page="2">这说明：模型必须理解词的多义性，必须根据上下文消歧。</p>
+<p data-source-page="2">例子二：指代消解</p>
+<p data-source-page="2">再看这个：</p>
+<aside class="callout" data-source-page="2"><p>“小明买了一部手机。它的屏幕______”</p></aside>
+<p data-source-page="2">“它”指的是什么？小明？还是手机？</p>
+<p data-source-page="2">显然是手机。所以下一个词应该是&quot;很大&quot;、“很清晰”，而不是&quot;很聪明&quot;（如果指小明）。</p>
+<p data-source-page="2">模型必须具备指代消解能力，才能预测准下一个词。</p>
+<aside class="callout" data-source-page="2"><b>补充说明</b><p>指代消解（Coreference Resolution）：确定代词（如&quot;它&quot;、“他”、“这个”）指向哪个实体的能力。这是自然语言理解的核心能力之一。</p></aside>
+<p data-source-page="2">例子三：常识推理</p>
+<aside class="callout" data-source-page="2"><p>“他把玻璃杯掉在地上，______碎了。”</p></aside>
+<p data-source-page="2">什么碎了？玻璃杯，还是地板？</p>
+<p data-source-page="2">这需要常识：玻璃杯易碎，地板不易碎。所以预测的应该是“玻璃杯”碎了，而非“地板”碎了。</p>
+<p data-source-page="2">模型必须具备物理世界的常识，才能做出正确预测。</p>
+<p data-source-page="2">例子四：语用理解</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<aside class="callout" data-source-page="3"><p>“你能把窗户关上吗？我有点______。”</p></aside>
+<p data-source-page="3">下一个词应该是什么？“冷”？“热”？“累”？</p>
+<p data-source-page="3">这需要理解：问&quot;能不能关窗&quot;通常暗示&quot;感觉冷&quot;或&quot;觉得吵&quot;，而不太可能是&quot;累&quot;。</p>
+<p data-source-page="3">模型必须理解语言的语用规则，理解话语背后的隐含意图。</p>
+<p data-source-page="3">所以，要准确地预测下一个词，模型需要具备多种能力：理解语法结构、掌握语义关系、追踪指代消解、理解多义词消歧、具备世界知识、进行逻辑推理、理解语用规则。</p>
+<p data-source-page="3">这些能力，没有一个是&quot;简单&quot;的。</p>
+<p data-source-page="3">这就是为什么一个看似简单的&quot;预测下一个词&quot;的任务，能够训练出具有广泛语言理解能力的模型。因为要把这个任务做好，就必须理解语言的方方面面。</p>
+<h2 id="section-36" data-source-page="3">6.3 自回归：一个词滚雪球般生成一段话<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">这个词听起来很学术，但概念其实很直观。还记得前面“文字接龙”和“贪吃蛇游戏”的比喻吗？它的正式名字就是自回归。简单说：每一步预测出来的词，都会加入到上下文中，参与下一步的预测。</p>
+<p data-source-page="3">用函数的语言来描述这个过程。ChatGPT本质上是一个函数，每次调用接收输入，返回一个词：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">1. 第1次调用：
+   ChatGPT(&quot;今天天气怎么样？&quot;)
+   → 返回：“今天”
+
+2. 第2次调用（问题+上次输出）：
+   ChatGPT(&quot;今天天气怎么样？今天&quot;)
+   → 返回：“上海”
+
+3. 第3次调用（问题+所有已生成的答案）：
+   ChatGPT(&quot;今天天气怎么样？今天上海&quot;)
+   → 返回：“的”
+
+4. 第4次调用：
+   ChatGPT(&quot;今天天气怎么样？今天上海的&quot;)
+   → 返回：“天气”
+
+...</code></pre></div>
+<p data-source-page="3">注意一个关键细节：每次输入的不仅是已生成的答案，还包括最初的问题。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">为什么要带上问题？因为如果只输入答案，ChatGPT就失去了上下文。只输入答案时，ChatGPT不知道在问天气还是日期，完全不知道要说什么。正确做法是问题加答案，知道是在回答天气问题，继续在天气语境下生成。</p>
+<p data-source-page="4">函数的输出，又被喂回函数作为输入的一部分。这就是“自回归”这个名字的来源——每一步的输出，都变成了下一步的输入的一部分。</p>
+<h2 id="section-43" data-source-page="4">6.4 为什么不一次性生成整个回答<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">答案有两个：</p>
+<p class="list-item" data-source-page="4">技术上更合适</p>
+<p data-source-page="4">一次性生成完整句子，需要同时预测几十上百个词，每个词都有接近几万种可能（看词表的大小），组合空间是天文数字。一个词一个词地生成，每次只需要做一次预测，简单得多。</p>
+<p class="list-item" data-source-page="4">更符合人类写作习惯</p>
+<p data-source-page="4">人类写文章也是这样的——写当前这句话时，基于前面已经写的内容；写下一句时，又基于前面所有的内容。</p>
+<p data-source-page="4">这种&quot;滚雪球&quot;式的生成方式，让模型能够生成任意长度的文本，只要上下文窗口允许。</p>
+<h2 id="section-50" data-source-page="4">6.5 自回归的缺陷：误差累积<a class="heading-link" href="#section-50" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">自回归机制有一个微妙但重要的特性：误差会累积。比如：</p>
+<p data-source-page="4">误差会累积</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">第1步：输入“今天天气”
+       正确预测：“真好”(60%)
+       实际选择：“不错”(25%)
+       ↓ 没问题，都是合理的
+       │
+       ▼
+第2步：输入“今天天气不错”
+       正确预测：“，可以”(50%)
+       实际选择：“，我们”(15%)
+       ↓ 开始有点偏离了
+       │
+       ▼
+第3步：输入“今天天气不错，我们”
+       正确预测：“出去走走”(40%)
+       实际选择：“的心情”(10%)
+       ↓ 越来越偏
+       │
+       ▼
+第4步：输入“今天天气不错，我们的心情”
+       预测：“也很好”
+       (合理，但和最初的方向不同了)</code></pre></div>
+<p data-source-page="5">每一步的小偏差，都会影响下一步的上下文，进而影响下下一步的预测。</p>
+<p data-source-page="5">就像走路偏离方向：</p>
+<aside class="callout" data-source-page="5"><p>第1步：偏离1度，影响不大 第10步：累积偏离10度，有点歪了 第100步：累积偏离100度，完全走错方向了</p></aside>
+<p data-source-page="5">这就是为什么有时ChatGPT会&quot;写着写着就偏离了主题&quot;。</p>
+<h3 id="section-58" data-source-page="5">如何缓解这个问题？<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">研究者们发现了几个方法：</p>
+<p data-source-page="5">方法一：更大的上下文窗口</p>
+<p data-source-page="5">上下文窗口是ChatGPT的“短期记忆”。它不能记住所有历史对话，只能记住最近的一段。这意味着文字接龙不能无限延伸下去。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">生成文字的最大长度 = 上下文窗口大小 - 输入长度
+
+1</code></pre></div>
+<p data-source-page="6">例如，GPT-4的窗口是128,000词，输入2,000词，最多能生成126,000词，大约相当于9万多个中文字。</p>
+<p data-source-page="6">不同模型的窗口大小对比（2026年4月）：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">模型</th><th scope="col">上下文窗口</th><th scope="col">约等于</th></tr></thead><tbody><tr><td>GPT-5.5</td><td>1M 词</td><td>几本长篇小说</td></tr><tr><td>DeepSeek V4</td><td>1M 词</td><td>三本《三体》</td></tr><tr><td>Qwen3.6-Plus</td><td>1M 词</td><td>几本长篇小说</td></tr><tr><td>Kimi K2.6</td><td>256K 词</td><td>一部长篇小说</td></tr><tr><td>Gemini 3.1 Pro</td><td>1M 词</td><td>几本长篇小说</td></tr><tr><td>GLM-5.1</td><td>200K 词</td><td>半本长篇小说</td></tr></tbody></table></div>
+<aside class="callout" data-source-page="6"><b>补充说明</b><p>截至2026年4月，主流模型的上下文窗口已达到100万词（DeepSeek V4、Qwen3.6-Plus、Gemini 3.1 Pro）。但研究发现，当上下文超过12.8万词时，大部分模型的性能会显著下降。因此，虽然窗口在变大，但有效窗口（模型能稳定工作的范围）仍是一个需要关注的指标。</p></aside>
+<p data-source-page="6">窗口越大，能&quot;看到&quot;更长的历史对话，更好地理解上下文逻辑，减少因为&quot;忘记&quot;而导致的偏离。</p>
+<p data-source-page="6">方法二：更好的采样策略</p>
+<p data-source-page="6">不要完全随机选择，而是在“质量”和“多样性”之间平衡，例如Top-p采样、Temperature调节（后面会详细讲）。</p>
+<p data-source-page="6">方法三：加入外部记忆</p>
+<p data-source-page="6">不只依赖生成的文本本身，还引入外部知识库，例如RAG（检索增强生成，后面有一章专门讲这个）。</p>
+<p data-source-page="6">方法四：思维链（CoT， Chain of Thought）</p>
+<p data-source-page="6">让模型先“思考”，再回答，减少直接一路生成导致的偏离。这就是思维链CoT（Chain of Thought），后面章节会详细讲。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">但总体而言，自回归虽然有很多问题，但它仍然是目前大语言模型的主流方法，因为它的优势大于劣势。而那些劣势，正在通过各种技术手段逐步消解。</p>
+<h2 id="section-75" data-source-page="7">6.6 ■ 学点英语<a class="heading-link" href="#section-75" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>指代消解</td><td>Coreference Resolution</td><td>/ˈkoʊrefərəns rezəˈluːʃən/ ˌ</td><td>确定代词指向哪个实体的语言理解能力</td></tr><tr><td>上下文窗口</td><td>Context Window</td><td>/ˈkɒntekst ˈwɪndəʊ/</td><td>模型能同时处理的文本长度上限</td></tr><tr><td>思维链</td><td>Chain of Thought (CoT)</td><td>/tʃeɪn ɒv θɔːt/</td><td>让模型先逐步推理再给出最终回答的方法</td></tr><tr><td>检索增强生成</td><td>Retrieval-Augmented Generation (RAG)</td><td>/rɪˈtriːvəl ˈɔːɡmentɪd dʒenəˈreɪʃən/ ˌ</td><td>引入外部知识库辅助生成的技术</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-016.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-4</strong><small>文字接龙的游戏</small></a><a class="chapter-neighbor next" href="lesson-018.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>文字接龙（四）-Token、幻觉与创造力</strong><small>文字接龙的游戏</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5254#mid=104875" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-0" class="toc-level-2">6.1 阅读指南</a><a href="#section-2" class="toc-level-2">6.2 简单的任务，复杂的智能</a><a href="#section-36" class="toc-level-2">6.3 自回归：一个词滚雪球般生成一段话</a><a href="#section-43" class="toc-level-2">6.4 为什么不一次性生成整个回答</a><a href="#section-50" class="toc-level-2">6.5 自回归的缺陷：误差累积</a><a href="#section-58" class="toc-level-3">如何缓解这个问题？</a><a href="#section-75" class="toc-level-2">6.6 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-017", "title": "文字接龙（三）-简单任务背后的复杂智能", "stage": 1, "week": 1, "module": "文字接龙的游戏", "minutes": 9, "pages": 7, "type": "article"}</script>
+</body></html>

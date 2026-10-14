@@ -1,0 +1,701 @@
+{
+  "id": "lesson-090",
+  "title": "创意控制与专业翻译器",
+  "code": "1-4",
+  "stage": 2,
+  "week": 4,
+  "week_title": "理解大模型开发",
+  "module": "小试牛刀，做一个简单的翻译器",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/001-第4周 理解大模型开发/003-小试牛刀，做一个简单的翻译器/090-图文-1-4-创意控制与专业翻译器.pdf",
+  "sha256": "6540fa2492d3717b35904db733753fe15fda77ef8ee69ec4239da5bb9ae406c0",
+  "pdf": "sources/pdf/lesson-090.pdf",
+  "pages": 6,
+  "source_url": "https://class.imooc.com/lesson/5269#mid=104909",
+  "minutes": 9,
+  "excerpt": "上一节学习了流式输出和长度控制。现在继续深入——通过temperature、top_p调整翻译风格，通过stream_options获取Token统计，最后整合所有参数打造一个专业翻译器。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节学习了流式输出和长度控制。现在继续深入——通过temperature、top_p调整翻译风格，通过stream_options获取Token统计，最后整合所有参数打造一个专业翻译器。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "8.1 temperature：创意性控制",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在第1章，我们学习了Temperature的原理——它通过调整概率分布的\"尖锐度\"，控制AI选词的随机性。现在看如何在翻译中应用这个原理。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "在翻译时，有时需要直译（准确），有时需要意译（自然）。这个需求可以使用Temperature参数来调整。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "参数说明",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "temperature：控制输出的随机性/创意性",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "取值范围：0.0 - 2.0",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "0.0 - 2.0",
+      "page": 1,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "默认值：1.0",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "1.0",
+      "page": 1,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "效果对比",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "以\"今天天气真好，我们去公园散步吧。\"翻译为例，看看不同Temperature的效果：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "temperature | 特点 | 适用场景 | 翻译风格\n- 0.3 | 确定性强、一致性高 | 技术文档、法律合同 | 直译、逐字对应\n- 1.0 | 平衡（默认） | 日常对话、新闻 | 自然、地道\n- 2.0 | 创意性强、多样性高 | 文学作品、营销文案 | 意译、灵活表达",
+      "rows": [
+        [
+          "temperature",
+          "特点",
+          "适用场景",
+          "翻译风格"
+        ],
+        [
+          "- 0.3",
+          "确定性强、一致性高",
+          "技术文档、法律合同",
+          "直译、逐字对应"
+        ],
+        [
+          "- 1.0",
+          "平衡（默认）",
+          "日常对话、新闻",
+          "自然、地道"
+        ],
+        [
+          "- 2.0",
+          "创意性强、多样性高",
+          "文学作品、营销文案",
+          "意译、灵活表达"
+        ]
+      ],
+      "page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际示例",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "text = \"今天天气真好，我们去公园散步吧。\"\n\n# temperature=0（直译）\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": f\"翻译成英文：{text}\"}],\n    temperature=0.0 # 意译：改为1.5试试\n)\nprint(response.choices[0].message.content)\n# 直译输出：Today's weather is really good, let's go to the park for a walk.\n# 意译输出：What a beautiful day! How about a stroll in the park?",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "quote",
+      "text": "核心要点 temperature 不影响质量，只影响风格。低温确定性高，高温创意性强。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.2 top_p：精细控制多样性",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第1章还讲了另一个参数Top-p（核采样），它不是调整整个概率分布，而是动态选择\"累积概率达到p\"的候选词范围。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "list",
+      "text": "top_p：核采样（nucleus sampling），控制候选词范围",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "取值范围：0.0 - 1.0",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "0.0 - 1.0",
+      "page": 2,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "推荐用法",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 推荐：只调一个参数\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[...],\n    temperature=0.7  # 只设置temperature\n)\n\n# 不推荐：同时调整两个参数（除非很清楚在做什么）\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[...],\n    temperature=0.7,\n    top_p=0.9  # 同时设置会相互影响，难以预测\n)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "典型取值",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "top_p=0.9：保留累积概率90%的候选词（稍微收敛）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "top_p=0.5：保留累积概率50%的候选词（明显收敛）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "top_p=0.5",
+      "page": 3,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "top_p=1.0：不限制（默认值）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "top_p=1.0",
+      "page": 3,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "quote",
+      "text": "实用建议：优先调整 temperature，只在需要极致精细控制时才考虑 top_p。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.3 流式输出中的Token统计",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在使用流式输出时，可能会发现一个问题：看不到Token消耗统计了。这是因为流式输出默认不返回usage信息。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "配置stream_options",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译这段文本...\"}],\n    stream=True,\n    stream_options={\"include_usage\": True}  # 在流式输出中包含Token统计\n)\n\nfor chunk in response:\n    if chunk.choices[0].delta.content:\n        print(chunk.choices[0].delta.content, end=\"\", flush=True)\n\n    # 最后一个chunk包含usage信息\n    if hasattr(chunk, 'usage') and chunk.usage:\n        print(f\"\\n\\nToken统计：{chunk.usage.total_tokens}个\")",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "输出示例",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "The weather is really nice today, let's go for a walk in the park.\n\nToken统计：28个",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "流式输出默认不返回 usage，需要显式配置 stream_options。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.4 完整实战：专业翻译器",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在，整合所有参数，打造一个专业级翻译器。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "代码参考",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter4/translator_pro_plus.py",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "运行这个翻译器，输入想翻译的文本：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "运行效果",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "欢迎使用专业翻译器！\n支持的风格：直译/平衡/意译\n--------------------------------------------------\n请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君\n目标语言（默认'英文'）：\n翻译风格（直译/平衡/意译，默认'平衡'）：\n翻译结果：Passing through gardens of flowers, I seldom look back—\nHalf for the path of cultivation, half for you.\nToken消耗：102个\n\n请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君\n目标语言（默认'英文'）：\n翻译风格（直译/平衡/意译，默认'平衡'）：直译\n翻译结果：Passing by gardens of flowers, I lazily look back—\nHalf for the sake of cultivation, half for your sake.\nToken消耗：105个\n\n请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君\n目标语言（默认'英文'）：\n翻译风格（直译/平衡/意译，默认'平衡'）：意译\n翻译结果：Passing through gardens of blossoms, I barely glance back—\nhalf for the path of cultivation, half for you.\nToken消耗：104个",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "max_tokens说明",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "源码默认没有设置max_tokens参数。但如果尝试更改max_tokens参数会发现一个问题。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "上述测试结果表明Token消耗大致在100~105个。按照这个思路，将max_tokens设置为50，按理说输出应该被截断——50远小于104。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "但实际上模型依然会正确输出翻译。原因在于，max_tokens指的是模型输出的Token，而计算的104个Token消耗还包含了输入部分。max_tokens实际上只应用于以下文本：",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "这段文本的长度小于50，所以模型输出不会被截断。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.5 ■ 学点英语",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n温度参数 | Temperature | /ˈtemprətʃər/ | 控制AI输出随机性和创意性的核心参数\n核采样 | Top-p (Nucleus Sampling) | /tɑp piː ˈnuːkliəs ˈsæmplɪŋ/ | 动态选择累积概率达到p的候选词范围\n创意控制 | Creativity Control | / kriːeɪˈtɪvəti kənˈtroʊl/ ˌ | 通过temperature等参数调节AI输出风格\n流式选项 | Stream Options | /striːm ˈɑːpʃənz/ | 流式输出中额外配置项（如 include usage） _\n专业翻译器 | Professional Translator | /prəˈfeʃənl trænsˈleɪtər/ | 整合多参数控制实现风格可调的专业翻译工具",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "温度参数",
+          "Temperature",
+          "/ˈtemprətʃər/",
+          "控制AI输出随机性和创意性的核心参数"
+        ],
+        [
+          "核采样",
+          "Top-p (Nucleus Sampling)",
+          "/tɑp piː ˈnuːkliəs ˈsæmplɪŋ/",
+          "动态选择累积概率达到p的候选词范围"
+        ],
+        [
+          "创意控制",
+          "Creativity Control",
+          "/ kriːeɪˈtɪvəti kənˈtroʊl/ ˌ",
+          "通过temperature等参数调节AI输出风格"
+        ],
+        [
+          "流式选项",
+          "Stream Options",
+          "/striːm ˈɑːpʃənz/",
+          "流式输出中额外配置项（如 include usage） _"
+        ],
+        [
+          "专业翻译器",
+          "Professional Translator",
+          "/prəˈfeʃənl trænsˈleɪtər/",
+          "整合多参数控制实现风格可调的专业翻译工具"
+        ]
+      ],
+      "page": 6
+    },
+    {
+      "kind": "h2",
+      "text": "8.7 下一节预告",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "掌握了API参数后，已经能灵活控制AI的输出。除了调参数，还有什么方法能让AI更准确地理解意图？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节学习 Prompt基础与必要场景——了解提示词工程的适用场景和核心方法。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Prompt基础与必要场景",
+      "page": 6,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 3762,
+    "represented_chars": 3584,
+    "removed_chars": 178,
+    "tables": 2,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 146,
+      "repeated_title": 32
+    }
+  },
+  "videos": [],
+  "order": 91,
+  "headings": [
+    {
+      "title": "8.1 temperature：创意性控制",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "8.2 top_p：精细控制多样性",
+      "id": "section-16",
+      "level": 2
+    },
+    {
+      "title": "8.3 流式输出中的Token统计",
+      "id": "section-30",
+      "level": 2
+    },
+    {
+      "title": "8.4 完整实战：专业翻译器",
+      "id": "section-37",
+      "level": 2
+    },
+    {
+      "title": "8.5 ■ 学点英语",
+      "id": "section-49",
+      "level": 2
+    },
+    {
+      "title": "8.7 下一节预告",
+      "id": "section-51",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节学习了流式输出和长度控制。现在继续深入——通过temperature、top_p调整翻译风格，通过stream_options获取Token统计，最后整合所有参数打造一个专业翻译器。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "8.1 temperature：创意性控制"
+    },
+    {
+      "anchor": "section-1",
+      "text": "在第1章，我们学习了Temperature的原理——它通过调整概率分布的\"尖锐度\"，控制AI选词的随机性。现在看如何在翻译中应用这个原理。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "在翻译时，有时需要直译（准确），有时需要意译（自然）。这个需求可以使用Temperature参数来调整。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "参数说明"
+    },
+    {
+      "anchor": "section-1",
+      "text": "temperature：控制输出的随机性/创意性"
+    },
+    {
+      "anchor": "section-1",
+      "text": "取值范围：0.0 - 2.0"
+    },
+    {
+      "anchor": "section-1",
+      "text": "0.0 - 2.0"
+    },
+    {
+      "anchor": "section-1",
+      "text": "默认值：1.0"
+    },
+    {
+      "anchor": "section-1",
+      "text": "1.0"
+    },
+    {
+      "anchor": "section-1",
+      "text": "效果对比"
+    },
+    {
+      "anchor": "section-1",
+      "text": "以\"今天天气真好，我们去公园散步吧。\"翻译为例，看看不同Temperature的效果："
+    },
+    {
+      "anchor": "section-1",
+      "text": "temperature | 特点 | 适用场景 | 翻译风格\n- 0.3 | 确定性强、一致性高 | 技术文档、法律合同 | 直译、逐字对应\n- 1.0 | 平衡（默认） | 日常对话、新闻 | 自然、地道\n- 2.0 | 创意性强、多样性高 | 文学作品、营销文案 | 意译、灵活表达"
+    },
+    {
+      "anchor": "section-1",
+      "text": "实际示例"
+    },
+    {
+      "anchor": "section-1",
+      "text": "text = \"今天天气真好，我们去公园散步吧。\"\n\n# temperature=0（直译）\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": f\"翻译成英文：{text}\"}],\n    temperature=0.0 # 意译：改为1.5试试\n)\nprint(response.choices[0].message.content)\n# 直译输出：Today's weather is really good, let's go to the park for a walk.\n# 意译输出：What a beautiful day! How about a stroll in the park?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "核心要点 temperature 不影响质量，只影响风格。低温确定性高，高温创意性强。"
+    },
+    {
+      "anchor": "section-16",
+      "text": "8.2 top_p：精细控制多样性"
+    },
+    {
+      "anchor": "section-16",
+      "text": "第1章还讲了另一个参数Top-p（核采样），它不是调整整个概率分布，而是动态选择\"累积概率达到p\"的候选词范围。"
+    },
+    {
+      "anchor": "section-16",
+      "text": "top_p：核采样（nucleus sampling），控制候选词范围"
+    },
+    {
+      "anchor": "section-16",
+      "text": "取值范围：0.0 - 1.0"
+    },
+    {
+      "anchor": "section-16",
+      "text": "0.0 - 1.0"
+    },
+    {
+      "anchor": "section-16",
+      "text": "推荐用法"
+    },
+    {
+      "anchor": "section-16",
+      "text": "# 推荐：只调一个参数\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[...],\n    temperature=0.7  # 只设置temperature\n)\n\n# 不推荐：同时调整两个参数（除非很清楚在做什么）\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[...],\n    temperature=0.7,\n    top_p=0.9  # 同时设置会相互影响，难以预测\n)"
+    },
+    {
+      "anchor": "section-16",
+      "text": "典型取值"
+    },
+    {
+      "anchor": "section-16",
+      "text": "top_p=0.9：保留累积概率90%的候选词（稍微收敛）"
+    },
+    {
+      "anchor": "section-16",
+      "text": "top_p=0.5：保留累积概率50%的候选词（明显收敛）"
+    },
+    {
+      "anchor": "section-16",
+      "text": "top_p=0.5"
+    },
+    {
+      "anchor": "section-16",
+      "text": "top_p=1.0：不限制（默认值）"
+    },
+    {
+      "anchor": "section-16",
+      "text": "top_p=1.0"
+    },
+    {
+      "anchor": "section-16",
+      "text": "实用建议：优先调整 temperature，只在需要极致精细控制时才考虑 top_p。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "8.3 流式输出中的Token统计"
+    },
+    {
+      "anchor": "section-30",
+      "text": "在使用流式输出时，可能会发现一个问题：看不到Token消耗统计了。这是因为流式输出默认不返回usage信息。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "配置stream_options"
+    },
+    {
+      "anchor": "section-30",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\",\n    messages=[{\"role\": \"user\", \"content\": \"翻译这段文本...\"}],\n    stream=True,\n    stream_options={\"include_usage\": True}  # 在流式输出中包含Token统计\n)\n\nfor chunk in response:\n    if chunk.choices[0].delta.content:\n        print(chunk.choices[0].delta.content, end=\"\", flush=True)\n\n    # 最后一个chunk包含usage信息\n    if hasattr(chunk, 'usage') and chunk.usage:\n        print(f\"\\n\\nToken统计：{chunk.usage.total_tokens}个\")"
+    },
+    {
+      "anchor": "section-30",
+      "text": "输出示例"
+    },
+    {
+      "anchor": "section-30",
+      "text": "The weather is really nice today, let's go for a walk in the park.\n\nToken统计：28个"
+    },
+    {
+      "anchor": "section-30",
+      "text": "流式输出默认不返回 usage，需要显式配置 stream_options。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "8.4 完整实战：专业翻译器"
+    },
+    {
+      "anchor": "section-37",
+      "text": "现在，整合所有参数，打造一个专业级翻译器。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "代码参考"
+    },
+    {
+      "anchor": "section-37",
+      "text": "完整源码参考：samples/chapter4/translator_pro_plus.py"
+    },
+    {
+      "anchor": "section-37",
+      "text": "运行这个翻译器，输入想翻译的文本："
+    },
+    {
+      "anchor": "section-37",
+      "text": "运行效果"
+    },
+    {
+      "anchor": "section-37",
+      "text": "欢迎使用专业翻译器！\n支持的风格：直译/平衡/意译\n--------------------------------------------------\n请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君\n目标语言（默认'英文'）：\n翻译风格（直译/平衡/意译，默认'平衡'）：\n翻译结果：Passing through gardens of flowers, I seldom look back—\nHalf for the path of cultivation, half for you.\nToken消耗：102个\n\n请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君\n目标语言（默认'英文'）：\n翻译风格（直译/平衡/意译，默认'平衡'）：直译\n翻译结果：Passing by gardens of flowers, I lazily look back—\nHalf for the sake of cultivation, half for your sake.\nToken消耗：105个\n\n请输入要翻译的文本（输入'quit'退出）：取次花丛懒回顾半缘修道半缘君\n目标语言（默认'英文'）：\n翻译风格（直译/平衡/意译，默认'平衡'）：意译\n翻译结果：Passing through gardens of blossoms, I barely glance back—\nhalf for the path of cultivation, half for you.\nToken消耗：104个"
+    },
+    {
+      "anchor": "section-37",
+      "text": "max_tokens说明"
+    },
+    {
+      "anchor": "section-37",
+      "text": "源码默认没有设置max_tokens参数。但如果尝试更改max_tokens参数会发现一个问题。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "上述测试结果表明Token消耗大致在100~105个。按照这个思路，将max_tokens设置为50，按理说输出应该被截断——50远小于104。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "但实际上模型依然会正确输出翻译。原因在于，max_tokens指的是模型输出的Token，而计算的104个Token消耗还包含了输入部分。max_tokens实际上只应用于以下文本："
+    },
+    {
+      "anchor": "section-37",
+      "text": "这段文本的长度小于50，所以模型输出不会被截断。"
+    },
+    {
+      "anchor": "section-49",
+      "text": "8.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-49",
+      "text": "中文 | English | 音标 | 说明\n温度参数 | Temperature | /ˈtemprətʃər/ | 控制AI输出随机性和创意性的核心参数\n核采样 | Top-p (Nucleus Sampling) | /tɑp piː ˈnuːkliəs ˈsæmplɪŋ/ | 动态选择累积概率达到p的候选词范围\n创意控制 | Creativity Control | / kriːeɪˈtɪvəti kənˈtroʊl/ ˌ | 通过temperature等参数调节AI输出风格\n流式选项 | Stream Options | /striːm ˈɑːpʃənz/ | 流式输出中额外配置项（如 include usage） _\n专业翻译器 | Professional Translator | /prəˈfeʃənl trænsˈleɪtər/ | 整合多参数控制实现风格可调的专业翻译工具"
+    },
+    {
+      "anchor": "section-51",
+      "text": "8.7 下一节预告"
+    },
+    {
+      "anchor": "section-51",
+      "text": "掌握了API参数后，已经能灵活控制AI的输出。除了调参数，还有什么方法能让AI更准确地理解意图？"
+    },
+    {
+      "anchor": "section-51",
+      "text": "下一节学习 Prompt基础与必要场景——了解提示词工程的适用场景和核心方法。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "Prompt基础与必要场景"
+    }
+  ]
+}

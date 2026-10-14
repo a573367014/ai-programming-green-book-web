@@ -1,0 +1,1304 @@
+{
+  "id": "lesson-103",
+  "title": "RAG检索优化：让答案更准确",
+  "code": "1-4",
+  "stage": 2,
+  "week": 5,
+  "week_title": "RAG：知识接入技术",
+  "module": "第一个RAG应用：游戏知识问答系统",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/002-第5周 RAG：知识接入技术/007-第一个RAG应用：游戏知识问答系统/103-图文-1-4-RAG检索优化：让答案更准确.pdf",
+  "sha256": "a0a426339169464f39c20e6127c99f38fb5bda81e494e97ae995aeee32196f6b",
+  "pdf": "sources/pdf/lesson-103.pdf",
+  "pages": 9,
+  "source_url": "https://class.imooc.com/lesson/5273#mid=104922",
+  "minutes": 14,
+  "excerpt": "在前面几节，我们已经走完了RAG的大部分流程： 用户提问 → 向量检索 → 【上下文拼接】 → 大模型生成 → 返回答案 1 代码块 上下文优化，就发生在\"向量检索\"和\"大模型生成\"之间这个关键环节。 你可能会问：检索不是已经完成了吗？我们已经拿到了最相关的3-5个chunk，接下来直接丢给大模型生",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 在前面几节，我们已经走完了RAG的大部分流程： 用户提问 → 向量检索 → 【上下文拼接】 → 大模型生成 → 返回答案 1 代码块 上下文优化，就发生在\"向量检索\"和\"大模型生成\"之间这个关键环节。 你可能会问：检索不是已经完成了吗？我们已经拿到了最相关的3-5个chunk，接下来直接丢给大模型生成答案不就行了？ 没错，理论上是这样。但实际上，这个\"拼接上下文\"的环节，藏着巨大的优化空间： 给AI多少chunk？ 3个还是10个？ 每个chunk要完整给吗？ 还是可以压缩？ 怎么组织这些chunk？ 直接拼接还是加点结构？ 如何控制成本？ 每次对话都传几千字，钱包受得了吗？ RAG的上下文管理，本质上就是在回答一个问题： 给AI多少资料才够？太少了答不准，太多了成本飙升、效果还会变差。 这节课，我就来聊聊这门\"给多少、怎么给\"的艺术。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "10.1 上下文的困境：多了不行，少了也不行",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一个例子",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "某电商公司做了个AI客服，把商品FAQ全塞进上下文：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "知识库：500个常见问题，总计15万字",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用户问：“这款手机支持5G吗？”",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "系统检索：返回Top-10相关FAQ，共1.2万字",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "他们的想法是：“既然能检索到10个相关FAQ，那就都给AI吧，信息越多越好！”",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "运行一周后，问题来了：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "成本失控",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "每次对话输入：1.2万字（问题100字 + 上下文1.2万字）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "按通义千问价格：输入0.0008元/千tokens，每次对话成本约0.12元",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "日均1000次咨询，月成本：3600元",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "而正确的上下文只需要3个FAQ（3000字），成本可降至900元/月",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "答案质量下降",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户：\"这款手机支持5G吗？\"\n\nAI回答：\"根据资料，这款手机的网络支持情况如下：\n1. 支持2G/3G/4G网络\n2. 支持Wi-Fi 6\n3. 支持蓝牙5.2\n4. 关于5G，部分型号支持，部分型号不支持\n5. 具体请查看产品型号说明...\"",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "那这有什么问题呢？上下文包含了太多不同型号的信息，AI被10个FAQ搞晕了，不知道用户问的是哪个型号。原本一句话能回答的问题，变成了模棱两可的长篇大论",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "list",
+      "text": "响应速度变慢",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "原本1秒返回答案，现在需要更久（模型要处理更多token）。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个案例让我们明白：上下文不是越多越好。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "另一个极端：吝啬的上下文。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "还是这家电商公司，吸取教训后，走向了另一个极端：只返回Top-1最相关的FAQ，每次上下文只有300字，成本降到了最低。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "结果又出问题了：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户：\"这款手机拍照怎么样？\"\n\n检索到的Top-1：\n\"该手机采用6400万像素主摄，支持OIS光学防抖。\"\n\nAI回答：\"该手机采用6400万像素主摄，支持OIS光学防抖。\"",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "用户追问：\"夜景模式呢？\"检索到的Top-1（换了）： “夜景模式支持AI降噪，最长曝光8秒。”",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI回答：“夜景模式支持AI降噪，最长曝光8秒。”",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "那这有什么问题呢？每个答案都是正确的，但都太片面，像个复读机，用户得问好几次才能了解全貌。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个案例也告诉我们：上下文也不能太少。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "上下文的黄金平衡点",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "那到底多少才合适？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "没有标准答案。但有判断标准：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "能回答问题的最小信息集",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不是越多越好，而是刚好够用——就像给AI一张简明扼要的\"小抄\"。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "具体数字参考",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "简单问答：1-2个chunk（500-1000字）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "中等问题：3-5个chunk（1500-3000字）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "复杂问题：5-10个chunk（3000-6000字）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "动态调整",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "根据问题复杂度、检索相似度和实际效果动态调整上下文数量。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "10.2 上下文优化的三个方面",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "角度1：Top-K参数调优",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Top-K 就是从向量库中检索出\"最相关的K个chunk\"。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "常见误区：很多人觉得K越大越好，“宁可多给，不能少给”。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 检索Top-K\nresults = collection.query(\n    query_texts=[\"这款手机支持5G吗\"],\n    n_results=10  # K=10，真的需要这么多吗？\n)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "实测对比（均为预估），同一个问题，不同K值的效果：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "K值 | 平均相似度 | 答案准确率 | 预估平均成本 | 预估响应时间\n1 | 0.92 | 65% | ¥0.07 | 0.8秒\n3 | 0.85 | 92% | ¥0.22 | 1.2秒\n5 | 0.78 | 89% | ¥0.36 | 1.8秒\n10 | 0.65 | 75% | ¥0.86 | 3.2秒",
+      "rows": [
+        [
+          "K值",
+          "平均相似度",
+          "答案准确率",
+          "预估平均成本",
+          "预估响应时间"
+        ],
+        [
+          "1",
+          "0.92",
+          "65%",
+          "¥0.07",
+          "0.8秒"
+        ],
+        [
+          "3",
+          "0.85",
+          "92%",
+          "¥0.22",
+          "1.2秒"
+        ],
+        [
+          "5",
+          "0.78",
+          "89%",
+          "¥0.36",
+          "1.8秒"
+        ],
+        [
+          "10",
+          "0.65",
+          "75%",
+          "¥0.86",
+          "3.2秒"
+        ]
+      ],
+      "page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "从表中可以看出，K=3时效果最好（准确率92%），而K=10反而下降到75%，因为引入了噪音。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 上述测试数据数值，只代表特定问题在特定数据下的测试数据。虽然数值是特例，但其趋势符合预期。这里给出只是为了方便读者理解不是越多越好，也不是越少越好，也并不是每次都是取3条效果最佳。 如果你不追求极致的效果，经验性来说，一般取Top-3。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "角度2：相似度阈值过滤",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题场景：用户问：“这款手机防水吗？”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "检索结果：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Top-1: 相似度 0.85 - \"该手机支持IP68级防水\"\nTop-2: 相似度 0.52 - \"该手机支持无线充电\"\nTop-3: 相似度 0.48 - \"该手机电池容量5000mAh\"",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "但Top-2和Top-3相似度太低（<0.6），它们和\"防水\"关系不大，放进上下文只会干扰AI。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解决方案：设置相似度阈值",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在检索时设置一个相似度阈值（比如0.7），只保留相似度高于阈值的chunk。具体做法是：先检索10个chunk，然后将向量距离转换为相似度（相似度 = 1 - 距离），过滤掉低于阈值的结果。这样就能只保留Top-1，过滤掉Top-2和Top-3。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "效果：成本降低（只传输真正相关的内容）的同时，质量也得到提升（减少噪音，答案更精准）。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "角度3：上下文压缩技术",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "即使筛选后，上下文仍可能很长，有多种压缩技术可用。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "技术1：摘要压缩",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用大模型把长上下文压缩成摘要：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 伪代码：核心逻辑\ndef rag_with_summary(question):\n    # 检索上下文\n    long_context = retrieve_chunks(question)  # 3000字\n\n    # 压缩成摘要\n    summary = llm.summarize(long_context, max_length=200)\n\n    # 生成答案\n    answer = llm.generate(question, context=summary)\n\n    return answer",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "效果：原始上下文3000字可以压缩到200字，成本节省93%，但摘要会丢失一些细节。这种方法适合背景介绍类内容，以及不需要逐字引用的场景。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "技术2：关键句提取",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不用摘要，而是提取最相关的几句话：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 伪代码：核心逻辑\ndef extract_key_sentences(text, question, top_n=3):\n    # 分句\n    sentences = split_by_period(text)\n\n    # 计算相似度\n    scores = calculate_similarity(sentences, question)\n\n    # 排序取Top-N\n    top_sentences = get_top_n(scores, n=top_n)\n\n    return join(top_sentences)",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "效果：这种方法保留了原文，但只传输最相关的句子，成本和精准度都能兼顾。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "技术3：LlamaIndex框架",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果你用LlamaIndex框架，它内置了上下文压缩功能，可以自动识别并保留最相关的句子，压缩掉不相关的部分。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "（具体使用方法我们后续详细讲解）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "10.3 避免重复查询：用智慧降低成本",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "前面讲的是\"如何优化上下文质量\"（压缩、过滤、提取关键信息），现在我们换个角度：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果同样的问题被问了100次，每次都重新检索、重新计算、重新调用API，这不是浪费吗？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这一节，我们就来看看如何用\"缓存\"和\"分层\"策略，避免这些无谓的重复查询。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "分层检索：预先整理高频FAQ",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每次都检索整个知识库，即使是简单问题也要扫描百万级向量。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解决思路：把知识库分为两层，预先整理出常见问题：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "预先",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第一层是高频FAQ（100-200条），提前人工整理最常被问的问题，先在这个小库里用向量检索快速查找。第二层是完整知识库（数万条），包含所有文档，只有FAQ没命中时才来这里检索。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就像超市把热门商品放在入口，大部分人不用走到里面，直接在门口拿就走。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "代码实现：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 伪代码：核心逻辑\nclass LayeredRAG:\n    def __init__(self):\n        self.faq_db = load_faq_database()      # FAQ小库（100条）\n        self.full_db = load_full_database()    # 完整库（10000条）\n\n    def query(self, question):\n        # 先查FAQ\n        faq_result = self.faq_db.query(question, n_results=3)\n\n        # 判断第1条相似度\n        if get_top1_similarity(faq_result) > 0.7:\n            # FAQ命中，说明结果是可取的\n            filtered = filter_by_similarity(faq_result, threshold=0.5)\n            return generate_answer(question, filtered)\n        else:\n            # FAQ未命中，查完整库\n            full_result = self.full_db.query(question, n_results=3)\n            return generate_answer(question, full_result)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "效果：80%的问题命中FAQ，只需检索100条数据，检索速度提升10倍，成本降低80%。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里用了两个阈值：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "阈值1：0.7（决定是否命中FAQ）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "只看第1条相似度",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果 > 0.7 → 说明FAQ有答案，进入FAQ分支",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果 ≤ 0.7 → FAQ没答案，去完整库查",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "阈值2：0.5（过滤低相似度结果）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "FAQ命中后，取回的3条中，可能只有第1条 > 0.7",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第2、第3条可能只有0.6、0.3",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "过滤掉 < 0.5 的结果，避免噪音",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "最终传给LLM的1-3条高相似度结果",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "缓存策略：动态记录已回答的问题",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "同样的问题被问了100次，每次都重新检索、重新生成。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解决思路：用一个字典动态存储\"问题-答案\"对：第一次问时正常检索+生成，然后自动存入缓存；第二次问时发现缓存里有，直接返回，不调用API；随着使用，缓存越来越多，命中率越来越高。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "和上小节的区别是：上小节的FAQ是预先准备，这里是自动积累的。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "上小节的FAQ是预先准备，这里是自动积累的",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但缓存匹配不能用简单的字符串对比，因为：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用户问：“如何部署Embedding模型？”",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用户问：“Embedding模型怎么部署？”",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "意思相同，但文本不同。如果用哈希值匹配，这两个问题会被认为是不同的，无法命中缓存。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解决方案：用向量相似度进行语义匹配：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "将问题向量化（用Embedding模型）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "在缓存向量库中查找相似问题",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果相似度 > 0.95，认为是同一问题，返回缓存答案",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "否则正常检索+生成，并将新的问题-答案对存入缓存",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这样就能识别语义相同但表达不同的问题。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 伪代码：核心逻辑\nclass CachedRAG:\n    def __init__(self):\n        self.cache_db = create_vector_db()  # 缓存向量库\n        self.rag = RAGSystem()\n\n    def query(self, question):\n        # 将问题向量化，查缓存\n        cached = self.cache_db.query(question, n_results=1)\n\n        # 判断是否命中\n        if get_top1_similarity(cached) > 0.95:  # 高相似度\n            # 缓存命中\n            return cached['answer']\n        else:\n            # 未命中，正常RAG\n            answer = self.rag.query(question)\n\n            # 存入缓存\n            self.cache_db.add(question, answer)\n\n            return answer",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "效果：相同问题第二次查询耗时不到10ms，成本为0（不调用API），缓存命中率通常在30-50%之间（取决于业务场景）。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "10.4 下一节预告",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "到这里，我们已经掌握了从文档处理、向量检索到上下文优化的全流程。**但你可能会发现：**每次都要手写分块、建库、检索的代码，很繁琐。有没有现成的框架可以简化这些流程？",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "**下一节《LlamaIndex实战：RAG开发框架》**将带你认识一个强大的RAG框架，看看它如何用几行代码实现我们前面写了上百行才能完成的功能。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "10.5 ■ 学点英语",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n问题重写 | Query Rewriting | /ˈkwɪri riːˈraɪtɪŋ/ | 用LLM将用户问题改写得更清晰以提升检索准确率\n混合检索 | Hybrid Search | /ˈhaɪbrɪd sɜːrtʃ/ | 组合向量检索、关键词检索、BM25等多种检索方式\n重排序模型 | Reranking Model | /riːˈræŋkɪŋ ˈmɑːdl/ | 对初筛结果进行更精确的相关性打分和重排\n缓存策略 | Cache Strategy | /kæʃ ˈstrætədʒi/ | 缓存相同或相似问题的答案，避免重复API调用\nToken 预算 | Token Budget | /ˈtoʊkən ˈbʌdʒɪt/ | 每次对话允许消耗的最大Token数量",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "问题重写",
+          "Query Rewriting",
+          "/ˈkwɪri riːˈraɪtɪŋ/",
+          "用LLM将用户问题改写得更清晰以提升检索准确率"
+        ],
+        [
+          "混合检索",
+          "Hybrid Search",
+          "/ˈhaɪbrɪd sɜːrtʃ/",
+          "组合向量检索、关键词检索、BM25等多种检索方式"
+        ],
+        [
+          "重排序模型",
+          "Reranking Model",
+          "/riːˈræŋkɪŋ ˈmɑːdl/",
+          "对初筛结果进行更精确的相关性打分和重排"
+        ],
+        [
+          "缓存策略",
+          "Cache Strategy",
+          "/kæʃ ˈstrætədʒi/",
+          "缓存相同或相似问题的答案，避免重复API调用"
+        ],
+        [
+          "Token 预算",
+          "Token Budget",
+          "/ˈtoʊkən ˈbʌdʒɪt/",
+          "每次对话允许消耗的最大Token数量"
+        ]
+      ],
+      "page": 9
+    }
+  ],
+  "accounting": {
+    "source_chars": 5943,
+    "represented_chars": 5741,
+    "removed_chars": 202,
+    "tables": 2,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 161,
+      "repeated_title": 41
+    }
+  },
+  "videos": [],
+  "order": 104,
+  "headings": [
+    {
+      "title": "10.1 上下文的困境：多了不行，少了也不行",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "10.2 上下文优化的三个方面",
+      "id": "section-39",
+      "level": 2
+    },
+    {
+      "title": "10.3 避免重复查询：用智慧降低成本",
+      "id": "section-69",
+      "level": 2
+    },
+    {
+      "title": "10.4 下一节预告",
+      "id": "section-109",
+      "level": 2
+    },
+    {
+      "title": "10.5 ■ 学点英语",
+      "id": "section-112",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "在前面几节，我们已经走完了RAG的大部分流程： 用户提问 → 向量检索 → 【上下文拼接】 → 大模型生成 → 返回答案 1 代码块 上下文优化，就发生在\"向量检索\"和\"大模型生成\"之间这个关键环节。 你可能会问：检索不是已经完成了吗？我们已经拿到了最相关的3-5个chunk，接下来直接丢给大模型生成答案不就行了？ 没错，理论上是这样。但实际上，这个\"拼接上下文\"的环节，藏着巨大的优化空间： 给AI多少chunk？ 3个还是10个？ 每个chunk要完整给吗？ 还是可以压缩？ 怎么组织这些chunk？ 直接拼接还是加点结构？ 如何控制成本？ 每次对话都传几千字，钱包受得了吗？ RAG的上下文管理，本质上就是在回答一个问题： 给AI多少资料才够？太少了答不准，太多了成本飙升、效果还会变差。 这节课，我就来聊聊这门\"给多少、怎么给\"的艺术。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "10.1 上下文的困境：多了不行，少了也不行"
+    },
+    {
+      "anchor": "section-1",
+      "text": "一个例子"
+    },
+    {
+      "anchor": "section-1",
+      "text": "某电商公司做了个AI客服，把商品FAQ全塞进上下文："
+    },
+    {
+      "anchor": "section-1",
+      "text": "知识库：500个常见问题，总计15万字"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用户问：“这款手机支持5G吗？”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "系统检索：返回Top-10相关FAQ，共1.2万字"
+    },
+    {
+      "anchor": "section-1",
+      "text": "他们的想法是：“既然能检索到10个相关FAQ，那就都给AI吧，信息越多越好！”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "运行一周后，问题来了："
+    },
+    {
+      "anchor": "section-1",
+      "text": "成本失控"
+    },
+    {
+      "anchor": "section-1",
+      "text": "每次对话输入：1.2万字（问题100字 + 上下文1.2万字）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "按通义千问价格：输入0.0008元/千tokens，每次对话成本约0.12元"
+    },
+    {
+      "anchor": "section-1",
+      "text": "日均1000次咨询，月成本：3600元"
+    },
+    {
+      "anchor": "section-1",
+      "text": "而正确的上下文只需要3个FAQ（3000字），成本可降至900元/月"
+    },
+    {
+      "anchor": "section-1",
+      "text": "答案质量下降"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用户：\"这款手机支持5G吗？\"\n\nAI回答：\"根据资料，这款手机的网络支持情况如下：\n1. 支持2G/3G/4G网络\n2. 支持Wi-Fi 6\n3. 支持蓝牙5.2\n4. 关于5G，部分型号支持，部分型号不支持\n5. 具体请查看产品型号说明...\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "那这有什么问题呢？上下文包含了太多不同型号的信息，AI被10个FAQ搞晕了，不知道用户问的是哪个型号。原本一句话能回答的问题，变成了模棱两可的长篇大论"
+    },
+    {
+      "anchor": "section-1",
+      "text": "响应速度变慢"
+    },
+    {
+      "anchor": "section-1",
+      "text": "原本1秒返回答案，现在需要更久（模型要处理更多token）。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个案例让我们明白：上下文不是越多越好。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "另一个极端：吝啬的上下文。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "还是这家电商公司，吸取教训后，走向了另一个极端：只返回Top-1最相关的FAQ，每次上下文只有300字，成本降到了最低。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "结果又出问题了："
+    },
+    {
+      "anchor": "section-1",
+      "text": "用户：\"这款手机拍照怎么样？\"\n\n检索到的Top-1：\n\"该手机采用6400万像素主摄，支持OIS光学防抖。\"\n\nAI回答：\"该手机采用6400万像素主摄，支持OIS光学防抖。\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "用户追问：\"夜景模式呢？\"检索到的Top-1（换了）： “夜景模式支持AI降噪，最长曝光8秒。”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "AI回答：“夜景模式支持AI降噪，最长曝光8秒。”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "那这有什么问题呢？每个答案都是正确的，但都太片面，像个复读机，用户得问好几次才能了解全貌。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个案例也告诉我们：上下文也不能太少。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "上下文的黄金平衡点"
+    },
+    {
+      "anchor": "section-1",
+      "text": "那到底多少才合适？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "没有标准答案。但有判断标准："
+    },
+    {
+      "anchor": "section-1",
+      "text": "能回答问题的最小信息集"
+    },
+    {
+      "anchor": "section-1",
+      "text": "不是越多越好，而是刚好够用——就像给AI一张简明扼要的\"小抄\"。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "具体数字参考"
+    },
+    {
+      "anchor": "section-1",
+      "text": "简单问答：1-2个chunk（500-1000字）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "中等问题：3-5个chunk（1500-3000字）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "复杂问题：5-10个chunk（3000-6000字）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "动态调整"
+    },
+    {
+      "anchor": "section-1",
+      "text": "根据问题复杂度、检索相似度和实际效果动态调整上下文数量。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "10.2 上下文优化的三个方面"
+    },
+    {
+      "anchor": "section-39",
+      "text": "角度1：Top-K参数调优"
+    },
+    {
+      "anchor": "section-39",
+      "text": "Top-K 就是从向量库中检索出\"最相关的K个chunk\"。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "常见误区：很多人觉得K越大越好，“宁可多给，不能少给”。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "# 检索Top-K\nresults = collection.query(\n    query_texts=[\"这款手机支持5G吗\"],\n    n_results=10  # K=10，真的需要这么多吗？\n)"
+    },
+    {
+      "anchor": "section-39",
+      "text": "实测对比（均为预估），同一个问题，不同K值的效果："
+    },
+    {
+      "anchor": "section-39",
+      "text": "K值 | 平均相似度 | 答案准确率 | 预估平均成本 | 预估响应时间\n1 | 0.92 | 65% | ¥0.07 | 0.8秒\n3 | 0.85 | 92% | ¥0.22 | 1.2秒\n5 | 0.78 | 89% | ¥0.36 | 1.8秒\n10 | 0.65 | 75% | ¥0.86 | 3.2秒"
+    },
+    {
+      "anchor": "section-39",
+      "text": "从表中可以看出，K=3时效果最好（准确率92%），而K=10反而下降到75%，因为引入了噪音。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "上述测试数据数值，只代表特定问题在特定数据下的测试数据。虽然数值是特例，但其趋势符合预期。这里给出只是为了方便读者理解不是越多越好，也不是越少越好，也并不是每次都是取3条效果最佳。 如果你不追求极致的效果，经验性来说，一般取Top-3。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "角度2：相似度阈值过滤"
+    },
+    {
+      "anchor": "section-39",
+      "text": "问题场景：用户问：“这款手机防水吗？”"
+    },
+    {
+      "anchor": "section-39",
+      "text": "检索结果："
+    },
+    {
+      "anchor": "section-39",
+      "text": "Top-1: 相似度 0.85 - \"该手机支持IP68级防水\"\nTop-2: 相似度 0.52 - \"该手机支持无线充电\"\nTop-3: 相似度 0.48 - \"该手机电池容量5000mAh\""
+    },
+    {
+      "anchor": "section-39",
+      "text": "但Top-2和Top-3相似度太低（<0.6），它们和\"防水\"关系不大，放进上下文只会干扰AI。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "解决方案：设置相似度阈值"
+    },
+    {
+      "anchor": "section-39",
+      "text": "在检索时设置一个相似度阈值（比如0.7），只保留相似度高于阈值的chunk。具体做法是：先检索10个chunk，然后将向量距离转换为相似度（相似度 = 1 - 距离），过滤掉低于阈值的结果。这样就能只保留Top-1，过滤掉Top-2和Top-3。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "效果：成本降低（只传输真正相关的内容）的同时，质量也得到提升（减少噪音，答案更精准）。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "角度3：上下文压缩技术"
+    },
+    {
+      "anchor": "section-39",
+      "text": "即使筛选后，上下文仍可能很长，有多种压缩技术可用。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "技术1：摘要压缩"
+    },
+    {
+      "anchor": "section-39",
+      "text": "用大模型把长上下文压缩成摘要："
+    },
+    {
+      "anchor": "section-39",
+      "text": "# 伪代码：核心逻辑\ndef rag_with_summary(question):\n    # 检索上下文\n    long_context = retrieve_chunks(question)  # 3000字\n\n    # 压缩成摘要\n    summary = llm.summarize(long_context, max_length=200)\n\n    # 生成答案\n    answer = llm.generate(question, context=summary)\n\n    return answer"
+    },
+    {
+      "anchor": "section-39",
+      "text": "效果：原始上下文3000字可以压缩到200字，成本节省93%，但摘要会丢失一些细节。这种方法适合背景介绍类内容，以及不需要逐字引用的场景。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "技术2：关键句提取"
+    },
+    {
+      "anchor": "section-39",
+      "text": "不用摘要，而是提取最相关的几句话："
+    },
+    {
+      "anchor": "section-39",
+      "text": "# 伪代码：核心逻辑\ndef extract_key_sentences(text, question, top_n=3):\n    # 分句\n    sentences = split_by_period(text)\n\n    # 计算相似度\n    scores = calculate_similarity(sentences, question)\n\n    # 排序取Top-N\n    top_sentences = get_top_n(scores, n=top_n)\n\n    return join(top_sentences)"
+    },
+    {
+      "anchor": "section-39",
+      "text": "效果：这种方法保留了原文，但只传输最相关的句子，成本和精准度都能兼顾。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "技术3：LlamaIndex框架"
+    },
+    {
+      "anchor": "section-39",
+      "text": "如果你用LlamaIndex框架，它内置了上下文压缩功能，可以自动识别并保留最相关的句子，压缩掉不相关的部分。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "（具体使用方法我们后续详细讲解）"
+    },
+    {
+      "anchor": "section-69",
+      "text": "10.3 避免重复查询：用智慧降低成本"
+    },
+    {
+      "anchor": "section-69",
+      "text": "前面讲的是\"如何优化上下文质量\"（压缩、过滤、提取关键信息），现在我们换个角度："
+    },
+    {
+      "anchor": "section-69",
+      "text": "如果同样的问题被问了100次，每次都重新检索、重新计算、重新调用API，这不是浪费吗？"
+    },
+    {
+      "anchor": "section-69",
+      "text": "这一节，我们就来看看如何用\"缓存\"和\"分层\"策略，避免这些无谓的重复查询。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "分层检索：预先整理高频FAQ"
+    },
+    {
+      "anchor": "section-69",
+      "text": "每次都检索整个知识库，即使是简单问题也要扫描百万级向量。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "解决思路：把知识库分为两层，预先整理出常见问题："
+    },
+    {
+      "anchor": "section-69",
+      "text": "预先"
+    },
+    {
+      "anchor": "section-69",
+      "text": "第一层是高频FAQ（100-200条），提前人工整理最常被问的问题，先在这个小库里用向量检索快速查找。第二层是完整知识库（数万条），包含所有文档，只有FAQ没命中时才来这里检索。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "这就像超市把热门商品放在入口，大部分人不用走到里面，直接在门口拿就走。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "代码实现："
+    },
+    {
+      "anchor": "section-69",
+      "text": "# 伪代码：核心逻辑\nclass LayeredRAG:\n    def __init__(self):\n        self.faq_db = load_faq_database()      # FAQ小库（100条）\n        self.full_db = load_full_database()    # 完整库（10000条）\n\n    def query(self, question):\n        # 先查FAQ\n        faq_result = self.faq_db.query(question, n_results=3)\n\n        # 判断第1条相似度\n        if get_top1_similarity(faq_result) > 0.7:\n            # FAQ命中，说明结果是可取的\n            filtered = filter_by_similarity(faq_result, threshold=0.5)\n            return generate_answer(question, filtered)\n        else:\n            # FAQ未命中，查完整库\n            full_result = self.full_db.query(question, n_results=3)\n            return generate_answer(question, full_result)"
+    },
+    {
+      "anchor": "section-69",
+      "text": "效果：80%的问题命中FAQ，只需检索100条数据，检索速度提升10倍，成本降低80%。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "这里用了两个阈值："
+    },
+    {
+      "anchor": "section-69",
+      "text": "阈值1：0.7（决定是否命中FAQ）"
+    },
+    {
+      "anchor": "section-69",
+      "text": "只看第1条相似度"
+    },
+    {
+      "anchor": "section-69",
+      "text": "如果 > 0.7 → 说明FAQ有答案，进入FAQ分支"
+    },
+    {
+      "anchor": "section-69",
+      "text": "如果 ≤ 0.7 → FAQ没答案，去完整库查"
+    },
+    {
+      "anchor": "section-69",
+      "text": "阈值2：0.5（过滤低相似度结果）"
+    },
+    {
+      "anchor": "section-69",
+      "text": "FAQ命中后，取回的3条中，可能只有第1条 > 0.7"
+    },
+    {
+      "anchor": "section-69",
+      "text": "第2、第3条可能只有0.6、0.3"
+    },
+    {
+      "anchor": "section-69",
+      "text": "过滤掉 < 0.5 的结果，避免噪音"
+    },
+    {
+      "anchor": "section-69",
+      "text": "最终传给LLM的1-3条高相似度结果"
+    },
+    {
+      "anchor": "section-69",
+      "text": "缓存策略：动态记录已回答的问题"
+    },
+    {
+      "anchor": "section-69",
+      "text": "同样的问题被问了100次，每次都重新检索、重新生成。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "解决思路：用一个字典动态存储\"问题-答案\"对：第一次问时正常检索+生成，然后自动存入缓存；第二次问时发现缓存里有，直接返回，不调用API；随着使用，缓存越来越多，命中率越来越高。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "和上小节的区别是：上小节的FAQ是预先准备，这里是自动积累的。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "上小节的FAQ是预先准备，这里是自动积累的"
+    },
+    {
+      "anchor": "section-69",
+      "text": "但缓存匹配不能用简单的字符串对比，因为："
+    },
+    {
+      "anchor": "section-69",
+      "text": "用户问：“如何部署Embedding模型？”"
+    },
+    {
+      "anchor": "section-69",
+      "text": "用户问：“Embedding模型怎么部署？”"
+    },
+    {
+      "anchor": "section-69",
+      "text": "意思相同，但文本不同。如果用哈希值匹配，这两个问题会被认为是不同的，无法命中缓存。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "解决方案：用向量相似度进行语义匹配："
+    },
+    {
+      "anchor": "section-69",
+      "text": "将问题向量化（用Embedding模型）"
+    },
+    {
+      "anchor": "section-69",
+      "text": "在缓存向量库中查找相似问题"
+    },
+    {
+      "anchor": "section-69",
+      "text": "如果相似度 > 0.95，认为是同一问题，返回缓存答案"
+    },
+    {
+      "anchor": "section-69",
+      "text": "否则正常检索+生成，并将新的问题-答案对存入缓存"
+    },
+    {
+      "anchor": "section-69",
+      "text": "这样就能识别语义相同但表达不同的问题。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "# 伪代码：核心逻辑\nclass CachedRAG:\n    def __init__(self):\n        self.cache_db = create_vector_db()  # 缓存向量库\n        self.rag = RAGSystem()\n\n    def query(self, question):\n        # 将问题向量化，查缓存\n        cached = self.cache_db.query(question, n_results=1)\n\n        # 判断是否命中\n        if get_top1_similarity(cached) > 0.95:  # 高相似度\n            # 缓存命中\n            return cached['answer']\n        else:\n            # 未命中，正常RAG\n            answer = self.rag.query(question)\n\n            # 存入缓存\n            self.cache_db.add(question, answer)\n\n            return answer"
+    },
+    {
+      "anchor": "section-69",
+      "text": "效果：相同问题第二次查询耗时不到10ms，成本为0（不调用API），缓存命中率通常在30-50%之间（取决于业务场景）。"
+    },
+    {
+      "anchor": "section-109",
+      "text": "10.4 下一节预告"
+    },
+    {
+      "anchor": "section-109",
+      "text": "到这里，我们已经掌握了从文档处理、向量检索到上下文优化的全流程。**但你可能会发现：**每次都要手写分块、建库、检索的代码，很繁琐。有没有现成的框架可以简化这些流程？"
+    },
+    {
+      "anchor": "section-109",
+      "text": "**下一节《LlamaIndex实战：RAG开发框架》**将带你认识一个强大的RAG框架，看看它如何用几行代码实现我们前面写了上百行才能完成的功能。"
+    },
+    {
+      "anchor": "section-112",
+      "text": "10.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-112",
+      "text": "中文 | English | 音标 | 说明\n问题重写 | Query Rewriting | /ˈkwɪri riːˈraɪtɪŋ/ | 用LLM将用户问题改写得更清晰以提升检索准确率\n混合检索 | Hybrid Search | /ˈhaɪbrɪd sɜːrtʃ/ | 组合向量检索、关键词检索、BM25等多种检索方式\n重排序模型 | Reranking Model | /riːˈræŋkɪŋ ˈmɑːdl/ | 对初筛结果进行更精确的相关性打分和重排\n缓存策略 | Cache Strategy | /kæʃ ˈstrætədʒi/ | 缓存相同或相似问题的答案，避免重复API调用\nToken 预算 | Token Budget | /ˈtoʊkən ˈbʌdʒɪt/ | 每次对话允许消耗的最大Token数量"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>多 Agent 协作：从个体到群体智能 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-149">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-6">智能体</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 12 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>多Agent协作：从个体到群体智能</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 150</span></div>
+<h1 class="lesson-title">多 Agent 协作：从个体到群体智能</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>5 页原文</span><span>约 8 分钟阅读</span><span class="module-name">多Agent协作：从个体到群体智能</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-149.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-149.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>在前面几节中，我们深入剖析了单个Agent的内部机制——从感知、思考到行动，从记忆系统到推理模式，再到各种实现范式。你现在已经能够构建一个功能完整的单体Agent。 但当你真正面对复杂的业务场景时，你会发现：一个Agent再强大，也有其能力边界。 举个典型的场景：你要开发一个内容营销系统。它需要研究市场趋势、撰写文章、设计配图、审核内容、制定发布计划。理论上，你可以训练一个超级Agent来完成所有这些任务。但实际上，这样做既低效又容易出错——就像让一个人既当设计师、又当编辑、还当市场分析师一样。 更好的方式是什么？将这个复杂任务拆解给多个专业Agent——市场研究Agent、内容创作Agent、设计Agent、审核Agent、策略规划Agent。每个Agent专注于自己擅长的领域，然后通过协作完成整体目标。 这就是多Agent系统的核心理念：从&quot;个体智能&quot;走向&quot;群体智能&quot;。 但这也带来了新的挑战：如何让多个Agent高效协作？如何避免它们各自为政？如何确保信息在它们之间准确传递？ 本节我们将探讨这些问题。</p></aside>
+<h2 id="section-1" data-source-page="1">为什么需要多Agent？<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<h3 id="section-2" data-source-page="1">单Agent的三大局限<a class="heading-link" href="#section-2" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">先从单Agent的问题说起。</p>
+<p data-source-page="1">局限一：能力边界</p>
+<p data-source-page="1">就像人有专业领域一样，单个Agent也有其擅长和不擅长的任务。用一个通用Agent处理多种类型的任务时，它在每个任务上的表现都可能不如专门训练的Agent。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">一个擅长写代码的Agent，让它写营销文案可能不够专业；一个擅长数据分析的Agent，让它做创意设计可能力不从心。</p>
+<p data-source-page="2">你当然可以投喂更多训练数据，让它&quot;全能&quot;。但这会导致模型规模膨胀、成本急剧上升，训练难度加大、各能力之间可能相互干扰，维护成本高、难以针对特定能力优化。</p>
+<p data-source-page="2">局限二：上下文窗口限制</p>
+<p data-source-page="2">即使是最新的大模型，上下文窗口也是有限的。当任务涉及大量背景信息、多个步骤的中间结果时，单Agent的上下文很容易被撑爆。</p>
+<p data-source-page="2">比如处理这样的任务：分析10篇竞品报告（每篇3000字），根据分析结果设计产品策略，撰写产品需求文档，生成开发任务清单。如果用单Agent，它需要在上下文中同时装载所有报告、分析结果、策略思考、文档草稿……很快就会触及Token上限。</p>
+<p data-source-page="2">局限三：并行处理能力</p>
+<p data-source-page="2">单Agent是串行工作的——完成步骤A，才能开始步骤B。但很多任务天然就是可以并行的。</p>
+<p data-source-page="2">比如分析一批用户评论：分析第1-100条评论的情感倾向、第101-200条、第201-300条、第301-400条——这些子任务之间相互独立，完全可以同时进行。用单Agent串行处理，效率太低。</p>
+<h3 id="section-14" data-source-page="2">多Agent的四大优势<a class="heading-link" href="#section-14" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">多Agent系统正是为了突破这些局限而生。</p>
+<p data-source-page="2">优势一：专业化分工</p>
+<p data-source-page="2">每个Agent可以专注于自己最擅长的领域，就像一个专业团队：市场研究Agent精通数据分析、趋势预测；内容创作Agent擅长文案撰写、故事讲述；技术审核Agent专注代码审查、技术把关；项目管理Agent负责任务分配、进度跟踪。</p>
+<p data-source-page="2">这样做的好处是：每个Agent可以用更小、更高效的模型，针对特定领域优化效果更好，且易于维护和升级。</p>
+<p data-source-page="2">优势二：知识边界清晰</p>
+<p data-source-page="2">每个Agent维护自己的知识库和上下文，不会相互干扰。当某个领域的知识更新时，只需要升级对应的专业Agent，而不是重新训练整个大模型。</p>
+<p data-source-page="2">优势三：并行处理</p>
+<p data-source-page="2">多个Agent可以同时工作，大幅提升效率。就像前面举例的技术分享案例，PPT、演讲稿、案例、Q&amp;A可以由四个Agent同时准备，然后汇总。</p>
+<p data-source-page="2">优势四：容错与备份当某个Agent出现问题时，不会导致整个系统瘫痪。其他Agent可以继续工作，甚至可以由备用Agent接管任务。这在生产环境中非常重要。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-24" data-source-page="3">多Agent协作的四种模式<a class="heading-link" href="#section-24" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">理解了多Agent的价值，下一个问题是：如何组织它们协作？</p>
+<p data-source-page="3">业界总结出了四种主流的协作模式，每种适用于不同的场景。</p>
+<h3 id="section-27" data-source-page="3">层级协作（Hierarchical）<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">这是最常见的模式，类似于公司的组织架构。</p>
+<p data-source-page="3">核心思想：有一个Manager Agent负责任务分配和结果整合，多个Worker Agent负责执行具体任务。</p>
+<p data-source-page="3">工作流程：用户将任务提交给Manager Agent；Manager分析任务，拆解成子任务；Manager将子任务分配给不同的Worker Agent；Worker Agent各自完成任务，返回结果；Manager整合所有结果，生成最终输出。</p>
+<p data-source-page="3">适用场景：任务可以明确拆解为子任务、子任务之间相对独立、需要统一协调和质量把控。</p>
+<p data-source-page="3">劣势：Manager成为瓶颈，需要很强的任务分解能力；Worker之间无法直接交流，灵活性受限。</p>
+<h3 id="section-33" data-source-page="3">平等协作（Peer-to-Peer）<a class="heading-link" href="#section-33" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">这种模式下，所有Agent地位平等，通过协商来完成任务。</p>
+<p data-source-page="3">核心思想：没有中心控制者，Agent之间自由对话、互相帮助，共同推动任务完成。</p>
+<p data-source-page="3">工作流程：所有Agent接收到同一个任务目标；Agent之间轮流发言，提出观点或方案；其他Agent对方案进行评论、补充或质疑；经过多轮讨论，逐步形成共识；达成一致后，输出最终方案。</p>
+<p data-source-page="3">适用场景：需要集思广益、头脑风暴，没有明确的任务拆解方式，需要多个视角互相补充。</p>
+<p data-source-page="3">优势在于充分利用每个Agent的专长，思维碰撞容易产生创新想法，没有中心节点不会成为瓶颈。劣势是讨论可能陷入循环难以收敛，需要设计终止机制（如轮数限制、共识判断），且成本较高（每个Agent都需要处理大量上下文）。</p>
+<h3 id="section-39" data-source-page="3">流水线（Pipeline）<a class="heading-link" href="#section-39" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">这种模式类似于工厂的生产线，任务按固定顺序流经各个Agent。</p>
+<p data-source-page="3">核心思想：将任务分解为多个阶段，每个Agent负责一个阶段，前一个Agent的输出是后一个Agent的输入。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">工作流程：Agent 1接收原始输入，处理后传给Agent 2；Agent 2在Agent 1的基础上继续处理，传给Agent 3；依次类推，直到最后一个Agent输出最终结果。</p>
+<p data-source-page="4">适用场景：任务有明确的阶段划分，每个阶段的输入输出清晰，需要逐步精化的场景。</p>
+<p data-source-page="4">典型案例：文章创作流程——选题Agent → 大纲Agent → 初稿Agent → 润色Agent → 审核Agent。</p>
+<p data-source-page="4">优势在于逻辑清晰、易于理解和调试，每个阶段独立便于优化，可以针对每个环节做质量把控。劣势是缺乏灵活性，无法跳过或回退步骤；如果某个环节出错可能影响后续所有环节；前面环节的错误会被后续放大。</p>
+<h3 id="section-46" data-source-page="4">动态组合（Dynamic）<a class="heading-link" href="#section-46" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">这是最灵活的模式，Agent的组合和顺序根据任务动态决定。</p>
+<p data-source-page="4">核心思想：有一个Router Agent根据任务类型和当前状态，动态选择调用哪个或哪些Agent，甚至可以多次调用、循环调用。</p>
+<p data-source-page="4">工作流程：Router Agent分析任务；根据任务特征选择合适的Agent；执行并评估结果；如果需要，调用其他Agent继续处理；重复直到任务完成。</p>
+<p data-source-page="4">适用场景：任务类型多样难以预设流程，需要根据中间结果调整策略，需要处理异常和回退。</p>
+<p data-source-page="4">典型案例：智能客服系统——Router根据用户问题类型，动态调用知识库Agent、订单查询Agent、人工转接Agent等，并根据回答效果决定是否需要补充调用其他Agent。</p>
+<p data-source-page="4">优势在于灵活性最高、适应复杂多变的场景，可以优化资源使用（只调用必要的Agent），支持迭代和自我修正。劣势是实现复杂度高，Router本身需要很强的决策能力，难以预测执行路径、调试困难。</p>
+<h2 id="section-53" data-source-page="4">下一节预告<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">理解了多Agent协作的各种模式，你可能已经意识到：无论采用哪种协作方式，Agent之间都需要高效的通信机制。下一节，我们将深入探讨Google提出的A2A协议——一个旨在标准化Agent间通信的框架，为你揭开多Agent系统底层通信的秘密。随后，我们将介绍专门为多Agent协作设计的CrewAI框架，让你能够快速构建复杂的多Agent系统。</p>
+<h2 id="section-55" data-source-page="4">图片<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">![](014-图文-1-1-多 Agent 协作：从个体到群体智能.assets/img-001.png)</p>
+<p data-source-page="4">![](014-图文-1-1-多 Agent 协作：从个体到群体智能.assets/img-002.png)</p>
+<p data-source-page="4">![](014-图文-1-1-多 Agent 协作：从个体到群体智能.assets/img-003.png)![](014-图文-1-1-多 Agent 协作：从个体到群体智能.assets/img-004.png)</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-148.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>实战：智能旅行规划Agent</strong><small>实战：智能旅行规划Agent</small></a><a class="chapter-neighbor next" href="lesson-150.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Google A2A协议：Agent间通信标准</strong><small>多Agent协作：从个体到群体智能</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5292#mid=105155" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">为什么需要多Agent？</a><a href="#section-2" class="toc-level-3">单Agent的三大局限</a><a href="#section-14" class="toc-level-3">多Agent的四大优势</a><a href="#section-24" class="toc-level-2">多Agent协作的四种模式</a><a href="#section-27" class="toc-level-3">层级协作（Hierarchical）</a><a href="#section-33" class="toc-level-3">平等协作（Peer-to-Peer）</a><a href="#section-39" class="toc-level-3">流水线（Pipeline）</a><a href="#section-46" class="toc-level-3">动态组合（Dynamic）</a><a href="#section-53" class="toc-level-2">下一节预告</a><a href="#section-55" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-149", "title": "多 Agent 协作：从个体到群体智能", "stage": 6, "week": 12, "module": "多Agent协作：从个体到群体智能", "minutes": 8, "pages": 5, "type": "article"}</script>
+</body></html>

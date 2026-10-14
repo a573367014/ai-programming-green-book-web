@@ -1,0 +1,66 @@
+{
+  "id": "lesson-039",
+  "title": "选择练习 · 1-6",
+  "code": "1-6",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "预训练",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/006-预训练/039-练习-1-6-选择练习.pdf",
+  "sha256": "dba9cde0c71c8f923e004f1763751dd70c254920dfca7234a1b41706bbbbe96f",
+  "pdf": "sources/pdf/lesson-039.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5258#mid=104962",
+  "minutes": 1,
+  "excerpt": "A. 因为它是在预生产环境中训练的 B. 因为它只是完整训练流程的基础步骤，后面还有监督微调和RLHF C. 因为它使用了预计算的数据集 D. 因为它只需要预先准备数据，不需要训练",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么大语言模型的训练过程叫做\"预训练\"？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 因为它是在预生产环境中训练的 B. 因为它只是完整训练流程的基础步骤，后面还有监督微调和RLHF C. 因为它使用了预计算的数据集 D. 因为它只需要预先准备数据，不需要训练",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 264,
+    "represented_chars": 119,
+    "removed_chars": 145,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 145
+    }
+  },
+  "videos": [],
+  "order": 40,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "为什么大语言模型的训练过程叫做\"预训练\"？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 因为它是在预生产环境中训练的 B. 因为它只是完整训练流程的基础步骤，后面还有监督微调和RLHF C. 因为它使用了预计算的数据集 D. 因为它只需要预先准备数据，不需要训练"
+    }
+  ]
+}

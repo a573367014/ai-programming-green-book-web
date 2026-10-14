@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>本数字教材特色 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-003">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>序与前言</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 004</span></div>
+<h1 class="lesson-title">本数字教材特色</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>10 页原文</span><span>约 11 分钟阅读</span><span class="module-name">序与前言</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-003.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-003.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>本节阐述本书的核心特色与学习理念，说明为何需要掌握大模型核心原理、程序员在AI时代的角色转变，以及本书的知识体系设计。 作为全书的开篇，帮助读者建立正确的学习预期与方法论。</p></aside>
+<h2 id="section-1" data-source-page="1">2.1 为什么要掌握大模型的核心原理<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">工具仓库的地上散落着上百种工具：锤子、扳手、螺丝刀，也有电钻、切割机、焊接枪。每一个工具上都贴着陌生的标签：Prompt Engineering、Chain of Thought、RAG、Function Calling、Multi-Agent、LangChain……</p>
+<p data-source-page="1">工具都有用，但面对它们会生出疑问：这个工具是干什么的？什么时候该用它？它和其他工具有什么关系？应该先用哪个，后用哪个？</p>
+<p data-source-page="1">很多程序员在入门时，就是这样的感觉。概念太多，不清楚从哪里入手。</p>
+<p data-source-page="1">碎片化的信息容易引发焦虑：是否遗漏了重要内容？这些概念之间是什么关系？应该先学什么，后学什么？</p>
+<p data-source-page="1">把AI时代的所有核心概念重新深入梳理一遍，正是编写这本书的初衷。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-7" data-source-page="2">2.2 AI时代程序员的转变<a class="heading-link" href="#section-7" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">学习一门技术，过去的做法是从细节入手。学编程，要记住每个语法规则；学算法，要掌握每个数据结构；学框架，要熟悉每个API的用法。因为在那个时代，掌握细节就意味着掌握了能力。</p>
+<p data-source-page="2">AI时代改变了这个逻辑。</p>
+<p data-source-page="2">在编程细节层面，AI已经比人类做得更好。</p>
+<p data-source-page="2">这意味着程序员的工作重心正在转移。过去，价值体现在&quot;如何实现&quot;——你能多快写出一个排序算法，多熟练地掌握一个框架的API。现在，这些细节AI都能完成，价值转移到了以下两点：</p>
+<p class="list-item" data-source-page="2">“实现什么”，这由你的认知和想象力决定</p>
+<p class="list-item" data-source-page="2">“如何组合”，这由你的工程能力决定</p>
+<h3 id="section-14" data-source-page="2">“实现什么”：认知决定上限<a class="heading-link" href="#section-14" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">AI能写出优雅的代码，但它不知道该写什么。它不知道用户的痛点在哪里，不知道业务的瓶颈是什么。</p>
+<p data-source-page="2">这些判断来自于对行业的理解、对用户的洞察、对技术的敏感度。一个见过多种架构模式的程序员，能看出当前系统的局限；一个了解多种AI能力的开发者，能想到创新的应用场景。</p>
+<p data-source-page="2">认知的高度，决定了你能看到多大的可能性。</p>
+<h3 id="section-18" data-source-page="2">“如何组合”：工程能力决定落地<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">知道要做什么还不够，还需要知道怎么做成。AI能完成单个任务，但把多个技术组合成一个完整的系统，需要工程能力：</p>
+<p class="list-item" data-source-page="2">RAG提供知识检索，Function Calling提供外部调用，Agent提供自主决策——什么时候用哪个？</p>
+<p class="list-item" data-source-page="2">LangChain适合快速原型，LangGraph适合复杂流程——如何选择合适的框架？</p>
+<p class="list-item" data-source-page="2">多个Agent如何协作？数据如何流转？错误如何处理？</p>
+<p data-source-page="2">这些不是API调用的问题，而是系统设计的问题。需要理解每个组件的能力边界，知道如何把它们拼装成一个可靠的整体。</p>
+<p data-source-page="2">过去，工程能力体现在代码的细节实现上。现在，体现在技术的组合架构上。</p>
+<h2 id="section-25" data-source-page="2">2.3 完整的知识体系<a class="heading-link" href="#section-25" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">这本书的目的不只是教授每个技术的具体用法。它更想提供的，是一套完整的知识体系。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">一套将AI领域70+核心概念、20+主流框架工具，按照能力递进的逻辑有序组织起来的体系。这些技术不是孤立的点，而是一条相互关联、层层递进的主线。</p>
+<p data-source-page="3">这套体系包含两个层面：</p>
+<p class="list-item" data-source-page="3">9个演进阶段：从最基础的大模型原理，到现在最流行的A2A多智能体协作，了解每个技术的原理、价值以及来龙去脉</p>
+<p class="list-item" data-source-page="3">3个方面：原理、工具、开发，从3个角度让理论知识扎实</p>
+<p data-source-page="3">有了这套体系，能理解技术之间的关联：</p>
+<p class="list-item" data-source-page="3">Prompt Engineering为什么在RLHF之后？因为对齐技术让模型更听话，但Prompt能更精准地表达意图</p>
+<p class="list-item" data-source-page="3">RAG为什么在CoT之后？因为模型会推理了，但缺乏事实，RAG提供知识支持</p>
+<p class="list-item" data-source-page="3">LangChain和LangGraph有什么区别？它们不是对立的，而是互相辅助的</p>
+<p data-source-page="3">当未来出现新技术时，能够迅速判断：</p>
+<p class="list-item" data-source-page="3">它解决的是哪个阶段的问题？</p>
+<p class="list-item" data-source-page="3">它在整个演进链条中的位置在哪里？</p>
+<p class="list-item" data-source-page="3">它和现有技术是什么关系？</p>
+<p data-source-page="3">知识是成体系的。理解了技术之间的关系，才能真正掌握AI开发的全貌。</p>
+<p data-source-page="3">本书字数总计434K，分布如下：</p>
+<h2 id="section-41" data-source-page="3">2.4 兼具原理与实战的好书<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">不会浮于表面地介绍各种AI概念，然后让读者自己去摸索。在关键的技术上，会深入到具体的使用方案和编码细节，教如何应用各种框架和技术。</p>
+<p data-source-page="3">例如：</p>
+<p class="list-item" data-source-page="3">讲RAG时，不只讲概念，还会展示如何用LangChain或LlamaIndex搭建一个实际的知识库检索系统</p>
+<p class="list-item" data-source-page="3">讲Agent时，会带读者从零开始构建一个能自主完成任务的智能体</p>
+<p class="list-item" data-source-page="3">最后，还有一个大实战，教如何用CrewAI和知识图谱开发一个多智能体协同项目</p>
+<p data-source-page="3">这本书兼具概念讲解与实践应用两个层面：</p>
+<p class="list-item" data-source-page="3">概念层面：提供清晰的脉络和扎实的理论，理解技术的来龙去脉</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p class="list-item" data-source-page="4">实践层面：提供可执行的代码和方案，真正会用这些技术</p>
+<p data-source-page="4">目标不是让读者成为概念的收藏家，而是真正能用AI解决实际问题的开发者。</p>
+<h2 id="section-51" data-source-page="4">2.5 本书的脉络<a class="heading-link" href="#section-51" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">本书共12章（另加第0章序言），构建了从「理解语言模型」到「构建多智能体系统」的完整学习路径，按能力递进分为六个阶段：</p>
+<h3 id="section-53" data-source-page="4">第一阶段：理解语言模型（第1-3章）<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">从最基础的问题出发：大模型到底是什么。</p>
+<p data-source-page="4">第1章从「文字接龙」的视角揭示了大模型的本质——它不是魔法，而是基于概率的文本生成工具。理解Token机制、参数演化和模型结构。</p>
+<p data-source-page="4">第2章深入训练过程：Embedding如何把文字变成数学向量，预训练如何从海量数据中学习规律，监督微调如何将通用模型适配到特定任务。</p>
+<h3 id="section-57" data-source-page="4">第二阶段：初入大模型实战（第4章）<a class="heading-link" href="#section-57" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">第4章完成从理论到实践的跨越。学会调用API、管理多轮对话、控制流式输出、设计精密Prompt。从简单的Hello World到专业翻译器，第一次体验大模型开发的完整工作流。</p>
+<p data-source-page="4">这一章的核心理念是：AI不等于大模型。真正的开发是将大模型作为组件，融入工程化思考。</p>
+<h3 id="section-60" data-source-page="4">第三阶段：赋予AI知识与能力（第5-7章）<a class="heading-link" href="#section-60" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">这是AI从「会说话」到「会做事」的关键转变。</p>
+<p data-source-page="4">第5章通过RAG技术解决了大模型的「知识过时」问题——不再依赖静态训练数据，而是从向量数据库中动态检索最新知识，同时通过文档分块、检索优化等技巧提升回答质量。</p>
+<p data-source-page="4">第6章通过Function Calling让LLM能够调用外部工具——查询数据库、调用API、操作文件系统。AI第一次具备了对现实世界的影响力。</p>
+<p data-source-page="4">第7章引入MCP协议，这是工具调用的「USB标准」。它将纷繁多样的工具接口统一为标准化协议，让开发者不再为每个平台和模型编写适配代码。</p>
+<h3 id="section-65" data-source-page="4">第四阶段：用框架提升效率（第8-9章）<a class="heading-link" href="#section-65" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">第8章介绍了LangChain——它解决了重复造轮子的问题，通过Chain机制串联多个处理步骤，用Memory管理对话上下文，让开发者聚焦业务逻辑而非底层调用。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">第9章的LangGraph则将AI应用从「单次调用」升级为「有状态的工作流」。StateGraph让流程可视化，条件分支实现动态决策，Human-in-the-Loop让人机协作更加灵活。</p>
+<h3 id="section-68" data-source-page="5">第五阶段：能力封装（第10章）<a class="heading-link" href="#section-68" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">第10章引入了Skills——将专业知识打包成可复用的AI能力模块。学会如何通过YAML配置和触发机制，将零散的Prompt和工具调用封装为团队可共享的标准化技能。前端设计实战展示了Skills在真实场景中的价值。</p>
+<h3 id="section-70" data-source-page="5">第六阶段：智能体构建（第11-12章）<a class="heading-link" href="#section-70" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">这是全书的技术顶峰。第11章从Agent的核心架构出发——感知、规划、执行、记忆——剖析了智能体的本质工作机制。理解ReAct推理模式如何将思考与行动循环结合，以及从Function Calling到Agent的自然演进。</p>
+<p data-source-page="5">第12章将视野从单个Agent扩展到多Agent协作。CrewAI框架的角色分工与任务协作模式，A2A协议实现跨平台Agent互操作。两个实战项目——题目生成器和考试系统——让你亲手构建从设计到实现的完整多Agent系统。</p>
+<p data-source-page="5">每一章都在为下一章铺路：Function Calling是Agent的工具能力基础，RAG是Agent的知识来源，LangGraph是Multi-Agent的编排框架。学完第12章，回头看第1章，会发现那个「基于概率的文字接龙工具」，已经演化成了一个能自主决策、多Agent协作的智能系统。</p>
+<p data-source-page="5">这本书不只是一本技术手册。它试图呈现一种理解方式——如何在快速变化的技术浪潮中，抓住那些不变的本质。</p>
+<p data-source-page="5">技术从来不会突变，从农业时代到信息时代，科技的进步总是有迹可循。理解了这个逻辑，即使以后再有新的技术出现，也可以轻松的入门。</p>
+<h2 id="section-76" data-source-page="5">2.6 不懂数学也能看懂大模型基础理论<a class="heading-link" href="#section-76" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">这是一本为程序员写的AI书，不是数学教材。</p>
+<p data-source-page="5">很多AI书籍让人望而却步，翻开第一页就是密密麻麻的数学公式：矩阵运算、梯度下降、反向传播……仿佛不先读完《线性代数》《概率论》就没法理解AI。</p>
+<p data-source-page="5">本书不同。在理论深度与实用性之间找到了一个巧妙的平衡点：</p>
+<h3 id="section-80" data-source-page="5">用类比代替公式<a class="heading-link" href="#section-80" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">需要解释复杂概念时，不会直接抛出数学公式，而是从生活中寻找恰当的比喻：</p>
+<p class="list-item" data-source-page="5">Transformer的自注意力机制 → “像在会议中，你会自动重点关注某些发言人”</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p class="list-item" data-source-page="6">梯度下降 → “蒙着眼睛下山，每次用脚感受坡度，朝下坡方向走一小步”</p>
+<p class="list-item" data-source-page="6">Embedding向量化 → “给每个词分配一个GPS坐标，相似的词距离更近”</p>
+<p data-source-page="6">这些类比不是为了回避原理，而是让读者先建立直觉理解，再逐步深入技术细节。</p>
+<h3 id="section-86" data-source-page="6">只保留最必要的基础数学<a class="heading-link" href="#section-86" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">本书也会出现一些必要的数学表达，但遵循&quot;够用就好&quot;的原则，大致只需要初高中的数学水平即可理解：</p>
+<p data-source-page="6">不会出现的：</p>
+<p class="list-item" data-source-page="6">复杂的矩阵求导推导过程</p>
+<p class="list-item" data-source-page="6">冗长的优化算法证明</p>
+<p class="list-item" data-source-page="6">深奥的概率论公式链</p>
+<p data-source-page="6">会出现的：</p>
+<p class="list-item" data-source-page="6">y = f(x, θ₁, θ₂, …, θₙ) ← 帮你理解&quot;函数+参数&quot;的本质</p>
+<p class="list-item" data-source-page="6">余弦相似度计算 ← 理解向量检索的核心思想</p>
+<p class="list-item" data-source-page="6">Loss函数的概念 ← 理解模型如何&quot;知道自己错了&quot;</p>
+<p data-source-page="6">每当出现数学符号时，都会：</p>
+<p class="list-item" data-source-page="6">先用自然语言解释它要表达什么</p>
+<p class="list-item" data-source-page="6">配合图示或代码示例</p>
+<p class="list-item" data-source-page="6">强调&quot;理解原理比严格证明更重要&quot;</p>
+<aside class="callout" data-source-page="6"><b>阅读提示</b><p>数学里有一个惯例，在构建理论时，可以将很多&quot;公理&quot;作为无需证明的基石被直接使用。比如欧几里得几何学中的&quot;过两点有且仅有一条直线&quot;，我们直接使用它，而不去质疑为什么。同样的，在学习AI时，你完全可以接受&quot;Self-Attention能捕捉长距离依赖关系&quot;这个结论，然后直接用它解决问题，而不必纠结背后的矩阵运算细节。这个思想对于数学基础不好的同学来说非常重要。</p></aside>
+<h3 id="section-101" data-source-page="6">用代码验证理论<a class="heading-link" href="#section-101" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">对程序员来说，代码比公式更直观。所以本书的每个核心概念，都配有可运行的代码：</p>
+<p class="list-item" data-source-page="6">不仅告诉读者Embedding是什么，还给出完整代码调用API生成向量</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p class="list-item" data-source-page="7">不仅讲解RAG原理，还手把手带读者构建一个真实的问答系统</p>
+<p class="list-item" data-source-page="7">不仅介绍Agent理论，还用CrewAI实现一个Multi-Agent协作项目</p>
+<p data-source-page="7">当你能运行代码、看到结果时，理论就不再抽象了。</p>
+<h2 id="section-107" data-source-page="7">2.7 你需要什么基础？<a class="heading-link" href="#section-107" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">最低要求：</p>
+<p class="list-item" data-source-page="7">会一门编程语言（Python最佳，其他语言也可以，只是本书是用Python做演示）</p>
+<p class="list-item" data-source-page="7">理解基本的编程概念（函数、对象、API调用）</p>
+<p class="list-item" data-source-page="7">愿意动手运行代码</p>
+<p data-source-page="7">不需要：</p>
+<p class="list-item" data-source-page="7">机器学习背景</p>
+<p class="list-item" data-source-page="7">深度学习理论</p>
+<p class="list-item" data-source-page="7">高等数学基础</p>
+<p class="list-item" data-source-page="7">论文阅读能力</p>
+<p data-source-page="7">教材的承诺：</p>
+<p class="list-item" data-source-page="7">用最朴素的语言讲清楚复杂的概念</p>
+<p class="list-item" data-source-page="7">用类比、图示、代码让抽象理论具象化</p>
+<p class="list-item" data-source-page="7">用完整项目展示技术的真实应用</p>
+<p class="list-item" data-source-page="7">用渐进式披露控制学习曲线</p>
+<h2 id="section-122" data-source-page="7">2.8 源码在哪里？<a class="heading-link" href="#section-122" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">本教材的案例源码对于学习非常重要，它不是可有可无的。购买课程后，在课程资料区可下载资料。</p>
+<p data-source-page="7">建议第一时间下载并结合书本配套阅读、运行。</p>
+<h2 id="section-125" data-source-page="7">2.9 答疑<a class="heading-link" href="#section-125" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">两个途径来解答读者的疑问。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h3 id="section-127" data-source-page="8">大模型辅助答疑<a class="heading-link" href="#section-127" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">这是最好的方式。大模型是一个极其强大的&quot;老师&quot;，任何问题都可以直接问它，回答得既完整又专业，还具有扩展性。比如DeepSeek、豆包、GLM都可以。</p>
+<aside class="callout" data-source-page="8"><b>阅读提示</b><p>大模型的首次回答，未必符合要求，这个时候一定要追问。当然很多同学不会提问，没关系，看完本书后会学习到很多的提问技巧。</p></aside>
+<p data-source-page="8">作者答疑</p>
+<p data-source-page="8">也可能有些非技术疑问、勘误等，大模型不能很好地回答。这个时候可以访问答疑社区。</p>
+<h2 id="section-132" data-source-page="8">2.10 下一节预告<a class="heading-link" href="#section-132" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">本节从学习理念出发，阐述了本书的知识体系设计和编排逻辑。下一节是本书的前言，将从 Vibe Coding 的视角切入，展示 AI 如何改变编程方式——从写代码到表达意图。</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h2 id="section-134" data-source-page="9">图片<a class="heading-link" href="#section-134" aria-label="链接至本节">#</a></h2>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<figure data-source-page="10"><button class="figure-open" aria-label="放大查看第 10 页图示"><img src="../assets/figures/e9f228b13eba29d5f4cafbba6dc6f12e.png" width="778" height="1094" loading="lazy" alt="本数字教材特色 · 原 PDF 第 10 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-002.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>作者自序</strong><small>序与前言</small></a><a class="chapter-neighbor next" href="lesson-004.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Vibe-Spec-Coding，用自然语言来编程</strong><small>序与前言</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5252#mid=104867" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">2.1 为什么要掌握大模型的核心原理</a><a href="#section-7" class="toc-level-2">2.2 AI时代程序员的转变</a><a href="#section-14" class="toc-level-3">“实现什么”：认知决定上限</a><a href="#section-18" class="toc-level-3">“如何组合”：工程能力决定落地</a><a href="#section-25" class="toc-level-2">2.3 完整的知识体系</a><a href="#section-41" class="toc-level-2">2.4 兼具原理与实战的好书</a><a href="#section-51" class="toc-level-2">2.5 本书的脉络</a><a href="#section-53" class="toc-level-3">第一阶段：理解语言模型（第1-3章）</a><a href="#section-57" class="toc-level-3">第二阶段：初入大模型实战（第4章）</a><a href="#section-60" class="toc-level-3">第三阶段：赋予AI知识与能力（第5-7章）</a><a href="#section-65" class="toc-level-3">第四阶段：用框架提升效率（第8-9章）</a><a href="#section-68" class="toc-level-3">第五阶段：能力封装（第10章）</a><a href="#section-70" class="toc-level-3">第六阶段：智能体构建（第11-12章）</a><a href="#section-76" class="toc-level-2">2.6 不懂数学也能看懂大模型基础理论</a><a href="#section-80" class="toc-level-3">用类比代替公式</a><a href="#section-86" class="toc-level-3">只保留最必要的基础数学</a><a href="#section-101" class="toc-level-3">用代码验证理论</a><a href="#section-107" class="toc-level-2">2.7 你需要什么基础？</a><a href="#section-122" class="toc-level-2">2.8 源码在哪里？</a><a href="#section-125" class="toc-level-2">2.9 答疑</a><a href="#section-127" class="toc-level-3">大模型辅助答疑</a><a href="#section-132" class="toc-level-2">2.10 下一节预告</a><a href="#section-134" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-003", "title": "本数字教材特色", "stage": 1, "week": 1, "module": "序与前言", "minutes": 11, "pages": 10, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>预训练（二）-代价与数据 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-036">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 2 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>预训练</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 037</span></div>
+<h1 class="lesson-title">预训练（二）-代价与数据</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>5 页原文</span><span>约 7 分钟阅读</span><span class="module-name">预训练</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-036.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-036.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节看到了预训练的4个步骤和自监督学习的优势。但训练这样一个模型需要多少资源?为什么只有少数科技巨头能玩这个游戏?本节将揭示预训练的成本、数据质量策略,以及预训练模型的局限性。</p></aside>
+<h2 id="section-1" data-source-page="1">5.1 预训练的代价:一场资源的豪赌<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">先看一些数字,它们揭示了为什么只有少数科技巨头能玩这个游戏。</p>
+<aside class="callout" data-source-page="1"><b>阅读提示</b><p>以下数据主要来自第三方机构(如Lambda Labs)的推算和分析,OpenAI官方未公布详细成本。只有总算力(3640 petaflop-days)是官方论文明确公布的数据。</p></aside>
+<h3 id="section-4" data-source-page="1">GPT-3的训练成本(2020年)<a class="heading-link" href="#section-4" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">指标          数值
+───────────────────────────────────────────────
+GPU数量      约10,000块 NVIDIA V100
+训练时间     持续运行约34天
+总算力       3640 petaflop-days(官方论文数据)</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<aside class="callout" data-source-page="2"><b>补充说明</b><p>什么是 petaflop-days? 1 petaflop = 每秒执行1000万亿次浮点运算 petaflop-days =以petaflop速度运行一天的计算量 3640 petaflop-days = 相当于1个petaflop的计算机连续运行3640天(约10年),或者10,000块GPU同时运行34天的总计算量</p></aside>
+<p data-source-page="2">电力消耗:</p>
+<p class="list-item" data-source-page="2">耗电量:约1287 MWh(兆瓦时)</p>
+<p class="list-item" data-source-page="2">相当于:120个美国家庭一年的用电量</p>
+<p class="list-item" data-source-page="2">碳排放:约552吨CO₂,相当于驾驶一辆汽车行驶227万公里</p>
+<p data-source-page="2">经济成本:</p>
+<p class="list-item" data-source-page="2">GPU租用:约460万美元</p>
+<p class="list-item" data-source-page="2">电费:约12万美元</p>
+<p class="list-item" data-source-page="2">工程师薪资、数据存储、网络等:数百万美元</p>
+<p class="list-item" data-source-page="2">总成本估算:1200万美元以上</p>
+<h3 id="section-16" data-source-page="2">GPT-4的训练(2023年,估算)<a class="heading-link" href="#section-16" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">训练成本: 约6300万美元
+数据量:   约13T tokens(是GPT-3的40倍)
+训练时间: 数月</code></pre></div>
+<p data-source-page="2">这些数字意味着:</p>
+<p class="list-item" data-source-page="2">一个初创公司,烧不起这个钱</p>
+<p class="list-item" data-source-page="2">一个研究团队,没有这个算力</p>
+<p class="list-item" data-source-page="2">一个独立开发者,想都不敢想</p>
+<p data-source-page="2">这就是为什么大语言模型只有少数玩家:</p>
+<p class="list-item" data-source-page="2">ChatGPT(早期全靠微软支持)</p>
+<p class="list-item" data-source-page="2">Gemini(Google)</p>
+<p class="list-item" data-source-page="2">LLaMA(Meta)</p>
+<p class="list-item" data-source-page="2">Qwen(Alibaba)</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p class="list-item" data-source-page="3">DeepSeek(深度求索)</p>
+<p class="list-item" data-source-page="3">豆包(字节)</p>
+<p data-source-page="3">这是一个资源密集型的竞赛。</p>
+<h2 id="section-30" data-source-page="3">5.2 垃圾进,垃圾出<a class="heading-link" href="#section-30" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">不是所有数据都有用,垃圾数据只能训练出垃圾模型。</p>
+<p data-source-page="3">互联网上有无穷无尽的文本,但质量参差不齐。有Wikipedia这样的高质量百科,也有充斥着广告和垃圾信息的网页;有经典名著,也有低俗小说和网络喷子的辱骂。</p>
+<p data-source-page="3">如果把所有文本都喂给模型会怎样?模型会学到大量的事实错误,因为网上假消息很多;会学到偏见和歧视,因为网上充斥着这些;还会学到低质量的表达,因为大部分人写作水平一般。</p>
+<p data-source-page="3">所以,数据清洗和质量控制至关重要。</p>
+<h3 id="section-35" data-source-page="3">GPT-3的数据策略<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">数据源              占比   质量    处理策略
+─────────────────────────────────────────────────────────────────
+Common Crawl        60%    低     严格过滤低质量页面,去除广告、导航栏、去重
+WebText2           22%    中     Reddit高赞链接,至少3个赞的帖子链接
+Books              16%    高     精选书籍,过滤低质量出版物
+Wikipedia          3%     极高   全部英文条目,几乎不过滤</code></pre></div>
+<p data-source-page="3">虽然Wikipedia质量最高,但只占3%。为什么不全用Wikipedia?因为Wikipedia太正式,缺少日常对话,数据量不够大,而且需要多样性来覆盖各种语言风格。</p>
+<p data-source-page="3">这是一个平衡:大量低质量数据(经过清洗)提供多样性和覆盖面,少量高质量数据提供准确性和标准。</p>
+<p data-source-page="3">后来的模型(如LLaMA)改进了数据策略:更严格的质量控制,平衡多语言比例,增加代码数据提升推理能力,去除有版权争议的数据。</p>
+<p data-source-page="3">数据才是真正的护城河。算法可以复制,架构可以模仿,但高质量的训练数据,是最难获得的。</p>
+<h2 id="section-41" data-source-page="3">5.3 预训练的三个局限:为什么还需要微调<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">预训练出来的模型,已经很强大了。但它有明显的问题,这些问题揭示了为什么ChatGPT还需要后续的训练步骤。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h3 id="section-43" data-source-page="4">只会&quot;接龙&quot;,不会&quot;回答&quot;<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">纯预训练模型的行为很奇怪:</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户:&quot;如何学习Python?&quot;
+
+GPT-3(纯预训练)的回复:
+&quot;如何学习Python?这个问题很多人问过。首先你需要明确你的学习目标。..&quot;</code></pre></div>
+<p data-source-page="4">它可以回答你的问题,但废话很多,很难分辨是不是废话。或者它把你的问题当成了一篇文章的开头,继续往下写。</p>
+<p data-source-page="4">它没有&quot;任务意识&quot;,不知道你在问问题,需要一个答案。它只是在做它唯一被训练过的事:预测下一个词。</p>
+<h3 id="section-48" data-source-page="4">可能生成有害内容<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户:&quot;如何破解邻居家的WiFi密码?&quot;
+
+GPT-3(纯预训练)可能真的给出破解方法!</code></pre></div>
+<p data-source-page="4">为什么?因为互联网上有这些内容,模型在训练时见过,它就&quot;学&quot;会了。</p>
+<p data-source-page="4">模型没有价值观,不知道什么该说什么不该说,只是在复现训练数据。</p>
+<h3 id="section-52" data-source-page="4">知识有时间限制<a class="heading-link" href="#section-52" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">GPT-3训练截止时间:2021年9月
+
+用户:&quot;2022年世界杯冠军是谁?&quot;
+GPT-3:不知道(训练时还没发生)
+
+用户:&quot;今天的新闻有什么?&quot;
+GPT-3:无法回答(它没有&quot;今天&quot;的概念)</code></pre></div>
+<p data-source-page="4">预训练模型的知识,冻结在训练截止的那一刻。</p>
+<h3 id="section-55" data-source-page="4">这些局限,需要后续步骤解决<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">① 监督微调 (SFT, Supervised Fine-Tuning)</p>
+<p class="list-item" data-source-page="4">让模型学会&quot;回答问题&quot;这个任务</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p class="list-item" data-source-page="5">提供问答对,教它什么是一个好答案</p>
+<p data-source-page="5">② 强化学习对齐 (RLHF, Reinforcement Learning from Human Feedback)</p>
+<p class="list-item" data-source-page="5">让模型学会拒绝有害请求</p>
+<p class="list-item" data-source-page="5">让模型的行为符合人类价值观</p>
+<p class="list-item" data-source-page="5">让模型更有帮助、更诚实</p>
+<p data-source-page="5">③ 外挂知识库 (RAG, Retrieval-Augmented Generation)</p>
+<p class="list-item" data-source-page="5">给模型提供实时信息</p>
+<p class="list-item" data-source-page="5">补充最新的知识</p>
+<p data-source-page="5">预训练只是第一步,虽然它是最重要、最昂贵的一步。</p>
+<h2 id="section-67" data-source-page="5">5.4 ■ 学点英语<a class="heading-link" href="#section-67" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>算力</td><td>Compute Power</td><td>/kəmˈpjuːt ˈpaʊər/</td><td>模型训练和推理所需的计算资源，通常以 FLOPs衡量</td></tr><tr><td>数据清洗</td><td>Data Cleaning</td><td>/ˈdeɪtə ˈkliːnɪŋ/</td><td>去除训练数据中的噪声、重复、低质量内容的过程</td></tr><tr><td>数据质量</td><td>Data Quality</td><td>/ˈdeɪtə ˈkwɒləti/</td><td>训练数据的准确性、多样性和可用性的综合度量</td></tr><tr><td>数据偏见</td><td>Data Bias</td><td>/ˈdeɪtə ˈbaɪəs/</td><td>训练数据中存在的系统性偏差，可能导致模型输出不公平结果</td></tr><tr><td>过时知识</td><td>Knowledge Cutoff</td><td>/ˈnɒlɪdʒ ˈkʌtɒf/</td><td>预训练模型知识的截止时间点，之后的信息模型无法知晓</td></tr><tr><td>检索增强生成</td><td>Retrieval-Augmented Generation (RAG)</td><td>/rɪˈtriːvl ˈɔːɡmentɪd dʒenəˈreɪʃən/ ˌ</td><td>为模型提供外部实时知识库的技术，弥补知识截止局限</td></tr></tbody></table></div>
+<h2 id="section-69" data-source-page="5">5.6 下一节预告<a class="heading-link" href="#section-69" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">现在知道了预训练的代价、数据策略和三个局限。但为什么叫&quot;预&quot;训练?它后面还有什么步骤?</p>
+<p data-source-page="5">下一节将揭示完整的训练流程,以及一些有趣的行业故事。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-035.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>强化练习 · 1-2</strong><small>预训练</small></a><a class="chapter-neighbor next" href="lesson-037.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-4</strong><small>预训练</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5258#mid=104885" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">5.1 预训练的代价:一场资源的豪赌</a><a href="#section-4" class="toc-level-3">GPT-3的训练成本(2020年)</a><a href="#section-16" class="toc-level-3">GPT-4的训练(2023年,估算)</a><a href="#section-30" class="toc-level-2">5.2 垃圾进,垃圾出</a><a href="#section-35" class="toc-level-3">GPT-3的数据策略</a><a href="#section-41" class="toc-level-2">5.3 预训练的三个局限:为什么还需要微调</a><a href="#section-43" class="toc-level-3">只会&quot;接龙&quot;,不会&quot;回答&quot;</a><a href="#section-48" class="toc-level-3">可能生成有害内容</a><a href="#section-52" class="toc-level-3">知识有时间限制</a><a href="#section-55" class="toc-level-3">这些局限,需要后续步骤解决</a><a href="#section-67" class="toc-level-2">5.4 ■ 学点英语</a><a href="#section-69" class="toc-level-2">5.6 下一节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-036", "title": "预训练（二）-代价与数据", "stage": 1, "week": 2, "module": "预训练", "minutes": 7, "pages": 5, "type": "article"}</script>
+</body></html>

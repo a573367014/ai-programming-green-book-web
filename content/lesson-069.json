@@ -1,0 +1,66 @@
+{
+  "id": "lesson-069",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "Context Learning",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/010-Context Learning/069-练习-1-2-选择练习.pdf",
+  "sha256": "5148b57fa5d6b2ecdeb9f98778b492852d2f3bf79edfab1436c4d200c901ed06",
+  "pdf": "sources/pdf/lesson-069.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5262#mid=104983",
+  "minutes": 1,
+  "excerpt": "In-Context Learning 区别于\"传统训练\"的核心特征是什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "In-Context Learning 区别于\"传统训练\"的核心特征是什么？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 它完全不改变预训练参数，只通过提示词中的示例让模型执行新任务 B. 它会在推理时更新模型的参数，只是更新速度很快 C. 它需要用户提前在后端上传标注数据集 D. 它只适用于翻译类任务，不适用于分类类任务",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 327,
+    "represented_chars": 151,
+    "removed_chars": 176,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 176
+    }
+  },
+  "videos": [],
+  "order": 70,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "In-Context Learning 区别于\"传统训练\"的核心特征是什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 它完全不改变预训练参数，只通过提示词中的示例让模型执行新任务 B. 它会在推理时更新模型的参数，只是更新速度很快 C. 它需要用户提前在后端上传标注数据集 D. 它只适用于翻译类任务，不适用于分类类任务"
+    }
+  ]
+}

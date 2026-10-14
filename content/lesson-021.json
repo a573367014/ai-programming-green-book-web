@@ -1,0 +1,66 @@
+{
+  "id": "lesson-021",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "语言模型",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/004-语言模型/021-练习-1-2-选择练习.pdf",
+  "sha256": "c8a55fa36cf19c01aa37343da6a376a66fe511beabea194017fa70fd34a41306",
+  "pdf": "sources/pdf/lesson-021.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5255#mid=104952",
+  "minutes": 1,
+  "excerpt": "根据香农游戏（Shannon Game），以下哪个最能概括语言模型的本质？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "根据香农游戏（Shannon Game），以下哪个最能概括语言模型的本质？ (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 学习和记忆所有句子的固定答案 B. 计算下一个词出现的条件概率P(下一个词|上文) C. 通过语法规则判断句子是否合法 D. 将每个词映射到词典中的固定编号",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 288,
+    "represented_chars": 127,
+    "removed_chars": 161,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 161
+    }
+  },
+  "videos": [],
+  "order": 22,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "根据香农游戏（Shannon Game），以下哪个最能概括语言模型的本质？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 学习和记忆所有句子的固定答案 B. 计算下一个词出现的条件概率P(下一个词|上文) C. 通过语法规则判断句子是否合法 D. 将每个词映射到词典中的固定编号"
+    }
+  ]
+}

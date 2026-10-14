@@ -1,0 +1,612 @@
+{
+  "id": "lesson-092",
+  "title": "Prompt五要素",
+  "code": "1-2",
+  "stage": 2,
+  "week": 4,
+  "week_title": "理解大模型开发",
+  "module": "Prompt基础与必要场景",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/001-第4周 理解大模型开发/004-Prompt基础与必要场景/092-图文-1-2-Prompt五要素.pdf",
+  "sha256": "262b20160471e53a00972e185c1ef3e9eef46fd60c36c2d581d19c990ee832aa",
+  "pdf": "sources/pdf/lesson-092.pdf",
+  "pages": 5,
+  "source_url": "https://class.imooc.com/lesson/5270#mid=104911",
+  "minutes": 5,
+  "excerpt": "上一节了解了需要提示词工程的场景。现在系统学习Prompt的五要素——角色、任务、上下文、格式、约束，这是设计优秀提示词的核心框架。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节了解了需要提示词工程的场景。现在系统学习Prompt的五要素——角色、任务、上下文、格式、约束，这是设计优秀提示词的核心框架。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "10.1 Prompt的五要素",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一个优秀的Prompt通常包含以下五个要素。不是每个Prompt都需要全部五个，但理解这些要素能帮你设计出更有效的提示词。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h3",
+      "text": "角色（Role）",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "告诉AI它应该扮演什么角色，以什么身份回答。AI会根据角色调整回答的专业度、风格和语气，明确角色也能激活模型中相关的知识和能力。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 没有角色定义\n\"请帮我分析这段代码\"\n\n# 有角色定义\n\"你是一位资深的Python架构师，拥有10年的大型项目经验。请帮我分析这段代码。\"",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "常用角色模板",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "场景 | 角色定义\n代码审查 | “你是资深软件工程师，擅长代码审查和性能优化”\n文案写作 | “你是专业的营销文案撰稿人，擅长撰写吸引人的广告语”\n教学辅导 | “你是耐心的编程导师，擅长用简单的语言解释复杂概念”\n数据分析 | “你是数据分析专家，擅长从数据中发现洞察”",
+      "rows": [
+        [
+          "场景",
+          "角色定义"
+        ],
+        [
+          "代码审查",
+          "“你是资深软件工程师，擅长代码审查和性能优化”"
+        ],
+        [
+          "文案写作",
+          "“你是专业的营销文案撰稿人，擅长撰写吸引人的广告语”"
+        ],
+        [
+          "教学辅导",
+          "“你是耐心的编程导师，擅长用简单的语言解释复杂概念”"
+        ],
+        [
+          "数据分析",
+          "“你是数据分析专家，擅长从数据中发现洞察”"
+        ]
+      ],
+      "page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "任务（Task）",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "明确告诉AI要做什么。模糊的任务会得到模糊的结果，清晰的任务描述是高质量输出的前提。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对比示例",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# Bad:模糊的任务\n\"帮我处理这段文字\"\n\n# Good:清晰的任务\n\"请将以下文字翻译成英文，保持原文的专业性和简洁性\"",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "任务描述的SMART原则",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Specific（具体的）：不要说\"优化\"，说\"减少代码行数并提升可读性\"",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "S",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Measurable（可衡量的）：不要说\"写得好一点\"，说\"控制在200字以内\"",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Achievable（可实现的）：不要要求AI做它做不到的事",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Relevant（相关的）：任务要与上下文相关",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "R",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Time-bound（有时限的）：如需要，说明完成时间",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "上下文（Context）",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "提供必要的背景信息，帮助AI更好地理解任务。AI不知道你的具体情况，需要你提供上下文，充分的上下文能大幅提升回答的相关性和准确性。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "code",
+      "text": "# Bad: 缺少上下文\n\"帮我写一个AI代码助手的产品介绍\"\n\n# Good: 提供上下文\n\"\"\"我们的产品是一款面向程序员的AI代码助手。\n目标用户：Python开发者，有1-3年经验\n使用场景：日常编码、代码审查、学习新技术\n核心优势：比ChatGPT更懂Python生态，响应速度快3倍\n\n请帮我写一个产品介绍，控制在50字以内。\"\"\"",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "格式（Format）",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "明确输出的格式要求。结构化的输出便于程序处理，清晰的格式规范能避免后续解析困难。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# Bad: 没有格式要求\n\"分析这段代码的问题\"\n\n# Good: 明确格式要求\n\"\"\"分析这段代码的问题，并按以下格式输出：\n\n问题列表：\n1. [问题类型] 问题描述（所在行号）\n2. [问题类型] 问题描述（所在行号）\n\n建议修改：\n[具体的代码修改建议]\n\n优先级：\n- 高优先级：必须修复的问题\n- 中优先级：建议优化的地方\n- 低优先级：可选的改进\"\"\"",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "常用格式",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "列表格式",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "要求：以Markdown列表形式输出\n示例：\n- 第一点\n- 第二点",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "JSON格式",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "{\n  \"task\": \"代码审查\",\n  \"issues\": [\n    {\"type\": \"性能\", \"line\": 23, \"description\": \"...\"}\n  ]\n}",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "json"
+    },
+    {
+      "kind": "list",
+      "text": "表格格式",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "| 指标 | 数值 | 评估 |\n|------|------|------|\n| ... | ... | ... |",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "约束（Constraints）",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "明确告诉AI什么不能做，什么必须遵守，从而防止AI偏离主题、确保输出符合特定规范、避免不必要的冗余。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "code",
+      "text": "\"\"\"请翻译以下文本成英文。\n\n约束条件：\n- 只返回翻译结果，不要添加任何解释\n- 不要输出原文\n- 保持原文的段落格式\n- 专有名词保持原样，不翻译\"\"\"",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "常见约束类型",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "约束类型 | 示例\n长度限制 | “控制在200字以内”\n禁止内容 | “不要包含个人观点”\n格式限制 | “只返回JSON，不要Markdown”\n语言限制 | “只用中文回答”\n知识范围 | “仅基于提供的文档，不要使用外部知识”",
+      "rows": [
+        [
+          "约束类型",
+          "示例"
+        ],
+        [
+          "长度限制",
+          "“控制在200字以内”"
+        ],
+        [
+          "禁止内容",
+          "“不要包含个人观点”"
+        ],
+        [
+          "格式限制",
+          "“只返回JSON，不要Markdown”"
+        ],
+        [
+          "语言限制",
+          "“只用中文回答”"
+        ],
+        [
+          "知识范围",
+          "“仅基于提供的文档，不要使用外部知识”"
+        ]
+      ],
+      "page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "10.2 下一节预告",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "掌握了Prompt五要素后，接下来学习结构化输出和常用模板——让AI输出精确的JSON格式，以及拿来即用的Prompt模板库。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "10.3 ■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n角色 | Role | /roʊl/ | 告诉AI以什么身份回答问题，激活相关知识和能力\n任务描述 | Task Description | /tæsk dɪˈskrɪpʃn/ | 明确告诉AI需要执行的具体操作\n上下文 | Context | /ˈkɑːntekst/ | 提供背景信息帮助AI更好地理解任务\n输出格式 | Output Format | /ˈaʊtpʊt ˈfɔːrmæt/ | 规定AI回复的结构和样式要求\n约束条件 | Constraints | /kənˈstreɪnts/ | 告诉AI不能做什么、必须遵守什么规则",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "角色",
+          "Role",
+          "/roʊl/",
+          "告诉AI以什么身份回答问题，激活相关知识和能力"
+        ],
+        [
+          "任务描述",
+          "Task Description",
+          "/tæsk dɪˈskrɪpʃn/",
+          "明确告诉AI需要执行的具体操作"
+        ],
+        [
+          "上下文",
+          "Context",
+          "/ˈkɑːntekst/",
+          "提供背景信息帮助AI更好地理解任务"
+        ],
+        [
+          "输出格式",
+          "Output Format",
+          "/ˈaʊtpʊt ˈfɔːrmæt/",
+          "规定AI回复的结构和样式要求"
+        ],
+        [
+          "约束条件",
+          "Constraints",
+          "/kənˈstreɪnts/",
+          "告诉AI不能做什么、必须遵守什么规则"
+        ]
+      ],
+      "page": 5
+    }
+  ],
+  "accounting": {
+    "source_chars": 2087,
+    "represented_chars": 1912,
+    "removed_chars": 175,
+    "tables": 3,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 144,
+      "repeated_title": 31
+    }
+  },
+  "videos": [],
+  "order": 93,
+  "headings": [
+    {
+      "title": "10.1 Prompt的五要素",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "角色（Role）",
+      "id": "section-3",
+      "level": 3
+    },
+    {
+      "title": "任务（Task）",
+      "id": "section-9",
+      "level": 3
+    },
+    {
+      "title": "上下文（Context）",
+      "id": "section-21",
+      "level": 3
+    },
+    {
+      "title": "格式（Format）",
+      "id": "section-24",
+      "level": 3
+    },
+    {
+      "title": "约束（Constraints）",
+      "id": "section-34",
+      "level": 3
+    },
+    {
+      "title": "10.2 下一节预告",
+      "id": "section-39",
+      "level": 2
+    },
+    {
+      "title": "10.3 ■ 学点英语",
+      "id": "section-41",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节了解了需要提示词工程的场景。现在系统学习Prompt的五要素——角色、任务、上下文、格式、约束，这是设计优秀提示词的核心框架。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "10.1 Prompt的五要素"
+    },
+    {
+      "anchor": "section-1",
+      "text": "一个优秀的Prompt通常包含以下五个要素。不是每个Prompt都需要全部五个，但理解这些要素能帮你设计出更有效的提示词。"
+    },
+    {
+      "anchor": "section-3",
+      "text": "角色（Role）"
+    },
+    {
+      "anchor": "section-3",
+      "text": "告诉AI它应该扮演什么角色，以什么身份回答。AI会根据角色调整回答的专业度、风格和语气，明确角色也能激活模型中相关的知识和能力。"
+    },
+    {
+      "anchor": "section-3",
+      "text": "示例"
+    },
+    {
+      "anchor": "section-3",
+      "text": "# 没有角色定义\n\"请帮我分析这段代码\"\n\n# 有角色定义\n\"你是一位资深的Python架构师，拥有10年的大型项目经验。请帮我分析这段代码。\""
+    },
+    {
+      "anchor": "section-3",
+      "text": "常用角色模板"
+    },
+    {
+      "anchor": "section-3",
+      "text": "场景 | 角色定义\n代码审查 | “你是资深软件工程师，擅长代码审查和性能优化”\n文案写作 | “你是专业的营销文案撰稿人，擅长撰写吸引人的广告语”\n教学辅导 | “你是耐心的编程导师，擅长用简单的语言解释复杂概念”\n数据分析 | “你是数据分析专家，擅长从数据中发现洞察”"
+    },
+    {
+      "anchor": "section-9",
+      "text": "任务（Task）"
+    },
+    {
+      "anchor": "section-9",
+      "text": "明确告诉AI要做什么。模糊的任务会得到模糊的结果，清晰的任务描述是高质量输出的前提。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "对比示例"
+    },
+    {
+      "anchor": "section-9",
+      "text": "# Bad:模糊的任务\n\"帮我处理这段文字\"\n\n# Good:清晰的任务\n\"请将以下文字翻译成英文，保持原文的专业性和简洁性\""
+    },
+    {
+      "anchor": "section-9",
+      "text": "任务描述的SMART原则"
+    },
+    {
+      "anchor": "section-9",
+      "text": "Specific（具体的）：不要说\"优化\"，说\"减少代码行数并提升可读性\""
+    },
+    {
+      "anchor": "section-9",
+      "text": "S"
+    },
+    {
+      "anchor": "section-9",
+      "text": "Measurable（可衡量的）：不要说\"写得好一点\"，说\"控制在200字以内\""
+    },
+    {
+      "anchor": "section-9",
+      "text": "Achievable（可实现的）：不要要求AI做它做不到的事"
+    },
+    {
+      "anchor": "section-9",
+      "text": "Relevant（相关的）：任务要与上下文相关"
+    },
+    {
+      "anchor": "section-9",
+      "text": "R"
+    },
+    {
+      "anchor": "section-9",
+      "text": "Time-bound（有时限的）：如需要，说明完成时间"
+    },
+    {
+      "anchor": "section-21",
+      "text": "上下文（Context）"
+    },
+    {
+      "anchor": "section-21",
+      "text": "提供必要的背景信息，帮助AI更好地理解任务。AI不知道你的具体情况，需要你提供上下文，充分的上下文能大幅提升回答的相关性和准确性。"
+    },
+    {
+      "anchor": "section-21",
+      "text": "# Bad: 缺少上下文\n\"帮我写一个AI代码助手的产品介绍\"\n\n# Good: 提供上下文\n\"\"\"我们的产品是一款面向程序员的AI代码助手。\n目标用户：Python开发者，有1-3年经验\n使用场景：日常编码、代码审查、学习新技术\n核心优势：比ChatGPT更懂Python生态，响应速度快3倍\n\n请帮我写一个产品介绍，控制在50字以内。\"\"\""
+    },
+    {
+      "anchor": "section-24",
+      "text": "格式（Format）"
+    },
+    {
+      "anchor": "section-24",
+      "text": "明确输出的格式要求。结构化的输出便于程序处理，清晰的格式规范能避免后续解析困难。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "# Bad: 没有格式要求\n\"分析这段代码的问题\"\n\n# Good: 明确格式要求\n\"\"\"分析这段代码的问题，并按以下格式输出：\n\n问题列表：\n1. [问题类型] 问题描述（所在行号）\n2. [问题类型] 问题描述（所在行号）\n\n建议修改：\n[具体的代码修改建议]\n\n优先级：\n- 高优先级：必须修复的问题\n- 中优先级：建议优化的地方\n- 低优先级：可选的改进\"\"\""
+    },
+    {
+      "anchor": "section-24",
+      "text": "常用格式"
+    },
+    {
+      "anchor": "section-24",
+      "text": "列表格式"
+    },
+    {
+      "anchor": "section-24",
+      "text": "要求：以Markdown列表形式输出\n示例：\n- 第一点\n- 第二点"
+    },
+    {
+      "anchor": "section-24",
+      "text": "JSON格式"
+    },
+    {
+      "anchor": "section-24",
+      "text": "{\n  \"task\": \"代码审查\",\n  \"issues\": [\n    {\"type\": \"性能\", \"line\": 23, \"description\": \"...\"}\n  ]\n}"
+    },
+    {
+      "anchor": "section-24",
+      "text": "表格格式"
+    },
+    {
+      "anchor": "section-24",
+      "text": "| 指标 | 数值 | 评估 |\n|------|------|------|\n| ... | ... | ... |"
+    },
+    {
+      "anchor": "section-34",
+      "text": "约束（Constraints）"
+    },
+    {
+      "anchor": "section-34",
+      "text": "明确告诉AI什么不能做，什么必须遵守，从而防止AI偏离主题、确保输出符合特定规范、避免不必要的冗余。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "\"\"\"请翻译以下文本成英文。\n\n约束条件：\n- 只返回翻译结果，不要添加任何解释\n- 不要输出原文\n- 保持原文的段落格式\n- 专有名词保持原样，不翻译\"\"\""
+    },
+    {
+      "anchor": "section-34",
+      "text": "常见约束类型"
+    },
+    {
+      "anchor": "section-34",
+      "text": "约束类型 | 示例\n长度限制 | “控制在200字以内”\n禁止内容 | “不要包含个人观点”\n格式限制 | “只返回JSON，不要Markdown”\n语言限制 | “只用中文回答”\n知识范围 | “仅基于提供的文档，不要使用外部知识”"
+    },
+    {
+      "anchor": "section-39",
+      "text": "10.2 下一节预告"
+    },
+    {
+      "anchor": "section-39",
+      "text": "掌握了Prompt五要素后，接下来学习结构化输出和常用模板——让AI输出精确的JSON格式，以及拿来即用的Prompt模板库。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "10.3 ■ 学点英语"
+    },
+    {
+      "anchor": "section-41",
+      "text": "中文 | English | 音标 | 说明\n角色 | Role | /roʊl/ | 告诉AI以什么身份回答问题，激活相关知识和能力\n任务描述 | Task Description | /tæsk dɪˈskrɪpʃn/ | 明确告诉AI需要执行的具体操作\n上下文 | Context | /ˈkɑːntekst/ | 提供背景信息帮助AI更好地理解任务\n输出格式 | Output Format | /ˈaʊtpʊt ˈfɔːrmæt/ | 规定AI回复的结构和样式要求\n约束条件 | Constraints | /kənˈstreɪnts/ | 告诉AI不能做什么、必须遵守什么规则"
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "id": "lesson-064",
+  "title": "扩展练习（2）",
+  "code": "1-6",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "涌现能力",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/009-涌现能力/064-图文-1-6-扩展练习（2）.pdf",
+  "sha256": "c470a9e5b586be36780a6e1cae712ed8eb2d27219fc63d03bb588c5c200ff1bb",
+  "pdf": "sources/pdf/lesson-064.pdf",
+  "pages": 2,
+  "source_url": "https://class.imooc.com/lesson/5261#mid=104978",
+  "minutes": 5,
+  "excerpt": "题干: 根据 Scaling Laws，参数量每翻 10 倍，Loss 的绝对降幅反而越来越小——这意味着投入回报是递减的，但人们仍然愿意继续扩大规模，因为他们期待跨过某些阈值后触发涌现带来的质变。 (延展题)",
+  "items": [
+    {
+      "kind": "h2",
+      "text": "1",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 判断题 难度: 中等",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: 根据 Scaling Laws，参数量每翻 10 倍，Loss 的绝对降幅反而越来越小——这意味着投入回报是递减的，但人们仍然愿意继续扩大规模，因为他们期待跨过某些阈值后触发涌现带来的质变。 (延展题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确答案: 正确",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: 幂律关系的一个核心特征就是\"边际收益递减\"——Loss 从 3 降到 2 容易，从 2 降到 1 难，从 1降到 0.5 更难。单看 Loss，投资是越来越\"不划算\"的。但研究者押注的是\"涌现期权\"：某个 Loss 阈值被跨越时，任务准确率可能从接近 0 跃升到一个显著水平，这种质变收益会远超 Loss 本身的线性改善。这就是整个大模型军备竞赛的底层逻辑。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 简答题 难度: 困难",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: “涌现有好的一面，也可能有坏的一面”——这是涌现能力引发 AI 安全研究者担忧的原因之一。请结合 RLHF 的对齐机制解释：为什么\"不可预测的涌现\"会让对齐变得更困难？ (思维题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "参考答案:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "● RLHF 的对齐是\"事后的\"——针对已经观察到的能力，用偏好数据注入行为规范，例如拒绝有害请求、避免偏见等 ● 但涌现的关键特征是\"不可预测\"：训练完成前没人知道模型会涌现出哪些能力，这就意味着在 RLHF 设计偏好数据时，无法提前覆盖所有需要对齐的行为 ● 例如 GPT-3 被训完后\"顺便\"会写代码，RLHF 却可能没针对\"如何安全地写代码\"做过专门的偏好标注——这部分能力就处在对齐盲区● 进一步说，如果模型涌现出\"欺骗\"“钻空子”\"利用系统漏洞\"等负面能力，事后补救的代价会远大于事前设计——这就是为什么 AI 安全关切\"涌现\"而不仅仅是\"能力\"本身 ● 由此也引出了研究热点：如何对齐\"尚未出现\"的能力，如何建立能与模型规模同步演进的对齐机制",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 阅读理解题 难度: 困难题干: Read the following excerpt and answer the questions below. (延展题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "阅读材料:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "Language modeling performance improves smoothly as we increase the model size,dataset size, and amount of compute used for training. For optimal performance all three factors must be scaled up in tandem. Empirical performance has a power-law relationship with each individual factor when not bottlenecked by the other two. — Kaplan et al. 2020,“Scaling Laws for Neural Language Models”",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "题目1:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 单选题",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: According to the excerpt, what relationship holds between language-modeling performance and each individual scaling factor (model size, data, compute)?",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "选项A: Linear, regardless of the other factors. 选项B: Logarithmic in all regimes. 选项C: Power-law, provided the other two factors are not bottlenecks. 选项D: Exponential, with performance doubling for every doubling of the factor.",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确答案: C",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: 论文明确表述为 power-law（幂律），且\"当其他两个因素不成为瓶颈时\"这个前提条件至关重要——这也解释了为什么单纯扩大参数、不扩充数据与算力时收益会迅速饱和。选项 A、B、D 都偏离了power-law 这个关键术语。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "题目2:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 简答题",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: The passage says “all three factors must be scaled up in tandem” for optimal performance. What does this imply for a team that has nearly unlimited compute and parameters, but only a small training dataset?",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "● 数据量会成为瓶颈，继续扩大模型规模或训练算力的收益会快速递减——因为幂律关系只在\"非瓶颈前提下\"成立 ● 实际工程含义：与其投入资源做\"训练一个巨大模型\"，不如先投入精力扩充数据（高质量标注、多样性、去重等） ● 这也预示了后来 Chinchilla 工作（Hoffmann et al. 2022）的核心发现：过去许多大模型其实是\"参数过大、数据不足\"的欠训练状态，在相同算力预算下，较小模型+更多数据往往能取得更好最终性能",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    }
+  ],
+  "accounting": {
+    "source_chars": 2301,
+    "represented_chars": 2169,
+    "removed_chars": 132,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 121,
+      "repeated_title": 11
+    }
+  },
+  "videos": [],
+  "order": 65,
+  "headings": [
+    {
+      "title": "1",
+      "id": "section-0",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "section-0",
+      "text": "1"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 判断题 难度: 中等"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: 根据 Scaling Laws，参数量每翻 10 倍，Loss 的绝对降幅反而越来越小——这意味着投入回报是递减的，但人们仍然愿意继续扩大规模，因为他们期待跨过某些阈值后触发涌现带来的质变。 (延展题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "正确答案: 正确"
+    },
+    {
+      "anchor": "section-0",
+      "text": "解析: 幂律关系的一个核心特征就是\"边际收益递减\"——Loss 从 3 降到 2 容易，从 2 降到 1 难，从 1降到 0.5 更难。单看 Loss，投资是越来越\"不划算\"的。但研究者押注的是\"涌现期权\"：某个 Loss 阈值被跨越时，任务准确率可能从接近 0 跃升到一个显著水平，这种质变收益会远超 Loss 本身的线性改善。这就是整个大模型军备竞赛的底层逻辑。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 简答题 难度: 困难"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: “涌现有好的一面，也可能有坏的一面”——这是涌现能力引发 AI 安全研究者担忧的原因之一。请结合 RLHF 的对齐机制解释：为什么\"不可预测的涌现\"会让对齐变得更困难？ (思维题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "参考答案:"
+    },
+    {
+      "anchor": "section-0",
+      "text": "● RLHF 的对齐是\"事后的\"——针对已经观察到的能力，用偏好数据注入行为规范，例如拒绝有害请求、避免偏见等 ● 但涌现的关键特征是\"不可预测\"：训练完成前没人知道模型会涌现出哪些能力，这就意味着在 RLHF 设计偏好数据时，无法提前覆盖所有需要对齐的行为 ● 例如 GPT-3 被训完后\"顺便\"会写代码，RLHF 却可能没针对\"如何安全地写代码\"做过专门的偏好标注——这部分能力就处在对齐盲区● 进一步说，如果模型涌现出\"欺骗\"“钻空子”\"利用系统漏洞\"等负面能力，事后补救的代价会远大于事前设计——这就是为什么 AI 安全关切\"涌现\"而不仅仅是\"能力\"本身 ● 由此也引出了研究热点：如何对齐\"尚未出现\"的能力，如何建立能与模型规模同步演进的对齐机制"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 阅读理解题 难度: 困难题干: Read the following excerpt and answer the questions below. (延展题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "阅读材料:"
+    },
+    {
+      "anchor": "section-0",
+      "text": "Language modeling performance improves smoothly as we increase the model size,dataset size, and amount of compute used for training. For optimal performance all three factors must be scaled up in tandem. Empirical performance has a power-law relationship with each individual factor when not bottlenecked by the other two. — Kaplan et al. 2020,“Scaling Laws for Neural Language Models”"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题目1:"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 单选题"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: According to the excerpt, what relationship holds between language-modeling performance and each individual scaling factor (model size, data, compute)?"
+    },
+    {
+      "anchor": "section-0",
+      "text": "选项A: Linear, regardless of the other factors. 选项B: Logarithmic in all regimes. 选项C: Power-law, provided the other two factors are not bottlenecks. 选项D: Exponential, with performance doubling for every doubling of the factor."
+    },
+    {
+      "anchor": "section-0",
+      "text": "正确答案: C"
+    },
+    {
+      "anchor": "section-0",
+      "text": "解析: 论文明确表述为 power-law（幂律），且\"当其他两个因素不成为瓶颈时\"这个前提条件至关重要——这也解释了为什么单纯扩大参数、不扩充数据与算力时收益会迅速饱和。选项 A、B、D 都偏离了power-law 这个关键术语。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题目2:"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 简答题"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: The passage says “all three factors must be scaled up in tandem” for optimal performance. What does this imply for a team that has nearly unlimited compute and parameters, but only a small training dataset?"
+    },
+    {
+      "anchor": "section-0",
+      "text": "● 数据量会成为瓶颈，继续扩大模型规模或训练算力的收益会快速递减——因为幂律关系只在\"非瓶颈前提下\"成立 ● 实际工程含义：与其投入资源做\"训练一个巨大模型\"，不如先投入精力扩充数据（高质量标注、多样性、去重等） ● 这也预示了后来 Chinchilla 工作（Hoffmann et al. 2022）的核心发现：过去许多大模型其实是\"参数过大、数据不足\"的欠训练状态，在相同算力预算下，较小模型+更多数据往往能取得更好最终性能"
+    }
+  ]
+}

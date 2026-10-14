@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>预训练（一）-本质 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-034">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 2 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>预训练</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 035</span></div>
+<h1 class="lesson-title">预训练（一）-本质</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>8 页原文</span><span>约 9 分钟阅读</span><span class="module-name">预训练</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-034.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-034.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面几节讨论了ChatGPT的参数规模、文字接龙游戏、语言建模思想和Embedding词向量。但最核心的问题还没有回答:那1750亿个参数,到底是怎么&quot;训练&quot;出来的?本节将揭示预训练的核心机制。</p></aside>
+<h2 id="section-1" data-source-page="1">4.1 什么是预训练?<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">预训练就是让模型在海量文本上学习语言规律,像人类&quot;读万卷书&quot;一样积累知识。</p>
+<p data-source-page="1">它的核心思想很简单:给模型看大量文本,让它不断预测下一个词,然后根据正确答案调整参数。经过数十亿次的调整,模型就&quot;记住&quot;了语言的规律。</p>
+<p data-source-page="1">这个过程分为4个步骤:收集数据、定义任务、训练模型、训练完成。让我们详细看看每一步。</p>
+<h2 id="section-5" data-source-page="1">4.2 预训练的4个步骤<a class="heading-link" href="#section-5" aria-label="链接至本节">#</a></h2>
+<h3 id="section-6" data-source-page="1">第1步:收集海量数据<a class="heading-link" href="#section-6" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">GPT-3的训练数据约3000亿个词,相当于600万本书。这些数据来自互联网的各个角落:</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">数据源                占比    说明
+────────────────────────────────────────────────────
+Common Crawl(网页)     60%    互联网网页爬取
+WebText2(精选网页)     22%    Reddit高赞链接
+Books(书籍)           16%    精选书籍
+Wikipedia(维基百科)    3%    英文维基百科条目</code></pre></div>
+<aside class="callout" data-source-page="2"><b>补充说明</b><p>数据来源基于OpenAI论文公开的比例,详见《Language Models are Few-Shot Learners》,OpenAI,2020。</p></aside>
+<h3 id="section-10" data-source-page="2">第2步:定义训练任务<a class="heading-link" href="#section-10" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">训练数据多是连续的文本,那么如何从一句完整的话变成训练任务?</p>
+<p data-source-page="2">假设原始文本:</p>
+<aside class="callout" data-source-page="2"><p>“人工智能是计算机科学的一个分支”</p></aside>
+<p data-source-page="2">Token化</p>
+<p data-source-page="2">ChatGPT不能直接处理文字,必须先把文字切成Token:</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">原始文本: &quot;人工智能是计算机科学的一个分支&quot;
+          ↓ Token化(切分)
+
+[&quot;人工智能&quot;, &quot;是&quot;, &quot;计算机科学&quot;, &quot;的&quot;, &quot;一个&quot;, &quot;分支&quot;]
+ ↑         ↑      ↑            ↑    ↑      ↑
+Token1   Token2 Token3       Token4 Token5 Token6
+
+总共 6 个 Token</code></pre></div>
+<p data-source-page="2">所以:</p>
+<p class="list-item" data-source-page="2">从互联网爬取的是原始文本(字符串)</p>
+<p class="list-item" data-source-page="2">经过Token化后变成Token序列(数字序列)</p>
+<p data-source-page="2">Token序列</p>
+<p class="list-item" data-source-page="2">训练时使用的是Token,不是原始文字</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">自动切分成训练样本</p>
+<p data-source-page="3">计算机把这些Token切成很多个&quot;填空题&quot;,答案就在原文里:</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">原始文本:&quot;人工智能是计算机科学的一个分支&quot;
+               ↓ 自动切分并配对
+
+训练样本1:
+输入:&quot;人工智能____&quot;
+答案:&quot;是&quot;  ← 从原文取下一个Token
+
+训练样本2:
+输入:&quot;人工智能是____&quot;
+答案:&quot;计算机科学&quot;
+
+训练样本3:
+输入:&quot;人工智能是计算机科学____&quot;
+答案:&quot;的&quot;
+
+训练样本4:
+输入:&quot;人工智能是计算机科学的____&quot;
+答案:&quot;一个&quot;
+
+训练样本5:
+输入:&quot;人工智能是计算机科学的一个____&quot;
+答案:&quot;分支&quot;
+
+↑ T1(人工智能)前面没有Token,不能作为预测目标,所以6个Token只生成5个训练样本</code></pre></div>
+<aside class="callout" data-source-page="3"><b>注意</b><p>预训练是从左到右预测的,只能根据前面的词预测下一个词,不能&quot;挖空&quot;中间的词。这就是为什么叫&quot;语言模型&quot;——它模拟人类从左往右阅读和写作的过程。 即:不会出现&quot;人工智能是___计算机科学的一个分支&quot;这样的训练数据。</p></aside>
+<p data-source-page="3">现在我们有了无数个训练样本,每个样本都有输入和答案。接下来的问题是:模型如何利用这些数据学习?</p>
+<h3 id="section-27" data-source-page="3">第3步:训练模型——不断预测、对比、调整<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">训练的核心机制很简单:让模型做预测,然后把预测结果与正确答案对比,根据差距调整参数。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">单次训练过程:
+
+1. 给模型看输入:&quot;人工智能是计算机科学的一个____&quot;
+2. 模型预测:&quot;领域&quot; (初期是随机猜的)
+3. 对比答案:&quot;分支&quot; (从原文匹配到的)
+4. 计算错误:预测&quot;领域&quot; ≠ 答案&quot;分支&quot; → 错了!
+5. 调整参数:修正1750亿个参数,让模型下次更可能输出&quot;分支&quot;</code></pre></div>
+<p data-source-page="4">但这只是一次训练!真正的训练是一个循环往复的过程:</p>
+<p data-source-page="4">关键点:</p>
+<p class="list-item" data-source-page="4">一句话&quot;人工智能是计算机科学的一个分支&quot;切成6个Token,能生成5个训练样本(每个Token位置一个)</p>
+<p class="list-item" data-source-page="4">3000亿Token ≈ 3000亿次调整 ≈ 3000亿次学习机会</p>
+<p data-source-page="4">3000亿次调整</p>
+<p class="list-item" data-source-page="4">每次调整,1750亿个参数都会轻微改变</p>
+<p class="list-item" data-source-page="4">经过3000亿次循环,模型逐渐&quot;学会&quot;了语言规律</p>
+<h3 id="section-37" data-source-page="4">第4步:训练完成<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">1750亿个参数调整完毕,模型&quot;记住&quot;了语言的规律,就像一个&quot;读过&quot;3000亿词的语言专家。</p>
+<h2 id="section-39" data-source-page="4">4.3 监督学习 vs 自监督学习<a class="heading-link" href="#section-39" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">现在来解释一个至关重要的概念,它是预训练能够规模化的关键。</p>
+<h3 id="section-41" data-source-page="4">传统的监督学习:需要人工标注<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">用情感分析作为例子(这已经是监督学习中最简单、成本最低的任务了):</p>
+<p data-source-page="4">情感分析</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">任务:情感分析(分类任务)
+
+数据:
+&quot;这部电影真好看!&quot;    → 标签:正面 ← 需要人工判断并标注
+&quot;浪费时间,很无聊&quot;    → 标签:负面 ← 需要人工判断并标注
+&quot;还准备看第二遍!&quot;    → 标签:正面 ← 需要人工判断并标注
+...</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">标注10万条数据,耗时数月,可能花费成本数十万美元,然后只能训练一个做情感分析的模型。</p>
+<p data-source-page="5">这里有个常见误区:很多同学认为监督学习的流程是机器回答问题,然后人类标注员告诉机器是否正确。但其实更常见的方式是人类标注员预先标注好答案。</p>
+<p data-source-page="5">举例来说:</p>
+<p class="list-item" data-source-page="5">情感分析:标注员看到&quot;这部电影真好看&quot; → 判断是正面情感 → 打上&quot;正面&quot;标签</p>
+<p class="list-item" data-source-page="5">机器翻译:标注员看到&quot;I love this book&quot; → 翻译为&quot;我喜欢这本书&quot; → 形成一对训练数据</p>
+<p data-source-page="5">收集到足够多的标注数据后,才开始训练模型。所以监督学习的训练数据都是成对的:文本-答案。</p>
+<p data-source-page="5">看似合理,但有很大问题:</p>
+<p class="list-item" data-source-page="5">标注成本高昂,无法规模化</p>
+<p data-source-page="5">每条数据都需要人工判断,成本极高。</p>
+<p class="list-item" data-source-page="5">任务单一化</p>
+<p data-source-page="5">对于同一个例句,可能有不同角度的用途:情感分析(正负)、翻译、摘要。但往往一批标注员只做某一个方向的标注,没有将训练数据的收益最大化。</p>
+<p class="list-item" data-source-page="5">数据量受限</p>
+<p data-source-page="5">用于训练模型的数据量极其庞大,要想尽可能处理这些信息,只靠人工根本不可能。</p>
+<p data-source-page="5">而且,情感分析属于分类任务,已经是监督学习中相对最简单的类型(只需选择预定义的标签)。如果是更复杂的任务,成本会更高:</p>
+<p class="list-item" data-source-page="5">机器翻译:需要专业翻译人员,标注一段文本可能需要1分钟左右</p>
+<p class="list-item" data-source-page="5">问答系统:需要理解问题并撰写答案,标注一条问答对可能需要1到5分钟</p>
+<p data-source-page="5">问答系统</p>
+<p class="list-item" data-source-page="5">文本摘要:需要阅读长文并提炼核心,标注一条摘要可能需要10-20分钟</p>
+<p data-source-page="5">文本摘要</p>
+<p data-source-page="5">监督学习的标注成本,会随着任务复杂度指数级增长。</p>
+<p data-source-page="5">指数级增长</p>
+<h3 id="section-66" data-source-page="5">预训练的自监督学习:完全不同<a class="heading-link" href="#section-66" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">任务:预测下一个Token(填空任务)</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">数据:
+原始文本:&quot;人工智能是计算机科学的一个分支&quot;
+
+自动生成训练样本(每个位置都有一道填空题):
+
+填空题1:
+输入:&quot;人工智能____&quot;
+答案:&quot;是&quot; ← 不需要人工标注,原文里就有!
+
+填空题2:
+输入:&quot;人工智能是____&quot;
+答案:&quot;计算机科学&quot;
+
+填空题3:
+输入:&quot;人工智能是计算机科学____&quot;
+答案:&quot;的&quot;
+
+填空题4:
+输入:&quot;人工智能是计算机科学的____&quot;
+答案:&quot;一个&quot;
+
+填空题5:
+输入:&quot;人工智能是计算机科学的一个____&quot;
+答案:&quot;分支&quot; ← 每个位置自动生成一道题</code></pre></div>
+<p data-source-page="6">自监督学习的优势很明显:</p>
+<p data-source-page="6">答案在原文里</p>
+<p data-source-page="6">下一个Token就是标签,不需要人工判断。</p>
+<p data-source-page="6">样本自动生成</p>
+<p data-source-page="6">一句话能生成无数个训练样本,把原文切开就行。</p>
+<p data-source-page="6">零标注成本</p>
+<p data-source-page="6">从互联网爬取文本即可,不需要人工打标签。</p>
+<p data-source-page="6">规模爆炸式增长</p>
+<p data-source-page="6">监督学习可能只能标注10万条,但预训练可以到3000亿个Token。</p>
+<p data-source-page="6">这就是预训练能够改变AI的根本原因。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-79" data-source-page="7">4.4 下一节预告<a class="heading-link" href="#section-79" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">现在知道了预训练的4个步骤和自监督学习的优势。但训练这样一个模型需要多少资源?为什么只有少数科技巨头能玩这个游戏?</p>
+<p data-source-page="7">下一节将看到预训练的惊人代价,以及数据质量的重要性。</p>
+<h2 id="section-82" data-source-page="7">4.5 ■ 学点英语<a class="heading-link" href="#section-82" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>预训练</td><td>Pre-training</td><td>/priː ˈtreɪnɪŋ/</td><td>在海量无标注文本上训练语言模型学习通用语言能力的过程</td></tr><tr><td>监督学习</td><td>Supervised Learning</td><td>/ suːpərvaɪzd ˌ ˈlɜːnɪŋ/</td><td>使用人工标注的数据训练模型做特定任务的方法</td></tr><tr><td>自监督学习</td><td>Self-Supervised Learning</td><td>/self ˈsuːpərvaɪzd ˈlɜːnɪŋ/</td><td>从数据本身自动生成标签（如下一个Token预测） 的训练方式</td></tr><tr><td>下一Token 预测</td><td>Next-Token Prediction</td><td>/nekst ˈtoʊkən prɪ ˈdɪkʃən/</td><td>语言模型根据已有Token序列预测下一个Token的核心训练任务</td></tr><tr><td>训练样本</td><td>Training Sample</td><td>/ˈtreɪnɪŋ ˈsæmpl/</td><td>模型训练中用到的输入-输出对（输入文本+要预测的下一个Token）</td></tr><tr><td>收敛</td><td>Convergence</td><td>/kənˈvɜːrdʒəns/</td><td>模型训练中参数接近最优解、损失不再显著下降的状态</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-84" data-source-page="8">图片<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="8"><button class="figure-open" aria-label="放大查看第 8 页图示"><img src="../assets/figures/9ed5eb4019b42ce2a0ef6c7537957646.png" width="1740" height="1748" loading="lazy" alt="预训练（一）-本质 · 原 PDF 第 8 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-033.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>强化练习题 · 1-6</strong><small>Embedding</small></a><a class="chapter-neighbor next" href="lesson-035.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>强化练习 · 1-2</strong><small>预训练</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5258#mid=104884" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">4.1 什么是预训练?</a><a href="#section-5" class="toc-level-2">4.2 预训练的4个步骤</a><a href="#section-6" class="toc-level-3">第1步:收集海量数据</a><a href="#section-10" class="toc-level-3">第2步:定义训练任务</a><a href="#section-27" class="toc-level-3">第3步:训练模型——不断预测、对比、调整</a><a href="#section-37" class="toc-level-3">第4步:训练完成</a><a href="#section-39" class="toc-level-2">4.3 监督学习 vs 自监督学习</a><a href="#section-41" class="toc-level-3">传统的监督学习:需要人工标注</a><a href="#section-66" class="toc-level-3">预训练的自监督学习:完全不同</a><a href="#section-79" class="toc-level-2">4.4 下一节预告</a><a href="#section-82" class="toc-level-2">4.5 ■ 学点英语</a><a href="#section-84" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-034", "title": "预训练（一）-本质", "stage": 1, "week": 2, "module": "预训练", "minutes": 9, "pages": 8, "type": "article"}</script>
+</body></html>

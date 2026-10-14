@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>训练的本质 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-009">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>ChatGPT的本质</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 010</span></div>
+<h1 class="lesson-title">训练的本质</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>11 页原文</span><span>约 13 分钟阅读</span><span class="module-name">ChatGPT的本质</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-009.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-009.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<h2 id="section-0" data-source-page="1">2.1 训练的本质：迭代逼近，而非直接求解<a class="heading-link" href="#section-0" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">既然不能直接解方程组，那就换个思路——用海量数据进行训练。</p>
+<p data-source-page="1">训练不是直接解出参数，而是通过逐步调整，逐渐逼近最优解。</p>
+<p data-source-page="1">打个比方：</p>
+<p data-source-page="1">解方程组像用GPS直接定位——一步到位，但需要完整的地图和精确计算。</p>
+<p data-source-page="1">训练则像在黑暗中摸索——每走一步感受一下方向对不对，对了就继续，错了就调整，最终也能到达目的地。</p>
+<h2 id="section-6" data-source-page="1">2.2 训练的完整流程：从混沌到有序<a class="heading-link" href="#section-6" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">为了让你直观地理解训练的完整过程，我先用流程图展示这个循环：</p>
+<p data-source-page="1">这个图展示了训练的核心循环（关于训练我们在后续章节会讨论），而这个循环会重复数千亿次，每次都让模型变得更聪明一点点，直到最终&quot;智能涌现&quot;（关于涌现，我们在后面章节会讨论）。</p>
+<p data-source-page="1">现在让我用一个具体的例子，带你看看这个从混沌到有序的神奇过程。</p>
+<aside class="callout" data-source-page="1"><b>阅读提示</b><p>阅读下文时，请结合上述流程图，效果更佳。</p></aside>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<aside class="callout" data-source-page="2"><b>阅读提示</b><p></p></aside>
+<p data-source-page="2">阅读下文时，请结合上述流程图，效果更佳。</p>
+<p class="list-item" data-source-page="2">步骤一：随机初始化时的混乱状态</p>
+<p data-source-page="2">训练开始的那一刻，这1750亿个参数都是随机的小数，通常在-0.1到0.1之间。这些数字毫无意义，就像一堆完全随机的噪音。此时的ChatGPT，对语言一无所知。</p>
+<p data-source-page="2">如果你问它：“你好吗？” 它可能输出：&quot;@#$%^&amp;*哈哈哈哈的的的的是是是&quot; —— 完全的胡言乱语。</p>
+<p class="list-item" data-source-page="2">步骤二：第一次学习——预测&quot;今天天气&quot;的下一个词</p>
+<p data-source-page="2">训练正式开始。我们给它喂第一个文本片段：&quot;今天天气&quot; 。模型的任务：预测下一个词。</p>
+<p data-source-page="2">在初始的混乱状态下，由于参数是随机的，它可能给出这些候选：</p>
+<aside class="callout" data-source-page="2"><p>“电脑” 概率：8% “苹果” 概率：12% “真好” 概率：3% ← 这才是合理的，但概率最低！“紫色” 概率：7% …</p></aside>
+<p data-source-page="2">模型可能选择&quot;苹果&quot;（概率最高）作为下一个词。但这显然和天气不搭边。完全错误！</p>
+<aside class="callout" data-source-page="2"><b>补充说明</b><p>为什么预测的是下一个词？而不是整个完整句子？ 这个我们后面章节会探讨，这里暂时这样记住。 为什么是词的概率？ 模型预测的不是一个确定的词，而是每个词出现的可能性（概率）。这个机制我们会在下一节&quot;文字接龙游戏&quot;中详细讲解。现在你只需要知道：概率越高，模型越倾向于选择这个词。</p></aside>
+<p class="list-item" data-source-page="2">步骤三：计算错误——模型意识到自己错了</p>
+<p data-source-page="2">我们告诉它正确答案：“真好”。模型计算：我错了！我应该提高&quot;真好&quot;的概率，降低&quot;苹果&quot;的概率。我们用&quot;损失&quot;(Loss)来衡量错误的大小。</p>
+<aside class="callout" data-source-page="2"><b>补充说明</b><p>什么是Loss（损失）？ Loss是一个数字，衡量&quot;预测值&quot;和&quot;正确答案&quot;之间的差距。差距越大，Loss越大。训练的目标就是让Loss越来越小，最终接近0。 这个思想不仅可以用来训练，还可以用来训练现在流行的智能体，大概思路是，让B智能体给A智能体打分；设定某个分数阈值，比如90分，A不断地调整，一直到达到90分。</p></aside>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p class="list-item" data-source-page="3">步骤四：调整参数</p>
+<p data-source-page="3">关键来了：模型怎么改进？</p>
+<p data-source-page="3">模型会分析：&quot;我预测错误，是因为哪些参数设置得不对？&quot;然后调整这些参数。</p>
+<p data-source-page="3">调整前：</p>
+<aside class="callout" data-source-page="3"><p>参数₁₂₃₄₅ = 0.0234 参数₆₇₈₉₀ = -0.0567</p></aside>
+<p data-source-page="3">调整后：</p>
+<aside class="callout" data-source-page="3"><p>参数₁₂₃₄₅ = 0.0234 + 0.0001 = 0.0235 ← 增加了一点点 参数₆₇₈₉₀ = -0.0567 - 0.0001 =-0.0568 ← 减少了一点点</p></aside>
+<p data-source-page="3">这个调整非常微小，但方向是对的：让模型下次预测&quot;真好&quot;的概率更高一点。</p>
+<aside class="callout" data-source-page="3"><b>阅读提示</b><p>这里有个问题，模型怎么知道该增加还是减少？怎么知道调多少？这背后有一套完整的数学机制，我们会在后面详细讲解。现在只需要记住：模型有办法精确计算每个参数该怎么调，然后每次微调一点点。</p></aside>
+<p class="list-item" data-source-page="3">步骤五：累积的奇迹——数千亿次迭代后</p>
+<p data-source-page="3">这个过程不断重复：</p>
+<aside class="callout" data-source-page="3"><p>读第1个句子 → 预测错了 → 调整参数 读第2个句子 → 预测还是错了 → 再调整参数 读第3个句子→ 预测错误减少了一点 → 继续调整 … 读第1000个句子 → 预测准确率从0%提升到了5% … 读第100万个句子 → 准确率提升到30% … 读第10亿个句子 → 准确率提升到60% … 读第3000亿个词→ 准确率稳定在75%左右</p></aside>
+<p data-source-page="3">每一次调整都很微小，但累积起来，那1750亿个参数慢慢地、慢慢地，从随机的噪音，变成了有意义的知识表示。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-38" data-source-page="4">2.3 训练背后的机制：反向传播、梯度下降与学习率<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">前面我们讲了训练的流程，现在让我们深入理解：模型到底是如何知道该调哪些参数、往哪个方向调、调多少的？</p>
+<p data-source-page="4">这涉及三个核心机制：反向传播、梯度下降和学习率。</p>
+<h3 id="section-41" data-source-page="4">反向传播：找出该调哪些参数<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">模型预测错了，但有1750亿个参数，该调哪些？</p>
+<p data-source-page="4">反向传播的解决方案是：从错误结果往回推，追溯责任链。</p>
+<p data-source-page="4">想象你在玩飞镖。你投了一镖，偏左了。你需要分析：</p>
+<p data-source-page="4">结果：偏左了</p>
+<p data-source-page="4">往回分析：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">← 是手腕角度不对？（负责5%的偏差）
+← 还是手臂力度不对？（负责30%的偏差）
+← 还是站位不对？（负责65%的偏差）</code></pre></div>
+<p data-source-page="4">反向传播就是这个分析过程——从错误结果往回推，计算出每个参数对错误的&quot;责任大小&quot;。</p>
+<aside class="callout" data-source-page="4"><b>补充说明</b><p>具体怎么算？ 这涉及微积分中的链式法则。简单来说，如果A影响B，B影响C，那么A对C的影响等于A对B的影响乘以B对C的影响。模型中每个参数通过多层网络影响最终输出，链式法则可以从输出层往回逐层相乘，算出每个参数的精确贡献。 对于大模型应用开发或者微调大模型，不需要深入理解这个数学过程，知道原理即可。</p></aside>
+<p data-source-page="4">在ChatGPT训练中，当预测出&quot;苹果&quot;（错误），我们告诉ChatGPT正确答案是&quot;真好&quot;，那么ChatGPT会进行反向传播计算：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">← 参数₁₂₃₄₅的梯度 = +2.5
+← 参数₆₇₈₉₀的梯度 = -1.8
+← 参数₁₁₁₁₁的梯度 = 0</code></pre></div>
+<p data-source-page="4">这样，模型就知道了：参数₁₂₃₄₅责任最大（梯度绝对值最大），要重点调整。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<aside class="callout" data-source-page="5"><b>补充说明</b><p>什么是梯度？ 梯度就是反向传播计算出来的数字，表示参数对Loss的影响程度。你可以理解为&quot;责任值&quot;——绝对值越大，责任越大。</p></aside>
+<h3 id="section-54" data-source-page="5">梯度下降：让参数往正确的方向调整<a class="heading-link" href="#section-54" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">反向传播告诉我们哪些参数需要调，梯度下降负责执行调整。</p>
+<p data-source-page="5">梯度下降的核心思想很简单：顺着能让错误变小的方向，调整参数。</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">参数新值 = 参数旧值 - 学习率 × 梯度
+
+1</code></pre></div>
+<p data-source-page="5">这个公式自动保证了调整方向的正确性——无论梯度是正还是负，参数都会往让Loss下降的方向走。你不需要手动判断该调大还是调小，公式里的减号会处理好一切。 这就是&quot;梯度下降&quot;的含义：沿着梯度的反方向，让错误不断下降。</p>
+<h3 id="section-59" data-source-page="5">学习率：控制调整幅度<a class="heading-link" href="#section-59" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">学习率决定了每次调整的幅度。太大或太小都不好：</p>
+<p data-source-page="5">实际例子：</p>
+<aside class="callout" data-source-page="5"><p>当前值：参数₁₂₃₄₅ = 0.0234 梯度：+2.5（反向传播计算的） 学习率：0.0001（人工设定的） 计算新参数值： 参数新值 = 0.0234 - 0.0001 × 2.5 = 0.0234 - 0.00025 = 0.0233975 验证效果：把新参数代入模型重新计算，Loss 从 10.5 降到了 10.48</p></aside>
+<p data-source-page="5">学习率的权衡：</p>
+<p data-source-page="5">学习率的权衡</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">学习率太大（比如 0.1）
+─────────────────────────────────────────
+  山顶
+   ●
+    \
+     \___跳过了山谷___/
+                     \
+                      ● 跳到对面山上了
+
+  问题：步子太大，跳过最优解
+       训练不稳定，甚至发散</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">学习率太小（比如 0.0000001）
+─────────────────────────────────────────
+  山顶 Loss=100
+   ● ← 第1次
+   ● ← 第100次 Loss=99.9（几乎没动）
+   ● ← 第1000次 Loss=99（还在山顶）
+   ● ← 第1万次 Loss=90
+   |
+   |  ← 每次只移动一丁点，需要天文数字级迭代
+   |
+   ● ← 第100万次 Loss=20
+    ╲
+     ╲╲╲  山谷
+
+  问题：训练极其缓慢，时间成本无法接受
+学习率合适（比如 0.0001）
+─────────────────────────────────────────
+  山顶 Loss=100
+   ● ← 第1次
+    ╲
+     ● ← 第100次 Loss=85
+      ╲
+       ● ← 第1000次 Loss=60
+        ╲  ← 每次都有明显下降
+         ● ← 第1万次 Loss=20
+          ╲
+           ● ← 第10万次 Loss=2（山谷）
+
+  效果：稳定收敛、速度合理</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h3 id="section-67" data-source-page="7">总结<a class="heading-link" href="#section-67" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">训练的本质可以用一句话概括：以降低Loss为目的，通过反向传播和梯度下降手段，用数据驱动的方式迭代逼近最优解。</p>
+<p data-source-page="7">目的：最小化Loss（预测值与正确答案的差距）</p>
+<p data-source-page="7">手段： • 反向传播 —— 计算每个参数的梯度（责任大小） • 梯度下降 —— 沿梯度反方向调整参数，确保Loss下降</p>
+<p data-source-page="7">方法： • 参数更新公式：参数新值 = 旧值 - 学习率 × 梯度 • 学习率控制 —— 决定每次调整的幅度</p>
+<p data-source-page="7">策略： • 学习率动态衰减 —— 初期大步快跑，后期精细调整 • 海量数据迭代 —— 数千亿次微调，量变引发质变</p>
+<h3 id="section-73" data-source-page="7">学习率的动态调整<a class="heading-link" href="#section-73" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">训练GPT-3时，研究人员不会从头到尾使用同一个学习率，而是采用动态调整：</p>
+<p data-source-page="7">动态调整</p>
+<aside class="callout" data-source-page="7"><p>训练初期：学习率 = 0.001（较大） 参数还很随机，需要快速调整，像下山时在山腰大步走 训练中期：学习率 = 0.0001（适中） 已经接近最优解，需要稳步前进 训练后期：学习率 = 0.00001（很小） 已经很接近山谷，需要精细调整，像在山谷里小心翼翼找最低点</p></aside>
+<p data-source-page="7">这就是&quot;学习率衰减&quot;策略：开始用大步子快速下山，越接近山谷步子越小，确保不会跳过最优解。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-78" data-source-page="8">2.4 完整流程：从错误到优化<a class="heading-link" href="#section-78" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">让我用一个完整的例子展示参数更新的全过程：</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">预测：&quot;苹果&quot;（错误）
+正确：&quot;真好&quot;
+Loss = 10.5</code></pre></div>
+<p class="list-item" data-source-page="8">反向传播：计算梯度</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">参数₁₂₃₄₅：梯度 = +2.5
+参数₆₇₈₉₀：梯度 = -1.8
+参数₁₁₁₁₁：梯度 = 0（这次错误跟它无关，不用调）
+...
+（一次性计算出所有1750亿个参数的梯度）</code></pre></div>
+<p class="list-item" data-source-page="8">应用公式：更新参数</p>
+<p data-source-page="8">公式：参数新值 = 参数旧值 - 学习率 × 梯度，学习率 = 0.0001</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">参数₁₂₃₄₅: 0.0234 - 0.0001 × 2.5  = 0.0233975
+参数₆₇₈₉₀: -0.0567 - 0.0001 × (-1.8) = -0.0565200
+参数₁₁₁₁₁: 0.1234 - 0.0001 × 0 = 0.1234（保持不变）
+...
+（每次训练只更新梯度≠0的参数）</code></pre></div>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用新参数重新预测：&quot;这部电影___&quot;
+预测：&quot;很好看&quot;
+正确：&quot;一般般&quot;
+Loss = 9.2（比10.5小，说明有进步！）</code></pre></div>
+<p class="list-item" data-source-page="8">重复亿万次</p>
+<p data-source-page="8">每次用不同的训练数据，逐步优化所有参数：</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Loss = 10.5 → 9.2 → 8.7 → ... → 2.5
+
+1</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<h2 id="section-90" data-source-page="9">2.5 从精确求解到数据驱动：这是一种哲学意义上的转变<a class="heading-link" href="#section-90" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">这个从&quot;解&quot;到&quot;训练&quot;的转变，不仅仅是技术细节，而是一个哲学上的根本转变。</p>
+<p data-source-page="9">传统方法追求精确的数学解。 用传统方法数学公式描述规律，通过解方程得到精确答案。这需要我们完全理解问题的本质，所以只适合简单、可解释的问题。</p>
+<p data-source-page="9">深度学习方法用海量数据堆出智能。 不再追求精确的数学解，而是用数十亿、数千亿的数据样本，让模型在海量数据中&quot;自己悟出&quot;规律。</p>
+<p data-source-page="9">这是一种量变引发质变的过程——当数据量足够大、参数量足够多，智能会自己涌现出来。</p>
+<p data-source-page="9">我们不再试图用数学公式精确描述“语言是什么”，而是相信: 当数据量足够大，参数量足够多，智能会自己涌现出来。。这个思想，其实和早些年流行的&quot;大数据&quot;有异曲同工之妙，都是用有点暴力的方式，靠统计规律来推出结果。</p>
+<p data-source-page="9">这，就是训练的本质。</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<h2 id="section-97" data-source-page="10">2.6 ■ 学点英语<a class="heading-link" href="#section-97" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="10"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>训练</td><td>Training</td><td>/ˈtreɪnɪŋ/</td><td>通过数据迭代优化模型参数</td></tr><tr><td>参数</td><td>Parameter</td><td>/pəˈræmɪtər/</td><td>模型可学习的权重和偏置</td></tr><tr><td>损失</td><td>Loss</td><td>/lɒs/</td><td>预测值与正确答案的差距</td></tr><tr><td>随机初始化</td><td>Random Initialization</td><td>/ˈrændəm ɪ nɪʃəlaɪˈzeɪʃən/ ˌ</td><td>参数在训练前设为随机小数</td></tr><tr><td>反向传播</td><td>Backpropagation</td><td>/ bæk prɒpəˈɡeɪʃən/ ˌ ˌ</td><td>从输出层往回计算参数的梯度</td></tr><tr><td>梯度</td><td>Gradient</td><td>/ˈɡreɪdiənt/</td><td>参数对Loss影响程度的数值</td></tr><tr><td>梯度下降</td><td>Gradient Descent</td><td>/ˈɡreɪdiənt dɪˈsent/</td><td>沿Loss下降方向迭代调整参数</td></tr><tr><td>学习率</td><td>Learning Rate</td><td>/ˈlɜːnɪŋ reɪt/</td><td>控制参数调整幅度的超参数</td></tr><tr><td>学习率衰减</td><td>Learning Rate Decay</td><td>/ˈlɜːnɪŋ reɪt dɪˈkeɪ/</td><td>训练初期大步、后期精细调整</td></tr><tr><td>迭代</td><td>Iteration</td><td>/ ɪtəˈreɪʃən/ ˌ</td><td>一次前向+反向+参数更新的全过程</td></tr><tr><td>时期</td><td>Epoch</td><td>/ˈiːpɒk/</td><td>完整遍历一次整个训练数据集</td></tr><tr><td>批量</td><td>Batch</td><td>/bætʃ/</td><td>一次更新中使用的数据子集</td></tr><tr><td>数据驱动</td><td>Data-Driven</td><td>/ˈdeɪtə ˈdrɪvən/</td><td>用海量数据而非数学精确解的方法论</td></tr><tr><td>链式法则</td><td>Chain Rule</td><td>/tʃeɪn ruːl/</td><td>反向传播的微积分数学基础</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<h2 id="section-99" data-source-page="11">图片<a class="heading-link" href="#section-99" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="11"><button class="figure-open" aria-label="放大查看第 11 页图示"><img src="../assets/figures/f41a392e39f274a6e5d06a2196897446.png" width="1950" height="1526" loading="lazy" alt="训练的本质 · 原 PDF 第 11 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-008.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-4</strong><small>ChatGPT的本质</small></a><a class="chapter-neighbor next" href="lesson-010.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-6</strong><small>ChatGPT的本质</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5253#mid=104871" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-0" class="toc-level-2">2.1 训练的本质：迭代逼近，而非直接求解</a><a href="#section-6" class="toc-level-2">2.2 训练的完整流程：从混沌到有序</a><a href="#section-38" class="toc-level-2">2.3 训练背后的机制：反向传播、梯度下降与学习率</a><a href="#section-41" class="toc-level-3">反向传播：找出该调哪些参数</a><a href="#section-54" class="toc-level-3">梯度下降：让参数往正确的方向调整</a><a href="#section-59" class="toc-level-3">学习率：控制调整幅度</a><a href="#section-67" class="toc-level-3">总结</a><a href="#section-73" class="toc-level-3">学习率的动态调整</a><a href="#section-78" class="toc-level-2">2.4 完整流程：从错误到优化</a><a href="#section-90" class="toc-level-2">2.5 从精确求解到数据驱动：这是一种哲学意义上的转变</a><a href="#section-97" class="toc-level-2">2.6 ■ 学点英语</a><a href="#section-99" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-009", "title": "训练的本质", "stage": 1, "week": 1, "module": "ChatGPT的本质", "minutes": 13, "pages": 11, "type": "article"}</script>
+</body></html>

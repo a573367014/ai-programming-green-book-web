@@ -1,0 +1,118 @@
+{
+  "id": "lesson-014",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "文字接龙的游戏",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/003-文字接龙的游戏/014-练习-1-2-选择练习.pdf",
+  "sha256": "e3d628721313d3ab1b81cd3b581fc8ce42f600c2b498d1784d145a2f15e41222",
+  "pdf": "sources/pdf/lesson-014.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5254#mid=104949",
+  "minutes": 2,
+  "excerpt": "The model's parameters are updated based on the newly generated word",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "The model's parameters are updated based on the newly generated word",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "In the autoregressive generation process described in the chapter, after ChatGPT generates the word \"today\" in response to \"How is the weather in Shanghai today?\", what changes for the next prediction step? (延展题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "B",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "The word \"today\" is added to the context for the next prediction",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "The vocabulary is reduced to exclude already-used words",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "D",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "The probability distribution is reset to uniform for the next step",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 588,
+    "represented_chars": 465,
+    "removed_chars": 123,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 120,
+      "repeated_title": 3
+    }
+  },
+  "videos": [],
+  "order": 15,
+  "headings": [
+    {
+      "title": "B",
+      "id": "section-2",
+      "level": 2
+    },
+    {
+      "title": "D",
+      "id": "section-5",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "The model's parameters are updated based on the newly generated word"
+    },
+    {
+      "anchor": "article-start",
+      "text": "In the autoregressive generation process described in the chapter, after ChatGPT generates the word \"today\" in response to \"How is the weather in Shanghai today?\", what changes for the next prediction step? (延展题)"
+    },
+    {
+      "anchor": "section-2",
+      "text": "B"
+    },
+    {
+      "anchor": "section-2",
+      "text": "The word \"today\" is added to the context for the next prediction"
+    },
+    {
+      "anchor": "section-2",
+      "text": "The vocabulary is reduced to exclude already-used words"
+    },
+    {
+      "anchor": "section-5",
+      "text": "D"
+    },
+    {
+      "anchor": "section-5",
+      "text": "The probability distribution is reset to uniform for the next step"
+    }
+  ]
+}

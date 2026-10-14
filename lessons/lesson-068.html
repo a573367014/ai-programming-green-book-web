@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Context Learning · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-068">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 3 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Context Learning</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 069</span></div>
+<h1 class="lesson-title">Context Learning</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>8 页原文</span><span>约 9 分钟阅读</span><span class="module-name">Context Learning</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-068.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-068.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节，我带你看了“涌现能力”——当模型规模足够大时，会突然展现出从未被明确训练过的能力。但在所有涌现出来的能力中，有一个能力尤其特殊，特殊到它几乎改变了我们使用AI的方式。 这个能力叫做In-Context Learning（情境学习，或称上下文学习）。 简单来说：不需要重新训练模型，只需要在提示词中给几个例子，模型就能学会一个新任务。 第一次听到这个能力时，可能会觉得：“这有什么特别的？” 但这是一个革命性的突破。一起来看看。</p></aside>
+<h2 id="section-1" data-source-page="1">7.1 从一个具体的例子开始<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">情感分类任务示例</p>
+<p data-source-page="1">我用一个非常直观的例子，展示情境学习是什么。</p>
+<aside class="callout" data-source-page="1"><p>任务：情感分类 假设要让ChatGPT判断电影评论是“正面”还是“负面”。</p></aside>
+<h3 id="section-5" data-source-page="1">传统机器学习方法<a class="heading-link" href="#section-5" aria-label="链接至本节">#</a></h3>
+<p class="list-item" data-source-page="1">收集数据</p>
+<p data-source-page="1">需要标注几千到几万条评论：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<aside class="callout" data-source-page="2"><p>“这部电影太棒了！” → 正面 “浪费时间” → 负面 ……</p></aside>
+<p data-source-page="2">用这些数据训练一个分类器。</p>
+<aside class="callout" data-source-page="2"><p>时间：几小时到几天。 成本：数千到数万元。</p></aside>
+<p class="list-item" data-source-page="2">部署使用</p>
+<p data-source-page="2">模型学会了这个任务。</p>
+<p data-source-page="2">方法很简单——直接告诉ChatGPT：</p>
+<aside class="callout" data-source-page="2"><p>输入： “请判断以下电影评论的情感（正面/负面）： 例子1： 评论：‘这部电影太棒了！’ 情感：正面 例子2： 评论：‘浪费时间’ 情感：负面 例子3： 评论：‘演员表演很自然’ 情感：正面 现在请判断： 评论：‘剧情拖沓，让人昏昏欲睡’ 情感： ChatGPT的回答： “负面”</p></aside>
+<p data-source-page="2">只是给了3个例子，ChatGPT就“学会”了这个任务，不需要任何训练。</p>
+<p data-source-page="2">这就是情境学习。</p>
+<h2 id="section-17" data-source-page="2">7.2 什么是情境学习<a class="heading-link" href="#section-17" aria-label="链接至本节">#</a></h2>
+<h3 id="section-18" data-source-page="2">核心定义<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">模型在推理时（不改变预训练参数的情况下），通过提示词中的示例，学会执行一个新任务的能力。</p>
+<p data-source-page="2">这个定义有几个关键点：</p>
+<p data-source-page="2">不改变参数</p>
+<p class="list-item" data-source-page="2">传统训练：调整模型的1750亿个参数</p>
+<p class="list-item" data-source-page="2">情境学习：参数完全不变，只改变输入</p>
+<p data-source-page="2">通过示例学习</p>
+<p data-source-page="2">不是通过明确的指令，而是通过几个具体的例子，让模型自己总结规律。</p>
+<p data-source-page="2">推理时学习不是在训练阶段学习，而是在使用模型的时候实时学习。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-27" data-source-page="3">7.3 情境学习的三种形式<a class="heading-link" href="#section-27" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">研究者们发现，情境学习有三种主要形式，能力依次递增：</p>
+<p class="list-item" data-source-page="3">Zero-Shot（零样本）：不给任何例子，只给任务描述</p>
+<p data-source-page="3">Zero-Shot（零样本）</p>
+<p class="list-item" data-source-page="3">Few-Shot（少样本）：给几个例子，然后执行新任务</p>
+<p data-source-page="3">Few-Shot（少样本）</p>
+<p class="list-item" data-source-page="3">One-Shot（单样本）：只给一个例子</p>
+<p data-source-page="3">One-Shot（单样本）</p>
+<aside class="callout" data-source-page="3"><b>阅读提示</b><p>关于Shot这个词 在英语中，“shot”原意是“射击”、“尝试”。在机器学习领域，它被借用来指“示例”或“样本”。 Zero-Shot：零次尝试/零个示例 → 不给任何例子 One-Shot：一次尝试/一个示例 → 只给一个例子 Few-Shot：少数尝试/少量示例 → 给3-5个例子 这个词来源于体育比赛中的“射门”（shot）概念——就像篮球运动员投篮，每投一次算一次“shot”。在AI领域，每给一个示例，就算给模型一次“尝试的机会”。</p></aside>
+<h3 id="section-36" data-source-page="3">零样本学习<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">不给任何例子，只给任务描述。</p>
+<aside class="callout" data-source-page="3"><p>输入： “请将以下句子翻译成英文： 今天天气真好” ChatGPT： “The weather is really nice today”</p></aside>
+<p data-source-page="3">这是最直观的。为什么没有给样本也能给出答案？</p>
+<p data-source-page="3">因为在预训练阶段，模型已经见过无数翻译相关的文本：</p>
+<aside class="callout" data-source-page="3"><p>“The weather is nice (天气很好)” “How are you? (你好吗?)” …</p></aside>
+<p data-source-page="3">它在预训练中已经学会了中英文之间的对应关系。当收到“请翻译成英文”的指令时，模型能理解意图，并调用这个能力。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">这就像Zero-Shot——不需要示例，只需要任务描述，就能激活模型预训练时学到的知识。</p>
+<h3 id="section-44" data-source-page="4">少样本学习<a class="heading-link" href="#section-44" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">给几个例子（通常1-10个），然后执行新任务。</p>
+<p data-source-page="4">这是情境学习最经典的形式，也是最常用的。</p>
+<aside class="callout" data-source-page="4"><p>输入： “请识别以下编程语言： print(‘Hello, World!’) → Python console.log(‘Hello,World!’); → JavaScript System.out.println(“Hello, World!”); → Java 现在请识别： echo“Hello, World!” → ChatGPT： “PHP”</p></aside>
+<p data-source-page="4">模型从这三个例子中学到了：</p>
+<p class="list-item" data-source-page="4">任务是识别代码片段对应的编程语言</p>
+<p class="list-item" data-source-page="4">答案应该简洁，只给语言名称</p>
+<p class="list-item" data-source-page="4">不需要额外解释</p>
+<p data-source-page="4">这些都没有明说，但模型从例子中&quot;悟&quot;出来了。</p>
+<p data-source-page="4">更好玩的例子:</p>
+<aside class="callout" data-source-page="4"><p>输入: &quot;将以下句子改为更正式的表达: 原句:这东西挺好的 正式:此物品质量上乘 原句:他跑得飞快 正式:其奔跑速度极快 原句:这事儿太搞笑了 正式:&quot; ChatGPT: “此事颇为滑稽”</p></aside>
+<p data-source-page="4">模型学会了:</p>
+<p class="list-item" data-source-page="4">用&quot;此&quot;&quot;其&quot;等文言词汇</p>
+<p class="list-item" data-source-page="4">避免&quot;挺&quot;“飞快”&quot;搞笑&quot;等口语</p>
+<p class="list-item" data-source-page="4">保持原意但提升正式程度</p>
+<p data-source-page="4">这些都是从3个例子中学到的。</p>
+<h3 id="section-60" data-source-page="4">单样本学习<a class="heading-link" href="#section-60" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">顾名思义：只给一个例子。</p>
+<p data-source-page="4">只给一个例子。</p>
+<p data-source-page="4">这比Zero-Shot简单，但比Few-Shot困难——模型要从单个例子中推断出整个任务的模式。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<aside class="callout" data-source-page="5"><p>输入： “按照示例格式回答： 示例： 输入：苹果 输出：Apple 现在： 输入：香蕉 输出：ChatGPT： “Banana”</p></aside>
+<p data-source-page="5">从一个例子中，模型推断出：</p>
+<p class="list-item" data-source-page="5">任务是中英翻译</p>
+<p class="list-item" data-source-page="5">只翻译单词，不加其他内容</p>
+<p class="list-item" data-source-page="5">首字母大写</p>
+<p data-source-page="5">情境学习甚至能学习全新的、人工设计的任务。</p>
+<aside class="callout" data-source-page="5"><p>“按照示例转换： 示例： 输入：cat 输出：tac 现在： 输入：dog 输出：</p></aside>
+<aside class="callout" data-source-page="5"><p>“god”</p></aside>
+<p data-source-page="5">它学会了：反转字母顺序。这是一个完全人工的、训练数据中几乎不可能出现的任务，但模型从一个例子中学会了。</p>
+<h2 id="section-73" data-source-page="5">7.4 能力边界<a class="heading-link" href="#section-73" aria-label="链接至本节">#</a></h2>
+<h3 id="section-74" data-source-page="5">依赖预训练知识<a class="heading-link" href="#section-74" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">虽然情境学习很强大，但它也有明确的局限。</p>
+<p data-source-page="5">模型只能学习那些与预训练知识“相关”的任务。</p>
+<p data-source-page="5">可以学习的：</p>
+<p class="list-item" data-source-page="5">翻译（训练数据中有大量翻译文本）</p>
+<p class="list-item" data-source-page="5">情感分类（训练数据中有情感表达）</p>
+<p class="list-item" data-source-page="5">文本改写（训练数据中有各种表达方式）</p>
+<p data-source-page="5">很难学习的：</p>
+<p class="list-item" data-source-page="5">识别图像（模型只见过文本）</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p class="list-item" data-source-page="6">实时数据分析（训练数据一般早于当前日期）</p>
+<p class="list-item" data-source-page="6">需要大量专业知识的任务（如医学诊断）</p>
+<h3 id="section-85" data-source-page="6">示例数量有限<a class="heading-link" href="#section-85" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">受限于上下文窗口长度。</p>
+<p data-source-page="6">GPT-3的上下文窗口：约4000个Token。</p>
+<p data-source-page="6">如果一个任务需要看100个例子才能学会，但100个例子超过了4000个Token，模型就学不了。</p>
+<p data-source-page="6">这限制了情境学习能处理的任务复杂度。</p>
+<h3 id="section-90" data-source-page="6">无法学习真正新的知识<a class="heading-link" href="#section-90" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">情境学习学习的是&quot;模式&quot;，不是&quot;知识&quot;。</p>
+<p data-source-page="6">比如，给几个&quot;中文→拼音&quot;的例子，模型能学会转换。但这只是应用已有的语音知识，不是真正学到了新东西。</p>
+<p data-source-page="6">如果告诉模型一个新发明的化学元素的性质，期待它能推理这个元素的其他性质，这是做不到的。模型没有真正&quot;学习&quot;这个新知识，只是记住了输入的内容。</p>
+<h3 id="section-94" data-source-page="6">性能通常不如微调<a class="heading-link" href="#section-94" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">对于重要的、固定的任务，微调仍然更好。</p>
+<p data-source-page="6">情境学习：</p>
+<p class="list-item" data-source-page="6">优势：快速、灵活、不需要训练</p>
+<p class="list-item" data-source-page="6">劣势：准确率通常较低（70-85%）</p>
+<p data-source-page="6">监督微调：</p>
+<p class="list-item" data-source-page="6">优势：准确率高（90-95%以上）</p>
+<p class="list-item" data-source-page="6">劣势：需要数据、时间、成本</p>
+<h3 id="section-102" data-source-page="6">如何选择<a class="heading-link" href="#section-102" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">如果是临时任务、快速原型，用情境学习。 如果是核心业务、长期使用，值得微调。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-104" data-source-page="7">7.5 下节预告<a class="heading-link" href="#section-104" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">情境学习让模型能从几个例子中快速学会新任务。但在复杂任务上，可能会发现一个问题：</p>
+<aside class="callout" data-source-page="7"><p>模型直接给出答案，但不展示推理过程；关键是这个答案往往还是错误的。</p></aside>
+<p data-source-page="7">模型直接给出答案，但不展示推理过程；关键是这个答案往往还是错误的</p>
+<p data-source-page="7">就像学生做数学题，直接写答案而不展示解题步骤，容易出错。</p>
+<p data-source-page="7">下一节，我们将学习思维链（Chain-of-Thought）——一种让AI“一步步思考”的方法。这种方法可以让AI展示他的思考过程，同时提高准确率。</p>
+<p data-source-page="7">这是提示工程中性价比最高的技巧。</p>
+<h2 id="section-111" data-source-page="7">7.6 推荐阅读<a class="heading-link" href="#section-111" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">Language Models are Few-Shot Learners (GPT-3论文， 2020)</p>
+<p data-source-page="7">OpenAI发布的GPT-3论文，首次系统地展示In-Context Learning的惊人能力。论文详细探讨了Zero-Shot、One-Shot和Few-Shot三种形式的效果，证明了大模型能够无需重新训练就学会新任务。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-114" data-source-page="8">7.7 ■ 学点英语<a class="heading-link" href="#section-114" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>情境学习</td><td>In-Context Learning</td><td>/ɪn ˈkɒntekst ˈlɜːnɪŋ/</td><td>不更新参数、仅靠提示词示例让模型执行新任务的能力</td></tr><tr><td>零样本</td><td>Zero-Shot</td><td>/ˈzɪərəʊ ʃɒt/</td><td>不提供任何示例只给任务描述的情境学习形式</td></tr><tr><td>单样本</td><td>One-Shot</td><td>/wʌn ʃɒt/</td><td>只提供一个示例的情境学习形式</td></tr><tr><td>少样本</td><td>Few-Shot</td><td>/fjuː ʃɒt/</td><td>提供少量示例（通常 3-10 个）的情境学习形式</td></tr><tr><td>示例</td><td>Demonstration</td><td>/ demənˈstreɪʃn/ ˌ</td><td>在 Prompt 中放置的“问题-答案”样本</td></tr><tr><td>梯度更新</td><td>Gradient Update</td><td>/ˈɡreɪdiənt ʌpˈdeɪt/</td><td>通过反向传播调整模型参数的训练步骤</td></tr><tr><td>归纳</td><td>Induction</td><td>/ɪnˈdʌkʃn/</td><td>从具体示例推断一般模式的过程</td></tr><tr><td>提示词</td><td>Prompt</td><td>/prɒmpt/</td><td>输入给模型的文字指令与上下文</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-067.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>扩展练习（3）</strong><small>涌现能力</small></a><a class="chapter-neighbor next" href="lesson-069.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-2</strong><small>Context Learning</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5262#mid=104896" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">7.1 从一个具体的例子开始</a><a href="#section-5" class="toc-level-3">传统机器学习方法</a><a href="#section-17" class="toc-level-2">7.2 什么是情境学习</a><a href="#section-18" class="toc-level-3">核心定义</a><a href="#section-27" class="toc-level-2">7.3 情境学习的三种形式</a><a href="#section-36" class="toc-level-3">零样本学习</a><a href="#section-44" class="toc-level-3">少样本学习</a><a href="#section-60" class="toc-level-3">单样本学习</a><a href="#section-73" class="toc-level-2">7.4 能力边界</a><a href="#section-74" class="toc-level-3">依赖预训练知识</a><a href="#section-85" class="toc-level-3">示例数量有限</a><a href="#section-90" class="toc-level-3">无法学习真正新的知识</a><a href="#section-94" class="toc-level-3">性能通常不如微调</a><a href="#section-102" class="toc-level-3">如何选择</a><a href="#section-104" class="toc-level-2">7.5 下节预告</a><a href="#section-111" class="toc-level-2">7.6 推荐阅读</a><a href="#section-114" class="toc-level-2">7.7 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-068", "title": "Context Learning", "stage": 1, "week": 3, "module": "Context Learning", "minutes": 9, "pages": 8, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,1214 @@
+{
+  "id": "lesson-005",
+  "title": "ChatGPT的本质",
+  "code": "1-1",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "ChatGPT的本质",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/002-ChatGPT的本质/005-图文-1-1-ChatGPT的本质.pdf",
+  "sha256": "dcd42cdd5bf9d4e4bd0e7e6b0a73bdf9fad8efdf847b99f639eec2449ffeec21",
+  "pdf": "sources/pdf/lesson-005.pdf",
+  "pages": 7,
+  "source_url": "https://class.imooc.com/lesson/5253#mid=104869",
+  "minutes": 10,
+  "excerpt": "理解大模型的核心原理，有助于写出更好的AI程序。本书以ChatGPT为例讲解，其他大模型（Gemini、DeepSeek等）原理相同。 本章将带你深入ChatGPT的内部，从本质、工作原理、训练过程到能力边界，用平实的语言和生动的类比，让你真正理解这个正在改变世界的技术。 现在，让我们从最根本的问题",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 理解大模型的核心原理，有助于写出更好的AI程序。本书以ChatGPT为例讲解，其他大模型（Gemini、DeepSeek等）原理相同。 本章将带你深入ChatGPT的内部，从本质、工作原理、训练过程到能力边界，用平实的语言和生动的类比，让你真正理解这个正在改变世界的技术。 现在，让我们从最根本的问题开始：ChatGPT到底是什么？",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "1.1 回到中学数学课：函数的本质",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我想从一个你一定熟悉的概念说起：函数。还记得中学数学课上，老师在黑板上写下的那个公式吗？",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "𝑦 = 𝑓 ( 𝑥 ) y=f(x)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "=",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "(",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": ")",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是函数的标准形式。给定一个输入x，通过某种规则f进行计算，得到输出y。简单，明了，优雅。那时我们学的函数，大多数是这样的：",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "math",
+      "text": "𝑦 = 2 𝑥 + 3 y=2x+3",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "𝑦 = 𝑥 2 y=x 2",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "x 2",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "x2",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "𝑦 = sin ⁡ ( 𝑥 ) y=sin(x)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "sin",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "规则简单，输入输出的关系一目了然。但函数的力量，远不止于此。ChatGPT，从数学上讲，也是一个函数：",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "math",
+      "text": "回答 = ChatGPT ( 问题 ) 回答=ChatGPT(问题)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "回答",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "你输入一个问题（输入x），ChatGPT执行某种计算（函数f），然后返回一个回答（输出y）。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这不是比喻，不是类比，而是数学意义上的精确描述。ChatGPT就是一个函数——只不过，是一个极其复杂的函数。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "1.2 1750亿个参数的\"旋钮\"",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但ChatGPT和我们在中学学的函数，有一个本质的区别。中学的函数，参数通常只有几个：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里只有2个参数：系数\"2\"和常数\"3\"。而ChatGPT呢？它有1750亿个参数。 1750亿。这是一个什么概念？",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "list",
+      "text": "比地球上的人口（80亿）多20倍",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果每秒数一个数，要数5000多年",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果用A4纸打印，每页100个数字，需要17.5亿页纸，堆起来高达17.5万米——比珠穆朗玛峰（8849米）高20倍",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "我第一次看到这个数字的时候，也被震撼了。我们究竟在和一个什么样的\"函数\"打交道？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "换个角度想，一个拥有1750亿参数的模型，它是怎么\"理解\"你的问题，又是怎么\"组织\"出回答的？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为了回答这个问题，我们可以把ChatGPT想象成一个巨大的控制面板。面板上密密麻麻排列着1750亿个旋钮，每个旋钮都可以调节，每个旋钮的位置都会影响最终的输出。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "math",
+      "text": "回答 = 𝑓 ( 问题 , 𝜃 1 , 𝜃 2 , 𝜃 3 , . . . , 𝜃 1 7 5 0 0 0 0 0 0 0 0 0 ) 回答=f(问题,θ 1  ,θ 2  ,θ 3  ,...,θ",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "175000000000  )",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "θ1",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "θ2θ3",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "θ175000000000",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这1750亿个旋钮（参数），共同决定了ChatGPT如何理解语义、如何组织逻辑、如何选择措辞。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 关于参数数量的说明 本书中我们主要以GPT-3的1750亿参数作为讲解示例。 为什么不用最新的GPT-5.2？ 因为OpenAI从GPT-4开始就不再公开参数量等技术细节，而GPT-3是最后一个公开详细技术参数（96层网络、12288维嵌入等）的模型。GPT-3.5（与GPT3同源，是ChatGPT最初版本的基座）虽然也很重要，但它的参数量同样未公开，估计在1750亿左右。1750亿这个确切的数字，能让你更直观地理解这些概念。 不过请放心，所有GPT模型的核心原理是完全一致的——无论是1750亿参数还是现在万亿级别的参数，它们的工作机制都是相同的。而且以现在人类对Transformer架构的痴迷（后面你会了解Transformer，以及为什么我说是\"痴迷\"），短期内模型机制不会有太大的变化。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "1.3 参数到底是什么？",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "说到这里，你可能会问：这些\"参数\"到底是什么？为什么要有这么多？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让我直接告诉你：参数是存储知识的容器。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "存储知识的容器",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每个参数（准确说是参数的组合）编码了语言的某种规律：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有些参数记录了\"主语后面通常跟动词\"",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有些参数记录了\"'苹果公司’是一家科技公司\"",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有些参数记录了\"悲伤的情绪通常用某些词汇表达\"",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每一种语言现象，每一点世界知识，都需要一些参数来存储和表达。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.4 语言的复杂性",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在，关键问题来了：为什么需要这么多参数？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "答案很简单，也很深刻：因为语言太复杂了。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为语言太复杂了。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "语言复杂性的四个例子",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让我给你举几个例子，感受一下语言的复杂性。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一词多义",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“这本书很重”（重量大） “这件事很重要”（重要）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "同一个\"重\"字，在不同语境下，意思完全不同。人类当然能够理解，但是模型需要参数来捕捉这种微妙的差异。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "指代消解",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "所谓指代消解，就是判断代词（如\"他\"、“它”、\"这个\"等）具体指代什么。这在人类看来很自然，但对计算机是一个复杂的推理问题。比如：",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "quote",
+      "text": "“小明买了一个苹果手机。它的屏幕很大。”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "\"它\"指的是什么？是苹果手机，不是小明，也不是水果苹果，而是指iPhone手机。模型需要参数来追踪这种指代关系。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "隐含的常识",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“他把玻璃杯掉在地上，碎了。”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么碎了？是玻璃杯，不是地板。这需要常识：玻璃杯易碎，地板不易碎。模型需要参数来存储这些常识。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "语用学",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“你能把窗户关上吗？”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这表面上是一个疑问句，实际上是一个请求，甚至隐含着不耐烦的情绪。模型需要参数来理解这些语用规则，甚至需要结合上下文，能推测出是否有不耐烦的情绪。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "这还只是最表面的复杂性。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言的世界里，近义词之间有微妙的差异，同一个词在不同语境下意思完全不同。还有成语俗语背后的文化典故，医学、法律这些专业领域的术语……更别说人说话时的那种感觉，褒义贬义、正式口语，模型都得学会分辨。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "每一个维度，都需要大量参数来捕捉。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "有人做过一个粗略的估算：人类语言中有数十万个词汇，数百万种常见的词语搭配，数千万个事实性知识，数亿种可能的句子结构……要让模型\"理解\"这一切，1750亿个参数，可能还不够。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "1.5 可以解方程吗？",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "既然ChatGPT是一个函数，有1750亿个参数需要确定，那为什么不能像我们在学校学的那样，用解方程组的方法来求解这些参数呢？",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是一个极好的问题。让我详细解释为什么不能。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "为什么不能解方程组？",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "先回顾一下中学的解方程组是怎么做的：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "假设我们有一个函数： 𝑦 = 𝑎 𝑥 + 𝑏 y=ax+b。我们的目标是求出参数 𝑎 a 和 𝑏 b：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第1步：根据已知条件列方程",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "已知条件：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "当 𝑥 = 1 x=1 时， 𝑦 = 5 y=5",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "当 𝑥 = 2 x=2 时， 𝑦 = 7 y=7",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可以列出方程组：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "{ 5 = 𝑎 ⋅ 1 + 𝑏 7 = 𝑎 ⋅ 2 + 𝑏 { 5=a⋅1+b 7=a⋅2+b ",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第2步：直接求解",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "用消元法，直接算出： 𝑎 = 2 a=2， 𝑏 = 3 b=3",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "b=3",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "a=2",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "完成！我们找到了精确的参数值。那么，能用同样的方法求ChatGPT的参数吗？不太实际。有以下几个问题。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "list",
+      "text": "问题一，方程太复杂",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "中学的方程组是线性的： 2 𝑥 + 3 𝑦 = 1 0 2x+3y=10",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但ChatGPT的\"方程\"是96层嵌套的非线性系统：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "输出 = 第96层 ( . . . 第2层 ( 第1层 ( 输入 ) ) ) 输出=第96层(...第2层(第1层(输入)))",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "其中每一层都有数十亿个参数，且包含ReLU这样的非线性转换。这是一个极度复杂的非线性系统，没有解析解（就是没有公式可以直接算出答案）。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 术语说明：什么是线性和非线性？ 线性：输入和输出成正比关系。比如买水果： 买1斤苹果5元，买2斤10元，3斤15元 → 成正比 非线性：输入和输出的关系有转折。比如： 学习时间与成绩：从0小时到1小时，成绩大幅提升；但从10小时到11小时，可能几乎不增长了 药物剂量：1粒没效果，2粒有效，3粒可能中毒 → 不是简单的翻倍关系 ReLU函数：负数全部变成0，正数保持不变 → 在零点有个\"拐弯\"",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "那为什么ChatGPT需要非线性？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为语言规律不是简单的正比关系。比如\"喜欢\"这个词：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "在\"我喜欢你\"里是亲密",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "在\"我喜欢吃苹果\"里是偏好",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "在\"我喜欢得很\"里是讽刺",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "同一个词，不同语境意思完全不同。这种复杂关系必须用非线性函数来表达。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "问题二，计算量无法承受",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "即使理论上能列出方程组，求解1750亿个未知数的方程组：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "传统方法（如高斯消元法）的计算复杂度是 𝑂 ( 𝑛 3 ) O(n 3 )。对于1750亿，就是 ( 1 7 5 0 亿 ) 3",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "(1750亿) 3 的计算量。这个数字大到宇宙中的原子数都不够用来计数",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "n3",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.6 ■ 学点英语",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n函数 | Function | /ˈfʌŋkʃən/ | 输入到输出的映射关系\n参数 | Parameter | /pəˈræmɪtər/ | 模型中可学习的权重和偏置\n大模型 | Large Language Model (LLM) | /lɑːdʒ ˈlæŋɡwɪdʒ ˈmɒdl/ | 基于海量数据训练的神经网络语言模型\n线性 | Linear | /ˈlɪniər/ | 输入输出成正比，可加可乘的简单关系\n非线性 | Nonlinear | /nɒnˈlɪniər/ | 输入输出有转折和拐弯的复杂关系\n一词多义 | Polysemy | /pəˈlɪsəmi/ | 同一词语在不同语境中含义不同\n指代消解 | Anaphora Resolution | /əˈnæfərə rezəˈluːʃən/ ˌ | 判断代词（他/它/这个）具体指代什么\n语用学 | Pragmatics | /præɡˈmætɪks/ | 研究语境如何影响语言的理解和使用\n分布式编码 | Distributed Representation | /dɪˈstrɪbjuːtɪd reprɪzen ˌ ˈteɪʃən/ | 知识分散在一组参数组合中而非一对一存储\n解析解 | Closed-form Solution | /kləʊzd fɔːm səˈluːʃən/ | 可以直接用公式算出的精确数学解\n非线性系统 | Nonlinear System | /nɒnˈlɪniər ˈsɪstəm/ | 输出与输入不成正比的复杂系统\n激活函数 | Activation Function | / æktɪˈveɪʃən ˈfʌŋkʃən/ ˌ | 引入非线性的关键数学操作，如ReLU",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "函数",
+          "Function",
+          "/ˈfʌŋkʃən/",
+          "输入到输出的映射关系"
+        ],
+        [
+          "参数",
+          "Parameter",
+          "/pəˈræmɪtər/",
+          "模型中可学习的权重和偏置"
+        ],
+        [
+          "大模型",
+          "Large Language Model (LLM)",
+          "/lɑːdʒ ˈlæŋɡwɪdʒ ˈmɒdl/",
+          "基于海量数据训练的神经网络语言模型"
+        ],
+        [
+          "线性",
+          "Linear",
+          "/ˈlɪniər/",
+          "输入输出成正比，可加可乘的简单关系"
+        ],
+        [
+          "非线性",
+          "Nonlinear",
+          "/nɒnˈlɪniər/",
+          "输入输出有转折和拐弯的复杂关系"
+        ],
+        [
+          "一词多义",
+          "Polysemy",
+          "/pəˈlɪsəmi/",
+          "同一词语在不同语境中含义不同"
+        ],
+        [
+          "指代消解",
+          "Anaphora Resolution",
+          "/əˈnæfərə rezəˈluːʃən/ ˌ",
+          "判断代词（他/它/这个）具体指代什么"
+        ],
+        [
+          "语用学",
+          "Pragmatics",
+          "/præɡˈmætɪks/",
+          "研究语境如何影响语言的理解和使用"
+        ],
+        [
+          "分布式编码",
+          "Distributed Representation",
+          "/dɪˈstrɪbjuːtɪd reprɪzen ˌ ˈteɪʃən/",
+          "知识分散在一组参数组合中而非一对一存储"
+        ],
+        [
+          "解析解",
+          "Closed-form Solution",
+          "/kləʊzd fɔːm səˈluːʃən/",
+          "可以直接用公式算出的精确数学解"
+        ],
+        [
+          "非线性系统",
+          "Nonlinear System",
+          "/nɒnˈlɪniər ˈsɪstəm/",
+          "输出与输入不成正比的复杂系统"
+        ],
+        [
+          "激活函数",
+          "Activation Function",
+          "/ æktɪˈveɪʃən ˈfʌŋkʃən/ ˌ",
+          "引入非线性的关键数学操作，如ReLU"
+        ]
+      ],
+      "page": 7
+    }
+  ],
+  "accounting": {
+    "source_chars": 4203,
+    "represented_chars": 4042,
+    "removed_chars": 161,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 137,
+      "repeated_title": 24
+    }
+  },
+  "videos": [
+    {
+      "title": "ChatGPT 的本质 · 配套视频",
+      "path": "sources/video/video-03.mp4",
+      "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/005-图文-1-1-ChatGPT的本质.assets/S__ev.mp4",
+      "sha256": "49a7d5a743fa7a76008e25094fb30e404dda9eed712022771daac2e1d26fce91",
+      "target": "lesson-005"
+    }
+  ],
+  "order": 6,
+  "headings": [
+    {
+      "title": "1.1 回到中学数学课：函数的本质",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "1.2 1750亿个参数的\"旋钮\"",
+      "id": "section-19",
+      "level": 2
+    },
+    {
+      "title": "1.3 参数到底是什么？",
+      "id": "section-35",
+      "level": 2
+    },
+    {
+      "title": "1.4 语言的复杂性",
+      "id": "section-44",
+      "level": 2
+    },
+    {
+      "title": "语言复杂性的四个例子",
+      "id": "section-48",
+      "level": 3
+    },
+    {
+      "title": "1.5 可以解方程吗？",
+      "id": "section-67",
+      "level": 2
+    },
+    {
+      "title": "为什么不能解方程组？",
+      "id": "section-70",
+      "level": 3
+    },
+    {
+      "title": "1.6 ■ 学点英语",
+      "id": "section-101",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "理解大模型的核心原理，有助于写出更好的AI程序。本书以ChatGPT为例讲解，其他大模型（Gemini、DeepSeek等）原理相同。 本章将带你深入ChatGPT的内部，从本质、工作原理、训练过程到能力边界，用平实的语言和生动的类比，让你真正理解这个正在改变世界的技术。 现在，让我们从最根本的问题开始：ChatGPT到底是什么？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "1.1 回到中学数学课：函数的本质"
+    },
+    {
+      "anchor": "section-1",
+      "text": "我想从一个你一定熟悉的概念说起：函数。还记得中学数学课上，老师在黑板上写下的那个公式吗？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "𝑦 = 𝑓 ( 𝑥 ) y=f(x)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "="
+    },
+    {
+      "anchor": "section-1",
+      "text": "("
+    },
+    {
+      "anchor": "section-1",
+      "text": ")"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这是函数的标准形式。给定一个输入x，通过某种规则f进行计算，得到输出y。简单，明了，优雅。那时我们学的函数，大多数是这样的："
+    },
+    {
+      "anchor": "section-1",
+      "text": "𝑦 = 2 𝑥 + 3 y=2x+3"
+    },
+    {
+      "anchor": "section-1",
+      "text": "𝑦 = 𝑥 2 y=x 2"
+    },
+    {
+      "anchor": "section-1",
+      "text": "x 2"
+    },
+    {
+      "anchor": "section-1",
+      "text": "x2"
+    },
+    {
+      "anchor": "section-1",
+      "text": "𝑦 = sin ⁡ ( 𝑥 ) y=sin(x)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "sin"
+    },
+    {
+      "anchor": "section-1",
+      "text": "规则简单，输入输出的关系一目了然。但函数的力量，远不止于此。ChatGPT，从数学上讲，也是一个函数："
+    },
+    {
+      "anchor": "section-1",
+      "text": "回答 = ChatGPT ( 问题 ) 回答=ChatGPT(问题)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "回答"
+    },
+    {
+      "anchor": "section-1",
+      "text": "你输入一个问题（输入x），ChatGPT执行某种计算（函数f），然后返回一个回答（输出y）。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这不是比喻，不是类比，而是数学意义上的精确描述。ChatGPT就是一个函数——只不过，是一个极其复杂的函数。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "1.2 1750亿个参数的\"旋钮\""
+    },
+    {
+      "anchor": "section-19",
+      "text": "但ChatGPT和我们在中学学的函数，有一个本质的区别。中学的函数，参数通常只有几个："
+    },
+    {
+      "anchor": "section-19",
+      "text": "这里只有2个参数：系数\"2\"和常数\"3\"。而ChatGPT呢？它有1750亿个参数。 1750亿。这是一个什么概念？"
+    },
+    {
+      "anchor": "section-19",
+      "text": "比地球上的人口（80亿）多20倍"
+    },
+    {
+      "anchor": "section-19",
+      "text": "如果每秒数一个数，要数5000多年"
+    },
+    {
+      "anchor": "section-19",
+      "text": "如果用A4纸打印，每页100个数字，需要17.5亿页纸，堆起来高达17.5万米——比珠穆朗玛峰（8849米）高20倍"
+    },
+    {
+      "anchor": "section-19",
+      "text": "我第一次看到这个数字的时候，也被震撼了。我们究竟在和一个什么样的\"函数\"打交道？"
+    },
+    {
+      "anchor": "section-19",
+      "text": "换个角度想，一个拥有1750亿参数的模型，它是怎么\"理解\"你的问题，又是怎么\"组织\"出回答的？"
+    },
+    {
+      "anchor": "section-19",
+      "text": "为了回答这个问题，我们可以把ChatGPT想象成一个巨大的控制面板。面板上密密麻麻排列着1750亿个旋钮，每个旋钮都可以调节，每个旋钮的位置都会影响最终的输出。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "回答 = 𝑓 ( 问题 , 𝜃 1 , 𝜃 2 , 𝜃 3 , . . . , 𝜃 1 7 5 0 0 0 0 0 0 0 0 0 ) 回答=f(问题,θ 1  ,θ 2  ,θ 3  ,...,θ"
+    },
+    {
+      "anchor": "section-19",
+      "text": "175000000000  )"
+    },
+    {
+      "anchor": "section-19",
+      "text": "θ1"
+    },
+    {
+      "anchor": "section-19",
+      "text": "θ2θ3"
+    },
+    {
+      "anchor": "section-19",
+      "text": "θ175000000000"
+    },
+    {
+      "anchor": "section-19",
+      "text": "这1750亿个旋钮（参数），共同决定了ChatGPT如何理解语义、如何组织逻辑、如何选择措辞。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "关于参数数量的说明 本书中我们主要以GPT-3的1750亿参数作为讲解示例。 为什么不用最新的GPT-5.2？ 因为OpenAI从GPT-4开始就不再公开参数量等技术细节，而GPT-3是最后一个公开详细技术参数（96层网络、12288维嵌入等）的模型。GPT-3.5（与GPT3同源，是ChatGPT最初版本的基座）虽然也很重要，但它的参数量同样未公开，估计在1750亿左右。1750亿这个确切的数字，能让你更直观地理解这些概念。 不过请放心，所有GPT模型的核心原理是完全一致的——无论是1750亿参数还是现在万亿级别的参数，它们的工作机制都是相同的。而且以现在人类对Transformer架构的痴迷（后面你会了解Transformer，以及为什么我说是\"痴迷\"），短期内模型机制不会有太大的变化。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "1.3 参数到底是什么？"
+    },
+    {
+      "anchor": "section-35",
+      "text": "说到这里，你可能会问：这些\"参数\"到底是什么？为什么要有这么多？"
+    },
+    {
+      "anchor": "section-35",
+      "text": "让我直接告诉你：参数是存储知识的容器。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "存储知识的容器"
+    },
+    {
+      "anchor": "section-35",
+      "text": "每个参数（准确说是参数的组合）编码了语言的某种规律："
+    },
+    {
+      "anchor": "section-35",
+      "text": "有些参数记录了\"主语后面通常跟动词\""
+    },
+    {
+      "anchor": "section-35",
+      "text": "有些参数记录了\"'苹果公司’是一家科技公司\""
+    },
+    {
+      "anchor": "section-35",
+      "text": "有些参数记录了\"悲伤的情绪通常用某些词汇表达\""
+    },
+    {
+      "anchor": "section-35",
+      "text": "每一种语言现象，每一点世界知识，都需要一些参数来存储和表达。"
+    },
+    {
+      "anchor": "section-44",
+      "text": "1.4 语言的复杂性"
+    },
+    {
+      "anchor": "section-44",
+      "text": "现在，关键问题来了：为什么需要这么多参数？"
+    },
+    {
+      "anchor": "section-44",
+      "text": "答案很简单，也很深刻：因为语言太复杂了。"
+    },
+    {
+      "anchor": "section-44",
+      "text": "因为语言太复杂了。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "语言复杂性的四个例子"
+    },
+    {
+      "anchor": "section-48",
+      "text": "让我给你举几个例子，感受一下语言的复杂性。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "一词多义"
+    },
+    {
+      "anchor": "section-48",
+      "text": "“这本书很重”（重量大） “这件事很重要”（重要）"
+    },
+    {
+      "anchor": "section-48",
+      "text": "同一个\"重\"字，在不同语境下，意思完全不同。人类当然能够理解，但是模型需要参数来捕捉这种微妙的差异。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "指代消解"
+    },
+    {
+      "anchor": "section-48",
+      "text": "所谓指代消解，就是判断代词（如\"他\"、“它”、\"这个\"等）具体指代什么。这在人类看来很自然，但对计算机是一个复杂的推理问题。比如："
+    },
+    {
+      "anchor": "section-48",
+      "text": "“小明买了一个苹果手机。它的屏幕很大。”"
+    },
+    {
+      "anchor": "section-48",
+      "text": "\"它\"指的是什么？是苹果手机，不是小明，也不是水果苹果，而是指iPhone手机。模型需要参数来追踪这种指代关系。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "隐含的常识"
+    },
+    {
+      "anchor": "section-48",
+      "text": "“他把玻璃杯掉在地上，碎了。”"
+    },
+    {
+      "anchor": "section-48",
+      "text": "什么碎了？是玻璃杯，不是地板。这需要常识：玻璃杯易碎，地板不易碎。模型需要参数来存储这些常识。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "语用学"
+    },
+    {
+      "anchor": "section-48",
+      "text": "“你能把窗户关上吗？”"
+    },
+    {
+      "anchor": "section-48",
+      "text": "这表面上是一个疑问句，实际上是一个请求，甚至隐含着不耐烦的情绪。模型需要参数来理解这些语用规则，甚至需要结合上下文，能推测出是否有不耐烦的情绪。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "这还只是最表面的复杂性。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "语言的世界里，近义词之间有微妙的差异，同一个词在不同语境下意思完全不同。还有成语俗语背后的文化典故，医学、法律这些专业领域的术语……更别说人说话时的那种感觉，褒义贬义、正式口语，模型都得学会分辨。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "每一个维度，都需要大量参数来捕捉。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "有人做过一个粗略的估算：人类语言中有数十万个词汇，数百万种常见的词语搭配，数千万个事实性知识，数亿种可能的句子结构……要让模型\"理解\"这一切，1750亿个参数，可能还不够。"
+    },
+    {
+      "anchor": "section-67",
+      "text": "1.5 可以解方程吗？"
+    },
+    {
+      "anchor": "section-67",
+      "text": "既然ChatGPT是一个函数，有1750亿个参数需要确定，那为什么不能像我们在学校学的那样，用解方程组的方法来求解这些参数呢？"
+    },
+    {
+      "anchor": "section-67",
+      "text": "这是一个极好的问题。让我详细解释为什么不能。"
+    },
+    {
+      "anchor": "section-70",
+      "text": "为什么不能解方程组？"
+    },
+    {
+      "anchor": "section-70",
+      "text": "先回顾一下中学的解方程组是怎么做的："
+    },
+    {
+      "anchor": "section-70",
+      "text": "假设我们有一个函数： 𝑦 = 𝑎 𝑥 + 𝑏 y=ax+b。我们的目标是求出参数 𝑎 a 和 𝑏 b："
+    },
+    {
+      "anchor": "section-70",
+      "text": "第1步：根据已知条件列方程"
+    },
+    {
+      "anchor": "section-70",
+      "text": "已知条件："
+    },
+    {
+      "anchor": "section-70",
+      "text": "当 𝑥 = 1 x=1 时， 𝑦 = 5 y=5"
+    },
+    {
+      "anchor": "section-70",
+      "text": "当 𝑥 = 2 x=2 时， 𝑦 = 7 y=7"
+    },
+    {
+      "anchor": "section-70",
+      "text": "可以列出方程组："
+    },
+    {
+      "anchor": "section-70",
+      "text": "{ 5 = 𝑎 ⋅ 1 + 𝑏 7 = 𝑎 ⋅ 2 + 𝑏 { 5=a⋅1+b 7=a⋅2+b "
+    },
+    {
+      "anchor": "section-70",
+      "text": "第2步：直接求解"
+    },
+    {
+      "anchor": "section-70",
+      "text": "用消元法，直接算出： 𝑎 = 2 a=2， 𝑏 = 3 b=3"
+    },
+    {
+      "anchor": "section-70",
+      "text": "b=3"
+    },
+    {
+      "anchor": "section-70",
+      "text": "a=2"
+    },
+    {
+      "anchor": "section-70",
+      "text": "完成！我们找到了精确的参数值。那么，能用同样的方法求ChatGPT的参数吗？不太实际。有以下几个问题。"
+    },
+    {
+      "anchor": "section-70",
+      "text": "问题一，方程太复杂"
+    },
+    {
+      "anchor": "section-70",
+      "text": "中学的方程组是线性的： 2 𝑥 + 3 𝑦 = 1 0 2x+3y=10"
+    },
+    {
+      "anchor": "section-70",
+      "text": "但ChatGPT的\"方程\"是96层嵌套的非线性系统："
+    },
+    {
+      "anchor": "section-70",
+      "text": "输出 = 第96层 ( . . . 第2层 ( 第1层 ( 输入 ) ) ) 输出=第96层(...第2层(第1层(输入)))"
+    },
+    {
+      "anchor": "section-70",
+      "text": "其中每一层都有数十亿个参数，且包含ReLU这样的非线性转换。这是一个极度复杂的非线性系统，没有解析解（就是没有公式可以直接算出答案）。"
+    },
+    {
+      "anchor": "section-70",
+      "text": "术语说明：什么是线性和非线性？ 线性：输入和输出成正比关系。比如买水果： 买1斤苹果5元，买2斤10元，3斤15元 → 成正比 非线性：输入和输出的关系有转折。比如： 学习时间与成绩：从0小时到1小时，成绩大幅提升；但从10小时到11小时，可能几乎不增长了 药物剂量：1粒没效果，2粒有效，3粒可能中毒 → 不是简单的翻倍关系 ReLU函数：负数全部变成0，正数保持不变 → 在零点有个\"拐弯\""
+    },
+    {
+      "anchor": "section-70",
+      "text": "那为什么ChatGPT需要非线性？"
+    },
+    {
+      "anchor": "section-70",
+      "text": "因为语言规律不是简单的正比关系。比如\"喜欢\"这个词："
+    },
+    {
+      "anchor": "section-70",
+      "text": "在\"我喜欢你\"里是亲密"
+    },
+    {
+      "anchor": "section-70",
+      "text": "在\"我喜欢吃苹果\"里是偏好"
+    },
+    {
+      "anchor": "section-70",
+      "text": "在\"我喜欢得很\"里是讽刺"
+    },
+    {
+      "anchor": "section-70",
+      "text": "同一个词，不同语境意思完全不同。这种复杂关系必须用非线性函数来表达。"
+    },
+    {
+      "anchor": "section-70",
+      "text": "问题二，计算量无法承受"
+    },
+    {
+      "anchor": "section-70",
+      "text": "即使理论上能列出方程组，求解1750亿个未知数的方程组："
+    },
+    {
+      "anchor": "section-70",
+      "text": "传统方法（如高斯消元法）的计算复杂度是 𝑂 ( 𝑛 3 ) O(n 3 )。对于1750亿，就是 ( 1 7 5 0 亿 ) 3"
+    },
+    {
+      "anchor": "section-70",
+      "text": "(1750亿) 3 的计算量。这个数字大到宇宙中的原子数都不够用来计数"
+    },
+    {
+      "anchor": "section-70",
+      "text": "n3"
+    },
+    {
+      "anchor": "section-101",
+      "text": "1.6 ■ 学点英语"
+    },
+    {
+      "anchor": "section-101",
+      "text": "中文 | English | 音标 | 说明\n函数 | Function | /ˈfʌŋkʃən/ | 输入到输出的映射关系\n参数 | Parameter | /pəˈræmɪtər/ | 模型中可学习的权重和偏置\n大模型 | Large Language Model (LLM) | /lɑːdʒ ˈlæŋɡwɪdʒ ˈmɒdl/ | 基于海量数据训练的神经网络语言模型\n线性 | Linear | /ˈlɪniər/ | 输入输出成正比，可加可乘的简单关系\n非线性 | Nonlinear | /nɒnˈlɪniər/ | 输入输出有转折和拐弯的复杂关系\n一词多义 | Polysemy | /pəˈlɪsəmi/ | 同一词语在不同语境中含义不同\n指代消解 | Anaphora Resolution | /əˈnæfərə rezəˈluːʃən/ ˌ | 判断代词（他/它/这个）具体指代什么\n语用学 | Pragmatics | /præɡˈmætɪks/ | 研究语境如何影响语言的理解和使用\n分布式编码 | Distributed Representation | /dɪˈstrɪbjuːtɪd reprɪzen ˌ ˈteɪʃən/ | 知识分散在一组参数组合中而非一对一存储\n解析解 | Closed-form Solution | /kləʊzd fɔːm səˈluːʃən/ | 可以直接用公式算出的精确数学解\n非线性系统 | Nonlinear System | /nɒnˈlɪniər ˈsɪstəm/ | 输出与输入不成正比的复杂系统\n激活函数 | Activation Function | / æktɪˈveɪʃən ˈfʌŋkʃən/ ˌ | 引入非线性的关键数学操作，如ReLU"
+    }
+  ]
+}

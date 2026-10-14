@@ -1,0 +1,20 @@
+--- PDF 第 1 页 ---
+1.
+来源: https://class.imooc.com/lesson/5253#mid=105024
+阶段: 阶段一: 【认知基石】理解大模型的本质与工作原理
+周: 第1周 语言模型是什么
+模块: ChatGPT的本质
+课节: 练习 1-4 选择练习
+1.
+A
+A linear model would only be able to process sentences shorter than 10 words
+Language requires nonlinearity because word meanings change with context. Which of the
+following best illustrates why a purely linear model would fail at understanding language? (延
+展题)
+B
+A linear model could not capture the fact that the same word can have different meanings in
+different contexts
+C
+A linear model would require 175 billion separate linear equations, one per parameter
+D
+A linear model would only work for mathematical functions, not text

@@ -1,0 +1,56 @@
+--- PDF 第 1 页 ---
+扩展练习
+来源: https://class.imooc.com/lesson/5259#mid=104964
+阶段: 阶段一: 【认知基石】理解大模型的本质与工作原理
+周: 第2周 语言模型怎么训练
+模块: 监督微调
+课节: 图文 1-3 监督微调-概念与本质的扩展练习
+1-3 监督微调-概念与本质的扩展练习
+扩展练习
+1
+题型: 判断题 难度: 中等
+题干: 监督微调和预训练一样，都不需要人工标注数据，可以直接从互联网文本中自动生成。 (复习题)
+正确答案: 错误
+解析: 两者不同：预训练是自监督学习，答案（下一个Token）在原文中自动获取；监督微调是监督学
+习，需要人工标注员编写高质量的问答对，每条数据都需要人工设计问题和答案，因此数据量远小于预
+训练。
+2
+题型: 阅读理解题 难度: 困难
+阅读材料: “Our alignment technique—which we call instruction following—starts with a pre-
+trained language model and fine-tunes it on a dataset of human-written demonstrations of the
+desired behavior. […] The key insight is that by training the model to follow instructions across
+a broad range of tasks, we can make it useful for many applications without task-specific
+engineering. […] We found that a relatively small number of high-quality demonstrations
+(around 10,000-50,000 examples) is sufficient to significantly improve instruction following
+behavior, suggesting that the pre-trained model already possesses much of the knowledge it
+needs—it just needs to learn how to use it in response to instructions.” （来源：Ouyang et al.,
+
+
+--- PDF 第 2 页 ---
+2022年, 《Training Language Models to Follow Instructions with Human Feedback》,
+InstructGPT论文, Section 2） (延展题)
+题型: 单选题 难度: 困难 题号: 1
+题干: According to the passage, why is a relatively small number of demonstrations (10,000-
+50,000) sufficient for instruction following?
+选项A: Because the pre-trained model already learns best from small datasets 选项B: Because
+the pre-trained model already possesses much of the needed knowledge—it just needs to
+learn how to use it in response to instructions 选项C: Because larger datasets cause
+catastrophic forgetting 选项D: Because human demonstrations are inherently of higher quality
+than pre-training data
+正确答案: B
+解析: The passage explicitly states that “the pre-trained model already possesses much of the
+knowledge it needs—it just needs to learn how to use it in response to instructions.” This
+aligns with the chapter’s comparison: pre-training builds a knowledgeable generalist; fine-
+tuning teaches it how to apply that knowledge to specific tasks.
+题型: 简答题 难度: 困难 题号: 2
+题干: The authors describe the process as starting with a “pre-trained language model” and
+fine-tuning it to “follow instructions.” Connect this to Section 2-7’s claim that “监督微调不
+是重新学习语言，而是在已有能力基础上调整行为模式.” In 1-2 sentences, explain why 10,000-
+50,000 demonstrations are enough while pre-training needed 300 billion tokens. (延展题)
+参考答案: ● Pre-training’s 300 billion tokens build the model’s fundamental language
+understanding, world knowledge, and reasoning ability from scratch. Fine-tuning’s 10,000-
+50,000 demonstrations don’t teach new knowledge—they teach a new interaction pattern
+(question → helpful answer). Since the model already understands language, it only needs to
+learn when to produce answers versus when to continue text, hence the much smaller data
+requirement. This is exactly why the chapter says “微调不是重新学习语言，而是在已有能力基础
+上调整行为模式.”

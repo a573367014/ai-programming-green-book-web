@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>第一个LangChain应用 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-126">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-4">框架应用</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 8 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>RAG集成：打造智能知识库</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 127</span></div>
+<h1 class="lesson-title">第一个LangChain应用</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>11 页原文</span><span>约 16 分钟阅读</span><span class="module-name">RAG集成：打造智能知识库</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-126.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-126.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>本节会以“Level 1 ~ Level 5”的形式，逐步把一个简单的模型调用，升级成带Prompt、带记忆、可交互的原神攻略助手。 建议先快速通读一遍，弄清每个 Level 的“新能力”是什么，然后再回头对照代码动手运行。 不需要死记硬背代码细节，更重要的是理解：什么时候只用模型，什么时候要加 Prompt，什么时候需要 Chain 和 Memory 来帮你管理流程和上下文。</p></aside>
+<h2 id="section-1" data-source-page="1">应用目标<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">目标: 一个会聊天、能记忆、可查询的原神攻略助手</p>
+<p data-source-page="1">目标:</p>
+<p data-source-page="1">技术栈:</p>
+<p class="list-item" data-source-page="1">LangChain</p>
+<p class="list-item" data-source-page="1">Qwen 大模型</p>
+<p class="list-item" data-source-page="1">对话历史管理</p>
+<p data-source-page="1">这就像搭积木:先搭一个基础版本，然后逐步增强。</p>
+<h2 id="section-9" data-source-page="1">环境准备<a class="heading-link" href="#section-9" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">安装依赖:</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>BASH</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-bash">pip install &quot;langchain==1.2.15&quot; &quot;langchain-openai==1.2.1&quot;
+
+1</code></pre></div>
+<p data-source-page="2">langchain 是主框架包，会自动安装 langchain-core、langchain-text-splitters 等子模块。langchain-openai 是 OpenAI 兼容接口的适配器（通义千问也兼容 OpenAI 协议，所以直接用这个）。</p>
+<aside class="callout" data-source-page="2"><b>阅读提示</b><p>完整的源码目录结构与运行指引，请参考samples/chapter8/langchain_demo/README.md。</p></aside>
+<p data-source-page="2">为什么装 langchain-openai?</p>
+<p data-source-page="2">LangChain 的模型集成是模块化的:</p>
+<p class="list-item" data-source-page="2">langchain - LangChain 的基础包</p>
+<p class="list-item" data-source-page="2">langchain-core - LangChain 的核心依赖</p>
+<p class="list-item" data-source-page="2">langchain-openai - 兼容 OpenAI 接口(由于 Qwen 也兼容 OpenAI,所以 Qwen 可以直接用这个)</p>
+<p data-source-page="2">配置 API Key:</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">import os
+
+# Qwen API 配置
+os.environ[&quot;OPENAI_API_KEY&quot;] = &quot;your-qwen-api-key&quot;
+os.environ[&quot;OPENAI_API_BASE&quot;] = &quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;</code></pre></div>
+<aside class="callout" data-source-page="2"><p>注意，这里我们将Qwen的API_KEY和地址写入到OPENAI的相关环境变量。LangChain在运行的过程中，会自动寻找这些环境变量，不需要我们在手动赋值了。</p></aside>
+<h2 id="section-22" data-source-page="2">Level 1: 最简单的对话<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">从最基础的开始 - 调用一次大模型。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<aside class="callout" data-source-page="3"><b>阅读提示</b><p>完整源码参考：samples/chapter8/langchain_demo/01_basic_call.py</p></aside>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from langchain_openai import ChatOpenAI
+
+# 初始化模型
+llm = ChatOpenAI(
+    model=&quot;qwen3.6-plus&quot;
+    temperature=0.7,
+)
+
+# 调用
+response = llm.invoke(&quot;原神好玩吗?&quot;)
+print(response.content)</code></pre></div>
+<p data-source-page="3">运行效果:</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">《原神》是一款由米哈游（miHoYo）开发的开放世界冒险游戏，自2020年发布以来受到了全球玩家的喜
+爱。.....
+
+1</code></pre></div>
+<p data-source-page="3">这里发生了什么?</p>
+<p class="list-item" data-source-page="3">ChatOpenAI 封装了 API 调用细节</p>
+<p class="list-item" data-source-page="3">invoke() 方法发送请求</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">invoke()</code></pre></div>
+<p class="list-item" data-source-page="3">返回 AIMessage 对象，.content 是回复文本</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">AIMessage</code></pre></div>
+<p data-source-page="3">但这还不算 LangChain 应用，只是用了它的模型封装。真正的价值在后面。</p>
+<h2 id="section-35" data-source-page="3">Level 2: 使用 Prompt 模板<a class="heading-link" href="#section-35" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">手写 Prompt 太麻烦了，用模板管理更优雅。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<aside class="callout" data-source-page="4"><b>阅读提示</b><p>完整源码参考：samples/chapter8/langchain_demo/02_with_prompt.py</p></aside>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+
+# 定义角色与任务
+system_prompt = &quot;&quot;&quot;你是一位资深的原神游戏攻略专家。
+
+你的特点:
+- 熟悉所有角色、武器、圣遗物配置
+- 提供实用的配队建议和养成攻略
+- 语言简洁,重点突出
+
+请根据用户问题提供专业建议。&quot;&quot;&quot;
+
+# 创建 Prompt 模板
+prompt = ChatPromptTemplate.from_messages([
+    (&quot;system&quot;, system_prompt),
+    (&quot;user&quot;, &quot;{question}&quot;)
+])
+
+# 初始化模型
+llm = ChatOpenAI(
+    model=&quot;qwen3.6-plus&quot;
+    temperature=0.7,
+)
+
+# 组装成 Chain
+chain = prompt | llm
+
+# 使用
+response = chain.invoke({&quot;question&quot;: &quot;雷电将军怎么配队?&quot;})
+print(response.content)</code></pre></div>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">雷电将军配队核心思路：**充能+后台输出+元素反应/辅助**。以下是主流配队推荐：
+..........
+
+1
+2</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">Level 2 相比 Level 1 的三大进步：</p>
+<p data-source-page="5">① 引入 Prompt 模板 - 管理复杂提示词</p>
+<p data-source-page="5">Level 1 的问题：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 简单问题还好
+response = llm.invoke(&quot;原神好玩吗?&quot;)
+
+# 但如果需要设定角色和规则就比较麻烦
+response = llm.invoke([
+    {&quot;role&quot;: &quot;system&quot;, &quot;content&quot;: &quot;你是一位资深的原神游戏攻略专家。你的特点：熟悉所有角
+色...&quot;},
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;雷电将军怎么配队?&quot;}
+])</code></pre></div>
+<p data-source-page="5">Level 2 的解决方案：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 定义一次模板
+prompt = ChatPromptTemplate.from_messages([
+    (&quot;system&quot;, system_prompt),  # system_prompt 定义了AI的角色和规则
+    (&quot;user&quot;, &quot;{question}&quot;)       # {question} 是占位符，使用时填入具体问题
+])
+
+# 之后只需传入业务参数
+chain.invoke({&quot;question&quot;: &quot;雷电将军怎么配队?&quot;})</code></pre></div>
+<p data-source-page="5">ChatPromptTemplate把复杂的消息结构封装成可复用的模板：</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 定义角色与规则（写一次，到处用）
+system_prompt = &quot;&quot;&quot;你是一位资深的原神游戏攻略专家。
+
+你的特点:
+- 熟悉所有角色、武器、圣遗物配置
+- 提供实用的配队建议和养成攻略
+- 语言简洁,重点突出
+
+请根据用户问题提供专业建议。&quot;&quot;&quot;
+
+# 创建模板（system 消息 + user 消息）
+prompt = ChatPromptTemplate.from_messages([
+    (&quot;system&quot;, system_prompt),  # 固定的角色设定
+    (&quot;user&quot;, &quot;{question}&quot;)      # 动态的用户问题
+])</code></pre></div>
+<p data-source-page="6">② 管道语法 - 串联组件流程</p>
+<p data-source-page="6">还记得第 2 节中提到的管道“全自动流水线”吗？在 Level 1 中，我们需要手动获取响应并打印。到了Level 2，通过 | 符号，我们将 Prompt 和模型“焊接”在了一起。</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># ✓ 管道写法（声明式流程，数据自动流转）
+chain = prompt | llm
+response = chain.invoke({&quot;question&quot;: &quot;...&quot;})</code></pre></div>
+<p data-source-page="6">小结：Level 2 的本质 Level 1 是&quot;直接调用&quot;，Level 2 引入了组件化思维：</p>
+<p class="list-item" data-source-page="6">Prompt 模板 = 可复用的提示词管理</p>
+<p class="list-item" data-source-page="6">管道语法 = 声明式的流程编排 这就是 LangChain 的设计哲学：用组件组合替代代码拼接。</p>
+<h2 id="section-54" data-source-page="6">Level 3: 增加对话记忆<a class="heading-link" href="#section-54" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">我们之前讨论过，AI并不记得之前说过什么，因为AI没有记忆。我们之前都是手动把之前的会话内容携带在提示词里。那么来看看LangChain怎么优雅的解决这个问题：</p>
+<aside class="callout" data-source-page="6"><b>阅读提示</b><p>完整源码参考：samples/chapter8/langchain_demo/03_with_memory.py</p></aside>
+<p data-source-page="6">测试一下:</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 第一轮
+response1 = chain.invoke({&quot;question&quot;: &quot;我想玩雷电将军&quot;})
+
+# 第二轮
+response2 = chain.invoke({&quot;question&quot;: &quot;她怎么配队?&quot;})
+# AI 不知道&quot;她&quot;指的是雷电将军</code></pre></div>
+<p data-source-page="7">解决方案 - 添加 Memory:</p>
+<p data-source-page="7">要让 AI 记住对话，在 LangChain 里可以先记住一个简单的“三步法”:</p>
+<p class="list-item" data-source-page="7">在提示词里留出一个位置,专门放「之前说过的话」。</p>
+<p data-source-page="7">留出一个位置</p>
+<p class="list-item" data-source-page="7">准备一个地方专门存这次对话的来往消息(就像聊天记录)。</p>
+<p class="list-item" data-source-page="7">用一个<strong>“记忆包装器”</strong>把原来的对话链包起来，让它在每次调用前自动把历史塞进去，调用后再把这次对话补充到历史里。</p>
+<p data-source-page="7">下面的代码就是按照这三步展开的实现，代码里出现的那些类名，你可以先把它们当成完成这三步的“工具箱”。其中:</p>
+<p class="list-item" data-source-page="7">InMemoryChatMessageHistory 可以理解为「放在内存里的聊天记录本」;</p>
+<p class="list-item" data-source-page="7">RunnableWithMessageHistory 可以理解为前面提到的「记忆包装器」。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 系统提示词
+system_prompt = &quot;&quot;&quot;你是一位资深的原神游戏攻略专家。
+请根据对话历史和用户问题提供专业建议。&quot;&quot;&quot;
+
+# Prompt 模板(增加历史占位符)
+# 第一步：留出位置
+prompt = ChatPromptTemplate.from_messages([
+    (&quot;system&quot;, system_prompt),
+    MessagesPlaceholder(variable_name=&quot;history&quot;),  # 专门放「之前说过的话」的位置
+    (&quot;user&quot;, &quot;{question}&quot;)
+])
+
+# 初始化模型
+llm = ChatOpenAI(
+    model=&quot;qwen3.6-plus&quot;
+    temperature=0.7,
+)
+
+# 基础 Chain
+base_chain = prompt | llm
+
+# 第二步：准备存储聊天记录的地方
+# 用一个字典保存这次对话的所有消息,键是 session_id
+chat_histories = {}  # 比如这次我们会用 &#x27;chat_001&#x27; 作为对话的名字
+
+def get_chat_history(session_id: str):
+    &quot;&quot;&quot;根据 session_id 获取对应对话的聊天记录
+
+    session_id 就是给这次对话起的名字,比如 &quot;chat_001&quot;
+    &quot;&quot;&quot;
+    if session_id not in chat_histories:
+        # 如果这是个新对话，创建一个新的历史记录
+        chat_histories[session_id] = InMemoryChatMessageHistory()
+    return chat_histories[session_id]
+
+# 第三步：用“记忆包装器”包起来
+# 这个包装器会自动做两件事：
+# 1. 对话前：把历史记录拿出来，填到 &quot;history&quot; 位置
+# 2. 对话后：把这次的问题和AI回答存起来
+chain_with_history = RunnableWithMessageHistory(
+    base_chain,                        # 原本的Chain
+    get_chat_history,                  # 怎么获取历史的函数
+    input_messages_key=&quot;question&quot;,    # 用户问题的字段名
+    history_messages_key=&quot;history&quot;,   # 历史消息的字段名
+)
+
+# 使用：需要指定对话标识(session_id)
+config = {&quot;configurable&quot;: {&quot;session_id&quot;: &quot;chat_001&quot;}}  # 给这次对话起个名字
+
+# 第一轮对话
+response1 = chain_with_history.invoke(
+    {&quot;question&quot;: &quot;我想玩雷电将军&quot;},
+    config=config  # 携带对话标识
+)
+print(&quot;回复1:&quot;, response1.content)
+
+# 第二轮对话（用同一个 session_id，所以AI能记得上次对话）
+response2 = chain_with_history.invoke(
+    {&quot;question&quot;: &quot;她怎么配队?&quot;},  # AI知道&quot;她&quot;指的是雷电将军
+    config=config  # 同一个 session_id
+)
+print(&quot;回复2:&quot;, response2.content)</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">回复1: 雷电将军是非常强力的充能辅助,可以...
+
+回复2: 雷电将军的配队推荐如下:
+       (AI 知道&quot;她&quot;指的是雷电将军!)
+       ...</code></pre></div>
+<h2 id="section-70" data-source-page="9">Level 4: 输出结构化<a class="heading-link" href="#section-70" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">有时候需要模型返回 JSON 格式的结构化数据。LangChain 提供了与 Pydantic 结合的方案，只需定义一个数据类和一个解析器：</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">from pydantic import BaseModel, Field
+from langchain.output_parsers import PydanticOutputParser
+
+# 定义数据结构
+class TeamRecommendation(BaseModel):
+    team_name: str = Field(description=&quot;队伍名称&quot;)
+    members: list[str] = Field(description=&quot;队伍成员列表&quot;)
+
+# 创建解析器
+parser = PydanticOutputParser(pydantic_object=TeamRecommendation)
+
+# 组装链条
+chain = prompt | llm | parser
+
+# 调用后直接拿到结构化对象
+result = chain.invoke({
+    &quot;character&quot;: &quot;雷电将军&quot;,
+    &quot;format_instructions&quot;: parser.get_format_instructions()
+})
+print(result.team_name)  # 直接访问字段</code></pre></div>
+<h2 id="section-73" data-source-page="10">Level 5: 流式输出<a class="heading-link" href="#section-73" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">用户不想等待完整响应，希望看到 AI 逐字输出。LangChain 支持流式调用：</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 用 stream() 替代 invoke() 即可
+for chunk in chain.stream({&quot;question&quot;: &quot;雷电将军的培养优先级&quot;}):
+    print(chunk.content, end=&quot;&quot;, flush=True)</code></pre></div>
+<p data-source-page="10">invoke() 等待完整响应后一次性返回，stream() 逐块返回、实时显示。使用方式完全一致，只需把.invoke() 换成 .stream()。</p>
+<h2 id="section-77" data-source-page="10">完整示例<a class="heading-link" href="#section-77" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">以上是 LangChain 的基础用法。完整的交互式对话示例（整合记忆+流式输出）请参考源码：</p>
+<aside class="callout" data-source-page="10"><b>阅读提示</b><p>完整源码参考：samples/chapter8/langchain_demo/06_complete_chat.py</p></aside>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<h2 id="section-80" data-source-page="11">■ 学点英语<a class="heading-link" href="#section-80" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="11"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>聊天提示模板</td><td>ChatPromptTemplate</td><td>/tʃæt prɑːmpt ˈtemplət/</td><td>管理 system/user 消息结构的模板类</td></tr><tr><td>消息占位符</td><td>MessagesPlaceholder</td><td>/ˈmesɪdʒɪz ˈpleɪshoʊldər/</td><td>在模板中预留历史对话的插入位置</td></tr><tr><td>会话标识</td><td>Session ID</td><td>/ˈseʃn aɪ diː/</td><td>区分不同对话会话的唯一标识符</td></tr><tr><td>流式输出</td><td>Stream Output</td><td>/striːm ˈaʊtpʊt/</td><td>逐块返回响应而非一次性完成的模式</td></tr></tbody></table></div>
+<h2 id="section-82" data-source-page="11">下一节预告<a class="heading-link" href="#section-82" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">无论是 Prompt 模板还是对话记忆，AI 始终只能&quot;说话&quot;，无法真正&quot;行动&quot;。如果想让 AI 查询实时天气、搜索最新攻略或者操作数据库，就需要用到 LangChain 的工具调用机制。这是下一节将要讨论的内容。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-125.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>LangChain核心概念</strong><small>LangChain核心概念与应用</small></a><a class="chapter-neighbor next" href="lesson-127.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>工具调用：让AI操作外部世界</strong><small>RAG集成：打造智能知识库</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5283#mid=105031" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">应用目标</a><a href="#section-9" class="toc-level-2">环境准备</a><a href="#section-22" class="toc-level-2">Level 1: 最简单的对话</a><a href="#section-35" class="toc-level-2">Level 2: 使用 Prompt 模板</a><a href="#section-54" class="toc-level-2">Level 3: 增加对话记忆</a><a href="#section-70" class="toc-level-2">Level 4: 输出结构化</a><a href="#section-73" class="toc-level-2">Level 5: 流式输出</a><a href="#section-77" class="toc-level-2">完整示例</a><a href="#section-80" class="toc-level-2">■ 学点英语</a><a href="#section-82" class="toc-level-2">下一节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-126", "title": "第一个LangChain应用", "stage": 4, "week": 8, "module": "RAG集成：打造智能知识库", "minutes": 16, "pages": 11, "type": "article"}</script>
+</body></html>

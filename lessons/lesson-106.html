@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>为什么需要Function Calling · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-106">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 6 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Function Calling的本质</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 107</span></div>
+<h1 class="lesson-title">为什么需要Function Calling</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>8 页原文</span><span>约 11 分钟阅读</span><span class="module-name">Function Calling的本质</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-106.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-106.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面学习的大模型只能输出文本，无法完成实际操作。这一节引入Function Calling的概念——让AI不仅能&quot;说&quot;，还能&quot;做&quot;。从电影《Her》的畅想出发，分析传统LLM的局限，介绍Function Calling的工作模式、能力范围和限制，最后讨论它与RAG的关系。</p></aside>
+<h2 id="section-1" data-source-page="1">1.1 从电影《Her》说起<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">2014年奥斯卡获奖影片《Her》，讲述了主人公西奥多与人工智能萨曼莎（Samantha）的故事。影片里有大量人与人工智能的对话。</p>
+<p data-source-page="1">当西奥多说：&quot;帮我整理一下今天的邮件。&quot;萨曼莎立刻读取邮箱，分类整理，删除垃圾邮件。</p>
+<p data-source-page="1">当西奥多说：&quot;帮我查一下去海边的路线。&quot;萨曼莎调用地图系统，规划最佳路线，还贴心地查询了天气。</p>
+<p data-source-page="1">当西奥多说：&quot;帮我把这封信发给出版社。&quot;萨曼莎直接发送邮件，并设置了后续提醒。</p>
+<p data-source-page="1">萨曼莎不只会&quot;陪西奥多聊天&quot;，更会&quot;帮他做事&quot;。而前面章节学到的AI，更像是&quot;只会对话的朋友&quot;——它能理解用户的心情、回答问题，但无法真正完成任务。Function Calling 就是让AI从&quot;聊天伙伴&quot;变成&quot;智能助手&quot;的关键技术。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-7" data-source-page="2">1.2 传统LLM的困境<a class="heading-link" href="#section-7" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">目前学过的大模型有一个共同的局限：只能输出文本，无法执行操作。换句话说，它们只能&quot;说&quot;，不能&quot;做&quot;。下面两个场景可以直观感受到这种局限。</p>
+<p data-source-page="2">比如查询天气，当用户问&quot;明天上海天气怎么样？&quot;时，传统 LLM 会这样回答：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">抱歉，我的知识截止到２０２３年１０月，无法提供实时天气信息。
+建议您查看天气预报网站或APP。
+
+1
+2</code></pre></div>
+<p data-source-page="2">明明有天气 API 可用，AI 却帮不上忙。再比如设置提醒，当用户说&quot;提醒我明天下午３点开会&quot;时，它也只能这样回答：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">好的，请您在日历应用中设置明天下午３点的会议提醒。
+
+1</code></pre></div>
+<p data-source-page="2">AI 只会&quot;教用户怎么做&quot;，而不是&quot;帮用户做&quot;。</p>
+<p data-source-page="2">为什么会这样？根源在于传统 LLM 的工作模式被困在&quot;文本输入 → 文本输出&quot;这样一条封闭的回路里。</p>
+<p data-source-page="2">它的知识停留在训练截止那一刻——查不到今天的天气，也看不到此刻的股价。</p>
+<p data-source-page="2">它没有执行器——没法真的把邮件发出去，也没法替你按下提醒的闹钟。</p>
+<p data-source-page="2">它更没有伸向外部世界的手——专业计算工具、数据库、文件系统，它都摸不到。</p>
+<p data-source-page="2">它就像一个只能说话、没有手脚的助手。</p>
+<p data-source-page="2">它就像一个只能说话、没有手脚的助手</p>
+<h2 id="section-20" data-source-page="2">1.3 Function Calling：赋予AI行动能力<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">Function Calling 让LLM不仅能&quot;说&quot;，还能&quot;做&quot;。通过调用外部函数、工具或API，大模型能够完成需要实际操作的任务——相当于给它装上了&quot;手脚&quot;。</p>
+<p data-source-page="2">它的工作模式是这样的：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户输入（文本）
+    ↓
+LLM分析：需要什么工具？
+    ↓
+调用外部函数（获取数据/执行操作）
+    ↓
+LLM基于函数结果生成回答
+    ↓
+输出最终答案（文本）</code></pre></div>
+<p data-source-page="3">下面用一段伪代码快速体验一下，场景是查询明天上海的天气：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># ═══════════════════════════════════════
+#  场景：查询明天上海的天气
+# ═══════════════════════════════════════
+
+# 1. 用户提问
+user_input = &quot;明天上海天气怎么样？&quot;
+
+# 2. 定义可用的工具
+tools = [
+    {
+        &quot;name&quot;: &quot;get_weather&quot;,
+        &quot;description&quot;: &quot;获取指定城市的天气信息&quot;,
+        &quot;parameters&quot;: {
+            &quot;city&quot;: &quot;城市名称&quot;,
+            &quot;date&quot;: &quot;日期（如：明天、后天、2025-12-15）&quot;
+        }
+    }
+]
+
+# 3. LLM分析并决定调用工具
+response = llm.chat(
+    message=user_input,
+    tools=tools  # 告诉LLM有哪些工具可用
+)
+
+# 4. LLM返回：我需要调用get_weather
+response = {
+    &quot;tool_call&quot;: {
+        &quot;name&quot;: &quot;get_weather&quot;,
+        &quot;arguments&quot;: {
+            &quot;city&quot;: &quot;上海&quot;,
+            &quot;date&quot;: &quot;明天&quot;
+        }
+    }
+}
+
+# 5. 执行实际的函数调用
+def get_weather(city, date):
+    # 这里调用真实的天气API
+    api_result = call_weather_api(city, date)
+    return api_result
+
+result = get_weather(&quot;上海&quot;, &quot;明天&quot;)
+# result = {
+#     &quot;city&quot;: &quot;上海&quot;,
+#     &quot;date&quot;: &quot;2026-01-16&quot;,
+#     &quot;temperature&quot;: &quot;15-22℃&quot;,
+#     &quot;weather&quot;: &quot;晴&quot;,
+#     &quot;wind&quot;: &quot;北风3级&quot;
+# }
+
+# 6. 把函数结果返回给LLM
+final_answer = llm.chat(
+    message=user_input,
+    tool_result=result
+)
+
+# 7. LLM生成最终回答
+print(final_answer)
+# &quot;明天上海晴天，气温15-22℃，北风3级，
+#  是个适合出行的好天气！建议穿薄外套。&quot;</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">在这一流程中，LLM 的角色发生了本质变化。它先理解意图并识别出需要调用的工具（get_weather），随后精准地提取出查询所需的参数（上海、明天）。在实际调用天气 API 获取真实数据后，LLM 最终基于这些实时信息生成准确的自然语言回答。</p>
+<p data-source-page="5">完整流程可以用下图表示：</p>
+<h2 id="section-28" data-source-page="5">1.4 Function Calling能做什么<a class="heading-link" href="#section-28" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">理论上，只要能写出函数，LLM 就能调用它。这意味着无论是天气、地图、数据库等第三方 API，还是自行实现的文件操作、数据处理等业务逻辑，甚至是对硬件设备的控制和系统命令的执行，都可以交给LLM 来驱动。</p>
+<p data-source-page="5">但实践中有几个限制需要注意。首先是安全风险，不要把危险操作暴露给 LLM 调用——如果 LLM 误解了用户的意图（例如将&quot;清理一下&quot;理解为删除所有数据），或者遭遇 Prompt 注入攻击，执行了恶意代码或越权转账，后果将是灾难性的。因此需要遵循严格的安全原则：对于查询天气、搜索信息等只读操作，可以放心交给 AI；但对于删除数据、修改配置等破坏性操作，以及转账、支付等资金相关操作，必须引入人工确认机制；至于修改密码、授权等敏感权限操作，绝不应让 LLM 直接调用。</p>
+<p data-source-page="5">其次是成本与性能。LLM 调用本身和高昂的第三方 API 费用带来成本压力；而模型判断加上 API 响应所需的时间，使得它在毫秒级响应的实时性场景中并不适用；此外 LLM 仍存在准确性风险，可能会误判函数或提取错误参数，因此必须做好完善的错误处理。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">说完限制，再来看实践中的典型应用。下图按风险级别由低到高，展示了 Function Calling 的适合与不适合场景：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Function Calling 应用场景
+                      (按风险级别从低到高)
+
+【安全区】只读操作 - 放心使用
+  ◆ 查询天气           ◆ 搜索信息           ◆ 数学计算
+  ◆ 股票行情           ◆ 新闻资讯           ◆ 数据库查询
+  ◆ 地图导航           ◆ 汇率转换           ◆ 单位换算
+
+         ↓ 风险逐渐增加
+
+【谨慎区】写操作 - 需要确认机制
+  ▲ 发送邮件           ▲ 设置提醒           ▲ 创建日程
+  ▲ 文件读取           ▲ 保存笔记           ▲ 生成报表
+  ▲ 数据分析           ▲ 智能推荐           ▲ 内容生成
+
+         ↓ 风险持续上升
+
+【危险区】破坏性操作 - 严格限制或禁止
+  ✗ 删除数据           ✗ 修改配置           ✗ 执行代码
+  ✗ 转账支付           ✗ 修改密码           ✗ 授权操作
+  ✗ 系统命令           ✗ 数据库写入         ✗ 文件删除
+
+【核心原则】
+  可逆操作  ──→  可以自动执行
+  不可逆操作 ──→  必须人工确认
+  高风险操作 ──→  严格限制或禁止</code></pre></div>
+<h2 id="section-34" data-source-page="6">1.5 与RAG的关系<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">RAG 和 Function Calling 都是让大模型突破自身局限的手段，但解决的问题不同。</p>
+<p data-source-page="6">RAG的核心是让AI拥有专属知识库，解决的是&quot;知识&quot;问题：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">让AI拥有专属知识库
+→ 回答专业问题
+→ 解决&quot;知识&quot;问题</code></pre></div>
+<p data-source-page="6">典型场景包括企业知识库问答、技术文档查询、法律条文检索，核心能力是检索 + 生成。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">本章学的Function Calling，核心是让AI拥有行动能力，解决的是&quot;能力&quot;问题：</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">让AI拥有行动能力
+→ 执行实际操作
+→ 解决&quot;能力&quot;问题</code></pre></div>
+<p data-source-page="7">典型场景包括调用API获取数据、操作系统和应用、控制外部设备，核心能力是判断 + 调用。</p>
+<p data-source-page="7">两者结合</p>
+<p data-source-page="7">把两者结合起来，就能组成真正的AI助手。以一个智能客服场景为例：</p>
+<p data-source-page="7">真正的AI助手</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户：&quot;我想退货&quot;
+
+流程：
+1. RAG检索退货政策（知识）
+2. Function Calling查询订单信息（能力）
+3. Function Calling创建退货申请（能力）
+4. 基于政策+订单信息生成回答（综合）
+
+回答：
+&quot;您的订单#12345符合7天无理由退货政策。
+已为您创建退货申请，退货单号：RT789。
+请在3天内将商品寄回，预计5个工作日退款到账。
+需要我帮您预约快递上门取件吗？&quot;</code></pre></div>
+<h2 id="section-46" data-source-page="7">1.6 下一节预告<a class="heading-link" href="#section-46" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">既然 Function Calling 如此强大，大模型究竟是如何实现这一点的？它是如何做到在没有运行代码的情况下，精准判断该调用哪个函数并提取出正确参数的？下一节，我们将深入探索 Function Calling 的工作原理。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-48" data-source-page="8">1.7 ■ 学点英语<a class="heading-link" href="#section-48" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>函数调用机制</td><td>Function Calling</td><td>/ˈfʌŋkʃn ˈkɔːlɪŋ/</td><td>让LLM不仅能输出文本，还能调用外部函数执行实际操作</td></tr><tr><td>安全分级</td><td>Security Classification</td><td>/sɪˈkjʊərəti klæsɪfɪ ˌ ˈkeɪʃn/</td><td>按操作风险程度将FC能力分为安全区/谨慎区/危险区</td></tr><tr><td>只读操作</td><td>Read-only Operation</td><td>/riːd ˈəʊnli ɒpə ˌ ˈreɪʃn/</td><td>不改变系统状态的数据查询类操作，可放心交给AI</td></tr><tr><td>工具调用</td><td>Tool Call</td><td>/tuːl kɔːl/</td><td>LLM以结构化JSON形式返回的、指示代码执行特定函数的指令</td></tr></tbody></table></div>
+<h2 id="section-50" data-source-page="8">图片<a class="heading-link" href="#section-50" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">![](106-图文-1-1-为什么需要Function Calling.assets/img-001.png)</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-105.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>LlamaIndex（二）-实战：Java规范问答系统</strong><small>LlamaIndex</small></a><a class="chapter-neighbor next" href="lesson-107.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Function Calling的本质与角色</strong><small>Function Calling的本质</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5275#mid=104925" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">1.1 从电影《Her》说起</a><a href="#section-7" class="toc-level-2">1.2 传统LLM的困境</a><a href="#section-20" class="toc-level-2">1.3 Function Calling：赋予AI行动能力</a><a href="#section-28" class="toc-level-2">1.4 Function Calling能做什么</a><a href="#section-34" class="toc-level-2">1.5 与RAG的关系</a><a href="#section-46" class="toc-level-2">1.6 下一节预告</a><a href="#section-48" class="toc-level-2">1.7 ■ 学点英语</a><a href="#section-50" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-106", "title": "为什么需要Function Calling", "stage": 3, "week": 6, "module": "Function Calling的本质", "minutes": 11, "pages": 8, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,461 @@
+{
+  "id": "lesson-116",
+  "title": "Prompts 详解",
+  "code": "1-2",
+  "stage": 3,
+  "week": 7,
+  "week_title": "MCP：模型上下文协议",
+  "module": "Tools、Prompts详解",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/002-第7周 MCP：模型上下文协议/006-Tools、Prompts详解/116-图文-1-2-Prompts 详解.pdf",
+  "sha256": "86480ad15d8bbe9ab8fe599093597f7f4035fb871e80c1a0f2808996f2edf6b4",
+  "pdf": "sources/pdf/lesson-116.pdf",
+  "pages": 9,
+  "source_url": "https://class.imooc.com/lesson/5280#mid=104935",
+  "minutes": 11,
+  "excerpt": "上一节学习了 Tools，让 AI 能够执行动态操作。本节学习 MCP 的第三大核心能力：Prompts（预制的使用模板），它能把常见的操作流程标准化。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节学习了 Tools，让 AI 能够执行动态操作。本节学习 MCP 的第三大核心能力：Prompts（预制的使用模板），它能把常见的操作流程标准化。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "6.1 Prompts：预制的使用模板",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "Prompts 要解决什么问题",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Resources 和 Tools 都学会了，但用户每次都要\"从零开始\"描述需求：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "场景：数据分析需求\n━━━━━━━━━━━━━━━━━\n\n用户A：\"帮我分析2024年的订单趋势，按月统计金额，生成图表描述\"\n用户B：\"能不能看下去年每个月的订单金额变化？\"\n用户C：\"分析订单数据，时间维度是月份，指标是金额总和\"\n\n问题：\n× 三个用户其实想要同样的分析\n× 但表述不同，AI 可能理解有偏差\n× 每次都要完整描述需求，很繁琐",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Prompts 就是为了标准化常见的使用场景。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Prompts 就是为了标准化常见的使用场景",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Prompts 的工作方式",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "Prompts = 预制的 Prompt 模板 + 参数\n\n示例：\n━━━━━━━━━━━━━━━━━\nPrompt 名称：monthly_order_analysis\n模板内容：\n  \"分析 {year} 年的订单数据，按月统计 {metric} 指标，\n   生成趋势描述和关键发现\"\n\n参数：\n  - year: 年份\n  - metric: 指标（金额/数量/用户数）\n\n使用：\n  → 用户只需选择这个 Prompt\n  → 填写参数：year=2024, metric=金额\n  → AI 自动生成完整的分析流程",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "Prompts 的设计示例",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例：天气查询 MCP Server 的 Prompts（伪代码）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 注意：以下为伪代码示意，不可直接运行\n\nclass WeatherMCPServer:\n    def list_prompts(self):\n        # ▸ 返回所有可用的 Prompts\n        return [\n            {\n                \"name\": \"daily_weather_summary\",\n                \"description\": \"生成指定城市的每日天气摘要\",\n                \"arguments\": [\n                    {\n                        \"name\": \"city\",\n                        \"description\": \"城市名称\",\n                        \"required\": True\n                    },\n                    {\n                        \"name\": \"date\",\n                        \"description\": \"日期（默认今天）\",\n                        \"required\": False\n                    }\n                ]\n            },\n            {\n                \"name\": \"weather_travel_advice\",\n                \"description\": \"基于天气给出旅行建议\",\n                \"arguments\": [\n                    {\n                        \"name\": \"city\",\n                        \"description\": \"目的地城市\",\n                        \"required\": True\n                    },\n                    {\n                        \"name\": \"days\",\n                        \"description\": \"旅行天数\",\n                        \"required\": True\n                    }\n                ]\n            }\n        ]\n\n    def get_prompt(self, name, arguments):\n        # ▸ 生成具体的 Prompt 内容\n        if name == \"daily_weather_summary\":\n            city = arguments[\"city\"]\n            date = arguments.get(\"date\", \"今天\")\n\n            return {\n                \"messages\": [\n                    {\n                        \"role\": \"user\",\n                        \"content\": f\"\"\"\n请为{city}生成{date}的天气摘要报告，包括：\n1. 温度范围和体感温度\n2. 天气状况（晴/雨/阴等）\n3. 空气质量指数\n4. 出行建议（是否需要带伞、注意防晒等）\n\n请使用温暖友好的语气，就像天气预报员一样。\n                        \"\"\"\n                    }\n                ]\n            }\n\n        elif name == \"weather_travel_advice\":\n            city = arguments[\"city\"]\n            days = arguments[\"days\"]\n\n            return {\n                \"messages\": [\n                    {\n                        \"role\": \"user\",\n                        \"content\": f\"\"\"\n我计划去{city}旅行{days}天。\n请根据未来{days}天的天气预报，给我以下建议：\n1. 最佳出行时间段\n2. 需要准备的衣物和装备\n3. 天气可能影响的活动安排\n4. 特别需要注意的事项\n\n请结合天气数据给出具体、实用的建议。\n                        \"\"\"\n                    }\n                ]\n            }",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "使用流程",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "方式1：传统方式（用户自己写）\n━━━━━━━━━━━━━━━━━━━━━━━━\n用户：\"帮我看看上海今天的天气，告诉我要不要带伞\"\n  ↓\nAI 自己理解需求，查询天气，生成回复\n\n方式2：使用 Prompt 模板（标准化）\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n用户：选择 \"daily_weather_summary\" Prompt\n     填参数：city=\"上海\", date=\"今天\"\n  ↓\n1. AI 应用调用 get_prompt(\"daily_weather_summary\", {city:\"上海\"})\n2. Server 返回完整的 Prompt 模板\n3. AI 使用这个模板，查询天气，生成标准化的摘要\n\n使用 Prompt 模板不仅能确保输出格式的一致性（总是包含温度、空气质量等关键信息），还能统一 AI \n的语气（如维持温暖友好的播报风格），并显著提升用户体验，因为用户不再需要绞尽脑汁描述复杂的查\n询需求。",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "Prompts 的两种使用模式",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可能会有人疑问：AI的优势不就是理解自然语言吗？为什么还要让用户填表单选模板？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI的优势不就是理解自然语言吗？为什么还要让用户填表单选模板？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际上，Prompts 有两种不同的使用方式：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模式1：AI背后自动调用（对用户透明）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户：\"我要退货，订单号 12345\"\n  ↓\nAI应用智能分析：\n  1. 识别意图 → 这是退货需求\n  2. 提取参数 → order_id=12345\n  3. 自动选择 \"handle_refund_request\" Prompt\n  4. 自动填充参数\n  ↓\n执行退款流程（用户感觉在自然对话）\n\n优势：\n✓ 用户无感知，纯自然语言交互\n✓ AI自动选择最合适的Prompt\n✓ 对话体验流畅\n\n适用场景：\n→ 日常查询、咨询类需求\n→ 对话式客服\n→ 智能助手",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "模式2：用户主动选择（显式交互）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户：点击 \"退款处理\" 按钮\n  ↓\n系统弹出表单：\n  +-------------------------\n  | 退款处理流程\n  +-------------------------\n  | 订单号：[12345____]\n  | 退货原因：[质量问题▼]\n  | 退款方式：[原路退回▼]\n  |\n  |      [取消]  [提交]\n  +-------------------------\n  ↓\n执行退款流程\n\n优势：\n✓ 用户明确知道在做什么\n✓ 可以修改、确认参数\n✓ 更可控，适合关键操作\n\n适用场景：\n→ 敏感操作（退款、删除数据）\n→ 需要用户确认的流程\n→ 批量操作、复杂表单",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "两种模式的选择依据",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "维度 | 模式1（AI自动） | 模式2（用户选择）\n交互方式 | 纯对话 | 点击+填表单\n用户体验 | 更自然流畅 | 更明确可控\n适用操作 | 查询、咨询 | 敏感、关键操作\n错误风险 | AI可能误判 | 用户手动确认\n实现复杂度 | 需要NLU能力 | 相对简单",
+      "rows": [
+        [
+          "维度",
+          "模式1（AI自动）",
+          "模式2（用户选择）"
+        ],
+        [
+          "交互方式",
+          "纯对话",
+          "点击+填表单"
+        ],
+        [
+          "用户体验",
+          "更自然流畅",
+          "更明确可控"
+        ],
+        [
+          "适用操作",
+          "查询、咨询",
+          "敏感、关键操作"
+        ],
+        [
+          "错误风险",
+          "AI可能误判",
+          "用户手动确认"
+        ],
+        [
+          "实现复杂度",
+          "需要NLU能力",
+          "相对简单"
+        ]
+      ],
+      "page": 8
+    },
+    {
+      "kind": "quote",
+      "text": "NLU(Natural Language Understanding)，自然语言理解的缩写",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际项目中往往是混合使用。比如一个智能客服系统：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "智能客服系统示例：\n━━━━━━━━━━━━━━\n\n场景1：简单查询（模式1）\n  用户：\"我的订单到哪儿了？\"\n  → AI自动识别，调用\"order_inquiry\" Prompt，直接回答\n\n场景2：敏感操作（模式2）\n  用户：\"我要退款\"\n  AI：\"好的，请确认以下信息：\"\n  → 弹出退款表单，用户填写确认后执行\n\n场景3：复杂需求（混合）\n  用户：\"帮我分析一下最近的销售情况\"\n  AI：\"我找到了几个分析模板，您需要哪种？\"\n  → 推荐Prompt列表，用户选择后填参数",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "6.2 下一节预告",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "学会了 Resources、Tools、Prompts 各自的用途后，下一节将把它们三者组合起来，通过一个完整的智能客服系统场景，展示 MCP 三大能力如何协同工作，搞定真实世界中的复杂业务需求。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h2",
+      "text": "6.3 ■ 学点英语",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n预制模板 | Predefined Template | / priːdɪˈfaɪnd ˈtemplət/ ˌ | 将常见操作流程标准化的预设Prompt模式\n占位符 | Placeholder | /ˈpleɪshoʊldər/ | Prompt模板中预留的变量位置{{}}，用户传入具体参数\n标准化场景 | Standardized Scenario | /ˈstændərdaɪzd sɪ ˈnærioʊ/ | 用模板统一常见需求的处理方式和输出格式\n模板参数填充 | Template Parameter Binding | /ˈtemplət pəˈræmɪtər ˈbaɪndɪŋ/ | 用户传入参数替换模板中占位符的过程",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "预制模板",
+          "Predefined Template",
+          "/ priːdɪˈfaɪnd ˈtemplət/ ˌ",
+          "将常见操作流程标准化的预设Prompt模式"
+        ],
+        [
+          "占位符",
+          "Placeholder",
+          "/ˈpleɪshoʊldər/",
+          "Prompt模板中预留的变量位置{{}}，用户传入具体参数"
+        ],
+        [
+          "标准化场景",
+          "Standardized Scenario",
+          "/ˈstændərdaɪzd sɪ ˈnærioʊ/",
+          "用模板统一常见需求的处理方式和输出格式"
+        ],
+        [
+          "模板参数填充",
+          "Template Parameter Binding",
+          "/ˈtemplət pəˈræmɪtər ˈbaɪndɪŋ/",
+          "用户传入参数替换模板中占位符的过程"
+        ]
+      ],
+      "page": 9
+    }
+  ],
+  "accounting": {
+    "source_chars": 4856,
+    "represented_chars": 4660,
+    "removed_chars": 196,
+    "tables": 2,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 149,
+      "repeated_title": 32,
+      "code_line_number_artifact": 15
+    }
+  },
+  "videos": [],
+  "order": 117,
+  "headings": [
+    {
+      "title": "6.1 Prompts：预制的使用模板",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "Prompts 要解决什么问题",
+      "id": "section-2",
+      "level": 3
+    },
+    {
+      "title": "Prompts 的工作方式",
+      "id": "section-7",
+      "level": 3
+    },
+    {
+      "title": "Prompts 的设计示例",
+      "id": "section-9",
+      "level": 3
+    },
+    {
+      "title": "Prompts 的两种使用模式",
+      "id": "section-14",
+      "level": 3
+    },
+    {
+      "title": "6.2 下一节预告",
+      "id": "section-27",
+      "level": 2
+    },
+    {
+      "title": "6.3 ■ 学点英语",
+      "id": "section-29",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节学习了 Tools，让 AI 能够执行动态操作。本节学习 MCP 的第三大核心能力：Prompts（预制的使用模板），它能把常见的操作流程标准化。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "6.1 Prompts：预制的使用模板"
+    },
+    {
+      "anchor": "section-2",
+      "text": "Prompts 要解决什么问题"
+    },
+    {
+      "anchor": "section-2",
+      "text": "Resources 和 Tools 都学会了，但用户每次都要\"从零开始\"描述需求："
+    },
+    {
+      "anchor": "section-2",
+      "text": "场景：数据分析需求\n━━━━━━━━━━━━━━━━━\n\n用户A：\"帮我分析2024年的订单趋势，按月统计金额，生成图表描述\"\n用户B：\"能不能看下去年每个月的订单金额变化？\"\n用户C：\"分析订单数据，时间维度是月份，指标是金额总和\"\n\n问题：\n× 三个用户其实想要同样的分析\n× 但表述不同，AI 可能理解有偏差\n× 每次都要完整描述需求，很繁琐"
+    },
+    {
+      "anchor": "section-2",
+      "text": "Prompts 就是为了标准化常见的使用场景。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "Prompts 就是为了标准化常见的使用场景"
+    },
+    {
+      "anchor": "section-7",
+      "text": "Prompts 的工作方式"
+    },
+    {
+      "anchor": "section-7",
+      "text": "Prompts = 预制的 Prompt 模板 + 参数\n\n示例：\n━━━━━━━━━━━━━━━━━\nPrompt 名称：monthly_order_analysis\n模板内容：\n  \"分析 {year} 年的订单数据，按月统计 {metric} 指标，\n   生成趋势描述和关键发现\"\n\n参数：\n  - year: 年份\n  - metric: 指标（金额/数量/用户数）\n\n使用：\n  → 用户只需选择这个 Prompt\n  → 填写参数：year=2024, metric=金额\n  → AI 自动生成完整的分析流程"
+    },
+    {
+      "anchor": "section-9",
+      "text": "Prompts 的设计示例"
+    },
+    {
+      "anchor": "section-9",
+      "text": "示例：天气查询 MCP Server 的 Prompts（伪代码）"
+    },
+    {
+      "anchor": "section-9",
+      "text": "# 注意：以下为伪代码示意，不可直接运行\n\nclass WeatherMCPServer:\n    def list_prompts(self):\n        # ▸ 返回所有可用的 Prompts\n        return [\n            {\n                \"name\": \"daily_weather_summary\",\n                \"description\": \"生成指定城市的每日天气摘要\",\n                \"arguments\": [\n                    {\n                        \"name\": \"city\",\n                        \"description\": \"城市名称\",\n                        \"required\": True\n                    },\n                    {\n                        \"name\": \"date\",\n                        \"description\": \"日期（默认今天）\",\n                        \"required\": False\n                    }\n                ]\n            },\n            {\n                \"name\": \"weather_travel_advice\",\n                \"description\": \"基于天气给出旅行建议\",\n                \"arguments\": [\n                    {\n                        \"name\": \"city\",\n                        \"description\": \"目的地城市\",\n                        \"required\": True\n                    },\n                    {\n                        \"name\": \"days\",\n                        \"description\": \"旅行天数\",\n                        \"required\": True\n                    }\n                ]\n            }\n        ]\n\n    def get_prompt(self, name, arguments):\n        # ▸ 生成具体的 Prompt 内容\n        if name == \"daily_weather_summary\":\n            city = arguments[\"city\"]\n            date = arguments.get(\"date\", \"今天\")\n\n            return {\n                \"messages\": [\n                    {\n                        \"role\": \"user\",\n                        \"content\": f\"\"\"\n请为{city}生成{date}的天气摘要报告，包括：\n1. 温度范围和体感温度\n2. 天气状况（晴/雨/阴等）\n3. 空气质量指数\n4. 出行建议（是否需要带伞、注意防晒等）\n\n请使用温暖友好的语气，就像天气预报员一样。\n                        \"\"\"\n                    }\n                ]\n            }\n\n        elif name == \"weather_travel_advice\":\n            city = arguments[\"city\"]\n            days = arguments[\"days\"]\n\n            return {\n                \"messages\": [\n                    {\n                        \"role\": \"user\",\n                        \"content\": f\"\"\"\n我计划去{city}旅行{days}天。\n请根据未来{days}天的天气预报，给我以下建议：\n1. 最佳出行时间段\n2. 需要准备的衣物和装备\n3. 天气可能影响的活动安排\n4. 特别需要注意的事项\n\n请结合天气数据给出具体、实用的建议。\n                        \"\"\"\n                    }\n                ]\n            }"
+    },
+    {
+      "anchor": "section-9",
+      "text": "使用流程"
+    },
+    {
+      "anchor": "section-9",
+      "text": "方式1：传统方式（用户自己写）\n━━━━━━━━━━━━━━━━━━━━━━━━\n用户：\"帮我看看上海今天的天气，告诉我要不要带伞\"\n  ↓\nAI 自己理解需求，查询天气，生成回复\n\n方式2：使用 Prompt 模板（标准化）\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n用户：选择 \"daily_weather_summary\" Prompt\n     填参数：city=\"上海\", date=\"今天\"\n  ↓\n1. AI 应用调用 get_prompt(\"daily_weather_summary\", {city:\"上海\"})\n2. Server 返回完整的 Prompt 模板\n3. AI 使用这个模板，查询天气，生成标准化的摘要\n\n使用 Prompt 模板不仅能确保输出格式的一致性（总是包含温度、空气质量等关键信息），还能统一 AI \n的语气（如维持温暖友好的播报风格），并显著提升用户体验，因为用户不再需要绞尽脑汁描述复杂的查\n询需求。"
+    },
+    {
+      "anchor": "section-14",
+      "text": "Prompts 的两种使用模式"
+    },
+    {
+      "anchor": "section-14",
+      "text": "可能会有人疑问：AI的优势不就是理解自然语言吗？为什么还要让用户填表单选模板？"
+    },
+    {
+      "anchor": "section-14",
+      "text": "AI的优势不就是理解自然语言吗？为什么还要让用户填表单选模板？"
+    },
+    {
+      "anchor": "section-14",
+      "text": "实际上，Prompts 有两种不同的使用方式："
+    },
+    {
+      "anchor": "section-14",
+      "text": "模式1：AI背后自动调用（对用户透明）"
+    },
+    {
+      "anchor": "section-14",
+      "text": "用户：\"我要退货，订单号 12345\"\n  ↓\nAI应用智能分析：\n  1. 识别意图 → 这是退货需求\n  2. 提取参数 → order_id=12345\n  3. 自动选择 \"handle_refund_request\" Prompt\n  4. 自动填充参数\n  ↓\n执行退款流程（用户感觉在自然对话）\n\n优势：\n✓ 用户无感知，纯自然语言交互\n✓ AI自动选择最合适的Prompt\n✓ 对话体验流畅\n\n适用场景：\n→ 日常查询、咨询类需求\n→ 对话式客服\n→ 智能助手"
+    },
+    {
+      "anchor": "section-14",
+      "text": "模式2：用户主动选择（显式交互）"
+    },
+    {
+      "anchor": "section-14",
+      "text": "用户：点击 \"退款处理\" 按钮\n  ↓\n系统弹出表单：\n  +-------------------------\n  | 退款处理流程\n  +-------------------------\n  | 订单号：[12345____]\n  | 退货原因：[质量问题▼]\n  | 退款方式：[原路退回▼]\n  |\n  |      [取消]  [提交]\n  +-------------------------\n  ↓\n执行退款流程\n\n优势：\n✓ 用户明确知道在做什么\n✓ 可以修改、确认参数\n✓ 更可控，适合关键操作\n\n适用场景：\n→ 敏感操作（退款、删除数据）\n→ 需要用户确认的流程\n→ 批量操作、复杂表单"
+    },
+    {
+      "anchor": "section-14",
+      "text": "两种模式的选择依据"
+    },
+    {
+      "anchor": "section-14",
+      "text": "维度 | 模式1（AI自动） | 模式2（用户选择）\n交互方式 | 纯对话 | 点击+填表单\n用户体验 | 更自然流畅 | 更明确可控\n适用操作 | 查询、咨询 | 敏感、关键操作\n错误风险 | AI可能误判 | 用户手动确认\n实现复杂度 | 需要NLU能力 | 相对简单"
+    },
+    {
+      "anchor": "section-14",
+      "text": "NLU(Natural Language Understanding)，自然语言理解的缩写"
+    },
+    {
+      "anchor": "section-14",
+      "text": "实际项目中往往是混合使用。比如一个智能客服系统："
+    },
+    {
+      "anchor": "section-14",
+      "text": "智能客服系统示例：\n━━━━━━━━━━━━━━\n\n场景1：简单查询（模式1）\n  用户：\"我的订单到哪儿了？\"\n  → AI自动识别，调用\"order_inquiry\" Prompt，直接回答\n\n场景2：敏感操作（模式2）\n  用户：\"我要退款\"\n  AI：\"好的，请确认以下信息：\"\n  → 弹出退款表单，用户填写确认后执行\n\n场景3：复杂需求（混合）\n  用户：\"帮我分析一下最近的销售情况\"\n  AI：\"我找到了几个分析模板，您需要哪种？\"\n  → 推荐Prompt列表，用户选择后填参数"
+    },
+    {
+      "anchor": "section-27",
+      "text": "6.2 下一节预告"
+    },
+    {
+      "anchor": "section-27",
+      "text": "学会了 Resources、Tools、Prompts 各自的用途后，下一节将把它们三者组合起来，通过一个完整的智能客服系统场景，展示 MCP 三大能力如何协同工作，搞定真实世界中的复杂业务需求。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "6.3 ■ 学点英语"
+    },
+    {
+      "anchor": "section-29",
+      "text": "中文 | English | 音标 | 说明\n预制模板 | Predefined Template | / priːdɪˈfaɪnd ˈtemplət/ ˌ | 将常见操作流程标准化的预设Prompt模式\n占位符 | Placeholder | /ˈpleɪshoʊldər/ | Prompt模板中预留的变量位置{{}}，用户传入具体参数\n标准化场景 | Standardized Scenario | /ˈstændərdaɪzd sɪ ˈnærioʊ/ | 用模板统一常见需求的处理方式和输出格式\n模板参数填充 | Template Parameter Binding | /ˈtemplət pəˈræmɪtər ˈbaɪndɪŋ/ | 用户传入参数替换模板中占位符的过程"
+    }
+  ]
+}

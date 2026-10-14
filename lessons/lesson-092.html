@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Prompt五要素 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-092">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 4 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Prompt基础与必要场景</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 093</span></div>
+<h1 class="lesson-title">Prompt五要素</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>5 页原文</span><span>约 5 分钟阅读</span><span class="module-name">Prompt基础与必要场景</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-092.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-092.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节了解了需要提示词工程的场景。现在系统学习Prompt的五要素——角色、任务、上下文、格式、约束，这是设计优秀提示词的核心框架。</p></aside>
+<h2 id="section-1" data-source-page="1">10.1 Prompt的五要素<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">一个优秀的Prompt通常包含以下五个要素。不是每个Prompt都需要全部五个，但理解这些要素能帮你设计出更有效的提示词。</p>
+<h3 id="section-3" data-source-page="1">角色（Role）<a class="heading-link" href="#section-3" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">告诉AI它应该扮演什么角色，以什么身份回答。AI会根据角色调整回答的专业度、风格和语气，明确角色也能激活模型中相关的知识和能力。</p>
+<p data-source-page="1">示例</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 没有角色定义
+&quot;请帮我分析这段代码&quot;
+
+# 有角色定义
+&quot;你是一位资深的Python架构师，拥有10年的大型项目经验。请帮我分析这段代码。&quot;</code></pre></div>
+<p data-source-page="1">常用角色模板</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="2"><table><thead><tr><th scope="col">场景</th><th scope="col">角色定义</th></tr></thead><tbody><tr><td>代码审查</td><td>“你是资深软件工程师，擅长代码审查和性能优化”</td></tr><tr><td>文案写作</td><td>“你是专业的营销文案撰稿人，擅长撰写吸引人的广告语”</td></tr><tr><td>教学辅导</td><td>“你是耐心的编程导师，擅长用简单的语言解释复杂概念”</td></tr><tr><td>数据分析</td><td>“你是数据分析专家，擅长从数据中发现洞察”</td></tr></tbody></table></div>
+<h3 id="section-9" data-source-page="2">任务（Task）<a class="heading-link" href="#section-9" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">明确告诉AI要做什么。模糊的任务会得到模糊的结果，清晰的任务描述是高质量输出的前提。</p>
+<p data-source-page="2">对比示例</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Bad:模糊的任务
+&quot;帮我处理这段文字&quot;
+
+# Good:清晰的任务
+&quot;请将以下文字翻译成英文，保持原文的专业性和简洁性&quot;</code></pre></div>
+<p data-source-page="2">任务描述的SMART原则</p>
+<p class="list-item" data-source-page="2">Specific（具体的）：不要说&quot;优化&quot;，说&quot;减少代码行数并提升可读性&quot;</p>
+<p data-source-page="2">S</p>
+<p class="list-item" data-source-page="2">Measurable（可衡量的）：不要说&quot;写得好一点&quot;，说&quot;控制在200字以内&quot;</p>
+<p class="list-item" data-source-page="2">Achievable（可实现的）：不要要求AI做它做不到的事</p>
+<p class="list-item" data-source-page="2">Relevant（相关的）：任务要与上下文相关</p>
+<p data-source-page="2">R</p>
+<p class="list-item" data-source-page="2">Time-bound（有时限的）：如需要，说明完成时间</p>
+<h3 id="section-21" data-source-page="2">上下文（Context）<a class="heading-link" href="#section-21" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">提供必要的背景信息，帮助AI更好地理解任务。AI不知道你的具体情况，需要你提供上下文，充分的上下文能大幅提升回答的相关性和准确性。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Bad: 缺少上下文
+&quot;帮我写一个AI代码助手的产品介绍&quot;
+
+# Good: 提供上下文
+&quot;&quot;&quot;我们的产品是一款面向程序员的AI代码助手。
+目标用户：Python开发者，有1-3年经验
+使用场景：日常编码、代码审查、学习新技术
+核心优势：比ChatGPT更懂Python生态，响应速度快3倍
+
+请帮我写一个产品介绍，控制在50字以内。&quot;&quot;&quot;</code></pre></div>
+<h3 id="section-24" data-source-page="3">格式（Format）<a class="heading-link" href="#section-24" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">明确输出的格式要求。结构化的输出便于程序处理，清晰的格式规范能避免后续解析困难。</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Bad: 没有格式要求
+&quot;分析这段代码的问题&quot;
+
+# Good: 明确格式要求
+&quot;&quot;&quot;分析这段代码的问题，并按以下格式输出：
+
+问题列表：
+1. [问题类型] 问题描述（所在行号）
+2. [问题类型] 问题描述（所在行号）
+
+建议修改：
+[具体的代码修改建议]
+
+优先级：
+- 高优先级：必须修复的问题
+- 中优先级：建议优化的地方
+- 低优先级：可选的改进&quot;&quot;&quot;</code></pre></div>
+<p data-source-page="3">常用格式</p>
+<p class="list-item" data-source-page="3">列表格式</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">要求：以Markdown列表形式输出
+示例：
+- 第一点
+- 第二点</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p class="list-item" data-source-page="4">JSON格式</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+  &quot;task&quot;: &quot;代码审查&quot;,
+  &quot;issues&quot;: [
+    {&quot;type&quot;: &quot;性能&quot;, &quot;line&quot;: 23, &quot;description&quot;: &quot;...&quot;}
+  ]
+}</code></pre></div>
+<p class="list-item" data-source-page="4">表格格式</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">| 指标 | 数值 | 评估 |
+|------|------|------|
+| ... | ... | ... |</code></pre></div>
+<h3 id="section-34" data-source-page="4">约束（Constraints）<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">明确告诉AI什么不能做，什么必须遵守，从而防止AI偏离主题、确保输出符合特定规范、避免不必要的冗余。</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">&quot;&quot;&quot;请翻译以下文本成英文。
+
+约束条件：
+- 只返回翻译结果，不要添加任何解释
+- 不要输出原文
+- 保持原文的段落格式
+- 专有名词保持原样，不翻译&quot;&quot;&quot;</code></pre></div>
+<p data-source-page="4">常见约束类型</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">约束类型</th><th scope="col">示例</th></tr></thead><tbody><tr><td>长度限制</td><td>“控制在200字以内”</td></tr><tr><td>禁止内容</td><td>“不要包含个人观点”</td></tr><tr><td>格式限制</td><td>“只返回JSON，不要Markdown”</td></tr><tr><td>语言限制</td><td>“只用中文回答”</td></tr><tr><td>知识范围</td><td>“仅基于提供的文档，不要使用外部知识”</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-39" data-source-page="5">10.2 下一节预告<a class="heading-link" href="#section-39" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">掌握了Prompt五要素后，接下来学习结构化输出和常用模板——让AI输出精确的JSON格式，以及拿来即用的Prompt模板库。</p>
+<h2 id="section-41" data-source-page="5">10.3 ■ 学点英语<a class="heading-link" href="#section-41" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>角色</td><td>Role</td><td>/roʊl/</td><td>告诉AI以什么身份回答问题，激活相关知识和能力</td></tr><tr><td>任务描述</td><td>Task Description</td><td>/tæsk dɪˈskrɪpʃn/</td><td>明确告诉AI需要执行的具体操作</td></tr><tr><td>上下文</td><td>Context</td><td>/ˈkɑːntekst/</td><td>提供背景信息帮助AI更好地理解任务</td></tr><tr><td>输出格式</td><td>Output Format</td><td>/ˈaʊtpʊt ˈfɔːrmæt/</td><td>规定AI回复的结构和样式要求</td></tr><tr><td>约束条件</td><td>Constraints</td><td>/kənˈstreɪnts/</td><td>告诉AI不能做什么、必须遵守什么规则</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-091.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Prompt基础与必要场景</strong><small>Prompt基础与必要场景</small></a><a class="chapter-neighbor next" href="lesson-093.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>结构化输出与常用模板</strong><small>Prompt基础与必要场景</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5270#mid=104911" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">10.1 Prompt的五要素</a><a href="#section-3" class="toc-level-3">角色（Role）</a><a href="#section-9" class="toc-level-3">任务（Task）</a><a href="#section-21" class="toc-level-3">上下文（Context）</a><a href="#section-24" class="toc-level-3">格式（Format）</a><a href="#section-34" class="toc-level-3">约束（Constraints）</a><a href="#section-39" class="toc-level-2">10.2 下一节预告</a><a href="#section-41" class="toc-level-2">10.3 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-092", "title": "Prompt五要素", "stage": 2, "week": 4, "module": "Prompt基础与必要场景", "minutes": 5, "pages": 5, "type": "article"}</script>
+</body></html>

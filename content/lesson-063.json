@@ -1,0 +1,67 @@
+{
+  "id": "lesson-063",
+  "title": "选择练习 · 1-5",
+  "code": "1-5",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "涌现能力",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/009-涌现能力/063-练习-1-5-选择练习.pdf",
+  "sha256": "b4e4b95e0c5afbdcc8610e6c46f3a9b113d738e9f503f38c88b6382bad96cd8c",
+  "pdf": "sources/pdf/lesson-063.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5261#mid=104979",
+  "minutes": 1,
+  "excerpt": "Scaling Laws 描述的是\"模型性能与规模之间的可预测数学关系\"。它对 OpenAI 决定训练 GPT-3 的最大意义是什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Scaling Laws 描述的是\"模型性能与规模之间的可预测数学关系\"。它对 OpenAI 决定训练 GPT-3 的最大意义是什么？ (复习题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 把\"盲目的赌博\"变成了\"有保底的风险投资\"——即使不涌现，Loss 下降也是可预测的 B. 保证了GPT-3 一定会涌现出新的能力 C. 证明了 Transformer 架构永远不会失效 D. 给出了训练所需 GPU 卡数的精确公式",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 388,
+    "represented_chars": 195,
+    "removed_chars": 193,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 193
+    }
+  },
+  "videos": [],
+  "order": 64,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "Scaling Laws 描述的是\"模型性能与规模之间的可预测数学关系\"。它对 OpenAI 决定训练 GPT-3 的最大意义是什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 把\"盲目的赌博\"变成了\"有保底的风险投资\"——即使不涌现，Loss 下降也是可预测的 B. 保证了GPT-3 一定会涌现出新的能力 C. 证明了 Transformer 架构永远不会失效 D. 给出了训练所需 GPU 卡数的精确公式"
+    }
+  ]
+}

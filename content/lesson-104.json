@@ -1,0 +1,1171 @@
+{
+  "id": "lesson-104",
+  "title": "LlamaIndex（一）-核心概念与查询机制",
+  "code": "1-1",
+  "stage": 2,
+  "week": 5,
+  "week_title": "RAG：知识接入技术",
+  "module": "LlamaIndex",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/002-第5周 RAG：知识接入技术/008-LlamaIndex/104-图文-1-1-LlamaIndex（一）-核心概念与查询机制.pdf",
+  "sha256": "855314f0763be9a68a3660f03dcb690e555ec12418c6b4e937bbe2963a08a094",
+  "pdf": "sources/pdf/lesson-104.pdf",
+  "pages": 12,
+  "source_url": "https://class.imooc.com/lesson/5274#mid=104923",
+  "minutes": 17,
+  "excerpt": "在前面9节中，我们已经掌握了RAG的核心技术，但你有没有发现一个问题？ 每次构建RAG应用，我们都要重复做这些事： 手动切分文档 自己写检索代码 手动拼接上下文 自己处理各种边界情况 就像在手工作坊里，每个零件都要自己打磨、组装。 有没有一个\"自动化工厂\"，把这些重复的工作都封装好，专注于业务逻辑？",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 在前面9节中，我们已经掌握了RAG的核心技术，但你有没有发现一个问题？ 每次构建RAG应用，我们都要重复做这些事： 手动切分文档 自己写检索代码 手动拼接上下文 自己处理各种边界情况 就像在手工作坊里，每个零件都要自己打磨、组装。 有没有一个\"自动化工厂\"，把这些重复的工作都封装好，专注于业务逻辑？ LlamaIndex，就是为此而生的。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "11.1 LlamaIndex是什么",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LlamaIndex（原名GPT Index）是一个开源项目，最初是为了解决\"如何让LLM访问私有数据\"这个问题而产生的。项目迅速获得开发者社区的认可，目前已经发展成为最流行的RAG开发框架之一。它的定位也很清晰——RAG应用的数据框架。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "官方定义",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "LlamaIndex is a data framework for LLM applications to ingest, structure, and access private or domain-specific data.",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "翻译过来：LlamaIndex是一个数据框架，帮助LLM应用获取、组织和访问私有或领域数据。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它把RAG开发中的重复性工作都封装好了，只需几行代码就能实现原本需要几百行代码的功能。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LlamaIndex vs 手写RAG如果不使用任何框架，即使最简单的RAG系统，也颇为繁琐。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "但使用LlamaIndex：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from llama_index.core import VectorStoreIndex, SimpleDirectoryReader\n\n# 1. 加载文档\ndocuments = SimpleDirectoryReader('docs').load_data()\n\n# 2. 构建索引（自动完成分块、向量化、存储）\nindex = VectorStoreIndex.from_documents(documents)\n\n# 3. 查询\nquery_engine = index.as_query_engine()\nresponse = query_engine.query(\"技术文档的问题\")\n\nprint(response)",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "一切变得非常简洁，因为LlamaIndex做了大量的封装。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LlamaIndex自动完成了：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "文档分块（默认1024字符，可调整）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Embedding向量化（默认OpenAI，可切换）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "向量存储（默认内存，可切换数据库）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "检索优化（自动Top-K、相似度过滤）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "上下文拼接（自动组织）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LLM调用（自动生成答案）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.2 核心组件架构",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "为了不浪费篇幅，本节只讲LlamaIndex的核心概念和思想。具体API用法和参数请查阅LlamaIndex官方文档。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "LlamaIndex的架构很清晰，核心就是把RAG流程分解成4个组件：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Document Loaders → Index Structures → Query Engines → Response Synthesizers\n   (加载数据)         (构建索引)          (查询接口)        (生成答案)\n\n1\n2",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LlamaIndex核心模块关系图",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "架构说明",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Settings（配置层）：全局配置中心，统一管理LLM和Embedding模型",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Document Loaders（数据加载层）：支持PDF、Word、网页、数据库等多种数据源",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Index Structures（索引构建层）：将文档组织成可检索的结构（向量索引、关键词索引等）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Query Engines（查询层）：封装检索逻辑，提供统一查询接口",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Response Synthesizers（生成层）：将检索结果组织成Prompt，调用LLM生成答案",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "接下来，我们逐一深入讲解每个组件。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.3 核心组件详解",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "Settings 统一配置管理",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Settings 是全局配置中心，统一设置RAG流程中的两个核心模型：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "向量编码模型：用于文档向量化和问题向量化",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "大模型：用于生成最终答案",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from llama_index.core.settings import Settings\nfrom llama_index.llms.dashscope import DashScope\nfrom llama_index.embeddings.dashscope import DashScopeEmbedding\n\n# 全局LLM：对应RAG的「生成阶段」\nSettings.llm = DashScope(\n    model_name=\"qwen3-max\",\n    api_key=API_KEY,\n    temperature=0.3\n)\n\n# 全局Embedding：对应RAG的「离线阶段」和「检索阶段」\nSettings.embed_model = DashScopeEmbedding(\n    model_name=\"text-embedding-v3\",\n    api_key=API_KEY,\n    embed_batch_size=10\n)",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "有了Settings，如果不想用Qwen，想换别的模型也很方便，替换这些参数即可。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Document Loaders 数据加载",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "作用 将各种格式的文档加载成LlamaIndex能处理的Document对象。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "作用",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "支持的格式",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from llama_index.core import SimpleDirectoryReader\n# 1. 本地文件夹（自动识别格式）\ndocuments = SimpleDirectoryReader('./data/docs').load_data()\n# 支持：txt, pdf, docx, md, csv, pptx 等\n\n# 2. 单个文件\ndocuments = SimpleDirectoryReader(input_files=['./data/manual.pdf']).load_data()\n\n# 3. 网页\nfrom llama_index.readers.web import SimpleWebPageReader\n\n# 爬虫也给你省了~~\ndocuments = SimpleWebPageReader(html_to_text=True).load_data(\n    [\"https://example.com/article\"]\n)\n\n# 4. 数据库\nfrom llama_index.readers.database import DatabaseReader\n\nreader = DatabaseReader(\n    connection_string=\"mysql://user:pass@localhost/dbname\"\n)\ndocuments = reader.load_data(query=\"SELECT * FROM articles\")",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "不管数据在哪里，LlamaIndex都能将其加载进来。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Index Structures 索引结构",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "作用 把文档组织成高效的检索结构。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "索引的作用",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象有一本1000页的技术手册，用户问了一个问题。如果没有索引，只能从第1页开始一页一页翻，直到找到相关内容——这太慢了！",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "索引就像书籍的目录和索引页，它提前把文档按照某种规则组织好，实现快速定位到相关内容。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "LlamaIndex最常用的是VectorStoreIndex（向量索引），就是我们前面讲的向量检索。它封装了RAG离线阶段的所有工作：文档切块、向量化、存储。",
+      "page": 6,
+      "size": 17.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h2",
+      "text": "11.4 VectorStoreIndex深入解析",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "VectorStoreIndex是LlamaIndex最核心的索引类型，本节深入讲解它的分块策略、持久化以及其他索引类型。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "分块的重要性",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "索引的核心是将文档组织成可检索的单元。但整篇文档太大，直接向量化会导致信息损失、检索不精准、上下文窗口溢出。所以，构建索引的第一步就是分块：把大文档切成小块，每个小块单独向量化并索引。这样检索时才能精准定位到相关的小块，而不是整篇文档。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h3",
+      "text": "默认分块策略",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LlamaIndex默认使用SentenceSplitter进行分块，直接调用from_documents()就会自动切分：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from llama_index.core import VectorStoreIndex\n\n# 一行代码完成整个离线阶段\nindex = VectorStoreIndex.from_documents(documents)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "内部流程",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Step 1: 文档切块\n        默认1024字符切一块，相邻块重叠20字符\nStep 2: 向量化\n        调用Settings.embed_model，批量转换为向量\nStep 3: 存储\n        存入向量库（默认内存，可切换Chroma/Milvus）",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "适用场景 通用文本文档，快速上手。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "适用场景",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "内置Node Parser策略",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "默认1024字符的分块虽然通用，但并不适合所有场景。比如代码文档应该按函数切分，法律文书应该按段落切分。LlamaIndex提供了多种内置Node Parser，可以根据文档特点灵活选择分块策略，通过transformations参数指定：",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "code",
+      "text": "from llama_index.core.node_parser import (\n    SentenceSplitter,      # 按句子切分（默认）\n    SemanticSplitterNodeParser,  # 按语义相似度切分\n    TokenTextSplitter,     # 按token数切分\n    CodeSplitter,          # 按代码结构切分\n)\n\n# 示例1：代码文档，按函数/类切分\nnode_parser = CodeSplitter(\n    language=\"python\",\n    chunk_lines=40,  # 每块最多40行\n)\nindex = VectorStoreIndex.from_documents(\n    code_documents,\n    transformations=[node_parser]\n)\n\n# 示例2：长文档，按语义自动切分\nnode_parser = SemanticSplitterNodeParser(\n    buffer_size=1,\n    breakpoint_percentile_threshold=95  # 语义相似度阈值\n)\nindex = VectorStoreIndex.from_documents(\n    long_documents,\n    transformations=[node_parser]\n)",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "常用Parser",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "SentenceSplitter：按句子边界切分，可调整chunk_size",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "SemanticSplitterNodeParser：根据语义相似度自动找分割点",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "TokenTextSplitter：按token数精确控制",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "CodeSplitter：按代码结构（函数、类）切分",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "完全自定义分块策略如果需要按特定业务逻辑切分（比如Java规范按条目切分），可以自己分好块再交给LlamaIndex：",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "code",
+      "text": "from llama_index.core import Document, VectorStoreIndex\n\n# 第8节的结构化分块逻辑（按条目切分）\ndef structured_chunk(text):\n    chunks = []\n    for item in extract_items(text):  # 提取条目\n        chunks.append(item)\n    return chunks\n\n# 自己分好块，然后交给LlamaIndex\nraw_text = load_pdf(\"Java开发手册.pdf\")\nchunks = structured_chunk(raw_text)\n\n# 把每个chunk包装成Document对象\ndocuments = [Document(text=chunk) for chunk in chunks]\n\n# 构建索引（不再自动切分）\nindex = VectorStoreIndex.from_documents(documents)",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "注意，VectorStoreIndex.from_documents()接收的是Document对象列表。如果已经把文档切好块，每个块包装成一个Document，LlamaIndex就不会再次切分，直接对这些块向量化。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "所以，LlamaIndex既可以快速上手（用默认），也可以精细控制（用内置或自定义）。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "持久化存储",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "无论你用哪种分块策略，构建好的索引都可以保存到磁盘，避免每次运行都重新向量化：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 首次运行：构建并保存\nindex.storage_context.persist(persist_dir=\"kb/\")\n\n# 之后运行：直接加载，不用再次向量化\nfrom llama_index.core import load_index_from_storage, StorageContext\nstorage_context = StorageContext.from_defaults(persist_dir=\"kb/\")\nindex = load_index_from_storage(storage_context)",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "除了VectorStoreIndex，LlamaIndex还提供了其他几种索引，它们引出了一个核心要点：RAG ≠ 一定要用向量检索。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "RAG的全称是\"检索增强生成\"（Retrieval-Augmented Generation），关键词是\"检索\"，而不是\"向量检索\"。只要能找到相关信息，用什么方式都行：",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "list",
+      "text": "向量检索（Vector Search） ← 最常用 把文本编码成向量，通过余弦相似度查找 优点：语义理解好，能找到\"意思相近\"的内容 缺点：需要Embedding成本 对应索引 VectorStoreIndex",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "list",
+      "text": "关键词检索（Keyword Search） ← 传统方式 基于BM25、TF-IDF等算法，不需要向量化 优点：快速、精确匹配（比如搜索专业术语） 缺点：不理解语义，\"购买\"和\"采购\"会被认为不同词 对应索引KeywordTableIndex",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "list",
+      "text": "全文遍历（List Search） ← 最简单 不做相似度筛选，按顺序把所有chunk都喂给大模型 优点：信息完整，适合文档量小的总结性任务 缺点：慢、成本高，文档多了会超过上下文窗口 对应索引ListIndex",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "list",
+      "text": "层次检索（Tree Search） 构建文档摘要树，从根节点向下查找 用LLM判断相关性，逐层筛选 对应索引 TreeIndex",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "大部分场景用VectorStoreIndex就够了。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.5 Query Engine与Response Synthesizer",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "索引构建好之后，就进入查询阶段。LlamaIndex提供了Query Engines和Response Synthesizers两个组件来封装检索和生成逻辑。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h3",
+      "text": "Query Engines 查询接口",
+      "page": 9,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "作用 提供统一的查询接口，封装检索和生成逻辑。对应我们之前RAG流程里的问题相关向量查询这一步。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "基础用法",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 创建查询引擎\nquery_engine = index.as_query_engine()\n\n# 查询\nresponse = query_engine.query(\"你的问题\")\nprint(response)",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "高级配置",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "query_engine = index.as_query_engine(\n    similarity_top_k=3,          # Top-K=3，最相关的3条\n    response_mode=\"compact\",      # 压缩模式：将多个chunk压缩后一次生成答案\n    verbose=True                  # 显示中间过程：输出检索到的chunk和LLM调用详情\n)",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "Response Synthesizers 答案合成",
+      "page": 10,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "作用 决定如何用检索到的chunk调用大模型生成最终答案。",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "内置策略",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from llama_index.core.response_synthesizers import get_response_synthesizer\n\n# 1. Refine模式（逐步精炼）\nsynthesizer = get_response_synthesizer(response_mode=\"refine\")\n# 第1个chunk生成初版答案\n# 第2个chunk优化答案\n# 第3个chunk再优化...\n\n# 2. Tree Summarize（树形摘要）\nsynthesizer = get_response_synthesizer(response_mode=\"tree_summarize\")\n# 把多个chunk分组摘要，再合并\n\n# 3. Compact（压缩拼接）\nsynthesizer = get_response_synthesizer(response_mode=\"compact\")\n# 把所有chunk压缩后一次生成",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "11.6 ■ 学点英语",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n数据框架 | Data Framework | /ˈdeɪtə ˈfreɪmwɜːrk/ | 封装数据处理流程的软件框架，如 LlamaIndex\n索引构建 | Indexing | /ˈɪndeksɪŋ/ | 将文档解析、分块、向量化后构建可检索索引的过程\n检索器 | Retriever | /rɪˈtriːvər/ | 负责从索引中查询相关文档的组件\n响应合成器 | Response Synthesizer | /rɪˈspɑːns sɪnθəsaɪzər/ | 将检索结果组装为Prompt并调用LLM生成答案的组件\n句子窗口检索 | Sentence Window Retrieval | /ˈsentəns ˈwɪndoʊ rɪ ˈtriːvl/ | 用小窗口检索 + 大窗口生成的精匹配检索策略",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "数据框架",
+          "Data Framework",
+          "/ˈdeɪtə ˈfreɪmwɜːrk/",
+          "封装数据处理流程的软件框架，如 LlamaIndex"
+        ],
+        [
+          "索引构建",
+          "Indexing",
+          "/ˈɪndeksɪŋ/",
+          "将文档解析、分块、向量化后构建可检索索引的过程"
+        ],
+        [
+          "检索器",
+          "Retriever",
+          "/rɪˈtriːvər/",
+          "负责从索引中查询相关文档的组件"
+        ],
+        [
+          "响应合成器",
+          "Response Synthesizer",
+          "/rɪˈspɑːns sɪnθəsaɪzər/",
+          "将检索结果组装为Prompt并调用LLM生成答案的组件"
+        ],
+        [
+          "句子窗口检索",
+          "Sentence Window Retrieval",
+          "/ˈsentəns ˈwɪndoʊ rɪ ˈtriːvl/",
+          "用小窗口检索 + 大窗口生成的精匹配检索策略"
+        ]
+      ],
+      "page": 11
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 12,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/1241e2068d4218f4b6521882de15b900.png",
+      "width": 1742,
+      "height": 1650,
+      "page": 12
+    }
+  ],
+  "accounting": {
+    "source_chars": 7533,
+    "represented_chars": 7302,
+    "removed_chars": 231,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 1,
+    "removals": {
+      "export_metadata": 172,
+      "repeated_title": 59
+    }
+  },
+  "videos": [],
+  "order": 105,
+  "headings": [
+    {
+      "title": "11.1 LlamaIndex是什么",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "11.2 核心组件架构",
+      "id": "section-18",
+      "level": 2
+    },
+    {
+      "title": "11.3 核心组件详解",
+      "id": "section-30",
+      "level": 2
+    },
+    {
+      "title": "Settings 统一配置管理",
+      "id": "section-31",
+      "level": 3
+    },
+    {
+      "title": "Document Loaders 数据加载",
+      "id": "section-37",
+      "level": 3
+    },
+    {
+      "title": "Index Structures 索引结构",
+      "id": "section-43",
+      "level": 3
+    },
+    {
+      "title": "LlamaIndex最常用的是VectorStoreIndex（向量索引），就是我们前面讲的向量检索。它封装了RAG离线阶段的所有工作：文档切块、向量化、存储。",
+      "id": "section-48",
+      "level": 2
+    },
+    {
+      "title": "11.4 VectorStoreIndex深入解析",
+      "id": "section-49",
+      "level": 2
+    },
+    {
+      "title": "默认分块策略",
+      "id": "section-53",
+      "level": 3
+    },
+    {
+      "title": "内置Node Parser策略",
+      "id": "section-60",
+      "level": 3
+    },
+    {
+      "title": "11.5 Query Engine与Response Synthesizer",
+      "id": "section-82",
+      "level": 2
+    },
+    {
+      "title": "Query Engines 查询接口",
+      "id": "section-84",
+      "level": 3
+    },
+    {
+      "title": "Response Synthesizers 答案合成",
+      "id": "section-90",
+      "level": 3
+    },
+    {
+      "title": "11.6 ■ 学点英语",
+      "id": "section-94",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-96",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "在前面9节中，我们已经掌握了RAG的核心技术，但你有没有发现一个问题？ 每次构建RAG应用，我们都要重复做这些事： 手动切分文档 自己写检索代码 手动拼接上下文 自己处理各种边界情况 就像在手工作坊里，每个零件都要自己打磨、组装。 有没有一个\"自动化工厂\"，把这些重复的工作都封装好，专注于业务逻辑？ LlamaIndex，就是为此而生的。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "11.1 LlamaIndex是什么"
+    },
+    {
+      "anchor": "section-1",
+      "text": "LlamaIndex（原名GPT Index）是一个开源项目，最初是为了解决\"如何让LLM访问私有数据\"这个问题而产生的。项目迅速获得开发者社区的认可，目前已经发展成为最流行的RAG开发框架之一。它的定位也很清晰——RAG应用的数据框架。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "官方定义"
+    },
+    {
+      "anchor": "section-1",
+      "text": "LlamaIndex is a data framework for LLM applications to ingest, structure, and access private or domain-specific data."
+    },
+    {
+      "anchor": "section-1",
+      "text": "翻译过来：LlamaIndex是一个数据框架，帮助LLM应用获取、组织和访问私有或领域数据。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它把RAG开发中的重复性工作都封装好了，只需几行代码就能实现原本需要几百行代码的功能。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "LlamaIndex vs 手写RAG如果不使用任何框架，即使最简单的RAG系统，也颇为繁琐。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "但使用LlamaIndex："
+    },
+    {
+      "anchor": "section-1",
+      "text": "from llama_index.core import VectorStoreIndex, SimpleDirectoryReader\n\n# 1. 加载文档\ndocuments = SimpleDirectoryReader('docs').load_data()\n\n# 2. 构建索引（自动完成分块、向量化、存储）\nindex = VectorStoreIndex.from_documents(documents)\n\n# 3. 查询\nquery_engine = index.as_query_engine()\nresponse = query_engine.query(\"技术文档的问题\")\n\nprint(response)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "一切变得非常简洁，因为LlamaIndex做了大量的封装。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "LlamaIndex自动完成了："
+    },
+    {
+      "anchor": "section-1",
+      "text": "文档分块（默认1024字符，可调整）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Embedding向量化（默认OpenAI，可切换）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "向量存储（默认内存，可切换数据库）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "检索优化（自动Top-K、相似度过滤）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "上下文拼接（自动组织）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "LLM调用（自动生成答案）"
+    },
+    {
+      "anchor": "section-18",
+      "text": "11.2 核心组件架构"
+    },
+    {
+      "anchor": "section-18",
+      "text": "为了不浪费篇幅，本节只讲LlamaIndex的核心概念和思想。具体API用法和参数请查阅LlamaIndex官方文档。"
+    },
+    {
+      "anchor": "section-18",
+      "text": "LlamaIndex的架构很清晰，核心就是把RAG流程分解成4个组件："
+    },
+    {
+      "anchor": "section-18",
+      "text": "Document Loaders → Index Structures → Query Engines → Response Synthesizers\n   (加载数据)         (构建索引)          (查询接口)        (生成答案)\n\n1\n2"
+    },
+    {
+      "anchor": "section-18",
+      "text": "LlamaIndex核心模块关系图"
+    },
+    {
+      "anchor": "section-18",
+      "text": "架构说明"
+    },
+    {
+      "anchor": "section-18",
+      "text": "Settings（配置层）：全局配置中心，统一管理LLM和Embedding模型"
+    },
+    {
+      "anchor": "section-18",
+      "text": "Document Loaders（数据加载层）：支持PDF、Word、网页、数据库等多种数据源"
+    },
+    {
+      "anchor": "section-18",
+      "text": "Index Structures（索引构建层）：将文档组织成可检索的结构（向量索引、关键词索引等）"
+    },
+    {
+      "anchor": "section-18",
+      "text": "Query Engines（查询层）：封装检索逻辑，提供统一查询接口"
+    },
+    {
+      "anchor": "section-18",
+      "text": "Response Synthesizers（生成层）：将检索结果组织成Prompt，调用LLM生成答案"
+    },
+    {
+      "anchor": "section-18",
+      "text": "接下来，我们逐一深入讲解每个组件。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "11.3 核心组件详解"
+    },
+    {
+      "anchor": "section-31",
+      "text": "Settings 统一配置管理"
+    },
+    {
+      "anchor": "section-31",
+      "text": "Settings 是全局配置中心，统一设置RAG流程中的两个核心模型："
+    },
+    {
+      "anchor": "section-31",
+      "text": "向量编码模型：用于文档向量化和问题向量化"
+    },
+    {
+      "anchor": "section-31",
+      "text": "大模型：用于生成最终答案"
+    },
+    {
+      "anchor": "section-31",
+      "text": "from llama_index.core.settings import Settings\nfrom llama_index.llms.dashscope import DashScope\nfrom llama_index.embeddings.dashscope import DashScopeEmbedding\n\n# 全局LLM：对应RAG的「生成阶段」\nSettings.llm = DashScope(\n    model_name=\"qwen3-max\",\n    api_key=API_KEY,\n    temperature=0.3\n)\n\n# 全局Embedding：对应RAG的「离线阶段」和「检索阶段」\nSettings.embed_model = DashScopeEmbedding(\n    model_name=\"text-embedding-v3\",\n    api_key=API_KEY,\n    embed_batch_size=10\n)"
+    },
+    {
+      "anchor": "section-31",
+      "text": "有了Settings，如果不想用Qwen，想换别的模型也很方便，替换这些参数即可。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "Document Loaders 数据加载"
+    },
+    {
+      "anchor": "section-37",
+      "text": "作用 将各种格式的文档加载成LlamaIndex能处理的Document对象。"
+    },
+    {
+      "anchor": "section-37",
+      "text": "作用"
+    },
+    {
+      "anchor": "section-37",
+      "text": "支持的格式"
+    },
+    {
+      "anchor": "section-37",
+      "text": "from llama_index.core import SimpleDirectoryReader\n# 1. 本地文件夹（自动识别格式）\ndocuments = SimpleDirectoryReader('./data/docs').load_data()\n# 支持：txt, pdf, docx, md, csv, pptx 等\n\n# 2. 单个文件\ndocuments = SimpleDirectoryReader(input_files=['./data/manual.pdf']).load_data()\n\n# 3. 网页\nfrom llama_index.readers.web import SimpleWebPageReader\n\n# 爬虫也给你省了~~\ndocuments = SimpleWebPageReader(html_to_text=True).load_data(\n    [\"https://example.com/article\"]\n)\n\n# 4. 数据库\nfrom llama_index.readers.database import DatabaseReader\n\nreader = DatabaseReader(\n    connection_string=\"mysql://user:pass@localhost/dbname\"\n)\ndocuments = reader.load_data(query=\"SELECT * FROM articles\")"
+    },
+    {
+      "anchor": "section-37",
+      "text": "不管数据在哪里，LlamaIndex都能将其加载进来。"
+    },
+    {
+      "anchor": "section-43",
+      "text": "Index Structures 索引结构"
+    },
+    {
+      "anchor": "section-43",
+      "text": "作用 把文档组织成高效的检索结构。"
+    },
+    {
+      "anchor": "section-43",
+      "text": "索引的作用"
+    },
+    {
+      "anchor": "section-43",
+      "text": "想象有一本1000页的技术手册，用户问了一个问题。如果没有索引，只能从第1页开始一页一页翻，直到找到相关内容——这太慢了！"
+    },
+    {
+      "anchor": "section-43",
+      "text": "索引就像书籍的目录和索引页，它提前把文档按照某种规则组织好，实现快速定位到相关内容。"
+    },
+    {
+      "anchor": "section-48",
+      "text": "LlamaIndex最常用的是VectorStoreIndex（向量索引），就是我们前面讲的向量检索。它封装了RAG离线阶段的所有工作：文档切块、向量化、存储。"
+    },
+    {
+      "anchor": "section-49",
+      "text": "11.4 VectorStoreIndex深入解析"
+    },
+    {
+      "anchor": "section-49",
+      "text": "VectorStoreIndex是LlamaIndex最核心的索引类型，本节深入讲解它的分块策略、持久化以及其他索引类型。"
+    },
+    {
+      "anchor": "section-49",
+      "text": "分块的重要性"
+    },
+    {
+      "anchor": "section-49",
+      "text": "索引的核心是将文档组织成可检索的单元。但整篇文档太大，直接向量化会导致信息损失、检索不精准、上下文窗口溢出。所以，构建索引的第一步就是分块：把大文档切成小块，每个小块单独向量化并索引。这样检索时才能精准定位到相关的小块，而不是整篇文档。"
+    },
+    {
+      "anchor": "section-53",
+      "text": "默认分块策略"
+    },
+    {
+      "anchor": "section-53",
+      "text": "LlamaIndex默认使用SentenceSplitter进行分块，直接调用from_documents()就会自动切分："
+    },
+    {
+      "anchor": "section-53",
+      "text": "from llama_index.core import VectorStoreIndex\n\n# 一行代码完成整个离线阶段\nindex = VectorStoreIndex.from_documents(documents)"
+    },
+    {
+      "anchor": "section-53",
+      "text": "内部流程"
+    },
+    {
+      "anchor": "section-53",
+      "text": "Step 1: 文档切块\n        默认1024字符切一块，相邻块重叠20字符\nStep 2: 向量化\n        调用Settings.embed_model，批量转换为向量\nStep 3: 存储\n        存入向量库（默认内存，可切换Chroma/Milvus）"
+    },
+    {
+      "anchor": "section-53",
+      "text": "适用场景 通用文本文档，快速上手。"
+    },
+    {
+      "anchor": "section-53",
+      "text": "适用场景"
+    },
+    {
+      "anchor": "section-60",
+      "text": "内置Node Parser策略"
+    },
+    {
+      "anchor": "section-60",
+      "text": "默认1024字符的分块虽然通用，但并不适合所有场景。比如代码文档应该按函数切分，法律文书应该按段落切分。LlamaIndex提供了多种内置Node Parser，可以根据文档特点灵活选择分块策略，通过transformations参数指定："
+    },
+    {
+      "anchor": "section-60",
+      "text": "from llama_index.core.node_parser import (\n    SentenceSplitter,      # 按句子切分（默认）\n    SemanticSplitterNodeParser,  # 按语义相似度切分\n    TokenTextSplitter,     # 按token数切分\n    CodeSplitter,          # 按代码结构切分\n)\n\n# 示例1：代码文档，按函数/类切分\nnode_parser = CodeSplitter(\n    language=\"python\",\n    chunk_lines=40,  # 每块最多40行\n)\nindex = VectorStoreIndex.from_documents(\n    code_documents,\n    transformations=[node_parser]\n)\n\n# 示例2：长文档，按语义自动切分\nnode_parser = SemanticSplitterNodeParser(\n    buffer_size=1,\n    breakpoint_percentile_threshold=95  # 语义相似度阈值\n)\nindex = VectorStoreIndex.from_documents(\n    long_documents,\n    transformations=[node_parser]\n)"
+    },
+    {
+      "anchor": "section-60",
+      "text": "常用Parser"
+    },
+    {
+      "anchor": "section-60",
+      "text": "SentenceSplitter：按句子边界切分，可调整chunk_size"
+    },
+    {
+      "anchor": "section-60",
+      "text": "SemanticSplitterNodeParser：根据语义相似度自动找分割点"
+    },
+    {
+      "anchor": "section-60",
+      "text": "TokenTextSplitter：按token数精确控制"
+    },
+    {
+      "anchor": "section-60",
+      "text": "CodeSplitter：按代码结构（函数、类）切分"
+    },
+    {
+      "anchor": "section-60",
+      "text": "完全自定义分块策略如果需要按特定业务逻辑切分（比如Java规范按条目切分），可以自己分好块再交给LlamaIndex："
+    },
+    {
+      "anchor": "section-60",
+      "text": "from llama_index.core import Document, VectorStoreIndex\n\n# 第8节的结构化分块逻辑（按条目切分）\ndef structured_chunk(text):\n    chunks = []\n    for item in extract_items(text):  # 提取条目\n        chunks.append(item)\n    return chunks\n\n# 自己分好块，然后交给LlamaIndex\nraw_text = load_pdf(\"Java开发手册.pdf\")\nchunks = structured_chunk(raw_text)\n\n# 把每个chunk包装成Document对象\ndocuments = [Document(text=chunk) for chunk in chunks]\n\n# 构建索引（不再自动切分）\nindex = VectorStoreIndex.from_documents(documents)"
+    },
+    {
+      "anchor": "section-60",
+      "text": "注意，VectorStoreIndex.from_documents()接收的是Document对象列表。如果已经把文档切好块，每个块包装成一个Document，LlamaIndex就不会再次切分，直接对这些块向量化。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "所以，LlamaIndex既可以快速上手（用默认），也可以精细控制（用内置或自定义）。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "持久化存储"
+    },
+    {
+      "anchor": "section-60",
+      "text": "无论你用哪种分块策略，构建好的索引都可以保存到磁盘，避免每次运行都重新向量化："
+    },
+    {
+      "anchor": "section-60",
+      "text": "# 首次运行：构建并保存\nindex.storage_context.persist(persist_dir=\"kb/\")\n\n# 之后运行：直接加载，不用再次向量化\nfrom llama_index.core import load_index_from_storage, StorageContext\nstorage_context = StorageContext.from_defaults(persist_dir=\"kb/\")\nindex = load_index_from_storage(storage_context)"
+    },
+    {
+      "anchor": "section-60",
+      "text": "除了VectorStoreIndex，LlamaIndex还提供了其他几种索引，它们引出了一个核心要点：RAG ≠ 一定要用向量检索。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "RAG的全称是\"检索增强生成\"（Retrieval-Augmented Generation），关键词是\"检索\"，而不是\"向量检索\"。只要能找到相关信息，用什么方式都行："
+    },
+    {
+      "anchor": "section-60",
+      "text": "向量检索（Vector Search） ← 最常用 把文本编码成向量，通过余弦相似度查找 优点：语义理解好，能找到\"意思相近\"的内容 缺点：需要Embedding成本 对应索引 VectorStoreIndex"
+    },
+    {
+      "anchor": "section-60",
+      "text": "关键词检索（Keyword Search） ← 传统方式 基于BM25、TF-IDF等算法，不需要向量化 优点：快速、精确匹配（比如搜索专业术语） 缺点：不理解语义，\"购买\"和\"采购\"会被认为不同词 对应索引KeywordTableIndex"
+    },
+    {
+      "anchor": "section-60",
+      "text": "全文遍历（List Search） ← 最简单 不做相似度筛选，按顺序把所有chunk都喂给大模型 优点：信息完整，适合文档量小的总结性任务 缺点：慢、成本高，文档多了会超过上下文窗口 对应索引ListIndex"
+    },
+    {
+      "anchor": "section-60",
+      "text": "层次检索（Tree Search） 构建文档摘要树，从根节点向下查找 用LLM判断相关性，逐层筛选 对应索引 TreeIndex"
+    },
+    {
+      "anchor": "section-60",
+      "text": "大部分场景用VectorStoreIndex就够了。"
+    },
+    {
+      "anchor": "section-82",
+      "text": "11.5 Query Engine与Response Synthesizer"
+    },
+    {
+      "anchor": "section-82",
+      "text": "索引构建好之后，就进入查询阶段。LlamaIndex提供了Query Engines和Response Synthesizers两个组件来封装检索和生成逻辑。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "Query Engines 查询接口"
+    },
+    {
+      "anchor": "section-84",
+      "text": "作用 提供统一的查询接口，封装检索和生成逻辑。对应我们之前RAG流程里的问题相关向量查询这一步。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "基础用法"
+    },
+    {
+      "anchor": "section-84",
+      "text": "# 创建查询引擎\nquery_engine = index.as_query_engine()\n\n# 查询\nresponse = query_engine.query(\"你的问题\")\nprint(response)"
+    },
+    {
+      "anchor": "section-84",
+      "text": "高级配置"
+    },
+    {
+      "anchor": "section-84",
+      "text": "query_engine = index.as_query_engine(\n    similarity_top_k=3,          # Top-K=3，最相关的3条\n    response_mode=\"compact\",      # 压缩模式：将多个chunk压缩后一次生成答案\n    verbose=True                  # 显示中间过程：输出检索到的chunk和LLM调用详情\n)"
+    },
+    {
+      "anchor": "section-90",
+      "text": "Response Synthesizers 答案合成"
+    },
+    {
+      "anchor": "section-90",
+      "text": "作用 决定如何用检索到的chunk调用大模型生成最终答案。"
+    },
+    {
+      "anchor": "section-90",
+      "text": "内置策略"
+    },
+    {
+      "anchor": "section-90",
+      "text": "from llama_index.core.response_synthesizers import get_response_synthesizer\n\n# 1. Refine模式（逐步精炼）\nsynthesizer = get_response_synthesizer(response_mode=\"refine\")\n# 第1个chunk生成初版答案\n# 第2个chunk优化答案\n# 第3个chunk再优化...\n\n# 2. Tree Summarize（树形摘要）\nsynthesizer = get_response_synthesizer(response_mode=\"tree_summarize\")\n# 把多个chunk分组摘要，再合并\n\n# 3. Compact（压缩拼接）\nsynthesizer = get_response_synthesizer(response_mode=\"compact\")\n# 把所有chunk压缩后一次生成"
+    },
+    {
+      "anchor": "section-94",
+      "text": "11.6 ■ 学点英语"
+    },
+    {
+      "anchor": "section-94",
+      "text": "中文 | English | 音标 | 说明\n数据框架 | Data Framework | /ˈdeɪtə ˈfreɪmwɜːrk/ | 封装数据处理流程的软件框架，如 LlamaIndex\n索引构建 | Indexing | /ˈɪndeksɪŋ/ | 将文档解析、分块、向量化后构建可检索索引的过程\n检索器 | Retriever | /rɪˈtriːvər/ | 负责从索引中查询相关文档的组件\n响应合成器 | Response Synthesizer | /rɪˈspɑːns sɪnθəsaɪzər/ | 将检索结果组装为Prompt并调用LLM生成答案的组件\n句子窗口检索 | Sentence Window Retrieval | /ˈsentəns ˈwɪndoʊ rɪ ˈtriːvl/ | 用小窗口检索 + 大窗口生成的精匹配检索策略"
+    },
+    {
+      "anchor": "section-96",
+      "text": "图片"
+    }
+  ]
+}

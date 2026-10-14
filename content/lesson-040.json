@@ -1,0 +1,162 @@
+{
+  "id": "lesson-040",
+  "title": "扩展练习 · 1-7",
+  "code": "1-7",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "预训练",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/006-预训练/040-图文-1-7-扩展练习.pdf",
+  "sha256": "95f943cb45e8bd1cb8ea9b47c126647e7e3c87c3307fe1fc4dfbe27a9d7fbb3d",
+  "pdf": "sources/pdf/lesson-040.pdf",
+  "pages": 2,
+  "source_url": "https://class.imooc.com/lesson/5258#mid=104963",
+  "minutes": 2,
+  "excerpt": "题干: Google开源了Gemini（双子座）大模型，所以任何人都可以下载和使用它。 (复习题)",
+  "items": [
+    {
+      "kind": "h2",
+      "text": "1",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 判断题 难度: 中等",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: Google开源了Gemini（双子座）大模型，所以任何人都可以下载和使用它。 (复习题)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确答案: 错误",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: Google的策略是\"旗舰模型闭源，轻量模型开源\"。Gemini是旗舰模型，完全闭源，只能通过API调用。开源的是Gemma（小宝石），基于Gemini技术但参数量小得多。类似Android策略——开源Android操作系统，但Google服务核心是闭源的。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "2",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "题干: Common Crawl是一个非营利组织的免费数据集，几乎所有大模型都使用了它作为训练数据。(复习题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "正确答案: 正确",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "解析: Common Crawl从2008年开始免费爬取并开放整个互联网的网页数据，目前已包含超过3500亿个网页。GPT-3的60%训练数据、LLaMA的主要数据来源都来自Common Crawl。它解决了数据获取的合法性和标准化问题。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "题型: 简答题 难度: 中等题干: Meta开源LLaMA、阿里开源Qwen、深度求索开源DeepSeek，这些开源行为对AI行业产生了什么影响？你作为开发者能从中获得什么？ (延展题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "参考答案: ○ 降低门槛：小公司和独立开发者不需要花1200万美元做预训练，可以直接在开源模型上微调 ○ 促进创新：开源意味着研究者可以深入分析模型内部、改进算法、发现新方向 ○ 形成生态：开源模型带动了工具链（如llama.cpp）、应用层（如本地部署）的繁荣 ○ 作为开发者：你可以免费下载开源模型做本地部署（数据不外泄）、做领域微调、甚至基于开源模型构建自己的产品。唯一需要的是GPU算力（相比预训练成本，这只是零头）",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    }
+  ],
+  "accounting": {
+    "source_chars": 824,
+    "represented_chars": 693,
+    "removed_chars": 131,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 119,
+      "repeated_title": 12
+    }
+  },
+  "videos": [],
+  "order": 41,
+  "headings": [
+    {
+      "title": "1",
+      "id": "section-0",
+      "level": 2
+    },
+    {
+      "title": "2",
+      "id": "section-5",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "section-0",
+      "text": "1"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题型: 判断题 难度: 中等"
+    },
+    {
+      "anchor": "section-0",
+      "text": "题干: Google开源了Gemini（双子座）大模型，所以任何人都可以下载和使用它。 (复习题)"
+    },
+    {
+      "anchor": "section-0",
+      "text": "正确答案: 错误"
+    },
+    {
+      "anchor": "section-0",
+      "text": "解析: Google的策略是\"旗舰模型闭源，轻量模型开源\"。Gemini是旗舰模型，完全闭源，只能通过API调用。开源的是Gemma（小宝石），基于Gemini技术但参数量小得多。类似Android策略——开源Android操作系统，但Google服务核心是闭源的。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "2"
+    },
+    {
+      "anchor": "section-5",
+      "text": "题干: Common Crawl是一个非营利组织的免费数据集，几乎所有大模型都使用了它作为训练数据。(复习题)"
+    },
+    {
+      "anchor": "section-5",
+      "text": "正确答案: 正确"
+    },
+    {
+      "anchor": "section-5",
+      "text": "解析: Common Crawl从2008年开始免费爬取并开放整个互联网的网页数据，目前已包含超过3500亿个网页。GPT-3的60%训练数据、LLaMA的主要数据来源都来自Common Crawl。它解决了数据获取的合法性和标准化问题。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "题型: 简答题 难度: 中等题干: Meta开源LLaMA、阿里开源Qwen、深度求索开源DeepSeek，这些开源行为对AI行业产生了什么影响？你作为开发者能从中获得什么？ (延展题)"
+    },
+    {
+      "anchor": "section-5",
+      "text": "参考答案: ○ 降低门槛：小公司和独立开发者不需要花1200万美元做预训练，可以直接在开源模型上微调 ○ 促进创新：开源意味着研究者可以深入分析模型内部、改进算法、发现新方向 ○ 形成生态：开源模型带动了工具链（如llama.cpp）、应用层（如本地部署）的繁荣 ○ 作为开发者：你可以免费下载开源模型做本地部署（数据不外泄）、做领域微调、甚至基于开源模型构建自己的产品。唯一需要的是GPU算力（相比预训练成本，这只是零头）"
+    }
+  ]
+}

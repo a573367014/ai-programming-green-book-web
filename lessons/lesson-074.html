@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Temperature（一）-控制创造力的旋钮 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-074">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 3 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Temperature-控制创造力的旋钮</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 075</span></div>
+<h1 class="lesson-title">Temperature（一）-控制创造力的旋钮</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>6 页原文</span><span>约 7 分钟阅读</span><span class="module-name">Temperature-控制创造力的旋钮</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-074.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-074.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节我们学习了情境学习。本节将探讨Temperature（温度）参数如何控制AI的创造力。 这个参数对于开发者非常重要，因为它可以显著提高大模型回答的性能和质量。</p></aside>
+<h2 id="section-1" data-source-page="1">9.1 不同Temperature的效果展示<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">用同一个问题，在不同Temperature下的回答，来展示这参数的效果。</p>
+<p data-source-page="1">问题：“给我讲一个关于猫的故事”。</p>
+<p data-source-page="1">Temperature = 0（完全确定性）</p>
+<p data-source-page="1">ChatGPT答案：</p>
+<aside class="callout" data-source-page="1"><p>从前有一只名叫山葵的猫，它住在一个温馨的小镇上。山葵非常喜欢 晒太阳和追逐蝴蝶。每天早上，它都会在主人的床边等待，期待着一天的开始。 山葵的主人是一位慈祥的老奶奶。…</p></aside>
+<p data-source-page="1">这种设置下，模型会选择安全、传统的开头，情节发展可预测。如果问同样的问题10次，每次回答几乎完全一样。</p>
+<p data-source-page="1">Temperature = 0.7（中等创造力）</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<aside class="callout" data-source-page="2"><p>山葵是一只好奇心极强的黑猫，她住在海边的一座灯塔里。有一天，当暴风雨来临时，山葵发现了一只被海浪冲上岸的小海豚。山葵想要帮助它，但她不会游泳。于是她开始鸣叫，引起了灯塔看守人的注意。…</p></aside>
+<p data-source-page="2">中等创造力下，模型会给出更有创意的设定（如灯塔、海豚），情节有一定独特性。如果问10次，每次故事都不同，但都合理。</p>
+<p data-source-page="2">Temperature = 1.5（高创造力，接近疯狂）</p>
+<aside class="callout" data-source-page="2"><p>量子猫薛定谔住在第五维度和第六维度的夹缝中。它同时存在又不存在， 是波也是粒子。有一天，它决定去时间的尽头旅行，在那里遇到了一个用星尘 做的老鼠。这只老鼠告诉薛定谔一个秘密:所有的猫其实都是宇宙意识 的碎片。…</p></aside>
+<p data-source-page="2">高创造力下，模型会生成极其抽象和超现实的内容，逻辑连贯性下降，充满意想不到的元素。如果问10次，每次都是完全不同的、疯狂的故事。</p>
+<p data-source-page="2">Temperature控制着AI的&quot;大胆程度&quot;。</p>
+<h2 id="section-15" data-source-page="2">9.2 Temperature：温度，控制概率分布的&quot;平缓度&quot;<a class="heading-link" href="#section-15" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">先解释Temperature这个参数。</p>
+<p data-source-page="2">回顾：ChatGPT如何生成下一个词</p>
+<p data-source-page="2">在第2节，我们讲过ChatGPT的核心机制：</p>
+<p data-source-page="2">输入&quot;这部电影&quot;后，模型计算出每个候选词的概率：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">词      概率        说明
+   ─────────────────────────────
+    很好      35%     ← 最可能的选择
+    不错      25%     ← 较可能
+    还行      20%     ← 有一定可能
+    一般      10%     ← 不太可能
+    很差       5%     ← 很少选
+   ...其他词   5%     ← 极低概率</code></pre></div>
+<p data-source-page="2">然后，模型从这个概率分布中采样一个词。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">采样</p>
+<aside class="callout" data-source-page="3"><b>补充说明</b><p>什么是&quot;采样&quot;？ 采样（sampling）就是从一堆可能的选项中，按照概率&quot;抽取&quot;一个出来。 比如模型给出5个词：很好(35%)、不错(25%)、还行(20%)、一般(10%)、很差(5%)，采样就是根据这些概率随机选一个。就像抽奖，概率高的词更容易被抽中，但不是100%会抽到。</p></aside>
+<p data-source-page="3">Temperature就是在采样之前，调整这个概率分布。</p>
+<h2 id="section-25" data-source-page="3">9.3 Temperature的数学：Softmax函数<a class="heading-link" href="#section-25" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="3"><b>阅读提示</b><p>你可以跳过这部分数学，不影响理解。</p></aside>
+<p data-source-page="3">在生成概率分布时，原始分数没有归一化：</p>
+<aside class="callout" data-source-page="3"><p>很好: 3.5 不错: 2.5 还行: 2.0 很差: -1.0 …</p></aside>
+<p data-source-page="3">还需要对原始分数应用Softmax公式：</p>
+<div class="math-line" data-source-page="3">P(x<sub>i</sub>) = <span class="fraction"><span>e<sup>z<sub>i</sub>/T</sup></span><span>∑<sub>j</sub> e<sup>z<sub>j</sub>/T</sup></span></span><details class="formula-source"><summary>查看原文公式文本</summary><p>𝑃 ( 𝑥 𝑖 ) = 𝑒 𝑧 𝑖 / 𝑇 ∑ 𝑗 𝑒 𝑧 𝑗 / 𝑇 P(x i  )= ∑ j  e z j  /T e z i  /T  · zi/T · xi · zj/T · ∑j</p></details></div>
+<p data-source-page="3">其中：</p>
+<p class="list-item" data-source-page="3">𝑥 𝑖 x i  是第i个词</p>
+<p class="list-item" data-source-page="3">𝑧 𝑖 z i  是该词的原始分数</p>
+<p data-source-page="3">zi</p>
+<p class="list-item" data-source-page="3">𝑇 T 是Temperature（温度参数）</p>
+<p class="list-item" data-source-page="3">∑ 𝑗 ∑ j  表示对所有候选词求和</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">虽然归一化后的所有token的概率和都是1，但不同的Temperature会让每个预测词的概率数值不一样。如果不想理解上述公式，只需要了解下述的结论：</p>
+<p data-source-page="4">当T=1（默认）：</p>
+<p data-source-page="4">当T=1（默认）</p>
+<aside class="callout" data-source-page="4"><p>很好: 35% 不错: 25% 还行: 20% 一般: 10% 很差: 5% …</p></aside>
+<p data-source-page="4">当T=0.5（降温）：</p>
+<p data-source-page="4">当T=0.5（降温）</p>
+<aside class="callout" data-source-page="4"><p>很好: 55% ← 最高概率的词概率变得更高 不错: 25% 还行: 12% 一般: 5% 很差: 1% ← 低概率的词概率变得更低 …</p></aside>
+<p data-source-page="4">这让概率的分布变得&quot;尖锐&quot;</p>
+<p data-source-page="4">当T=2（升温）：</p>
+<p data-source-page="4">当T=2（升温）</p>
+<aside class="callout" data-source-page="4"><p>很好: 28% ← 最高概率的词概率下降 不错: 24% 还行: 22% 一般: 12% 很差: 8% ← 低概率的词概率上升 … 分布变得&quot;平缓&quot;</p></aside>
+<p data-source-page="4">用图像可能更容易理解。</p>
+<p data-source-page="4">假设模型对&quot;这部电影____&quot;这句话，计算出以下几个词的概率：</p>
+<aside class="callout" data-source-page="4"><p>当 T=0.1（低温，确定性强）： 很好 ████████████████████████ 55% ← 概率大幅提升 不错 █████████ 25% 还行 █████ 12% 一般 ██ 5% 很差 █ 1% ← 概率被压制 当 T=1.0（默认，平衡）： 很好 █████████████ 35% ← 原始概率 不错 ████████ 25% 还行██████ 20% 一般 ███ 10% 很差 ██ 5% ← 原始概率 当 T=2.0（高温，随机性强）： 很好██████████ 28% ← 概率下降 不错 ████████ 24% 还行 ███████ 22% 一般 ████12% 很差 ███ 8% ← 概率上升</p></aside>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">T越低，高概率词（很好）更容易被选中，低概率词（很差）几乎不会出现。T=1时，保持原始概率分布，既有一定随机性，又不会太离谱。T越高，所有词的概率差距变小，低概率词也有较大机会被选中。</p>
+<p data-source-page="5">这就回应了为什么T越高，输出的文本越不重复，越有创造力，因为每个词的选中概率都比较接近。</p>
+<h3 id="section-57" data-source-page="5">Temperature的三种典型值<a class="heading-link" href="#section-57" aria-label="链接至本节">#</a></h3>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">Temperature 值</th><th scope="col">效果</th><th scope="col">适用场景</th><th scope="col">示例</th></tr></thead><tbody><tr><td>0-0.3</td><td>完全确定性，总是选最高概率的词</td><td>事实问答、代码生成、客服机器人</td><td>“Python中如何读取文件?”</td></tr><tr><td>0.7-1.0</td><td>平衡创造力与合理性</td><td>日常对话、适度创意写作、头脑风暴</td><td>“给我一些周末活动建议”</td></tr><tr><td>1.5-2.0</td><td>高创造力，可能出人意料</td><td>艺术创作、科幻故事、打破常规</td><td>“写一首关于AI的诗”</td></tr></tbody></table></div>
+<h2 id="section-59" data-source-page="5">9.4 下节预告<a class="heading-link" href="#section-59" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">下一节，我们将学习另一种控制采样的方法——Top-p（核采样），以及它与Temperature的关键区别。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<h2 id="section-61" data-source-page="6">9.5 ■ 学点英语<a class="heading-link" href="#section-61" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>温度</td><td>Temperature</td><td>/ˈtɛmprətʃə®/</td><td>控制采样随机性的核心参数，值越高输出越发散</td></tr><tr><td>采样</td><td>Sampling</td><td>/ˈsɑːmplɪŋ/</td><td>根据概率分布随机抽取下一个 Token 的过程</td></tr><tr><td>概率分布</td><td>Probability Distribution</td><td>/ prɒbəˈbɪləti dɪstrɪ ˌ ˌ ˈbjuːʃn/</td><td>模型对词表中每个候选词赋予的相对可能性</td></tr><tr><td>激活值</td><td>Logit</td><td>/ˈlɒdʒɪt/</td><td>Softmax 归一化之前的原始分数</td></tr><tr><td>归一化</td><td>Softmax</td><td>/ˈsɒftmæks/</td><td>将原始分数转换为和为1的概率分布的函数</td></tr><tr><td>确定性</td><td>Determinism</td><td>/dɪˈtɜːmɪnɪzəm/</td><td>相同输入总是产生相同输出的性质</td></tr><tr><td>创造性</td><td>Creativity</td><td>/ kriːeɪˈtɪvəti/ ˌ</td><td>模型用语、联想、结构上的多样性</td></tr><tr><td>贪心解码</td><td>Greedy Decoding</td><td>/ˈɡriːdi diːˈkəʊdɪŋ/</td><td>每一步都选最高概率词的采样策略，等价于 T→0</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-073.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>扩展练习（2）</strong><small>Context Learning</small></a><a class="chapter-neighbor next" href="lesson-075.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-2</strong><small>Temperature-控制创造力的旋钮</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5263#mid=104898" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">9.1 不同Temperature的效果展示</a><a href="#section-15" class="toc-level-2">9.2 Temperature：温度，控制概率分布的&quot;平缓度&quot;</a><a href="#section-25" class="toc-level-2">9.3 Temperature的数学：Softmax函数</a><a href="#section-57" class="toc-level-3">Temperature的三种典型值</a><a href="#section-59" class="toc-level-2">9.4 下节预告</a><a href="#section-61" class="toc-level-2">9.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-074", "title": "Temperature（一）-控制创造力的旋钮", "stage": 1, "week": 3, "module": "Temperature-控制创造力的旋钮", "minutes": 7, "pages": 6, "type": "article"}</script>
+</body></html>

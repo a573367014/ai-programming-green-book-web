@@ -1,0 +1,222 @@
+--- PDF 第 1 页 ---
+实战：智能旅行规划Agent
+来源: https://class.imooc.com/lesson/5291#mid=105153
+阶段: 阶段六: 【智能体】从单体到多体
+周: 第11周 Agent：智能体架构
+模块: 实战：智能旅行规划Agent
+课节: 图文 1-1 实战：智能旅行规划Agent
+1-1 实战：智能旅行规划Agent
+实战：智能旅行规划Agent
+[!TIP] 阅读指南 前面七节我们学习了Agent的理论、架构、能力和实现范式。现在，是时候把这些
+知识串起来，动手实现一个真正能用的Agent了。 本节我们将实现一个智能旅行规划Agent。你只
+需告诉它预算、时间和偏好，它就能自动生成一份完整的旅行方案——从目的地推荐到行程安排，
+从景点选择到预算分配。 这不是一个玩具项目。它融合了我们学过的所有核心能力： 四步决策流
+程（理解→检索→推理→生成） Chain of Thought推理 记忆系统（记住用户的旅行偏好） 混合实
+现范式（Code-driven框架 + Prompt-driven决策） 代码量不大（核心代码约300行），但麻雀虽
+小，五脏俱全。看完这个案例，你就能把前面的理论知识转化为实际的Agent开发能力。
+项目需求与功能设计
+核心需求
+作为一个智能旅行规划助手，Agent 需要接收用户的输入——预算范围、旅行天数、出发城市和旅行偏
+好；然后输出推荐的目的地、完整每日行程、预算分配方案和实用建议。
+进阶方面，它还需要记住用户的历史偏好（下次规划时自动参考），能够理解模糊需求（比如"想去个不
+太热的地方"），具备推理能力（“5月去哪里最合适？”/“预算不够怎么调整？”）。
+功能拆解
+根据前面学习的四步范式，将Agent拆分为：
+Step 1: 需求理解与分析
+
+
+--- PDF 第 2 页 ---
+解析用户输入的自然语言
+提取关键信息（预算、天数、偏好）
+从记忆中读取用户历史偏好
+Step 2: 目的地检索与匹配
+基于预算和偏好筛选候选目的地
+考虑季节因素（5月适合去哪里？）
+排除不符合条件的选项
+Step 3: 行程规划推理（CoT）
+思考：如何合理分配天数？
+思考：景点之间的距离和交通？
+思考：预算如何分配到交通、住宿、餐饮？
+规划：生成完整的每日行程
+Step 4: 方案生成与记忆更新
+生成易读的旅行方案
+更新用户偏好记忆
+提供个性化建议
+技术架构设计
+整体架构
+我们采用混合实现范式：
+Code-driven：控制主流程（四步顺序执行）
+Prompt-driven：LLM负责推理和生成
+
+
+--- PDF 第 3 页 ---
+核心模块
+1. LLM调用模块——支持QWen API，提供统一调用接口，包含错
+误处理和重试机制。
+2. 记忆管理模块——短期记忆保存当前对话上下文，长期记忆以
+JSON文件持久化存储用户画像，支持读取和更新。
+3. 目的地知识库——简化版硬编码常见目的地数据，包含城市名、
+适合季节、主要景点、预算区间、标签等。
+4. 推理引擎——实现Chain of Thought推理，生成可读的思考过
+
+
+--- PDF 第 4 页 ---
+程，基于推理结果生成行程。
+项目结构与源码说明
+项目目录结构
+/travel_planner_agent/
+├── README.md                    # 完整的项目说明和使用指南
+├── requirements.txt             # Python依赖
+├── .env.example                 # 环境变量模板
+├── config.py                    # 配置文件（API密钥等）
+├── main.py                      # 主程序入口
+├── agent/
+│   ├── __init__.py
+│   ├── travel_agent.py         # Agent核心逻辑（四步流程）
+│   ├── llm_client.py           # LLM调用封装
+│   ├── memory_manager.py       # 记忆系统
+│   └── prompts.py              # Prompt模板
+├── data/
+│   ├── destinations.json       # 目的地知识库
+│   └── user_profiles/          # 用户画像存储目录
+│       └── user_example.json   # 示例用户画像
+└── utils/
+    ├── __init__.py
+    └── helpers.py              # 辅助函数
+源码说明
+本项目的完整源码位于：samples/chapter11/travel_planner_agent/
+核心文件说明：
+
+
+--- PDF 第 5 页 ---
+1. travel_agent.py——实现四步决策流程，每步都有详细注释，
+展示如何组织Agent的主逻辑。
+2. memory_manager.py——实现短期和长期记忆，演示如何持
+久化用户画像，包含记忆的读取、更新、保存逻辑。
+3. llm_client.py——封装LLM调用，支持多种模型切换，提供错
+误处理和重试机制。
+4. prompts.py——所有Prompt模板集中管理，包含需求理解、
+推理规划等各个步骤的Prompt，展示如何设计高质量的Prompt。
+5. README.md——完整的项目介绍、安装和运行指南、代码逻
+辑详解（对应正文的四步流程）、扩展建议。
+关键实现要点
+如何实现Chain of Thought推理
+在Step 3（行程规划推理）中，我们让LLM显式地进行思考：
+# 核心思想：通过Prompt引导LLM进行分步推理
+reasoning_prompt = """
+请按以下步骤思考如何规划行程：
+Thought 1: 分析目的地特点和用户偏好的匹配度
+Thought 2: 考虑{days}天的合理分配（每天不要太累）
+Thought 3: 思考景点之间的距离和交通
+Thought 4: 预算{budget}元如何分配（交通、住宿、餐饮、门票）
+Thought 5: 综合以上因素，制定最优行程
+最后给出详细的每日行程安排。
+"""
+
+
+--- PDF 第 6 页 ---
+详细实现请查看源码：agent/travel_agent.py 的 _plan_itinerary() 方法。
+如何设计记忆系统
+采用简单但实用的方案：短期记忆保存在内存中，对话结束后清空；长期记忆以JSON文件持久化存储
+用户画像。
+# 短期记忆：保存在内存中，对话结束后清空
+chat_history = [
+    {"role": "user", "content": "我想去海边"},
+    {"role": "assistant", "content": "推荐三亚..."}
+]
+# 长期记忆：保存为JSON文件，持久化存储
+user_profile = {
+    "user_id": "user_001",
+    "travel_style": "休闲度假",  # 从历史对话中总结
+    "budget_range": "5000-8000",
+    "preferred_destinations": ["海滨城市", "古城"],
+    "travel_history": [
+        {"date": "2024-05", "destination": "三亚", "satisfaction": 5}
+    ]
+}
+详细实现请查看源码：agent/memory_manager.py。
+agent/memory_manager.py
+如何选择实现范式
+采用混合模式：Code-driven部分负责四步流程的顺序执行、记忆的读取和保存、异常处理；Prompt-
+driven部分负责需求理解（提取关键信息）、推理规划（CoT思考）、方案生成（自然语言输出）。
+这种混合方式既保证了流程的稳定性，又保留了LLM的灵活性。
+
+
+--- PDF 第 7 页 ---
+如何运行和测试
+快速开始
+# 1. 进入项目目录
+cd samples/chapter11/travel_planner_agent/
+# 2. 安装依赖
+pip install -r requirements.txt
+# 3. 配置API密钥
+# 方式1（推荐）：设置系统环境变量
+export DASHSCOPE_API_KEY=你的通义千问API密钥
+# 方式2：直接修改 config.py 文件
+# 在 config.py 中找到 DASHSCOPE_API_KEY = "your-qwen-api-key"
+# 将其改为你的实际API密钥
+# 4. 运行
+python main.py
+测试用例
+运行后，尝试以下输入：
+测试1：基础需求
+用户输入：我想5月份去旅游，预算5000元，喜欢海边，有5天时间
+1
+测试2：模糊需求
+用户输入：想找个不太热的地方，放松一下，不要太商业化
+1
+测试3：预算限制
+
+
+--- PDF 第 8 页 ---
+用户输入：3000元能去哪里玩3天？想看山
+1
+观察Agent如何理解需求、推理规划、生成方案。
+下一节预告
+单个Agent的能力终究有限。在复杂的现实场景中，往往需要多个Agent协同工作才能解决问题。接下
+来的第12章，我们将深入探讨Agent的未来发展方向——从当前的技术局限到通向AGI的可能路径，为
+你揭示智能体技术的演进蓝图和发展前景。
+■ 学点英语
+中文
+English
+音标
+说明
+旅行规划智
+能体
+Travel Planner Agent
+/ˈtrævl ˈplænər
+ˈeɪdʒənt/
+根据预算、时间和偏好自动规划旅行方案的
+Agent
+行程规划
+Itinerary Planning
+/aɪˈtɪnərəri ˈplænɪŋ/
+Agent将天数、预算和景点信息综合为每日
+行程的过程
+用户画像
+User Profile
+/ˈjuːzər ˈproʊfaɪl/
+记录用户旅行偏好和历史数据的持久化信息
+目的地知识
+库
+Destination
+Knowledge Base
+/ˌdestɪˈneɪʃn ˈnɒlɪdʒ
+beɪs/
+包含城市信息、景点、预算区间的结构化数
+据集
+混合范式
+Hybrid Paradigm
+/ˈhaɪbrɪd
+ˈpærədaɪm/
+代码定义流程+LLM负责推理生成的Agent
+实现方式
+思维链推理
+CoT Reasoning
+/siː oʊ tiː ˈriːzənɪŋ/
+Agent在行程规划中通过分步思考得出最优
+方案的机制
+
+
+--- PDF 第 9 页 ---
+图片

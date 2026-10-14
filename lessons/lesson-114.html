@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Resources 实战 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-114">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 7 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Resources概念与实战</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 115</span></div>
+<h1 class="lesson-title">Resources 实战</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>8 页原文</span><span>约 12 分钟阅读</span><span class="module-name">Resources概念与实战</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-114.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-114.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节讲解了 Resources 的核心概念和工作原理。本节通过完整的实战示例，展示 Resources 的两种实现方式，以及如何编写高效的 description。</p></aside>
+<h2 id="section-1" data-source-page="1">4.1 Resources 的实战示例<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">Resources 有两种生成方式：固定写死和动态生成，各有适用场景。</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="1"><table><thead><tr><th scope="col">方式</th><th scope="col">适用场景</th><th scope="col">优点</th><th scope="col">缺点</th></tr></thead><tbody><tr><td>固定写死</td><td>资源不常变化（如项目文档）</td><td>简单直接，易于理解</td><td>资源变化需修改代码</td></tr><tr><td>动态生成</td><td>资源动态变化，如数据库表、API</td><td>自动同步，无需手动维护</td><td>需要额外查询逻辑</td></tr></tbody></table></div>
+<p data-source-page="1">下面通过两个示例来看具体实现。</p>
+<h3 id="section-5" data-source-page="1">API 文档 Server<a class="heading-link" href="#section-5" aria-label="链接至本节">#</a></h3>
+<p data-source-page="1">为项目的 API 文档创建一个 MCP Server，让 AI 能够查询接口使用说明。</p>
+<p data-source-page="1">实现思路</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># ═══════════════════════════════════
+#  API文档 MCP Server（伪代码示意）
+# ═══════════════════════════════════
+
+class APIDocServer:
+    def list_resources(self):
+        # ▸ 返回所有可用的 Resources
+        return [
+            {
+                &quot;uri&quot;: &quot;file://docs/authentication.md&quot;,
+                &quot;name&quot;: &quot;用户认证API文档&quot;,
+                &quot;description&quot;: &quot;用户认证相关API：登录、注册、登出、Token刷新&quot;,
+                &quot;mimeType&quot;: &quot;text/markdown&quot;
+            },
+            {
+                &quot;uri&quot;: &quot;file://docs/user_profile.md&quot;,
+                &quot;name&quot;: &quot;用户资料API文档&quot;,
+                &quot;description&quot;: &quot;用户资料管理API：获取信息、修改头像、更新昵称&quot;,
+                &quot;mimeType&quot;: &quot;text/markdown&quot;
+            },
+            {
+                &quot;uri&quot;: &quot;file://docs/payment.md&quot;,
+                &quot;name&quot;: &quot;支付API文档&quot;,
+                &quot;description&quot;: &quot;支付相关API：创建订单、查询状态、退款处理&quot;,
+                &quot;mimeType&quot;: &quot;text/markdown&quot;
+            },
+            # ... 更多资源
+        ]
+
+    def read_resource(self, uri):
+        # ▸ 读取指定 Resource 的内容
+        file_path = uri.replace(&quot;file://&quot;, &quot;&quot;)
+        with open(file_path, &#x27;r&#x27;, encoding=&#x27;utf-8&#x27;) as f:
+            content = f.read()
+
+        return {
+            &quot;contents&quot;: [{
+                &quot;uri&quot;: uri,
+                &quot;mimeType&quot;: &quot;text/markdown&quot;,
+                &quot;text&quot;: content
+            }]
+        }</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">工作流程</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户: &quot;如何实现用户登录功能?&quot;
+  ↓
+1. AI 应用调用 list_resources()
+  获取: [用户认证API文档， 用户资料API文档， ...]
+  ↓
+2. 传给 LLM (附带所有 descriptions)
+  ↓
+3. LLM 判断: &quot;用户认证API文档&quot; 最相关
+  ↓
+4. AI 应用把请求转给 MCP Server，由 Server 调用 
+read_resource(&quot;file://docs/authentication.md&quot;)
+  ↓
+5. 返回文档内容给 LLM
+  ↓
+6. LLM 阅读内容，回答用户</code></pre></div>
+<h3 id="section-11" data-source-page="3">数据库 Schema Server<a class="heading-link" href="#section-11" aria-label="链接至本节">#</a></h3>
+<aside class="callout" data-source-page="3"><p>重点：Resources 可以动态生成！ 上一个示例（API文档 Server）中，Resources 是固定写死的： 文档文件名固定：authentication.md、user_profile.md Resources 列表不变，除非手动修改代码 但很多场景下，资源是动态变化的： 数据库表可能随时增加 API 端点可能按版本变化 用户文件可能动态上传 这时候，动态生成 Resources 列表是更好的选择！</p></aside>
+<p data-source-page="3">让 AI 能够查询数据库的表结构、索引等元信息。</p>
+<p data-source-page="3">Resources 设计</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 注意：以下为伪代码示意，不可直接运行
+
+class DatabaseSchemaServer:
+    def list_resources(self):
+        # ▸ 动态生成 Resources（关键！）
+        resources = []
+        tables = self.get_all_tables()
+        for table in tables:
+            resources.extend([
+                {&quot;uri&quot;: f&quot;postgres://{table}/schema&quot;, &quot;name&quot;: f&quot;{table}表结构&quot;, 
+&quot;description&quot;: &quot;...&quot;},
+                {&quot;uri&quot;: f&quot;postgres://{table}/indexes&quot;, &quot;name&quot;: f&quot;{table}表索引&quot;, 
+&quot;description&quot;: &quot;...&quot;},
+                {&quot;uri&quot;: f&quot;postgres://{table}/sample&quot;, &quot;name&quot;: f&quot;{table}示例数据&quot;, 
+&quot;description&quot;: &quot;...&quot;}
+            ])
+        return resources
+        # 假设数据库有 users、orders 两个表
+        # 就会动态生成 6 个 Resources：
+        # - postgres://users/schema
+        # - postgres://users/indexes
+        # - postgres://users/sample
+        # - postgres://orders/schema
+        # - postgres://orders/indexes
+        # - postgres://orders/sample
+
+    def read_resource(self, uri):
+        # ▸ 解析 URI,执行相应查询
+        parts = uri.split(&#x27;/&#x27;)
+        table = parts[1]
+        resource_type = parts[2]
+
+        if resource_type == &quot;schema&quot;:
+            # 查询表结构
+            result = self.get_table_schema(table)
+        elif resource_type == &quot;indexes&quot;:
+            # 查询索引信息
+            result = self.get_table_indexes(table)
+        # ...
+
+        return {&quot;contents&quot;: [{&quot;text&quot;: result}]}</code></pre></div>
+<p data-source-page="4">使用场景</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户: &quot;users表有哪些索引?&quot;
+  ↓
+LLM 选择: postgres://users/indexes
+  ↓
+Server 执行: SELECT * FROM pg_indexes WHERE tablename=&#x27;users&#x27;
+  ↓
+返回索引信息</code></pre></div>
+<h2 id="section-18" data-source-page="5">4.2 编写优秀的 description<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">description 是 Resources 的灵魂!写得好不好直接影响 LLM 能否找对资源。</p>
+<h3 id="section-20" data-source-page="5">好的 description 的特征<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">清晰描述内容</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">× 不好:
+&quot;description&quot;: &quot;认证文档&quot;
+
+✓ 好:
+&quot;description&quot;: &quot;API认证方式说明，包括JWT Token的获取、刷新和验证流程&quot;</code></pre></div>
+<p data-source-page="5">包含关键词</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">× 不好:
+&quot;description&quot;: &quot;关于系统的一些配置&quot;
+
+✓ 好:
+&quot;description&quot;: &quot;系统配置文件，包括数据库连接、Redis缓存、日志级别等环境变量设置&quot;</code></pre></div>
+<p data-source-page="5">区分度高</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">假设有两个文档:
+
+× 区分度低:</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• &quot;用户管理文档&quot;</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• &quot;用户相关功能&quot;
+
+✓ 区分度高:</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• &quot;用户管理:创建、修改、删除用户的API接口&quot;</code></pre></div>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• &quot;用户权限:角色分配、权限检查的实现逻辑&quot;</code></pre></div>
+<h3 id="section-31" data-source-page="6">常见 description 模板<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">文档类 Resource</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">格式: &lt;主题&gt; - &lt;核心内容&gt;,&lt;关键细节&gt;
+
+示例:
+&quot;API认证 - JWT Token实现，包括token生成、验证和刷新流程&quot;
+&quot;数据库设计 - 表结构定义，涵盖users、orders等核心表及其关系&quot;
+&quot;部署指南 - Docker容器化部署，包括镜像构建、环境配置和启动命令&quot;</code></pre></div>
+<p data-source-page="6">数据类 Resource</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">格式: &lt;数据类型&gt;的&lt;属性/操作&gt;,&lt;范围/条件&gt;
+
+示例:
+&quot;users表的列定义和约束条件&quot;
+&quot;订单数据的前100条示例记录，按时间倒序&quot;
+&quot;2024年1月的销售统计报表&quot;</code></pre></div>
+<p data-source-page="6">API 类 Resource</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">格式: &lt;操作&gt; &lt;对象&gt; - &lt;功能说明&gt;
+
+示例:
+&quot;POST /users - 创建新用户，需要username、email、password参数&quot;
+&quot;GET /users/{id} - 获取指定用户的详细信息&quot;
+&quot;PUT /users/{id}/password - 修改用户密码，需要旧密码验证&quot;</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h2 id="section-38" data-source-page="7">4.3 Resources 也有够不着的地方<a class="heading-link" href="#section-38" aria-label="链接至本节">#</a></h2>
+<h3 id="section-39" data-source-page="7">资源数量太多<a class="heading-link" href="#section-39" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">问题:
+如果有 10000 个文档，生成 10000 个 Resource description
+→ description 列表本身就太长，LLM 看不完
+
+解决方案:</code></pre></div>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 分层设计: 先选择分类，再检索具体文档</code></pre></div>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 或者用 RAG</code></pre></div>
+<h3 id="section-43" data-source-page="7">资源边界模糊<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">问题:
+如果文档内容互相重叠，description 很难写清楚
+
+示例:</code></pre></div>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• &quot;用户管理。md&quot; - 包含用户CRUD和权限</code></pre></div>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• &quot;权限系统。md&quot; - 也包含用户权限相关内容
+
+→ 用户问&quot;如何给用户分配权限?&quot;
+→ 两个文档都相关，LLM 难以选择
+
+解决方案:</code></pre></div>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 重构文档，让边界清晰</code></pre></div>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 或者允许返回多个 Resources</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h3 id="section-49" data-source-page="8">需要模糊搜索<a class="heading-link" href="#section-49" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">问题:
+用户问: &quot;有没有关于性能优化的内容?&quot;
+
+Resources 需要:</code></pre></div>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• description 中包含&quot;性能优化&quot;关键词</code></pre></div>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 否则 LLM 找不到
+
+向量检索:</code></pre></div>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 可以找到语义相关的内容</code></pre></div>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">• 即使没有&quot;性能优化&quot;这个词
+
+结论: 模糊搜索还是 RAG 更强</code></pre></div>
+<h2 id="section-55" data-source-page="8">4.4 下一节预告<a class="heading-link" href="#section-55" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">到这里，Resources 的实战技巧已经讲清楚了：从固定写死的 API 文档 Server 到动态生成的数据库Schema Server，再到精心编写 description 提升匹配精度。下一节将把视角从「查资料」扩展到「做事情」——系统讲解 MCP 中的 Tools，如何让 AI 不仅读取数据，还能安全地调用工具、执行操作。</p>
+<h2 id="section-57" data-source-page="8">4.5 ■ 学点英语<a class="heading-link" href="#section-57" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="8"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>固定写死</td><td>Hardcoded Resources</td><td>/ˈhɑːrdˈkoʊdɪd rɪ ˈsɔːrsɪz/</td><td>在代码中预定义Resources，适用于资源不常变化的场景</td></tr><tr><td>动态生成</td><td>Dynamic Generation</td><td>/daɪˈnæmɪk dʒenə ˌ ˈreɪʃn/</td><td>实时查询外部系统自动生成Resources列表的方式</td></tr><tr><td>Description 编写</td><td>Description Authoring</td><td>/dɪˈskrɪpʃn ˈɔːθərɪŋ/</td><td>编写Resource描述以帮助LLM精准匹配资源的技术</td></tr><tr><td>轮询刷新</td><td>Polling Refresh</td><td>/ˈpoʊlɪŋ riːˈfreʃ/</td><td>定时扫描外部系统以更新Resources列表的机制</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-113.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Resources 概念</strong><small>Resources概念与实战</small></a><a class="chapter-neighbor next" href="lesson-115.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Tools 详解</strong><small>Tools、Prompts详解</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5279#mid=104933" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">4.1 Resources 的实战示例</a><a href="#section-5" class="toc-level-3">API 文档 Server</a><a href="#section-11" class="toc-level-3">数据库 Schema Server</a><a href="#section-18" class="toc-level-2">4.2 编写优秀的 description</a><a href="#section-20" class="toc-level-3">好的 description 的特征</a><a href="#section-31" class="toc-level-3">常见 description 模板</a><a href="#section-38" class="toc-level-2">4.3 Resources 也有够不着的地方</a><a href="#section-39" class="toc-level-3">资源数量太多</a><a href="#section-43" class="toc-level-3">资源边界模糊</a><a href="#section-49" class="toc-level-3">需要模糊搜索</a><a href="#section-55" class="toc-level-2">4.4 下一节预告</a><a href="#section-57" class="toc-level-2">4.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-114", "title": "Resources 实战", "stage": 3, "week": 7, "module": "Resources概念与实战", "minutes": 12, "pages": 8, "type": "article"}</script>
+</body></html>

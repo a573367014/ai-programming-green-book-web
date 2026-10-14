@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Thought教AI思考 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-071">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 3 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Context Learning</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 072</span></div>
+<h1 class="lesson-title">Thought教AI思考</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>10 页原文</span><span>约 12 分钟阅读</span><span class="module-name">Context Learning</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-071.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-071.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节，我们看了情境学习——通过在提示词中给几个例子，模型就能学会新任务。 但这里有一个更神奇的现象： 如果不仅给模型&quot;答案&quot;，还给&quot;推理过程&quot;，它的表现会大幅提升。 而且这个提升不是一点点，在某些复杂任务上，准确率可以从17%跃升到78%。 这个方法叫做CoT（Chain-of-Thought Prompting），中文可以译为&quot;思维链提示&quot;或&quot;推理链提示&quot;。 第一次看到这个结果时，很多研究者都感到震惊：为什么让模型&quot;展示思考过程&quot;会让它变得更聪明？ 让我带你深入这个现象。 本文中的错误示例基于早期的GPT-3。现在大模型普遍都内置了CoT，所以并不一定可以复现。</p></aside>
+<h2 id="section-1" data-source-page="1">8.1 什么是思维链<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">思维链（Chain-of-Thought, CoT）：在提示词中不仅提供问题和答案，还提供从问题到答案的推理步骤，引导模型进行逐步推理。</p>
+<p data-source-page="1">核心思想是对比两种方式：</p>
+<aside class="callout" data-source-page="1"><p>标准方法： 问题 → 答案 思维链： 问题 → 推理步骤1 → 推理步骤2 → … → 答案</p></aside>
+<p data-source-page="1">思维链就是教AI&quot;展示你的工作过程&quot;（Show your work）。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-6" data-source-page="2">8.2 一个对比实验：加不加推理，差别有多大<a class="heading-link" href="#section-6" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">用小学数学题来展示思维链的威力：</p>
+<aside class="callout" data-source-page="2"><p>问题： 咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？</p></aside>
+<p data-source-page="2">问题：</p>
+<h3 id="section-10" data-source-page="2">不带推理过程<a class="heading-link" href="#section-10" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">通过Few-Shot给出示例，但只有答案，没有推理。</p>
+<aside class="callout" data-source-page="2"><p>例1： 问题：小明有15个苹果，吃了3个，还剩多少？ 答案：12个 例2： 问题：教室里有8个学生，又来了5个，现在有多少学生？ 答案：13个 例3（目标问题）： 问题：咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ 答案：</p></aside>
+<p data-source-page="2">GPT-3的回答:</p>
+<aside class="callout" data-source-page="2"><p>20个</p></aside>
+<p data-source-page="2">错误！ 正确答案是 23 - 7 + 5 = 21。</p>
+<p data-source-page="2">错误！</p>
+<p data-source-page="2">当然，不是每次都会计算错误，这是一个概率问题。但在复杂数学题上，这种方法准确率只有17%左右。</p>
+<h3 id="section-18" data-source-page="2">带推理过程<a class="heading-link" href="#section-18" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">同样用Few-Shot，但示例中包含完整推理步骤：</p>
+<aside class="callout" data-source-page="2"><p>例1： 问题：小明有15个苹果，吃了3个，还剩多少？ 推理：小明原来有15个苹果，吃了3个，所以用减法：15 - 3 = 12 答案：12个 例2： 问题：教室里有8个学生，又来了5个，现在有多少学生？ 推理：原来8个学生，又来了5个，所以用加法：8 + 5 = 13 答案：13个 例3（目标问题）：问题：咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ 推理：</p></aside>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">GPT-3的回答：</p>
+<aside class="callout" data-source-page="3"><p>推理：咖啡店原来有23杯，上午卖了7杯，剩下 23-7=16杯。 下午又做了5杯，所以 16+5=21杯。 答案：21杯</p></aside>
+<p data-source-page="3">完全正确！不仅答案对了，推理步骤也清晰明了。</p>
+<p data-source-page="3">准确率从17%提升到57%（加上其他优化可达74%）。</p>
+<p data-source-page="3">17%提升到57%</p>
+<aside class="callout" data-source-page="3"><b>补充说明</b><p>数据来源：Wei等，2022年，《Chain-of-Thought Prompting Elicits Reasoning in Large Language Models》</p></aside>
+<p data-source-page="3">为什么示例中要有推理？</p>
+<p data-source-page="3">因为模型会&quot;模仿&quot;示例格式——示例有推理，它就会生成推理；示例只有答案，它就只给答案。</p>
+<h2 id="section-29" data-source-page="3">8.3 思维链的两种主要形式<a class="heading-link" href="#section-29" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">研究者们发现，思维链有两种主要使用方式。</p>
+<p data-source-page="3">形式1：Few-Shot CoT（需要示例）</p>
+<p data-source-page="3">这就是刚才看到的方式——在示例中展示推理步骤，让模型模仿。</p>
+<p data-source-page="3">结构模板:</p>
+<aside class="callout" data-source-page="3"><p>示例1: [问题] → [推理过程] → [答案] 示例2: [问题] → [推理过程] → [答案] … 目标问题: [问题] →[模型自动生成推理] → [模型给出答案]</p></aside>
+<p data-source-page="3">适用场景:</p>
+<p class="list-item" data-source-page="3">需要特定推理模式(如数学证明、逻辑推理)</p>
+<p class="list-item" data-source-page="3">想控制推理的风格和详细程度</p>
+<p class="list-item" data-source-page="3">有高质量示例可供参考</p>
+<p data-source-page="3">形式2：Zero-Shot CoT（不需要示例）2022年的一个惊人发现：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">不需要任何示例，只需在问题后加一句&quot;Let’s think step by step&quot;（让我们一步步思考），模型就会自动展示推理！</p>
+<p data-source-page="4">用同样的咖啡店问题测试：</p>
+<aside class="callout" data-source-page="4"><p>咖啡店有23杯咖啡。上午卖了7杯，下午又做了5杯，现在有多少杯？ Let’s think step by step.</p></aside>
+<aside class="callout" data-source-page="4"><p>好的，让我们一步步来： 第一步：咖啡店原来有23杯咖啡 第二步：上午卖了7杯，剩下 23 - 7 =16杯 第三步：下午又做了5杯，总共 16 + 5 = 21杯 因此，现在有21杯咖啡。</p></aside>
+<p data-source-page="4">完全正确！ 仅仅加了一句话，准确率就有巨大提升。</p>
+<p data-source-page="4">完全正确！</p>
+<p data-source-page="4">常用触发短语:</p>
+<p data-source-page="4">英文：</p>
+<p class="list-item" data-source-page="4">“Let’s think step by step”</p>
+<p class="list-item" data-source-page="4">“Let’s approach this step-by-step”</p>
+<p class="list-item" data-source-page="4">“Let’s break this down”</p>
+<p data-source-page="4">中文：</p>
+<p class="list-item" data-source-page="4">“让我们一步步思考”</p>
+<p class="list-item" data-source-page="4">“让我们仔细分析”</p>
+<p class="list-item" data-source-page="4">“让我们分步骤解决”</p>
+<p data-source-page="4">为什么如此简单的一句话就有效？</p>
+<p data-source-page="4">预训练数据中有大量这样的文本模式:</p>
+<aside class="callout" data-source-page="4"><p>“让我们一步步解决这个问题: 第一步。… 第二步。… 因此。…”</p></aside>
+<p data-source-page="4">模型学会了:看到&quot;一步步&quot;这类短语 → 应该生成详细推理过程。</p>
+<p data-source-page="4">Zero-Shot CoT巧妙利用了这个模式，无需示例就能触发推理能力。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-60" data-source-page="5">8.4 思维链为什么有效：深层原理<a class="heading-link" href="#section-60" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">这是最令人着迷的问题：为什么展示推理过程会让模型变得更&quot;聪明&quot;？</p>
+<p data-source-page="5">为什么展示推理过程会让模型变得更&quot;聪明&quot;？</p>
+<h3 id="section-63" data-source-page="5">分解复杂问题<a class="heading-link" href="#section-63" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">复杂问题直接求解很难，但如果分解成小步骤，每一步都不难。</p>
+<aside class="callout" data-source-page="5"><p>直接问： “23杯咖啡，上午卖7杯，下午做5杯，现在有多少？” 模型需要&quot;一次性&quot;推理： 23 - 7+ 5 = ? 这对模型的&quot;工作记忆&quot;要求很高 用思维链： 步骤1：23 - 7 = ? → 16 步骤2：16 + 5 = ?→ 21 每一步都是简单的算术，容易做对</p></aside>
+<p data-source-page="5">类比：</p>
+<aside class="callout" data-source-page="5"><p>人类也是这样: 直接算 23 × 47 很难 但如果分解: 23 × 47 ──── 161 (23 × 7) 920 (23 × 40)──── 1081 每一步都简单，组合起来解决复杂问题</p></aside>
+<h3 id="section-68" data-source-page="5">利用自回归的优势<a class="heading-link" href="#section-68" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">ChatGPT是自回归模型，一个词一个词生成。</p>
+<aside class="callout" data-source-page="5"><p>问题 → 直接生成答案 模型只有一次机会，必须&quot;想好了&quot;才输出</p></aside>
+<p data-source-page="5">思维链方法：</p>
+<aside class="callout" data-source-page="5"><p>问题 → 生成推理步骤1 → 步骤2 → 步骤3 → 答案 ↑ ↑ ↑ 每生成一个词，都可以作为后续推理的&quot;输入&quot;</p></aside>
+<p data-source-page="5">模型可以&quot;边想边说&quot;，前面的推理可以帮助后面的推理</p>
+<p data-source-page="5">一个具体的例子:</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<aside class="callout" data-source-page="6"><p>问题:“小明比小红大3岁，小红8岁，小明多少岁?”</p></aside>
+<p data-source-page="6">如果直接生成答案:</p>
+<aside class="callout" data-source-page="6"><p>模型需要在生成&quot;11&quot;之前，就在&quot;脑海中&quot;完成 8+3 的计算</p></aside>
+<p data-source-page="6">如果用CoT:</p>
+<aside class="callout" data-source-page="6"><p>模型生成:“小红8岁” → 这个信息现在在上下文中了 然后生成:“小明比小红大3岁” → 关系也明确了 然后生成:“所以8+3=11” → 可以&quot;看着&quot;前面的信息计算 最后生成:“小明11岁”</p></aside>
+<p data-source-page="6">每一步都基于已经生成的内容，降低了认知负荷。</p>
+<h3 id="section-81" data-source-page="6">自我纠错机会<a class="heading-link" href="#section-81" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">在推理过程中，模型有机会&quot;发现&quot;并&quot;纠正&quot;错误。</p>
+<aside class="callout" data-source-page="6"><p>问题:“如果今天是周三，3天后是星期几?”</p></aside>
+<p data-source-page="6">直接答:</p>
+<aside class="callout" data-source-page="6"><p>可能错误地回答&quot;周五&quot;(算错了)</p></aside>
+<p data-source-page="6">用CoT:</p>
+<aside class="callout" data-source-page="6"><p>“今天是周三， 1天后是周四， 2天后是周五， 3天后是周六” ← 在生成过程中逐步推进，不容易出错</p></aside>
+<p data-source-page="6">或者即使中途出错:</p>
+<aside class="callout" data-source-page="6"><p>“今天是周三， 1天后是周四， 2天后是周五， 3天后是。…等等，应该是周六，不是周五”</p></aside>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">模型在生成过程中可以自我纠正。</p>
+<aside class="callout" data-source-page="7"><b>补充说明</b><p>如果你足够仔细看过DeepSeek等支持推理的大模型的推理过程，你会发现，它有时候确实会出现： &quot;等等，这里好像有问题。让我修正一下。&quot; 这其实就是模型在自我纠错。</p></aside>
+<h2 id="section-92" data-source-page="7">8.5 思维链的局限和陷阱<a class="heading-link" href="#section-92" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">虽然思维链很强大，但它也有局限。</p>
+<h3 id="section-94" data-source-page="7">可能生成错误的推理<a class="heading-link" href="#section-94" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">模型可能生成看起来合理，但实际错误的推理过程。</p>
+<p data-source-page="7">这里不给出示例，因为简单的推理现在大模型基本不会出错。但你要知道，在某些情况下，推理是有可能出错的。毕竟我们之前已经学习过，大模型的回答是具有随机性的。</p>
+<h3 id="section-97" data-source-page="7">增加了Token消耗<a class="heading-link" href="#section-97" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">对比：</p>
+<aside class="callout" data-source-page="7"><p>标准回答： “答案：21杯” ← 3个tokens 思维链回答： “让我一步步思考： 咖啡店原来有23杯，上午卖了7杯，剩下23-7=16杯。 下午又做了5杯，所以16+5=21杯。 答案：21杯” ← 约40个tokens</p></aside>
+<p data-source-page="7">消耗增加了10倍以上。如果使用API,这意味着成本增加10倍。</p>
+<h3 id="section-101" data-source-page="7">对简单问题可能过度复杂化<a class="heading-link" href="#section-101" aria-label="链接至本节">#</a></h3>
+<aside class="callout" data-source-page="7"><p>问题:“2+2等于多少?” 思维链： “让我仔细思考： 2是一个数字，另一个2也是一个数字。 加法意味着将两个数字相加。 2+2表示将2和2相加。 1+1=2,2+1=3,2+2=4。 所以答案是4。” ←过度复杂化，浪费 直接答: “4” ← 完全够用</p></aside>
+<p data-source-page="7">现在很多大模型，比如DeepSeek，都有深度思考模式。但其实有时候，简单的问题，你无需开启深度思考模式，这个模式速度很慢。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-104" data-source-page="8">8.6 冷知识与趣闻<a class="heading-link" href="#section-104" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">趣闻一：思维链是意外的发现</p>
+<p data-source-page="8">CoT的诞生其实是个“美丽的意外”。</p>
+<p data-source-page="8">2022年，谷歌研究团队在测试GPT-3时，某位研究者在准备示例时“习惯性地”多写了几行推理步骤，想着“这样示例更清晰”。结果跑实验时发现，准确率突然从17%跳到了57%！</p>
+<p data-source-page="8">他们起初以为是实验出错了，反复验证后才确认：原来在示例里展示推理过程，能让模型&quot;学会&quot;如何一步步思考。这个发现直接催生了一篇引用量超过7000次的经典论文。</p>
+<p data-source-page="8">更有趣的是，后来又有人发现，甚至不给示例，只要加一句&quot;Let’s think step by step&quot;，模型也会自动展示推理——这就是后来的Zero-Shot CoT。从&quot;在示例里多写几行&quot;到&quot;只加一句话就能触发推理&quot;，这个进化路径本身就很神奇。</p>
+<p data-source-page="8">趣闻二：大模型也会&quot;边说边改&quot;</p>
+<p data-source-page="8">使用CoT时，有个让人惊讶的现象：模型在生成推理过程中，可能突然&quot;发现&quot;自己算错了，然后主动改口纠正。</p>
+<p data-source-page="8">早期典型的例子是这样的：</p>
+<aside class="callout" data-source-page="8"><p>问题：小明有10个苹果，吃了3个，又买了5个，现在有多少？ 模型推理： 小明原来有10个苹果吃了3个，剩下 10 - 3 = 7个 又买了5个，所以 7 - 5… 等等，这里应该是加法！ 7 + 5 = 12个 答案：12个</p></aside>
+<p data-source-page="8">这个&quot;等等&quot;让很多研究者第一次看到时都吓了一跳——模型居然会在推理中途&quot;意识到&quot;错误并自我修正，就像人类&quot;边说边想&quot;时突然发现不对劲。</p>
+<p data-source-page="8">更神奇的是，这种自我纠错不是研究者刻意训练的，而是CoT自然“涌现”出来的能力。当模型被要求展示推理步骤时，它生成的每一步都会成为后续推理的“输入”，这让模型有机会“看到”前面的错误并纠正。这也解释了为什么CoT能显著提升准确率——不仅因为分步推理更简单，还因为模型获得了“边想边改”的机会。</p>
+<h2 id="section-116" data-source-page="8">8.7 下节预告<a class="heading-link" href="#section-116" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">在本节中，我们看到通过Chain-of-Thought让模型“边想边说”,可以大幅提升复杂任务的准确率，也让推理过程变得可检查、可审查。</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<p data-source-page="9">下一节，我们将把视角从“如何思考”转向“思考的风格”,看看Temperature 和 Top-p 这些采样参数如何决定答案是保守还是发散、稳定还是惊喜。</p>
+<h2 id="section-119" data-source-page="9">8.8 推荐阅读<a class="heading-link" href="#section-119" aria-label="链接至本节">#</a></h2>
+<p data-source-page="9">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models (Wei 等， 2022)</p>
+<p data-source-page="9">系统性地提出并评估了CoT提示方法，展示了在数学、符号推理等多种任务上，仅通过在提示中加入推理步骤就能显著提升大模型的推理能力，是理解本节内容的关键论文。</p>
+<h2 id="section-122" data-source-page="9">8.9 ■ 学点英语<a class="heading-link" href="#section-122" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="9"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>思维链</td><td>Chain-of-Thought (CoT)</td><td>/tʃeɪn ɒv θɔːt/</td><td>让模型显式输出中间推理步骤的提示技术</td></tr><tr><td>分步推理</td><td>Step-by-step Reasoning</td><td>/step baɪ step ˈriːzənɪŋ/</td><td>把复杂问题拆为可逐步推导的小问题</td></tr><tr><td>自回归</td><td>Autoregressive</td><td>/ ɔːtəʊrɪˈɡresɪv/ ˌ</td><td>根据已生成内容预测下一个 Token 的生成方式</td></tr><tr><td>推理</td><td>Reasoning</td><td>/ˈriːzənɪŋ/</td><td>基于前提推导结论的思维过程</td></tr><tr><td>自我纠错</td><td>Self-correction</td><td>/ self kəˈrekʃn/ ˌ</td><td>模型在后续步骤中修正前面错误的能力</td></tr><tr><td>工作记忆</td><td>Working Memory</td><td>/ˈwɜːkɪŋ ˈmeməri/</td><td>临时存放中间计算结果的内在缓存</td></tr><tr><td>算力预算</td><td>Compute Budget</td><td>/kəmˈpjuːt ˈbʌdʒɪt/</td><td>单次推理允许消耗的最大 Token 或计算量</td></tr><tr><td>阈值效应</td><td>Threshold Effect</td><td>/ˈθreʃhəʊld ɪˈfekt/</td><td>性能收益只在规模跨过某一点后才出现的非线性现象</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<h2 id="section-124" data-source-page="10">图片<a class="heading-link" href="#section-124" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="10"><button class="figure-open" aria-label="放大查看第 10 页图示"><img src="../assets/figures/a198503a9d49f61d2b5a796ecb1092d1.png" width="802" height="400" loading="lazy" alt="Thought教AI思考 · 原 PDF 第 10 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-070.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>扩展练习（1）</strong><small>Context Learning</small></a><a class="chapter-neighbor next" href="lesson-072.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-5</strong><small>Context Learning</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5262#mid=104897" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">8.1 什么是思维链</a><a href="#section-6" class="toc-level-2">8.2 一个对比实验：加不加推理，差别有多大</a><a href="#section-10" class="toc-level-3">不带推理过程</a><a href="#section-18" class="toc-level-3">带推理过程</a><a href="#section-29" class="toc-level-2">8.3 思维链的两种主要形式</a><a href="#section-60" class="toc-level-2">8.4 思维链为什么有效：深层原理</a><a href="#section-63" class="toc-level-3">分解复杂问题</a><a href="#section-68" class="toc-level-3">利用自回归的优势</a><a href="#section-81" class="toc-level-3">自我纠错机会</a><a href="#section-92" class="toc-level-2">8.5 思维链的局限和陷阱</a><a href="#section-94" class="toc-level-3">可能生成错误的推理</a><a href="#section-97" class="toc-level-3">增加了Token消耗</a><a href="#section-101" class="toc-level-3">对简单问题可能过度复杂化</a><a href="#section-104" class="toc-level-2">8.6 冷知识与趣闻</a><a href="#section-116" class="toc-level-2">8.7 下节预告</a><a href="#section-119" class="toc-level-2">8.8 推荐阅读</a><a href="#section-122" class="toc-level-2">8.9 ■ 学点英语</a><a href="#section-124" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-071", "title": "Thought教AI思考", "stage": 1, "week": 3, "module": "Context Learning", "minutes": 12, "pages": 10, "type": "article"}</script>
+</body></html>

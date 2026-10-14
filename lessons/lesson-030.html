@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Embedding（二）-词向量的魔法 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-030">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 2 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Embedding</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 031</span></div>
+<h1 class="lesson-title">Embedding（二）-词向量的魔法</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>8 页原文</span><span>约 10 分钟阅读</span><span class="module-name">Embedding</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-030.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-030.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节看到了Embedding如何用低维稠密向量替代高维稀疏向量。但这些向量有什么神奇的性质?本节将看到,词向量竟然能做代数运算,而且模型是如何自动学习这些语义表示的。</p></aside>
+<h2 id="section-1" data-source-page="1">2.1 Embedding的神奇性质<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">词向量的代数运算</p>
+<p data-source-page="1">一个令人惊叹的现象:</p>
+<aside class="callout" data-source-page="1"><p>Embedding(国王) - Embedding(男人) + Embedding(女人) ≈ Embedding(女王)</p></aside>
+<p data-source-page="1">这是2013年Mikolov等人在Word2Vec论文中展示的真实实验结果。</p>
+<aside class="callout" data-source-page="1"><b>补充说明</b><p>这个著名的类比关系源自Google的Word2Vec项目,出自Tomas Mikolov等人于2013年发表的《Efficient Estimation of Word Representations in Vector Space》。</p></aside>
+<p data-source-page="1">&quot;国王&quot;这个词的向量,减去&quot;男性&quot;的成分,再加上&quot;女性&quot;的成分,得到的结果非常接近&quot;女王&quot;的向量。词也可以做加减运算。</p>
+<p data-source-page="1">向量空间中的几何解释想象一个三维空间(实际是12288维,简化成3维来可视化):</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">词      X:性别   Y:权力   Z:年龄   说明
+─────────────────────────────────────────────────
+国王      5        10       3      男性(5)、权力很高(10)、较年长(3)
+男人      5         0       0      男性(5)、无权力(0)、年龄中等(0)
+女人     -5         0       0      女性(-5)、无权力(0)、年龄中等(0)
+女王     -5        10       3      女性(-5)、权力很高(10)、较年长(3)</code></pre></div>
+<p data-source-page="2">做数学运算:</p>
+<aside class="callout" data-source-page="2"><p>国王 - 男人 = [5, 10, 3] - [5, 0, 0] = [0, 10, 3] ← 去掉&quot;男性&quot;属性 [0, 10, 3] + 女人 = [0, 10, 3] +[-5, 0, 0] = [-5, 10, 3] ← 加上&quot;女性&quot;属性 [-5, 10, 3] = 女王 ✓</p></aside>
+<p data-source-page="2">向量的减法提取了&quot;概念之差&quot;。国王减男人等于&quot;具有权力的人,去掉男性属性&quot;,也就是&quot;权力&quot;这个抽象概念。女人加上&quot;权力&quot;等于具有权力的女性,即女王。</p>
+<p data-source-page="2">更多令人惊叹的例子</p>
+<h2 id="section-14" data-source-page="2">1. 动物-栖息地关系<a class="heading-link" href="#section-14" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="2"><p>Embedding(鱼) - Embedding(水) + Embedding(天空) ≈ Embedding(鸟)</p></aside>
+<p data-source-page="2">鱼减去水等于&quot;某种生物去掉它的栖息地&quot;,也就是&quot;生物实体&quot;。生物实体加上天空等于&quot;在天空中生活的生物&quot;,即鸟。</p>
+<h2 id="section-17" data-source-page="2">2. 语法关系(时态)<a class="heading-link" href="#section-17" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="2"><p>Embedding(走) - Embedding(走了) + Embedding(吃了) ≈ Embedding(吃)</p></aside>
+<p data-source-page="2">走减去走了等于&quot;动词减去它的过去式&quot;,也就是&quot;时态转换&quot;。吃了加上逆向时态转换等于吃。</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<h2 id="section-20" data-source-page="3">3. 语义关系(反义词)<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="3"><p>Embedding(大) - Embedding(小) + Embedding(长) ≈ Embedding(短)</p></aside>
+<p data-source-page="3">大减小等于&quot;一对反义词的关系&quot;,即&quot;反义关系向量&quot;。长加上反义关系向量等于长的反义词,即短。</p>
+<h3 id="section-23" data-source-page="3">语言的内在结构<a class="heading-link" href="#section-23" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">这个现象揭示了一个深刻的事实:</p>
+<p data-source-page="3">语言不是随机的符号堆砌,而是有内在的数学结构的。时态关系、栖息地关系、比较关系,这些关系都被编码成了向量,而Embedding把这个隐藏的结构显现出来了。</p>
+<h3 id="section-26" data-source-page="3">哲学性的思考<a class="heading-link" href="#section-26" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">语言学家索绪尔的观点:词的意义来自于它与其他词的差异关系。</p>
+<p data-source-page="3">词的意义来自于它与其他词的差异关系</p>
+<p data-source-page="3">&quot;苹果&quot;的意义不是孤立的,而是它与&quot;香蕉&quot;的差异(都是水果)、与&quot;红色&quot;的关系(颜色属性)、与&quot;吃&quot;的关系(动词搭配)、与&quot;甜&quot;的关系(味道)。这些关系,在Embedding中被编码为向量间的距离和方向。</p>
+<p data-source-page="3">Embedding不仅是技术,更是语言哲学的数学实现。它证明了:意义是关系,关系可以被数学化,语言可以被几何化。</p>
+<h2 id="section-31" data-source-page="3">2.2 Embedding的学习机制<a class="heading-link" href="#section-31" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">Embedding是怎么学出来的?</p>
+<p data-source-page="3">这12288个数字到底是怎么得到的?答案是:它们是训练出来的。</p>
+<p data-source-page="3">还记得语言模型的任务吗?预测下一个词。</p>
+<aside class="callout" data-source-page="3"><p>输入:“猫喜欢吃____” 目标:预测下一个词是&quot;鱼&quot;(概率高)还是&quot;电脑&quot;(概率低)</p></aside>
+<p data-source-page="3">为了完成这个任务,模型必须知道&quot;猫&quot;和&quot;鱼&quot;有关联。这个关联,就编码在Embedding里。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-37" data-source-page="4">1. 初始化<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">一开始,每个词的Embedding是随机的:</p>
+<aside class="callout" data-source-page="4"><p>猫 = [0.01, -0.03, 0.05, …] ← 随机数字,没有意义 鱼 = [0.02, 0.01, -0.04, …] ← 随机数字,没有意义</p></aside>
+<h2 id="section-40" data-source-page="4">2. 训练<a class="heading-link" href="#section-40" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">模型在数百万篇文本中,看到了无数次&quot;猫吃鱼&quot;的例子,每看到一次,就调整Embedding:</p>
+<aside class="callout" data-source-page="4"><p>看到&quot;猫喜欢吃鱼&quot; → 调整&quot;猫&quot;和&quot;鱼&quot;的Embedding,让它们更相似 看到&quot;猫抓老鼠&quot; → 调整&quot;猫&quot;和&quot;老鼠&quot;的Embedding 看到&quot;狗喜欢跑&quot; → 调整&quot;狗&quot;和&quot;跑&quot;的Embedding</p></aside>
+<h2 id="section-43" data-source-page="4">3. 收敛<a class="heading-link" href="#section-43" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">经过数千万次调整,Embedding逐渐稳定:</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">词      训练后向量                    语义关系
+────────────────────────────────────────────────────────
+猫      [0.2, -0.5, 0.7, ...]       编码了&quot;猫&quot;的语义
+鱼      [0.15, -0.48, 0.65, ...]    与&quot;猫&quot;相近(常一起出现)
+狗      [0.18, -0.52, 0.68, ...]    与&quot;猫&quot;相近(都是动物)
+电脑    [-0.3, 0.6, -0.1, ...]      与&quot;猫&quot;很远(完全不同类)</code></pre></div>
+<h2 id="section-46" data-source-page="4">4. 最终结果<a class="heading-link" href="#section-46" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">当模型再次看到&quot;猫喜欢吃____&quot;,它计算:</p>
+<aside class="callout" data-source-page="4"><p>P(鱼 | 猫喜欢吃) = 0.35 ← 高,因为&quot;猫&quot;和&quot;鱼&quot;的Embedding相近 P(电脑 | 猫喜欢吃) = 0.001 ←低,因为&quot;猫&quot;和&quot;电脑&quot;的Embedding很远</p></aside>
+<p data-source-page="4">Embedding不是人工设计的,而是为了完成&quot;预测下一个词&quot;这个任务,模型自动发现:</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p class="list-item" data-source-page="5">哪些词常常一起出现</p>
+<p class="list-item" data-source-page="5">哪些词有相似的用法</p>
+<p class="list-item" data-source-page="5">哪些词有相似的语义</p>
+<p data-source-page="5">然后把这些&quot;发现&quot;编码进了Embedding的12288个数字里。</p>
+<h3 id="section-54" data-source-page="5">ChatGPT中的Embedding:从词到句子<a class="heading-link" href="#section-54" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">ChatGPT处理文本的完整流程:</p>
+<h2 id="section-56" data-source-page="5">1. Tokenization(分词)<a class="heading-link" href="#section-56" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">输入的文字被切分成token:</p>
+<aside class="callout" data-source-page="5"><p>“今天天气真好” → [“今天”, “天气”, “真”, “好”]</p></aside>
+<h2 id="section-59" data-source-page="5">2. Token ID映射<a class="heading-link" href="#section-59" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">每个token映射到一个整数ID:</p>
+<aside class="callout" data-source-page="5"><p>“今天” → 12456 “天气” → 8901 “真” → 3345 “好” → 7823</p></aside>
+<aside class="callout" data-source-page="5"><b>补充说明</b><p>为什么需要ID?因为计算机不能直接处理文字,必须先转成数字。每个词在词表中有一个唯一的ID号。</p></aside>
+<h2 id="section-63" data-source-page="5">3. Embedding查找<a class="heading-link" href="#section-63" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">根据ID查询对应的Embedding向量:</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<aside class="callout" data-source-page="6"><p>12456 → [0.23, -0.45, 0.67, …, 0.12] ← 12288维 8901 → [0.34, -0.12, 0.45, …, 0.23] ← 12288维 3345 → [-0.12, 0.56, -0.34, …, 0.45] ← 12288维 7823 → [0.45, 0.23, -0.67, …, -0.12] ←12288维</p></aside>
+<p data-source-page="6">ChatGPT内部有一个巨大的&quot;Embedding表&quot;,用ID号一查,就能拿到对应的12288维向量。</p>
+<h2 id="section-67" data-source-page="6">4. 输入Transformer<a class="heading-link" href="#section-67" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">这些向量作为输入,送进Transformer网络:</p>
+<aside class="callout" data-source-page="6"><p>[ [0.23, -0.45, …, 0.12], ← “今天” [0.34, -0.12, …, 0.23], ← “天气” [-0.12, 0.56, …, 0.45], ←“真” [0.45, 0.23, …, -0.12] ← “好” ] ↓ Transformer处理(Self-Attention, FFN, …) ↓ 输出:50000个词的概率分布</p></aside>
+<h2 id="section-70" data-source-page="6">5. 预测下一个token<a class="heading-link" href="#section-70" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">根据概率分布,选择下一个token,比如&quot;,&quot;(ID=566)。</p>
+<h2 id="section-72" data-source-page="6">6. 循环<a class="heading-link" href="#section-72" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">把新生成的token加入序列,重复上述过程:</p>
+<aside class="callout" data-source-page="6"><p>[“今天”, “天气”, “真”, “好”, “,”] → 预测下一个</p></aside>
+<p data-source-page="6">Embedding是连接符号世界(文字)和数值世界(计算)的桥梁。</p>
+<h3 id="section-76" data-source-page="6">Embedding参数与总参数的关系<a class="heading-link" href="#section-76" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">Embedding层的参数本身就包含在1750亿参数里面。</p>
+<p data-source-page="6">假设GPT-3:</p>
+<p class="list-item" data-source-page="6">词表大小:50000个词</p>
+<p class="list-item" data-source-page="6">Embedding维度:12288</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p data-source-page="7">Embedding层参数量 = 50000 × 12288 = 6.144亿参数</p>
+<p data-source-page="7">这6.144亿参数是1750亿参数的一部分(约0.35%),剩下的1743多亿参数分布在注意力层的权重矩阵、前馈神经网络的权重矩阵、层归一化的参数、输出层的权重等。</p>
+<p data-source-page="7">Embedding层学会语义表示,其他层学会语言规律,它们在训练中一起被优化,不是分开的两个过程。</p>
+<h2 id="section-84" data-source-page="7">2.3 下一节预告<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">现在知道了Embedding的神奇性质和学习机制。但这背后隐藏着一个更深刻的问题:这些数字真的代表&quot;意义&quot;吗?</p>
+<p data-source-page="7">下一节将从哲学角度思考:什么是&quot;猫&quot;?符号、数字、关系,哪一个才是真正的意义?同时还会看到一些有趣的词向量实验。</p>
+<h2 id="section-87" data-source-page="7">2.4 ■ 学点英语<a class="heading-link" href="#section-87" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="7"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>词向量</td><td>Word Vector</td><td>/wɜːd ˈvektər/</td><td>用数值向量表示词的语义，语义相近的词向量距离近</td></tr><tr><td>词向量</td><td>Word Embedding</td><td>/wɜːrd ɪmˈbedɪŋ/</td><td>用数值向量表示词的语义，语义相近的词向量距离近</td></tr><tr><td>语义代数</td><td>Semantic Algebra</td><td>/sɪˈmæntɪk ˈældʒɪbrə/</td><td>词向量可做加减运算的性质，如国王-男人+女人≈女王</td></tr><tr><td>类比推理</td><td>Analogy Reasoning</td><td>/əˈnælədʒi ˈriːzənɪŋ/</td><td>通过向量运算发现词间关系模式的能力</td></tr><tr><td>词嵌入层</td><td>Embedding Layer</td><td>/ɪmˈbedɪŋ ˈleɪər/</td><td>神经网络中将Token ID映射为稠密向量的参数层</td></tr><tr><td>嵌入表</td><td>Embedding Table</td><td>/ɪmˈbedɪŋ ˈteɪbl/</td><td>存储所有Token的Embedding向量的查找表</td></tr><tr><td>语义编码</td><td>Semantic Encoding</td><td>/sɪˈmæntɪk ɪn ˈkəʊdɪŋ/</td><td>将词的定义关系编码为向量空间中的位置和方向</td></tr><tr><td>共现关系</td><td>Co-occurrence</td><td>/koʊ əˈkɜːrəns/</td><td>两个词在文本中经常一起出现，是Embedding学习的核心信号</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h2 id="section-89" data-source-page="8">图片<a class="heading-link" href="#section-89" aria-label="链接至本节">#</a></h2>
+<figure data-source-page="8"><button class="figure-open" aria-label="放大查看第 8 页图示"><img src="../assets/figures/8b8933f5bf5754f6a9fd64013cd3cec5.png" width="1740" height="1640" loading="lazy" alt="Embedding（二）-词向量的魔法 · 原 PDF 第 8 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-029.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-2</strong><small>Embedding</small></a><a class="chapter-neighbor next" href="lesson-031.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-4</strong><small>Embedding</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5257#mid=104882" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">2.1 Embedding的神奇性质</a><a href="#section-14" class="toc-level-2">1. 动物-栖息地关系</a><a href="#section-17" class="toc-level-2">2. 语法关系(时态)</a><a href="#section-20" class="toc-level-2">3. 语义关系(反义词)</a><a href="#section-23" class="toc-level-3">语言的内在结构</a><a href="#section-26" class="toc-level-3">哲学性的思考</a><a href="#section-31" class="toc-level-2">2.2 Embedding的学习机制</a><a href="#section-37" class="toc-level-2">1. 初始化</a><a href="#section-40" class="toc-level-2">2. 训练</a><a href="#section-43" class="toc-level-2">3. 收敛</a><a href="#section-46" class="toc-level-2">4. 最终结果</a><a href="#section-54" class="toc-level-3">ChatGPT中的Embedding:从词到句子</a><a href="#section-56" class="toc-level-2">1. Tokenization(分词)</a><a href="#section-59" class="toc-level-2">2. Token ID映射</a><a href="#section-63" class="toc-level-2">3. Embedding查找</a><a href="#section-67" class="toc-level-2">4. 输入Transformer</a><a href="#section-70" class="toc-level-2">5. 预测下一个token</a><a href="#section-72" class="toc-level-2">6. 循环</a><a href="#section-76" class="toc-level-3">Embedding参数与总参数的关系</a><a href="#section-84" class="toc-level-2">2.3 下一节预告</a><a href="#section-87" class="toc-level-2">2.4 ■ 学点英语</a><a href="#section-89" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-030", "title": "Embedding（二）-词向量的魔法", "stage": 1, "week": 2, "module": "Embedding", "minutes": 10, "pages": 8, "type": "article"}</script>
+</body></html>

@@ -1,0 +1,609 @@
+{
+  "id": "lesson-131",
+  "title": "文章写作Agent",
+  "code": "1-1",
+  "stage": 4,
+  "week": 9,
+  "week_title": "LangGraph：工作流编排",
+  "module": "文章写作Agent",
+  "type": "article",
+  "repo_path": "004-阶段四 【框架应用】高效AI开发/002-第9周 LangGraph：工作流编排/004-文章写作Agent/131-图文-1-1-文章写作Agent.pdf",
+  "sha256": "b74f5a41e17eb742a832e9fadad45ac9530c04de73f14dff65ddfe662ec4d523",
+  "pdf": "sources/pdf/lesson-131.pdf",
+  "pages": 6,
+  "source_url": "https://class.imooc.com/lesson/5285#mid=105036",
+  "minutes": 8,
+  "excerpt": "上一节我们学习了 State、Node、Edge、Graph 四大核心概念。本节将通过一个完整的文章写作助手实战项目，带你体验 LangGraph 在处理复杂、有状态任务时的编排能力。建议先了解概念，再动手运行配套源码。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节我们学习了 State、Node、Edge、Graph 四大核心概念。本节将通过一个完整的文章写作助手实战项目，带你体验 LangGraph 在处理复杂、有状态任务时的编排能力。建议先了解概念，再动手运行配套源码。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "项目目标与流程设计",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "项目目标",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "构建一个自动写作助手,输入主题后自动生成经过润色的高质量文章。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "自动写作助手",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "工作流设计",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "工作流将严格遵循以下线性流水线:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "主题(Input) → [生成大纲] → [扩写初稿] → [润色优化] → 终稿(Output)",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "State 设计：工作流的「草稿本」",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们需要定义一个结构化的 State 来存储写作流程中的所有中间数据:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from typing import TypedDict\n\nclass ArticleState(TypedDict):\n    topic: str           # 文章主题(用户输入)\n    outline: str         # 大纲(第1步生成)\n    draft: str           # 初稿(第2步生成)\n    final_article: str   # 终稿(第3步生成)",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "数据合并过程:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "数据合并过程",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "初始: {\"topic\": \"Python异步编程\"}",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "{\"topic\": \"Python异步编程\"}",
+      "page": 2,
+      "size": 9.75,
+      "language": "json"
+    },
+    {
+      "kind": "paragraph",
+      "text": "初始",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "节点1执行后: {\"topic\": \"...\", \"outline\": \"一、什么是异步。..\"} (自动合并大纲)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "节点2执行后: {\"topic\": \"...\", \"outline\": \"...\", \"draft\": \"完整初稿。..\"} (自动合并初稿)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "节点3执行后: {\"topic\": \"...\", \"outline\": \"...\", \"draft\": \"...\", \"final_article\": \"成品。..\"} (自动合并终稿)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "节点(Node)实现",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "节点 1：生成大纲",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "任务：根据主题调用 LLM 生成文章逻辑框架。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "from langchain_openai import ChatOpenAI\n\n# 初始化模型 (显式设置 API Key 和 Base URL)\nllm = ChatOpenAI(\n    model=\"qwen3.6-plus\",\n    api_key=\"您的-DASHSCOPE-API-KEY\",\n    base_url=\"https://dashscope.aliyuncs.com/compatible-mode/v1\",\n    temperature=0.7\n)\n\ndef generate_outline(state: ArticleState):\n    topic = state[\"topic\"]\n    prompt = f\"请为主题'{topic}'生成一个详细的文章大纲,包含3-5个要点\"\n    outline = llm.invoke(prompt).content\n\n    print(f\"[大纲节点] 已生成大纲,长度:{len(outline)}字\")\n    return {\"outline\": outline}",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "h3",
+      "text": "节点 2：扩写初稿",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "任务：基于大纲内容，扩写成 800-1000 字的完整初稿。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def write_draft(state: ArticleState):\n    topic = state[\"topic\"]\n    outline = state[\"outline\"]\n    prompt = f\"主题:{topic}\\n大纲:\\n{outline}\\n\\n请根据大纲扩写成完整文章。\"\n    draft = llm.invoke(prompt).content\n\n    print(f\"[草稿节点] 已生成初稿,长度:{len(draft)}字\")\n    return {\"draft\": draft}",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "h3",
+      "text": "节点 3：润色优化",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "任务：对初稿进行语言精炼和逻辑优化，产出最终成品。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "def polish_article(state: ArticleState):\n    draft = state[\"draft\"]\n    prompt = f\"请润色以下文章,优化流畅度和逻辑性:\\n\\n{draft}\"\n    final = llm.invoke(prompt).content\n\n    print(f\"[润色节点] 已完成最终润色\")\n    return {\"final_article\": final}",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "h2",
+      "text": "图(Graph)构建与执行",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "组装工作流",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们将节点与边连接。注意这里使用了最新的 START 和 END 常量。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "START",
+      "page": 4,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "END",
+      "page": 4,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "from langgraph.graph import StateGraph, START, END\n\n# 1. 创建图\nbuilder = StateGraph(ArticleState)\n\n# 2. 注册节点\nbuilder.add_node(\"大纲\", generate_outline)\nbuilder.add_node(\"草稿\", write_draft)\nbuilder.add_node(\"润色\", polish_article)\n\n# 3. 编排路径\nbuilder.add_edge(START, \"大纲\")        # 入口\nbuilder.add_edge(\"大纲\", \"草稿\")        # 线性连接\nbuilder.add_edge(\"草稿\", \"润色\")\nbuilder.add_edge(\"润色\", END)           # 出口\n\n# 4. 编译应用\napp = builder.compile()",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "h3",
+      "text": "运行与追踪",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "通过 app.invoke() 触发执行，或使用 app.stream() 追踪状态流转。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 执行完整流程\nresult = app.invoke({\"topic\": \"AI 时代的编程范式\"})\nprint(f\"最终成品文章预览: {result['final_article'][:100]}...\")\n\n# 逐步追踪状态变化\nfor step in app.stream({\"topic\": \"AI 时代的编程范式\"}):\n    print(step)",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "实战总结",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "quote",
+      "text": "完整源码路径: samples/chapter9/article_writer/article_writer.py",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "注意：全自动并非终点 虽然本节实现了一个全自动流程，但在真实的写作生产中，「LLM 生成 →人工修改」 才是最可靠的路径。完全由 LLM 自我迭代往往会产生「幻觉累积」。 LangGraph 真正的威力在于它能极其简单地引入**「人工介入（Human-in-the-Loop）」**。我们将在本章稍后的第 6 节中专门探讨如何实现这种「人机协作」模式，让 Agent 在生成大纲后停下来等候你的审批和修改。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n流水线 | Pipeline | /ˈpaɪplaɪn/ | 节点按固定顺序依次执行的线性流程模式\n节点函数 | Node Function | /noʊd ˈfʌŋkʃn/ | 接收 State 并返回更新字典的处理函数\n状态累积 | State Accumulation | /steɪt ə kjuːmjəˈleɪʃn/ ˌ | State 逐步合并各节点产出的数据增长模式\n线性流程 | Linear Flow | /ˈlɪniər floʊ/ | 节点按预设顺序单向执行的简单工作流模式",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "流水线",
+          "Pipeline",
+          "/ˈpaɪplaɪn/",
+          "节点按固定顺序依次执行的线性流程模式"
+        ],
+        [
+          "节点函数",
+          "Node Function",
+          "/noʊd ˈfʌŋkʃn/",
+          "接收 State 并返回更新字典的处理函数"
+        ],
+        [
+          "状态累积",
+          "State Accumulation",
+          "/steɪt ə kjuːmjəˈleɪʃn/ ˌ",
+          "State 逐步合并各节点产出的数据增长模式"
+        ],
+        [
+          "线性流程",
+          "Linear Flow",
+          "/ˈlɪniər floʊ/",
+          "节点按预设顺序单向执行的简单工作流模式"
+        ]
+      ],
+      "page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "下节预告",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在的写作流程是线性的，一旦某个环节出错(比如大纲生成得不好),后续环节都会受到影响。在下一节中，我们将学习如何添加条件分支与循环,引入「质量检查」逻辑，让 Agent 能够在检测到质量不达标时自动「回退」并重新生成。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    }
+  ],
+  "accounting": {
+    "source_chars": 3301,
+    "represented_chars": 3141,
+    "removed_chars": 160,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 135,
+      "repeated_title": 22,
+      "code_line_number_artifact": 3
+    }
+  },
+  "videos": [],
+  "order": 132,
+  "headings": [
+    {
+      "title": "项目目标与流程设计",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "项目目标",
+      "id": "section-2",
+      "level": 3
+    },
+    {
+      "title": "工作流设计",
+      "id": "section-5",
+      "level": 3
+    },
+    {
+      "title": "State 设计：工作流的「草稿本」",
+      "id": "section-8",
+      "level": 2
+    },
+    {
+      "title": "节点(Node)实现",
+      "id": "section-19",
+      "level": 2
+    },
+    {
+      "title": "节点 1：生成大纲",
+      "id": "section-20",
+      "level": 3
+    },
+    {
+      "title": "节点 2：扩写初稿",
+      "id": "section-23",
+      "level": 3
+    },
+    {
+      "title": "节点 3：润色优化",
+      "id": "section-26",
+      "level": 3
+    },
+    {
+      "title": "图(Graph)构建与执行",
+      "id": "section-29",
+      "level": 2
+    },
+    {
+      "title": "组装工作流",
+      "id": "section-30",
+      "level": 3
+    },
+    {
+      "title": "运行与追踪",
+      "id": "section-35",
+      "level": 3
+    },
+    {
+      "title": "实战总结",
+      "id": "section-38",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-41",
+      "level": 2
+    },
+    {
+      "title": "下节预告",
+      "id": "section-43",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节我们学习了 State、Node、Edge、Graph 四大核心概念。本节将通过一个完整的文章写作助手实战项目，带你体验 LangGraph 在处理复杂、有状态任务时的编排能力。建议先了解概念，再动手运行配套源码。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "项目目标与流程设计"
+    },
+    {
+      "anchor": "section-2",
+      "text": "项目目标"
+    },
+    {
+      "anchor": "section-2",
+      "text": "构建一个自动写作助手,输入主题后自动生成经过润色的高质量文章。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "自动写作助手"
+    },
+    {
+      "anchor": "section-5",
+      "text": "工作流设计"
+    },
+    {
+      "anchor": "section-5",
+      "text": "工作流将严格遵循以下线性流水线:"
+    },
+    {
+      "anchor": "section-5",
+      "text": "主题(Input) → [生成大纲] → [扩写初稿] → [润色优化] → 终稿(Output)"
+    },
+    {
+      "anchor": "section-8",
+      "text": "State 设计：工作流的「草稿本」"
+    },
+    {
+      "anchor": "section-8",
+      "text": "我们需要定义一个结构化的 State 来存储写作流程中的所有中间数据:"
+    },
+    {
+      "anchor": "section-8",
+      "text": "from typing import TypedDict\n\nclass ArticleState(TypedDict):\n    topic: str           # 文章主题(用户输入)\n    outline: str         # 大纲(第1步生成)\n    draft: str           # 初稿(第2步生成)\n    final_article: str   # 终稿(第3步生成)"
+    },
+    {
+      "anchor": "section-8",
+      "text": "数据合并过程:"
+    },
+    {
+      "anchor": "section-8",
+      "text": "数据合并过程"
+    },
+    {
+      "anchor": "section-8",
+      "text": "初始: {\"topic\": \"Python异步编程\"}"
+    },
+    {
+      "anchor": "section-8",
+      "text": "{\"topic\": \"Python异步编程\"}"
+    },
+    {
+      "anchor": "section-8",
+      "text": "初始"
+    },
+    {
+      "anchor": "section-8",
+      "text": "节点1执行后: {\"topic\": \"...\", \"outline\": \"一、什么是异步。..\"} (自动合并大纲)"
+    },
+    {
+      "anchor": "section-8",
+      "text": "节点2执行后: {\"topic\": \"...\", \"outline\": \"...\", \"draft\": \"完整初稿。..\"} (自动合并初稿)"
+    },
+    {
+      "anchor": "section-8",
+      "text": "节点3执行后: {\"topic\": \"...\", \"outline\": \"...\", \"draft\": \"...\", \"final_article\": \"成品。..\"} (自动合并终稿)"
+    },
+    {
+      "anchor": "section-19",
+      "text": "节点(Node)实现"
+    },
+    {
+      "anchor": "section-20",
+      "text": "节点 1：生成大纲"
+    },
+    {
+      "anchor": "section-20",
+      "text": "任务：根据主题调用 LLM 生成文章逻辑框架。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "from langchain_openai import ChatOpenAI\n\n# 初始化模型 (显式设置 API Key 和 Base URL)\nllm = ChatOpenAI(\n    model=\"qwen3.6-plus\",\n    api_key=\"您的-DASHSCOPE-API-KEY\",\n    base_url=\"https://dashscope.aliyuncs.com/compatible-mode/v1\",\n    temperature=0.7\n)\n\ndef generate_outline(state: ArticleState):\n    topic = state[\"topic\"]\n    prompt = f\"请为主题'{topic}'生成一个详细的文章大纲,包含3-5个要点\"\n    outline = llm.invoke(prompt).content\n\n    print(f\"[大纲节点] 已生成大纲,长度:{len(outline)}字\")\n    return {\"outline\": outline}"
+    },
+    {
+      "anchor": "section-23",
+      "text": "节点 2：扩写初稿"
+    },
+    {
+      "anchor": "section-23",
+      "text": "任务：基于大纲内容，扩写成 800-1000 字的完整初稿。"
+    },
+    {
+      "anchor": "section-23",
+      "text": "def write_draft(state: ArticleState):\n    topic = state[\"topic\"]\n    outline = state[\"outline\"]\n    prompt = f\"主题:{topic}\\n大纲:\\n{outline}\\n\\n请根据大纲扩写成完整文章。\"\n    draft = llm.invoke(prompt).content\n\n    print(f\"[草稿节点] 已生成初稿,长度:{len(draft)}字\")\n    return {\"draft\": draft}"
+    },
+    {
+      "anchor": "section-26",
+      "text": "节点 3：润色优化"
+    },
+    {
+      "anchor": "section-26",
+      "text": "任务：对初稿进行语言精炼和逻辑优化，产出最终成品。"
+    },
+    {
+      "anchor": "section-26",
+      "text": "def polish_article(state: ArticleState):\n    draft = state[\"draft\"]\n    prompt = f\"请润色以下文章,优化流畅度和逻辑性:\\n\\n{draft}\"\n    final = llm.invoke(prompt).content\n\n    print(f\"[润色节点] 已完成最终润色\")\n    return {\"final_article\": final}"
+    },
+    {
+      "anchor": "section-29",
+      "text": "图(Graph)构建与执行"
+    },
+    {
+      "anchor": "section-30",
+      "text": "组装工作流"
+    },
+    {
+      "anchor": "section-30",
+      "text": "我们将节点与边连接。注意这里使用了最新的 START 和 END 常量。"
+    },
+    {
+      "anchor": "section-30",
+      "text": "START"
+    },
+    {
+      "anchor": "section-30",
+      "text": "END"
+    },
+    {
+      "anchor": "section-30",
+      "text": "from langgraph.graph import StateGraph, START, END\n\n# 1. 创建图\nbuilder = StateGraph(ArticleState)\n\n# 2. 注册节点\nbuilder.add_node(\"大纲\", generate_outline)\nbuilder.add_node(\"草稿\", write_draft)\nbuilder.add_node(\"润色\", polish_article)\n\n# 3. 编排路径\nbuilder.add_edge(START, \"大纲\")        # 入口\nbuilder.add_edge(\"大纲\", \"草稿\")        # 线性连接\nbuilder.add_edge(\"草稿\", \"润色\")\nbuilder.add_edge(\"润色\", END)           # 出口\n\n# 4. 编译应用\napp = builder.compile()"
+    },
+    {
+      "anchor": "section-35",
+      "text": "运行与追踪"
+    },
+    {
+      "anchor": "section-35",
+      "text": "通过 app.invoke() 触发执行，或使用 app.stream() 追踪状态流转。"
+    },
+    {
+      "anchor": "section-35",
+      "text": "# 执行完整流程\nresult = app.invoke({\"topic\": \"AI 时代的编程范式\"})\nprint(f\"最终成品文章预览: {result['final_article'][:100]}...\")\n\n# 逐步追踪状态变化\nfor step in app.stream({\"topic\": \"AI 时代的编程范式\"}):\n    print(step)"
+    },
+    {
+      "anchor": "section-38",
+      "text": "实战总结"
+    },
+    {
+      "anchor": "section-38",
+      "text": "完整源码路径: samples/chapter9/article_writer/article_writer.py"
+    },
+    {
+      "anchor": "section-38",
+      "text": "注意：全自动并非终点 虽然本节实现了一个全自动流程，但在真实的写作生产中，「LLM 生成 →人工修改」 才是最可靠的路径。完全由 LLM 自我迭代往往会产生「幻觉累积」。 LangGraph 真正的威力在于它能极其简单地引入**「人工介入（Human-in-the-Loop）」**。我们将在本章稍后的第 6 节中专门探讨如何实现这种「人机协作」模式，让 Agent 在生成大纲后停下来等候你的审批和修改。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-41",
+      "text": "中文 | English | 音标 | 说明\n流水线 | Pipeline | /ˈpaɪplaɪn/ | 节点按固定顺序依次执行的线性流程模式\n节点函数 | Node Function | /noʊd ˈfʌŋkʃn/ | 接收 State 并返回更新字典的处理函数\n状态累积 | State Accumulation | /steɪt ə kjuːmjəˈleɪʃn/ ˌ | State 逐步合并各节点产出的数据增长模式\n线性流程 | Linear Flow | /ˈlɪniər floʊ/ | 节点按预设顺序单向执行的简单工作流模式"
+    },
+    {
+      "anchor": "section-43",
+      "text": "下节预告"
+    },
+    {
+      "anchor": "section-43",
+      "text": "现在的写作流程是线性的，一旦某个环节出错(比如大纲生成得不好),后续环节都会受到影响。在下一节中，我们将学习如何添加条件分支与循环,引入「质量检查」逻辑，让 Agent 能够在检测到质量不达标时自动「回退」并重新生成。"
+    }
+  ]
+}

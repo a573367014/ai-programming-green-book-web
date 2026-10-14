@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Embedding：把文字变成向量 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-097">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 5 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>RAG核心原理</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 098</span></div>
+<h1 class="lesson-title">Embedding：把文字变成向量</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>13 页原文</span><span>约 17 分钟阅读</span><span class="module-name">RAG核心原理</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-097.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-097.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节多次提到Embedding，但没说清楚它到底是什么、怎么用。这一节深入理解Embedding技术：原理、模型选择、应用场景和具体用法。</p></aside>
+<h2 id="section-1" data-source-page="1">4.1 Embedding是什么<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">想象一下，如果让你用数字来描述一个人，你会怎么做？</p>
+<p data-source-page="1">最直观的方法是给这个人的各项特征打分：</p>
+<div class="code-block" data-source-page="1"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">张三：
+- 身高：175cm
+- 体重：70kg
+- 年龄：28岁
+- 外向程度：8分（满分10分）
+- 技术能力：9分
+- ...</code></pre></div>
+<p data-source-page="1">这样，张三就被表示成了一组数字：[175, 70, 28, 8, 9, ...]</p>
+<p data-source-page="1">Embedding做的就是类似的事情——把文字的&quot;语义特征&quot;用一组数字来表示。</p>
+<p data-source-page="1">Embedding做的就是类似的事情</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h3 id="section-8" data-source-page="2">从词到向量<a class="heading-link" href="#section-8" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">以&quot;猫&quot;这个字为例。传统计算机怎么处理它？</p>
+<p data-source-page="2">字符编码</p>
+<aside class="callout" data-source-page="2"><p>“猫” → Unicode编码 → U+732B (十进制: 29483)</p></aside>
+<p data-source-page="2">这只是个编号，不包含任何语义信息。计算机无法知道&quot;猫&quot;和&quot;狗&quot;在语义上比&quot;猫&quot;和&quot;桌子&quot;更接近。</p>
+<p data-source-page="2">Embedding向量</p>
+<aside class="callout" data-source-page="2"><b>补充说明</b><p>维度说明：下面示例使用1536维向量（对应 OpenAI 的 text-embedding-3-small 或通义千问的 text-embedding-v2）。实际项目中，不同模型的维度不同（768、1536、3072等）。</p></aside>
+<aside class="callout" data-source-page="2"><p>“猫” → [0.023, -0.015, 0.089, 0.034, -0.012, …] (1536维) “狗” → [0.025, -0.013, 0.091,0.038, -0.010, …] “桌子” → [-0.001, 0.078, -0.045, 0.123, 0.056, …]</p></aside>
+<p data-source-page="2">现在计算机可以计算向量之间的相似度：</p>
+<p class="list-item" data-source-page="2">“猫”和“狗”的相似度：0.85（很近，语义相似）</p>
+<p class="list-item" data-source-page="2">“猫”和“桌子”的相似度：0.12（很远，语义不同）</p>
+<p data-source-page="2">这就是Embedding的核心价值：把语义信息编码成数字，让计算机能&quot;理解&quot;文字的含义。</p>
+<h3 id="section-20" data-source-page="2">Embedding的训练过程<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h3>
+<p data-source-page="2">这些数字是怎么来的？为什么能表达语义？</p>
+<p data-source-page="2">答案是：通过大规模数据训练出来的。</p>
+<p data-source-page="2">大规模数据训练</p>
+<p data-source-page="2">训练原理</p>
+<p data-source-page="2">假设我们要训练一个Embedding模型，让它学会把词语转换成向量。训练数据是大量的文本：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<aside class="callout" data-source-page="3"><p>训练样本： “我喜欢猫” “我养了一只狗” “桌子上有本书” “猫和狗都是宠物” …（数十亿句话）</p></aside>
+<p data-source-page="3">模型的学习目标：</p>
+<p class="list-item" data-source-page="3">相似的上下文 → 相似的向量</p>
+<p data-source-page="3">例如：</p>
+<p class="list-item" data-source-page="3">“猫&quot;经常出现在&quot;喜欢”“养”&quot;宠物&quot;等词附近</p>
+<p class="list-item" data-source-page="3">&quot;狗&quot;也经常出现在类似的上下文中</p>
+<p class="list-item" data-source-page="3">所以模型会让&quot;猫&quot;和&quot;狗&quot;的向量彼此接近</p>
+<p data-source-page="3">而&quot;桌子&quot;出现的上下文完全不同（“摆放”“家具”“木头&quot;等），所以它的向量会离&quot;猫”&quot;狗&quot;很远。</p>
+<p data-source-page="3">这就是著名的&quot;分布式假设&quot;：一个词的含义由它出现的上下文决定。</p>
+<p data-source-page="3">这就是著名的&quot;分布式假设&quot;</p>
+<aside class="callout" data-source-page="3"><p>技术补充： 早期的Embedding模型（如Word2Vec、GloVe）只能编码单个词。现代的Embedding模型（如BERT、Sentence-BERT、OpenAI的text-embedding-3）可以编码整个句子、段落甚至文档，并且能理解词序、语法、上下文关系。</p></aside>
+<h2 id="section-37" data-source-page="3">4.2 Embedding模型的选择<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">现在有很多Embedding模型可供选择，该怎么挑？</p>
+<p data-source-page="3">主流Embedding模型对比</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="3"><table><thead><tr><th scope="col">模型</th><th scope="col">提供方</th><th scope="col">维度</th><th scope="col">特点</th></tr></thead><tbody><tr><td>text-embedding-3-small</td><td>OpenAI</td><td>1536</td><td>质量高、速度快</td></tr><tr><td>text-embedding-3-large</td><td>OpenAI</td><td>3072</td><td>质量最高</td></tr><tr><td>text-embedding-v2</td><td>通义千问</td><td>1536</td><td>中文优化</td></tr><tr><td>bge-large-zh</td><td>本地部署</td><td>1024</td><td>免费、可控</td></tr><tr><td>m3e-base</td><td>本地部署</td><td>768</td><td>中文优化、轻量</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<aside class="callout" data-source-page="4"><p>说明： DeepSeek目前主要提供对话和推理API（deepseek-v4-flash和deepseek-reasoner），暂未发现官方提供专门的Embedding API。如果需要Embedding功能，建议使用通义千问或本地部署模型。</p></aside>
+<p data-source-page="4">选择建议</p>
+<p class="list-item" data-source-page="4">预算充足 + 追求质量 → OpenAI text-embedding-3-large</p>
+<p class="list-item" data-source-page="4">中文为主 + 成本敏感 → 通义千问 text-embedding-v2</p>
+<p class="list-item" data-source-page="4">数据隐私要求高 → 本地部署 bge-large-zh</p>
+<p class="list-item" data-source-page="4">资源有限（无GPU） → 本地部署 m3e-base</p>
+<h3 id="section-47" data-source-page="4">不同维度意味着什么<a class="heading-link" href="#section-47" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">不同模型的维度不同（768、1536、3072）。维度越高越好吗？</p>
+<p data-source-page="4">维度的含义</p>
+<p data-source-page="4">可以把向量的每一维理解为一个&quot;语义特征&quot;。比如：</p>
+<p class="list-item" data-source-page="4">第1维：表达&quot;动物性&quot;（猫=0.9，桌子=0.1）</p>
+<p class="list-item" data-source-page="4">第2维：表达&quot;可爱程度&quot;（猫=0.8，老虎=0.3）</p>
+<p class="list-item" data-source-page="4">第3维：表达&quot;体积大小&quot;（猫=0.3，大象=0.9）</p>
+<p data-source-page="4">维度越多，能表达的语义特征越丰富，区分能力越强。</p>
+<p data-source-page="4">对比效果</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">768维模型：
+&quot;猫&quot; vs &quot;小猫&quot; 相似度 0.82
+&quot;猫&quot; vs &quot;狗&quot;  相似度 0.75
+
+3072维模型：
+&quot;猫&quot; vs &quot;小猫&quot; 相似度 0.88  ← 更能区分细微差异
+&quot;猫&quot; vs &quot;狗&quot;  相似度 0.71  ← 区分度更好</code></pre></div>
+<p data-source-page="4">但维度越高，也意味着存储空间更大、计算相似度更慢、API调用成本更高。</p>
+<p data-source-page="4">所以简单场景（FAQ、通用问答）用768-1536维足够，复杂场景（法律文档、学术论文）用3072维更好。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-59" data-source-page="5">4.3 Embedding的三大应用场景<a class="heading-link" href="#section-59" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">Embedding不只是用于RAG，它在AI应用开发中有很多用途。</p>
+<h3 id="section-61" data-source-page="5">语义搜索<a class="heading-link" href="#section-61" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">传统的关键词搜索只能按字面匹配，搜&quot;年假申请&quot;就只能找到包含这些字的文档。但用户的表达方式多种多样，可能说&quot;休假流程&quot;“请假制度”，虽然意思相同，但关键词搜索会漏掉。</p>
+<p data-source-page="5">解决的问题</p>
+<p data-source-page="5">把问题和文档都转成向量后，系统能理解它们的语义相似性。即使用词不同，只要意思接近，就能被搜索出来。</p>
+<h3 id="section-65" data-source-page="5">相似度计算<a class="heading-link" href="#section-65" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">有了向量表示，就能精确量化&quot;两段文字有多相似&quot;。</p>
+<p data-source-page="5">应用场景：</p>
+<p data-source-page="5">推荐系统 你看了一篇关于&quot;Python机器学习&quot;的文章，系统计算其他文章的向量相似度，推荐&quot;深度学习入门&quot;（相似度高）而不是&quot;Java Web开发&quot;（相似度低）。</p>
+<aside class="callout" data-source-page="5"><b>阅读提示</b><p>我们在第1章里有聊到过抖音的推荐算法。这些算法并没有直接使用大模型。 但现在随着大模型的崛起，越来越多的推荐系统正在接入大模型来进行更人性化的推荐。</p></aside>
+<p data-source-page="5">去重检测 新闻平台收到大量稿件，通过计算Embedding相似度，自动过滤重复或抄袭内容。两篇文章即使改了表述，但主题相同，向量就会很接近。</p>
+<p data-source-page="5">抄袭检测 学术论文查重，不仅比对原文，还通过语义相似度发现&quot;洗稿&quot;（改写但意思不变的抄袭）。</p>
+<aside class="callout" data-source-page="5"><b>阅读提示</b><p>AI查重精度高，但硬币有两面：一面是更严格的查重，另一面也出现了用AI&quot;洗稿&quot;降低重复率的工具。</p></aside>
+<h3 id="section-73" data-source-page="5">内容聚类和分类<a class="heading-link" href="#section-73" aria-label="链接至本节">#</a></h3>
+<p data-source-page="5">当有海量文档需要分类时，传统方法要么人工标注（费时费力），要么定义规则（难以覆盖所有情况）。</p>
+<p data-source-page="5">Embedding带来了改变：</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">把所有文档转成向量后，用聚类算法自动分组。相似主题的文档向量会聚在一起，无需人工干预。</p>
+<p data-source-page="6">实际应用：</p>
+<p data-source-page="6">新闻自动分类 每天产生数万条新闻，通过Embedding聚类，自动分为&quot;科技&quot;“财经”“娱乐&quot;等类别。新话题出现时（比如&quot;元宇宙”），系统会自动形成新的聚类。</p>
+<p data-source-page="6">社交媒体话题发现 分析微博上的热门话题，通过Embedding聚类，自动发现正在讨论的热点事件，即使用户用的词汇五花八门。</p>
+<h2 id="section-80" data-source-page="6">4.4 实战：调用Embedding API<a class="heading-link" href="#section-80" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">实际动手调用Embedding API，看看如何把文字转成向量。</p>
+<p data-source-page="6">环境准备</p>
+<p data-source-page="6">在开始之前，需要安装必要的Python库：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>BASH</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-bash"># 安装通义千问SDK
+pip install dashscope
+
+# 安装NumPy（用于向量计算）
+pip install numpy</code></pre></div>
+<h3 id="section-85" data-source-page="6">通义千问 Embedding API<a class="heading-link" href="#section-85" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">单个文本向量化</p>
+<aside class="callout" data-source-page="6"><b>阅读提示</b><p>完整源码参考：samples/chapter5/enbedding_qwen.py</p></aside>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">import dashscope
+import os
+
+# 设置API Key
+dashscope.api_key = os.getenv(&quot;DASHSCOPE_API_KEY&quot;) or &quot;sk-xxxxxxxxxxxx&quot;
+
+# 单个文本
+response = dashscope.TextEmbedding.call(
+    model=&#x27;text-embedding-v2&#x27;,
+    input=&#x27;如何申请年假？&#x27;
+)
+
+if response.status_code == 200:
+    embedding = response.output[&#x27;embeddings&#x27;][0][&#x27;embedding&#x27;]
+    print(f&quot;向量维度: {len(embedding)}&quot;)  # 1536
+    print(f&quot;向量前5个值: {embedding[:5]}&quot;)
+    # 输出示例: [-0.0234, 0.0456, -0.0123, 0.0789, 0.0321]
+else:
+    print(f&quot;调用失败: {response.message}&quot;)</code></pre></div>
+<p data-source-page="7">批量处理（更高效）</p>
+<aside class="callout" data-source-page="7"><b>阅读提示</b><p>完整源码参考：samples/chapter5/enbedding_qwen_batch.py</p></aside>
+<p data-source-page="7">打印结果：</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">处理了 4 个文本
+每个向量维度: 1536
+第一个向量前5个值: [3.221153458810894e-05, -0.013882370367051889, 0.023911979038682037, 
+-0.008358007226358455, -0.010483240290607224]</code></pre></div>
+<h2 id="section-93" data-source-page="7">4.5 Embedding的关键特性<a class="heading-link" href="#section-93" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">在使用Embedding时，有几个重要特性需要了解：</p>
+<aside class="callout" data-source-page="7"><p>说明： 以下相似度数据参考通义千问text-embedding-v2模型的测试结果，不同模型的实际数值会有所不同，但他们的数值的相关关系是一致的。</p></aside>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<p data-source-page="8">同义表达会产生相似的向量</p>
+<p data-source-page="8">测试文本</p>
+<p class="list-item" data-source-page="8">文本A：“如何申请年假？”</p>
+<p class="list-item" data-source-page="8">文本B：“怎么请年假？”</p>
+<p class="list-item" data-source-page="8">文本C：“年假申请流程是什么？”</p>
+<p class="list-item" data-source-page="8">文本D：“公司Wi-Fi密码多少？”</p>
+<p data-source-page="8">相似度结果</p>
+<p class="list-item" data-source-page="8">A与B相似度：0.89 - 完全同义，仅表达方式略有不同</p>
+<p data-source-page="8">0.89</p>
+<p class="list-item" data-source-page="8">A与C相似度：0.88 - 同样在问年假申请，语义高度相似</p>
+<p class="list-item" data-source-page="8">A与D相似度：0.17 - 完全不同的话题，相似度很低</p>
+<p data-source-page="8">0.17</p>
+<p data-source-page="8">前三个文本都在询问&quot;年假申请&quot;这个问题，虽然用词不同（“如何”、“怎么”、“流程”），但向量高度相似（0.88-0.89）。而第四个文本询问Wi-Fi密码，完全不同的主题，相似度只有0.17。</p>
+<h3 id="section-109" data-source-page="8">跨语言能力<a class="heading-link" href="#section-109" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">部分Embedding模型支持多语言，相同语义的不同语言文本向量接近。</p>
+<p class="list-item" data-source-page="8">中文：“你好，世界”</p>
+<p class="list-item" data-source-page="8">英文：“Hello, world”</p>
+<p class="list-item" data-source-page="8">法文：“Bonjour le monde”</p>
+<p class="list-item" data-source-page="8">对照：“今天天气真好”（完全不同的中文句子）</p>
+<p class="list-item" data-source-page="8">中文 vs 英文：0.65 - 相同意思的不同语言，相似度较高</p>
+<p data-source-page="8">0.65</p>
+<p class="list-item" data-source-page="8">中文 vs 法文：0.62 - 同样是相同意思，相似度较高</p>
+<p data-source-page="8">0.62</p>
+<p class="list-item" data-source-page="8">英文 vs 法文：0.77 - 同为欧洲语系，相似度最高</p>
+<p data-source-page="8">0.77</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<p class="list-item" data-source-page="9">中文 vs 对照：0.27 - 完全不同的中文句子，相似度很低</p>
+<p data-source-page="9">0.27</p>
+<p data-source-page="9">结论：三种语言的&quot;你好世界&quot;相似度都在0.62-0.77，远高于不同意思的中文句子（0.27）。这说明模型能够跨越语言边界，识别出相同的语义。</p>
+<h3 id="section-124" data-source-page="9">上下文感知<a class="heading-link" href="#section-124" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">Embedding模型能理解上下文。我们用&quot;苹果&quot;这个词来测试：</p>
+<p class="list-item" data-source-page="9">文本A：“苹果手机的性能很强大”（苹果指Apple公司）</p>
+<p class="list-item" data-source-page="9">文本B：“这个苹果又甜又脆”（苹果指水果）</p>
+<p class="list-item" data-source-page="9">文本C：“华为手机的拍照功能不错”（参照：同为手机评价）</p>
+<p class="list-item" data-source-page="9">文本D：“这个西瓜又甜又多汁”（参照：同为水果评价）</p>
+<p data-source-page="9">相似度计算结果</p>
+<p class="list-item" data-source-page="9">A与B相似度：0.48</p>
+<p data-source-page="9">0.48</p>
+<p class="list-item" data-source-page="9">A与C相似度：0.55</p>
+<p data-source-page="9">0.55</p>
+<p class="list-item" data-source-page="9">B与D相似度：0.63</p>
+<p data-source-page="9">0.63</p>
+<p data-source-page="9">虽然绝对数值差距不大（都在0.4-0.6之间），但排序关系很清晰：</p>
+<p data-source-page="9">排序关系</p>
+<p class="list-item" data-source-page="9">最低相似度（0.48）：“苹果手机&quot;和&quot;甜苹果” - 虽然都包含&quot;苹果&quot;，但一个在讨论科技产品性能，一个在讨论水果口感，语义完全不同</p>
+<p class="list-item" data-source-page="9">中等相似度（0.55）：“苹果手机&quot;和&quot;华为手机” - 都在评价手机，虽然品牌不同但话题相同</p>
+<p class="list-item" data-source-page="9">最高相似度（0.63）：“甜苹果&quot;和&quot;甜西瓜” - 都在用&quot;又甜又。…&quot;的句式评价水果口感，语义高度相似</p>
+<p data-source-page="9">从这里可以看到，Embedding模型不是简单的&quot;文字相似度计算器&quot;。即使两段文字包含相同的词（如&quot;苹果&quot;），如果上下文语义不同，相似度反而最低。相反，即使完全不同的词（“苹果手机” vs“华为手机”），只要讨论的是同一主题，相似度就会更高。</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<p data-source-page="10">这就是语义向量的神奇之处，它捕捉的是文字背后的含义，而不是表面的字符匹配。这是我们传统的SQL无法做到的。</p>
+<h2 id="section-144" data-source-page="10">4.6 Embedding使用的最佳实践<a class="heading-link" href="#section-144" aria-label="链接至本节">#</a></h2>
+<h3 id="section-145" data-source-page="10">文本长度的影响<a class="heading-link" href="#section-145" aria-label="链接至本节">#</a></h3>
+<p data-source-page="10">过长或过短的文本都会影响Embedding质量</p>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Bad：过短，语义信息不足
+text_too_short = &quot;年假&quot;
+# 向量质量低，难以区分&quot;年假天数&quot;&quot;年假申请&quot;等不同意图
+
+# Good：适中，完整表达语义
+text_good = &quot;如何申请年假？需要提前几天？&quot;
+# 包含完整的问题意图
+
+# 过长：语义过于分散
+text_too_long = &quot;&quot;&quot;年假制度详细说明：
+入职1年内员工享有5天年假，1-3年7天...
+申请流程：登录OA系统，选择请假申请...
+审批流程：提交后由直属领导审批...
+（还有5000字）&quot;&quot;&quot;
+# 包含太多主题，向量变成&quot;平均语义&quot;，检索时可能不准</code></pre></div>
+<h3 id="section-148" data-source-page="10">缓存策略<a class="heading-link" href="#section-148" aria-label="链接至本节">#</a></h3>
+<p data-source-page="10">Embedding API调用有成本（通义千问约0.0007元/千tokens），而且同一文本的向量是固定的，没必要重复计算。 所以缓存Embedding的结果非常重要，主要是为了降低费用和提高速度。</p>
+<p data-source-page="10">举2个例子。</p>
+<h2 id="section-151" data-source-page="10">1. 固定的知识库文档<a class="heading-link" href="#section-151" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">有一份《员工手册》，切分成100个片段。这100个片段的文本是固定的，不会变化。</p>
+<p class="list-item" data-source-page="10">不缓存：每次系统启动时都调用API计算100次，浪费钱和时间</p>
+<p class="list-item" data-source-page="10">缓存：第一次计算后保存到文件，以后直接加载</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<h2 id="section-155" data-source-page="11">2. 用户的历史查询<a class="heading-link" href="#section-155" aria-label="链接至本节">#</a></h2>
+<p data-source-page="11">很多用户会问重复的问题，比如&quot;如何申请年假？&quot;这个问题可能每天被问十几次。</p>
+<p class="list-item" data-source-page="11">不缓存：每次都调用API计算，成本累加</p>
+<p class="list-item" data-source-page="11">缓存：第一个用户问时计算，后面的用户直接使用缓存</p>
+<p data-source-page="11">实现思路（伪代码）</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python"># 简单的内存缓存
+cache = {}  # {&#x27;文本&#x27;: 向量}
+
+def get_embedding_with_cache(text):
+    if text in cache:
+        return cache[text]  # 直接返回缓存
+
+    vector = call_api(text)  # 调用API
+    cache[text] = vector     # 存入缓存
+    return vector
+
+# 持久化到文件（系统重启后也能用）
+import json
+
+# 保存缓存
+with open(&#x27;embedding_cache.json&#x27;, &#x27;w&#x27;) as f:
+    json.dump(cache, f)
+
+# 加载缓存
+with open(&#x27;embedding_cache.json&#x27;, &#x27;r&#x27;) as f:
+    cache = json.load(f)</code></pre></div>
+<h3 id="section-161" data-source-page="11">向量归一化<a class="heading-link" href="#section-161" aria-label="链接至本节">#</a></h3>
+<p data-source-page="11">这小节选看，是底层原理的知识，需要一点点线性代数的知识。不看也不影响后续开发。</p>
+<p data-source-page="11">在计算相似度时，通常会将向量归一化（变成单位向量），这样可以简化计算。</p>
+<p data-source-page="11">归一化的原因</p>
+<p data-source-page="11">余弦相似度的完整公式是：</p>
+<p data-source-page="11">KaTeX parse error: Expected &#x27;EOF&#x27;, got &#x27;相&#x27; at position 2: 相̲ 似度 = (A·B) / (|…其中|A|和|B|是向量的模（长度）。如果我们提前把向量归一化（让所有向量长度都变成1），公式就简化为：</p>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<div class="code-block" data-source-page="12"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">相似度 = A·B  （直接点积）
+
+1</code></pre></div>
+<div class="code-block" data-source-page="12"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 归一化：让向量长度变成1
+vector_norm = vector / length(vector)
+
+# 归一化后，点积就等于余弦相似度
+similarity = dot(vector_a_norm, vector_b_norm)</code></pre></div>
+<p data-source-page="12">大部分Embedding API（包括通义千问）返回的向量已经是归一化的。如果不确定，可以计算一下向量的模（长度），看是否等于1.0。归一化后可以直接计算点积：</p>
+<div class="code-block" data-source-page="12"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 伪代码：归一化后的相似度计算
+vector_a = api.get_embedding(&quot;文本A&quot;)
+vector_b = api.get_embedding(&quot;文本B&quot;)
+
+# 如果向量已归一化（长度=1），点积就是相似度
+similarity = dot_product(vector_a, vector_b)</code></pre></div>
+<p data-source-page="12">对于通义千问等主流API，向量默认已归一化，直接计算点积即可。</p>
+<aside class="callout" data-source-page="12"><b>阅读提示</b><p>下一节预告 现在已学会如何通过 API 获取 Embedding 向量。但向量算出来后，怎么存、怎么在海量向量中快速找到语义相似的？ 下一节进入 向量数据库，这是 RAG 系统的核心引擎。会把 Embedding 真正落地到检索应用中。</p></aside>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<h2 id="section-173" data-source-page="13">4.7 ■ 学点英语<a class="heading-link" href="#section-173" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="13"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>词嵌入</td><td>Embedding</td><td>/ɪmˈbedɪŋ/</td><td>将文字转换为固定长度数字向量的技术</td></tr><tr><td>向量维度</td><td>Vector Dimension</td><td>/ˈvektər daɪˈmenʃn/</td><td>嵌入向量的长度，如768、1536、3072维</td></tr><tr><td>归一化</td><td>Normalization</td><td>/ nɔːrməlɪˈzeɪʃn/ ˌ</td><td>将向量长度缩放为1，使点积等于余弦相似度</td></tr><tr><td>语义空间</td><td>Semantic Space</td><td>/sɪˈmæntɪk speɪs/</td><td>向量所构成的多维空间，相近位置表示相似语义</td></tr><tr><td>点积</td><td>Dot Product</td><td>/dɑːt ˈprɑːdʌkt/</td><td>两个向量对应元素相乘后求和，衡量相似度的一种方式</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-096.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>RAG核心原理（二）-检索生成与关键机制</strong><small>RAG核心原理</small></a><a class="chapter-neighbor next" href="lesson-098.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>向量数据库（一）- 核心算法</strong><small>向量数据库</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5271#mid=104916" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">4.1 Embedding是什么</a><a href="#section-8" class="toc-level-3">从词到向量</a><a href="#section-20" class="toc-level-3">Embedding的训练过程</a><a href="#section-37" class="toc-level-2">4.2 Embedding模型的选择</a><a href="#section-47" class="toc-level-3">不同维度意味着什么</a><a href="#section-59" class="toc-level-2">4.3 Embedding的三大应用场景</a><a href="#section-61" class="toc-level-3">语义搜索</a><a href="#section-65" class="toc-level-3">相似度计算</a><a href="#section-73" class="toc-level-3">内容聚类和分类</a><a href="#section-80" class="toc-level-2">4.4 实战：调用Embedding API</a><a href="#section-85" class="toc-level-3">通义千问 Embedding API</a><a href="#section-93" class="toc-level-2">4.5 Embedding的关键特性</a><a href="#section-109" class="toc-level-3">跨语言能力</a><a href="#section-124" class="toc-level-3">上下文感知</a><a href="#section-144" class="toc-level-2">4.6 Embedding使用的最佳实践</a><a href="#section-145" class="toc-level-3">文本长度的影响</a><a href="#section-148" class="toc-level-3">缓存策略</a><a href="#section-151" class="toc-level-2">1. 固定的知识库文档</a><a href="#section-155" class="toc-level-2">2. 用户的历史查询</a><a href="#section-161" class="toc-level-3">向量归一化</a><a href="#section-173" class="toc-level-2">4.7 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-097", "title": "Embedding：把文字变成向量", "stage": 2, "week": 5, "module": "RAG核心原理", "minutes": 17, "pages": 13, "type": "article"}</script>
+</body></html>

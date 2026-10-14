@@ -1,0 +1,2795 @@
+{
+  "id": "lesson-143",
+  "title": "Agent的核心架构剖析",
+  "code": "1-1",
+  "stage": 6,
+  "week": 11,
+  "week_title": "Agent：智能体架构",
+  "module": "Agent 的核心架构剖析",
+  "type": "article",
+  "repo_path": "006-阶段六 【智能体】从单体到多体/001-第11周 Agent：智能体架构/002-Agent 的核心架构剖析/009-图文-1-1-Agent的核心架构剖析.pdf",
+  "sha256": "c43dd7937185efd43a6dd145922a38869ff04cd6f43b9d5b01d873f3cf0b5108",
+  "pdf": "sources/pdf/lesson-143.pdf",
+  "pages": 19,
+  "source_url": "https://class.imooc.com/lesson/5290#mid=105149",
+  "minutes": 18,
+  "excerpt": "理解 Agent 的架构，就像理解人类的大脑结构——只有知道各个模块如何协作，才能真正掌握 Agent 的设计精髓。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 理解 Agent 的架构，就像理解人类的大脑结构——只有知道各个模块如何协作，才能真正掌握 Agent 的设计精髓。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "经典架构：Perceive-Think-Act（PTA）",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果要用一句话概括 Agent 的核心架构，那就是：感知（Perceive）→ 思考（Think）→ 行动（Act）→ 观察（Observe）→ 循环往复。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个模式并不是 LLM 时代的发明，而是来自经典的「智能体理论」（Intelligent Agent Theory）。早在 1995 年，Stuart Russell 和 Peter Norvig 在《人工智能：一种现代方法》中就提出了这个框架。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h3",
+      "text": "为什么是循环，而不是单向流程?",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统的软件是这样工作的：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "输入 → 处理 → 输出 → 结束\n\n1",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "比如一个计算器程序：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "输入：2 + 3",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "2 + 3",
+      "page": 2,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "list",
+      "text": "处理：执行加法运算",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "输出：5",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "结束",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但 Agent 不同。它运行在一个 动态变化的环境 中，需要不断地：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "动态变化的环境",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "感知：环境发生了什么变化？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "思考：我应该采取什么行动？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "行动：执行决策",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "观察：我的行动产生了什么效果？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "回到第 1 步，继续循环",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "Agent 循环的四个阶段",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用一个具体例子来理解这个循环。假设让 Agent 准备一次周末出游：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第 1 轮：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "[感知] 用户目标：准备周末出游\n       环境信息：当前是周三，目的地未定\n\n[思考] 分析：需要先确定目的地和天气\n       计划：查询几个热门城市的天气预报\n\n[行动] 调用工具：get_weather(cities=[\"杭州\", \"苏州\", \"南京\"])\n\n[观察] 结果：杭州晴天，苏州多云，南京有雨",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "第 2 轮：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "[感知] 新信息：杭州天气最好\n       用户偏好：喜欢自然景观（从历史对话记忆中提取）\n\n[思考] 决策：推荐杭州西湖\n       计划：查询景点开放时间和门票信息\n\n[行动] 调用工具：search_attractions(\"杭州西湖\")\n\n[观察] 结果：西湖免费开放，周末人流量大",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "第 3 轮：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们会发现，这个循环的关键在于：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "每一轮都基于上一轮的结果：Agent 不是一次性输出答案，而是逐步推进；",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每一轮都基于上一轮的结果",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "可以根据中间结果调整策略：如果发现南京下雨，立刻调整为推荐杭州；",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可以根据中间结果调整策略",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "持续与环境交互：通过工具获取实时信息，而不是仅依赖训练数据。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "持续与环境交互",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "PTA 的工程化实现：ReAct",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "上面的例子展示了 Perceive-Think-Act 循环在具体场景中的运作方式。这个经典的理论框架，到了LLM 时代被工程化为一种更具体的实现模式——ReAct（Reasoning and Acting）。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们在第 2 节已经提到过，ReAct 是 Agent 演进路径中第二阶段的关键模式。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从演进路径来看，Stage 2（ReAct）是当前工程实践的基线，Stage 3（自主 Agent）则是尚在探索中的目标方向。第 2 节已经说明，自主 Agent 的各项能力——自主规划、长期记忆、主动发起、自我修正——目前仍处于早期阶段，在可靠性、成本和安全性上还有大量工程问题待解决。因此，生产环境中实际落地的 Agent 系统，绝大多数仍然运行在 ReAct 模式或其精细化变体之上。理解 ReAct 架构，正是掌握当前可用 Agent 工程实践的基础。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "ReAct 并没有创造一个新的循环结构，而是 把 PTA 框架中的\"思考\"过程从黑盒变成了白盒。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "传统方式（思考是黑盒）：\nPerceive → [Think：内部推理] → Act → Observe\n              ↑\n         你看不到这部分\n\nReAct方式（思考显式输出）：\nThought： \"我需要先查询杭州的天气...\"\n         ↓（这段文本会被记录和展示）\nAction： get_weather(\"杭州\")\nObservation： {\"weather\": \"晴天\"}\nThought： \"天气不错，现在...\"\n         ↓\n...",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "所以，PTA 和 ReAct 的关系可以这样理解：PTA 是理论框架，ReAct 是工程实现。PTA 描述了 Agent应有的四个步骤——感知、思考、行动、观察；ReAct 则给出了在 LLM 系统中每一步具体怎么做。核心流程依然是：",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "code",
+      "text": "感知输入 → 思考（现在可见） → 执行行动 → 观察结果 → 循环\n\n1",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "ReAct 的价值：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ReAct 的价值",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "可解释：开发者能看到 Agent 的决策链",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可解释",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "可调试：出错时可定位具体哪步思考有问题",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可调试",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "可优化：通过分析 Thought 日志，改进 Prompt 或工具设计",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可优化",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它是当前最成熟、最可靠的 Agent 架构模式，也是整个第 3 节讨论各模块架构时依赖的核心框架。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "从循环到模块:两套概念的关系",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在理解了 Agent 的循环流程：Perceive（感知）→ Thought（思考）→ Action（行动）→Observation（观察）→ 循环（ReAct 模式的完整形态）。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "但如果去看实际的 Agent 系统代码，会发现它们通常被组织成这样的模块架构:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "感知层(Perception Layer)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "感知层",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "规划层(Planning Layer)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "规划层",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "推理层(Reasoning Layer)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "推理层",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "行动层(Action Layer)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "行动层",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "记忆系统(Memory System)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "记忆系统",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就产生了一个问题:四步循环和五个模块,它们之间是什么关系?",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "四步循环",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "五个模块",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "核心区分:流程 vs 架构",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "code",
+      "text": "两套概念的本质区别\n═══════════════════════════════════════\n● ReAct 循环\n  - 这是「流程视角」\n  - 描述 Agent **做什么**\n  - 关注时间顺序:先感知,再思考,再行动\n\n● 五个模块(感知层/规划层/推理层...)\n  - 这是「架构视角」\n  - 描述 Agent **怎么实现**\n  - 关注功能划分:每个模块负责什么",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "对应关系:循环步骤如何映射到模块",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "看看 ReAct 循环的每个步骤是由哪些模块实现的：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. Thought(思考)被拆成了两个模块：",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "1. Thought(思考)被拆成了两个模块",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "规划层(Planning):制定整体计划 “我要完成写周报这个任务，需要先查数据，再提取要点，最后生成正文”",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "list",
+      "text": "推理层(Reasoning):每一步的具体决策 “现在查到的数据不够，我应该调用哪个工具?用什么参数?”",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h3",
+      "text": "为什么要拆分?",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为\"思考\"这个动作太复杂了:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有时需要宏观规划(把大任务拆成小任务)",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "宏观规划",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有时需要微观决策(当前这一步怎么做)",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "微观决策",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "人类也是这样:计划\"准备一次旅行\"时，会先规划整体流程(订票、订酒店、查景点),然后在每个环节中推理具体操作(订哪个航班、选哪家酒店)。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h2",
+      "text": "2. Observation(观察)没有独立的层：",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2. Observation(观察)没有独立的层",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "观察其实是三个动作的组合:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "记录结果:由记忆系统保存行动的输出",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "记录结果",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "分析结果:由推理层评估执行效果、识别异常、提取关键信息",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "分析结果",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设 Agent 调用天气 API 后收到错误:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "{\"error\": \"城市不存在\"}\n\n1",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "json"
+    },
+    {
+      "kind": "paragraph",
+      "text": "但如果有\"分析\"环节，推理层会:",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "识别这是错误而非正常数据",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "判断需要调整策略(重新询问用户或换个城市)",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "决定下一步行动",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是为什么观察不只是被动接收，还包含主动分析和判断。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3. 记忆系统是贯穿整个循环的:",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "3. 记忆系统是贯穿整个循环的",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "记忆系统不是循环中的某一步，而是全程参与:",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "全程参与",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "感知时:提取历史记忆",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "思考时:参考过往经验",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "行动后:记录执行结果",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "各模块详解",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "感知层(Perception)",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "职责:将外部世界的各种输入转化为LLM可以理解的文本形式。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "职责",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可以把感知层想象成Agent的\"翻译官\":它负责把来自物理世界、数字系统、用户交互的各种信息，统一翻译成LLM能理解的语言。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "感知层处理的输入来源:",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "感知层处理的输入来源",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用户交互:自然语言指令、图片、语音等",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "环境状态:当前时间、用户位置、系统状态等上下文信息",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "环境状态",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "历史记忆:从记忆系统中检索到的相关对话或经验",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "历史记忆",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键工作：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键工作",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. 多模态转文本：",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "1. 多模态转文本",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "图片 → 文本描述（通过GPT-4V等视觉模型）",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "语音 → 文字转写（通过Whisper等语音识别）",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "2. 结构化数据处理：",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2. 结构化数据处理",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "工具返回的 JSON 数据不一定要转成自然语言",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "关键是：让 LLM 能理解它的含义",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让 LLM 能理解它的含义",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "例如天气 API 返回：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "{\"city\": \"杭州\", \"temp\": 25, \"weather\": \"晴\"}\n\n1",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "json"
+    },
+    {
+      "kind": "paragraph",
+      "text": "两种处理方式都可以：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "直接使用 JSON：Observation: {\"city\": \"杭州\", \"temp\": 25, \"weather\": \"晴\"}",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "转为自然语言：Observation: 杭州当前温度25度，天气晴朋",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Observation: 杭州当前温度25度，天气晴朋",
+      "page": 8,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "转为自然语言",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3. 上下文组装：",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "3. 上下文组装",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "将用户输入、工具返回、历史对话、可用工具列表等",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "组装成一个完整的Prompt,送给LLM处理",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "这是感知层最核心的价值:让LLM在每一步都能\"看到\"完整的世界",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "示例",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用户输入：“帮我查一下明天杭州的天气”",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "感知层组装的 Prompt：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "## 系统信息\n当前时间：2024年12月9日 14:30\n用户位置：上海\n\n## 用户信息\n用户偏好：喜欢详细的天气信息（温度、湿度、风力）\n\n## 可用工具\n1. get_weather(city, date): 获取指定城市和日期的天气\n2. search_web(query): 搜索网络信息\n\n## 用户请求\n帮我查一下明天杭州的天气",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这样，LLM 就能全面理解当前的“环境”了。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "再看一个工具返回的例子：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "再看一个工具返回的例子",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设调用 get_weather(\"杭州\", \"2024-12-10\") 后得到：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "{\n  \"city\": \"杭州\",\n  \"date\": \"2024-12-10\",\n  \"temperature\": {\"max\": 18, \"min\": 8},\n  \"humidity\": 65,\n  \"wind\": {\"speed\": 12, \"direction\": \"东北\"},\n  \"weather\": \"多云\"\n}",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "json"
+    },
+    {
+      "kind": "paragraph",
+      "text": "感知层有两种选择：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "方式1：保持 JSON",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Observation: {\"city\": \"杭州\", \"temperature\": {\"max\": 18, \"min\": 8}, ...}\n\n1",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "→ 优点：保持结构，如果需要传给下一个工具很方便 → 缺点：嵌套层级多时，LLM 可能难以快速提取关键信息",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "paragraph",
+      "text": "方式2：转为自然语言",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Observation: 杭州2024年12月10日天气多云，温度8-18℃，湿度65%，东北风12m/s\n\n1",
+      "page": 10,
+      "size": 9.75,
+      "end_page": 10,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "→ 优点：LLM 更容易理解和推理，特别是需要总结时 → 缺点：如果下一步需要结构化数据，还得让LLM 重新解析",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "paragraph",
+      "text": "实践中的选择原则：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实践中的选择原则",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果是最后一步（直接回答用户），用自然语言",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果还需要继续调用工具，保持 JSON",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "如果数据结构复杂（如3层以上），提取关键信息后用自然语言",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "职责：将高层目标拆解为可执行的子任务序列。",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在最新的 Agent 架构中，规划能力 被认为是 Agent 与普通聊天机器人的最大区别。",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "两种规划策略：",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "两种规划策略",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. 一次性规划（Plan-then-Execute）",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "先生成完整的任务计划，再逐步执行，适合目标明确、环境稳定的场景。比如用户说\"帮我写一份周报\"，Agent 会先制定完整计划：",
+      "page": 11,
+      "size": 11.25,
+      "end_page": 11
+    },
+    {
+      "kind": "code",
+      "text": "检索本周工作记录 → 提取关键成果和数据 → 按照模板生成周报正文 → 校对和格式化\n\n1",
+      "page": 11,
+      "size": 9.75,
+      "end_page": 11,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "然后按照这个计划一步步执行。",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "2. 边规划边执行（Interleaved Planning）",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每执行一步后，根据结果重新规划下一步，这就是 ReAct 模式 的核心思想，适合环境动态变化、目标不明确的场景。",
+      "page": 11,
+      "size": 11.25,
+      "end_page": 11
+    },
+    {
+      "kind": "paragraph",
+      "text": "比如用户说\"帮我研究一下最新的 Agent 框架\"：",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第 1 步：搜索\"2025 Agent framework\"，发现 CrewAI 和 AutoGen 很热门",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第 2 步：深入查询 CrewAI 的特点，发现它强调团队协作",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "第 3 步：对比 CrewAI 和 AutoGen…",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每一步都根据上一步的结果来决定下一步做什么。",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "职责：在每一步决策中，分析当前状态，选择最优行动。",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是 LLM 的核心能力所在。现代 Agent 的推理层通常包括两部分：",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. 知识推理：",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "1. 知识推理",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "基于训练数据的知识：LLM 自身的参数中存储的知识；",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "基于训练数据的知识",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "外部知识源：通过 RAG（检索增强生成）从向量数据库、知识图谱等获取。",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "外部知识源",
+      "page": 11,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "2. 逻辑推理：",
+      "page": 12,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2. 逻辑推理",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Chain-of-Thought（思维链）：逐步推理，显式化中间步骤；",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Chain-of-Thought（思维链）",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Tree-of-Thought（思维树）：探索多条推理路径，选择最优解；",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Tree-of-Thought（思维树）",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Self-Reflection（自我反思）：检查自己的推理是否合理，必要时回溺修正。",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "示例：Chain-of-Thought 推理",
+      "page": 12,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用户问：“我应该选杭州还是南京旅游？”",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent 的推理过程：",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "[Step 1] 首先，我需要了解这两个城市的天气情况\n        → 调用 get_weather(\"杭州\"), get_weather(\"南京\")\n\n[Step 2] 杭州晴天，南京有雨 → 天气角度杭州更好\n\n[Step 3] 接下来，检索用户偏好 → 用户喜欢自然风景\n\n[Step 4] 杭州有西湖，符合用户偏好 → 综合判断：推荐杭州",
+      "page": 12,
+      "size": 9.75,
+      "end_page": 12,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种逐步推理的方式，让 Agent 的决策过程 可解释、可追踪、可调试。",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可解释、可追踪、可调试",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "新趋势：",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "新趋势",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "神经符号结合（Neuro-Symbolic）： 将 LLM 的语义理解与符号推理引擎结合； 在需要精确逻辑的场景（如数学、法律）提升可靠性。",
+      "page": 12,
+      "size": 11.25,
+      "end_page": 12
+    },
+    {
+      "kind": "list",
+      "text": "多轮验证机制： Agent 在给出答案后，自我验证推理是否合理； 类似于人类的“检查一遍”过程。",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "行动层(Action)",
+      "page": 12,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "职责：将决策转化为具体的执行动作。",
+      "page": 12,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM Agent 的行动层与传统机器人不同，它不是控制电机转动，而是 调用工具（Tool Calling）。",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "常见的行动类型：",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "常见的行动类型",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "查询外部服务： 调用天气 API、搜索引擎、数据库等； 这是最基础、最常用的行动。",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "操作文件系统： 读写文件、创建目录、执行脚本； 需要非常严格的 权限控制。",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "操作文件系统：",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "操作文件系统",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "读写文件、创建目录、执行脚本；",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "需要非常严格的 权限控制。",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "权限控制",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "与其他 Agent 交互： 在 Multi-Agent 系统中，发送消息给其他 Agent； CrewAI、AutoGen 等框架的核心功能。",
+      "page": 13,
+      "size": 11.25,
+      "end_page": 13
+    },
+    {
+      "kind": "h3",
+      "text": "记忆系统(Memory)",
+      "page": 13,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "职责：存储和检索历史信息，使 Agent 能够“记住”过去的交互。",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是目前Agent 研究的 热点领域。没有记忆的 Agent 就像“金鱼”，每次对话都是从零开始；有了记忆，Agent 才能真正成为“助理”。",
+      "page": 13,
+      "size": 11.25,
+      "end_page": 13
+    },
+    {
+      "kind": "paragraph",
+      "text": "两种记忆类型：",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "两种记忆类型",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. 短期记忆（Short-term Memory）",
+      "page": 13,
+      "size": 17.25
+    },
+    {
+      "kind": "list",
+      "text": "定义：当前对话的上下文；",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "定义",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "存储方式：直接在 LLM 的上下文窗口中；",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "存储方式",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "生命周期：单次会话结束后清空。",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "生命周期",
+      "page": 13,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户：我喜欢吃川菜\n（存入短期记忆）\n\nAgent：好的，我记住了。\n\n用户：帮我推荐一家餐厅\nAgent：根据您喜欢川菜，我推荐...\n（从短期记忆中提取）",
+      "page": 14,
+      "size": 9.75,
+      "end_page": 14,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "挑战：",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "挑战",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "上下文窗口有限（如 GPT-4 的 128K tokens）；",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "对话太长时，早期信息会被截断。",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "2. 长期记忆（Long-term Memory）",
+      "page": 14,
+      "size": 17.25
+    },
+    {
+      "kind": "list",
+      "text": "定义：跨对话的持久化信息；",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "存储方式：外部数据库（向量数据库、知识图谱、关系数据库）；",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "生命周期：持久存在，需要时检索。",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "核心技术：RAG + 向量数据库",
+      "page": 14,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目前，向量数据库 被认为是 Agent 记忆系统的最佳选择：",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "向量数据库",
+      "page": 14,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "[存储阶段]\n用户信息：“我喜欢吃川菜”\n→ Embedding 模型转化为向量\n→ 存入向量数据库（如 Pinecone, Weaviate, Chroma）\n\n[检索阶段]\n用户问：“帮我推荐餐厅”\n→ 将查询转为向量\n→ 在数据库中搜索相似向量\n→ 检索到：“用户喜欢川菜”\n→ 将这条信息添加到当前 Prompt",
+      "page": 14,
+      "size": 9.75,
+      "end_page": 14,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "新趋势：Agentic RAG",
+      "page": 15,
+      "size": 14.25
+    },
+    {
+      "kind": "quote",
+      "text": "Agentic 是什么? 现在，你会发现很多技术都加上了\"Agentic\"前缀:Agentic RAG、Agentic Workflow、Agentic Search… Agentic = 赋予 Agent 特性,核心含义是: 从\"被动执行\"变为\"主动决策\" 从\"一次性处理\"变为\"多轮迭代\" 从\"固定流程\"变为\"自主规划\" 简单来说，给任何技术加上Agentic,就是让它具备Agent的自主性和循环能力。",
+      "page": 15,
+      "size": 11.25,
+      "end_page": 15
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统 RAG 是\"一次性检索\":Agent 提问 → 检索 → 生成答案。",
+      "page": 15,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agentic RAG是\"多轮自主检索\":",
+      "page": 15,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "第 1 轮：检索到一些信息\nAgent：这些信息不够，我需要更多关于 X 的内容\n\n第 2 轮：重新检索，调整查询\nAgent：现在信息足够了，可以生成答案",
+      "page": 15,
+      "size": 9.75,
+      "end_page": 15,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种模式让 Agent 对知识的获取更主动、更灵活。",
+      "page": 15,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "下节预告",
+      "page": 15,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在了解了 Agent 的模块架构，但可能会好奇：这些模块背后的核心能力到底是如何实现的？感知如何理解环境？思考如何进行推理？行动如何准确执行？",
+      "page": 15,
+      "size": 11.25,
+      "end_page": 15
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将深入剖析 Agent 的三大核心能力——从多模态感知到 Chain-of-Thought 推理，再到工具调用的技术细节，可以看到，原来 Agent 的\"智能\"是通过这些具体的能力实现的。",
+      "page": 15,
+      "size": 11.25,
+      "end_page": 15
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 16,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n感知-思考-行动 | PTA (Perceive-Think- Act) | /piː tiː eɪ/ | Agent运行的核心理论循环框架\n感知层 | Perception Layer | /pərˈsepʃn ˈleɪər/ | 将外部输入转化为LLM可理解形式的模块\n规划层 | Planning Layer | /ˈplænɪŋ ˈleɪər/ | 将高层目标拆解为可执行子任务序列的模块\n推理层 | Reasoning Layer | /ˈriːzənɪŋ ˈleɪər/ | 每一步决策中分析当前状态选择最优行动的模块\n行动层 | Action Layer | /ˈækʃn ˈleɪər/ | 将决策转化为具体执行动作的模块\n自主检索增强生成 | Agentic RAG | /eɪˈdʒentɪk ræɡ/ | 多轮自主检索，Agent主动调整查询策略的知识获取方式",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "感知-思考-行动",
+          "PTA (Perceive-Think- Act)",
+          "/piː tiː eɪ/",
+          "Agent运行的核心理论循环框架"
+        ],
+        [
+          "感知层",
+          "Perception Layer",
+          "/pərˈsepʃn ˈleɪər/",
+          "将外部输入转化为LLM可理解形式的模块"
+        ],
+        [
+          "规划层",
+          "Planning Layer",
+          "/ˈplænɪŋ ˈleɪər/",
+          "将高层目标拆解为可执行子任务序列的模块"
+        ],
+        [
+          "推理层",
+          "Reasoning Layer",
+          "/ˈriːzənɪŋ ˈleɪər/",
+          "每一步决策中分析当前状态选择最优行动的模块"
+        ],
+        [
+          "行动层",
+          "Action Layer",
+          "/ˈækʃn ˈleɪər/",
+          "将决策转化为具体执行动作的模块"
+        ],
+        [
+          "自主检索增强生成",
+          "Agentic RAG",
+          "/eɪˈdʒentɪk ræɡ/",
+          "多轮自主检索，Agent主动调整查询策略的知识获取方式"
+        ]
+      ],
+      "page": 16
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 17,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/6d349c19af7e90d6dde1c141ee1fa363.png",
+      "width": 1024,
+      "height": 1702,
+      "page": 18
+    }
+  ],
+  "accounting": {
+    "source_chars": 7719,
+    "represented_chars": 7544,
+    "removed_chars": 175,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 2,
+    "removals": {
+      "export_metadata": 147,
+      "repeated_title": 28
+    }
+  },
+  "videos": [],
+  "order": 144,
+  "headings": [
+    {
+      "title": "经典架构：Perceive-Think-Act（PTA）",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "为什么是循环，而不是单向流程?",
+      "id": "section-4",
+      "level": 3
+    },
+    {
+      "title": "Agent 循环的四个阶段",
+      "id": "section-20",
+      "level": 3
+    },
+    {
+      "title": "PTA 的工程化实现：ReAct",
+      "id": "section-34",
+      "level": 3
+    },
+    {
+      "title": "从循环到模块:两套概念的关系",
+      "id": "section-51",
+      "level": 2
+    },
+    {
+      "title": "核心区分:流程 vs 架构",
+      "id": "section-67",
+      "level": 3
+    },
+    {
+      "title": "对应关系:循环步骤如何映射到模块",
+      "id": "section-69",
+      "level": 3
+    },
+    {
+      "title": "1. Thought(思考)被拆成了两个模块：",
+      "id": "section-71",
+      "level": 2
+    },
+    {
+      "title": "为什么要拆分?",
+      "id": "section-75",
+      "level": 3
+    },
+    {
+      "title": "2. Observation(观察)没有独立的层：",
+      "id": "section-82",
+      "level": 2
+    },
+    {
+      "title": "3. 记忆系统是贯穿整个循环的:",
+      "id": "section-96",
+      "level": 2
+    },
+    {
+      "title": "各模块详解",
+      "id": "section-103",
+      "level": 2
+    },
+    {
+      "title": "感知层(Perception)",
+      "id": "section-104",
+      "level": 3
+    },
+    {
+      "title": "1. 多模态转文本：",
+      "id": "section-117",
+      "level": 2
+    },
+    {
+      "title": "2. 结构化数据处理：",
+      "id": "section-121",
+      "level": 2
+    },
+    {
+      "title": "3. 上下文组装：",
+      "id": "section-133",
+      "level": 2
+    },
+    {
+      "title": "1. 一次性规划（Plan-then-Execute）",
+      "id": "section-164",
+      "level": 2
+    },
+    {
+      "title": "2. 边规划边执行（Interleaved Planning）",
+      "id": "section-168",
+      "level": 2
+    },
+    {
+      "title": "1. 知识推理：",
+      "id": "section-177",
+      "level": 2
+    },
+    {
+      "title": "2. 逻辑推理：",
+      "id": "section-183",
+      "level": 2
+    },
+    {
+      "title": "示例：Chain-of-Thought 推理",
+      "id": "section-190",
+      "level": 3
+    },
+    {
+      "title": "行动层(Action)",
+      "id": "section-200",
+      "level": 3
+    },
+    {
+      "title": "记忆系统(Memory)",
+      "id": "section-213",
+      "level": 3
+    },
+    {
+      "title": "1. 短期记忆（Short-term Memory）",
+      "id": "section-218",
+      "level": 2
+    },
+    {
+      "title": "2. 长期记忆（Long-term Memory）",
+      "id": "section-230",
+      "level": 2
+    },
+    {
+      "title": "核心技术：RAG + 向量数据库",
+      "id": "section-234",
+      "level": 3
+    },
+    {
+      "title": "新趋势：Agentic RAG",
+      "id": "section-238",
+      "level": 3
+    },
+    {
+      "title": "下节预告",
+      "id": "section-244",
+      "level": 2
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-247",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-249",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "理解 Agent 的架构，就像理解人类的大脑结构——只有知道各个模块如何协作，才能真正掌握 Agent 的设计精髓。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "经典架构：Perceive-Think-Act（PTA）"
+    },
+    {
+      "anchor": "section-1",
+      "text": "如果要用一句话概括 Agent 的核心架构，那就是：感知（Perceive）→ 思考（Think）→ 行动（Act）→ 观察（Observe）→ 循环往复。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个模式并不是 LLM 时代的发明，而是来自经典的「智能体理论」（Intelligent Agent Theory）。早在 1995 年，Stuart Russell 和 Peter Norvig 在《人工智能：一种现代方法》中就提出了这个框架。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "为什么是循环，而不是单向流程?"
+    },
+    {
+      "anchor": "section-4",
+      "text": "传统的软件是这样工作的："
+    },
+    {
+      "anchor": "section-4",
+      "text": "输入 → 处理 → 输出 → 结束\n\n1"
+    },
+    {
+      "anchor": "section-4",
+      "text": "比如一个计算器程序："
+    },
+    {
+      "anchor": "section-4",
+      "text": "输入：2 + 3"
+    },
+    {
+      "anchor": "section-4",
+      "text": "2 + 3"
+    },
+    {
+      "anchor": "section-4",
+      "text": "处理：执行加法运算"
+    },
+    {
+      "anchor": "section-4",
+      "text": "输出：5"
+    },
+    {
+      "anchor": "section-4",
+      "text": "结束"
+    },
+    {
+      "anchor": "section-4",
+      "text": "但 Agent 不同。它运行在一个 动态变化的环境 中，需要不断地："
+    },
+    {
+      "anchor": "section-4",
+      "text": "动态变化的环境"
+    },
+    {
+      "anchor": "section-4",
+      "text": "感知：环境发生了什么变化？"
+    },
+    {
+      "anchor": "section-4",
+      "text": "思考：我应该采取什么行动？"
+    },
+    {
+      "anchor": "section-4",
+      "text": "行动：执行决策"
+    },
+    {
+      "anchor": "section-4",
+      "text": "观察：我的行动产生了什么效果？"
+    },
+    {
+      "anchor": "section-4",
+      "text": "回到第 1 步，继续循环"
+    },
+    {
+      "anchor": "section-20",
+      "text": "Agent 循环的四个阶段"
+    },
+    {
+      "anchor": "section-20",
+      "text": "用一个具体例子来理解这个循环。假设让 Agent 准备一次周末出游："
+    },
+    {
+      "anchor": "section-20",
+      "text": "第 1 轮："
+    },
+    {
+      "anchor": "section-20",
+      "text": "[感知] 用户目标：准备周末出游\n       环境信息：当前是周三，目的地未定\n\n[思考] 分析：需要先确定目的地和天气\n       计划：查询几个热门城市的天气预报\n\n[行动] 调用工具：get_weather(cities=[\"杭州\", \"苏州\", \"南京\"])\n\n[观察] 结果：杭州晴天，苏州多云，南京有雨"
+    },
+    {
+      "anchor": "section-20",
+      "text": "第 2 轮："
+    },
+    {
+      "anchor": "section-20",
+      "text": "[感知] 新信息：杭州天气最好\n       用户偏好：喜欢自然景观（从历史对话记忆中提取）\n\n[思考] 决策：推荐杭州西湖\n       计划：查询景点开放时间和门票信息\n\n[行动] 调用工具：search_attractions(\"杭州西湖\")\n\n[观察] 结果：西湖免费开放，周末人流量大"
+    },
+    {
+      "anchor": "section-20",
+      "text": "第 3 轮："
+    },
+    {
+      "anchor": "section-20",
+      "text": "我们会发现，这个循环的关键在于："
+    },
+    {
+      "anchor": "section-20",
+      "text": "每一轮都基于上一轮的结果：Agent 不是一次性输出答案，而是逐步推进；"
+    },
+    {
+      "anchor": "section-20",
+      "text": "每一轮都基于上一轮的结果"
+    },
+    {
+      "anchor": "section-20",
+      "text": "可以根据中间结果调整策略：如果发现南京下雨，立刻调整为推荐杭州；"
+    },
+    {
+      "anchor": "section-20",
+      "text": "可以根据中间结果调整策略"
+    },
+    {
+      "anchor": "section-20",
+      "text": "持续与环境交互：通过工具获取实时信息，而不是仅依赖训练数据。"
+    },
+    {
+      "anchor": "section-20",
+      "text": "持续与环境交互"
+    },
+    {
+      "anchor": "section-34",
+      "text": "PTA 的工程化实现：ReAct"
+    },
+    {
+      "anchor": "section-34",
+      "text": "上面的例子展示了 Perceive-Think-Act 循环在具体场景中的运作方式。这个经典的理论框架，到了LLM 时代被工程化为一种更具体的实现模式——ReAct（Reasoning and Acting）。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "我们在第 2 节已经提到过，ReAct 是 Agent 演进路径中第二阶段的关键模式。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "从演进路径来看，Stage 2（ReAct）是当前工程实践的基线，Stage 3（自主 Agent）则是尚在探索中的目标方向。第 2 节已经说明，自主 Agent 的各项能力——自主规划、长期记忆、主动发起、自我修正——目前仍处于早期阶段，在可靠性、成本和安全性上还有大量工程问题待解决。因此，生产环境中实际落地的 Agent 系统，绝大多数仍然运行在 ReAct 模式或其精细化变体之上。理解 ReAct 架构，正是掌握当前可用 Agent 工程实践的基础。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "ReAct 并没有创造一个新的循环结构，而是 把 PTA 框架中的\"思考\"过程从黑盒变成了白盒。"
+    },
+    {
+      "anchor": "section-34",
+      "text": "传统方式（思考是黑盒）：\nPerceive → [Think：内部推理] → Act → Observe\n              ↑\n         你看不到这部分\n\nReAct方式（思考显式输出）：\nThought： \"我需要先查询杭州的天气...\"\n         ↓（这段文本会被记录和展示）\nAction： get_weather(\"杭州\")\nObservation： {\"weather\": \"晴天\"}\nThought： \"天气不错，现在...\"\n         ↓\n..."
+    },
+    {
+      "anchor": "section-34",
+      "text": "所以，PTA 和 ReAct 的关系可以这样理解：PTA 是理论框架，ReAct 是工程实现。PTA 描述了 Agent应有的四个步骤——感知、思考、行动、观察；ReAct 则给出了在 LLM 系统中每一步具体怎么做。核心流程依然是："
+    },
+    {
+      "anchor": "section-34",
+      "text": "感知输入 → 思考（现在可见） → 执行行动 → 观察结果 → 循环\n\n1"
+    },
+    {
+      "anchor": "section-34",
+      "text": "ReAct 的价值："
+    },
+    {
+      "anchor": "section-34",
+      "text": "ReAct 的价值"
+    },
+    {
+      "anchor": "section-34",
+      "text": "可解释：开发者能看到 Agent 的决策链"
+    },
+    {
+      "anchor": "section-34",
+      "text": "可解释"
+    },
+    {
+      "anchor": "section-34",
+      "text": "可调试：出错时可定位具体哪步思考有问题"
+    },
+    {
+      "anchor": "section-34",
+      "text": "可调试"
+    },
+    {
+      "anchor": "section-34",
+      "text": "可优化：通过分析 Thought 日志，改进 Prompt 或工具设计"
+    },
+    {
+      "anchor": "section-34",
+      "text": "可优化"
+    },
+    {
+      "anchor": "section-34",
+      "text": "它是当前最成熟、最可靠的 Agent 架构模式，也是整个第 3 节讨论各模块架构时依赖的核心框架。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "从循环到模块:两套概念的关系"
+    },
+    {
+      "anchor": "section-51",
+      "text": "现在理解了 Agent 的循环流程：Perceive（感知）→ Thought（思考）→ Action（行动）→Observation（观察）→ 循环（ReAct 模式的完整形态）。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "但如果去看实际的 Agent 系统代码，会发现它们通常被组织成这样的模块架构:"
+    },
+    {
+      "anchor": "section-51",
+      "text": "感知层(Perception Layer)"
+    },
+    {
+      "anchor": "section-51",
+      "text": "感知层"
+    },
+    {
+      "anchor": "section-51",
+      "text": "规划层(Planning Layer)"
+    },
+    {
+      "anchor": "section-51",
+      "text": "规划层"
+    },
+    {
+      "anchor": "section-51",
+      "text": "推理层(Reasoning Layer)"
+    },
+    {
+      "anchor": "section-51",
+      "text": "推理层"
+    },
+    {
+      "anchor": "section-51",
+      "text": "行动层(Action Layer)"
+    },
+    {
+      "anchor": "section-51",
+      "text": "行动层"
+    },
+    {
+      "anchor": "section-51",
+      "text": "记忆系统(Memory System)"
+    },
+    {
+      "anchor": "section-51",
+      "text": "记忆系统"
+    },
+    {
+      "anchor": "section-51",
+      "text": "这就产生了一个问题:四步循环和五个模块,它们之间是什么关系?"
+    },
+    {
+      "anchor": "section-51",
+      "text": "四步循环"
+    },
+    {
+      "anchor": "section-51",
+      "text": "五个模块"
+    },
+    {
+      "anchor": "section-67",
+      "text": "核心区分:流程 vs 架构"
+    },
+    {
+      "anchor": "section-67",
+      "text": "两套概念的本质区别\n═══════════════════════════════════════\n● ReAct 循环\n  - 这是「流程视角」\n  - 描述 Agent **做什么**\n  - 关注时间顺序:先感知,再思考,再行动\n\n● 五个模块(感知层/规划层/推理层...)\n  - 这是「架构视角」\n  - 描述 Agent **怎么实现**\n  - 关注功能划分:每个模块负责什么"
+    },
+    {
+      "anchor": "section-69",
+      "text": "对应关系:循环步骤如何映射到模块"
+    },
+    {
+      "anchor": "section-69",
+      "text": "看看 ReAct 循环的每个步骤是由哪些模块实现的："
+    },
+    {
+      "anchor": "section-71",
+      "text": "1. Thought(思考)被拆成了两个模块："
+    },
+    {
+      "anchor": "section-71",
+      "text": "1. Thought(思考)被拆成了两个模块"
+    },
+    {
+      "anchor": "section-71",
+      "text": "规划层(Planning):制定整体计划 “我要完成写周报这个任务，需要先查数据，再提取要点，最后生成正文”"
+    },
+    {
+      "anchor": "section-71",
+      "text": "推理层(Reasoning):每一步的具体决策 “现在查到的数据不够，我应该调用哪个工具?用什么参数?”"
+    },
+    {
+      "anchor": "section-75",
+      "text": "为什么要拆分?"
+    },
+    {
+      "anchor": "section-75",
+      "text": "因为\"思考\"这个动作太复杂了:"
+    },
+    {
+      "anchor": "section-75",
+      "text": "有时需要宏观规划(把大任务拆成小任务)"
+    },
+    {
+      "anchor": "section-75",
+      "text": "宏观规划"
+    },
+    {
+      "anchor": "section-75",
+      "text": "有时需要微观决策(当前这一步怎么做)"
+    },
+    {
+      "anchor": "section-75",
+      "text": "微观决策"
+    },
+    {
+      "anchor": "section-75",
+      "text": "人类也是这样:计划\"准备一次旅行\"时，会先规划整体流程(订票、订酒店、查景点),然后在每个环节中推理具体操作(订哪个航班、选哪家酒店)。"
+    },
+    {
+      "anchor": "section-82",
+      "text": "2. Observation(观察)没有独立的层："
+    },
+    {
+      "anchor": "section-82",
+      "text": "2. Observation(观察)没有独立的层"
+    },
+    {
+      "anchor": "section-82",
+      "text": "观察其实是三个动作的组合:"
+    },
+    {
+      "anchor": "section-82",
+      "text": "记录结果:由记忆系统保存行动的输出"
+    },
+    {
+      "anchor": "section-82",
+      "text": "记录结果"
+    },
+    {
+      "anchor": "section-82",
+      "text": "分析结果:由推理层评估执行效果、识别异常、提取关键信息"
+    },
+    {
+      "anchor": "section-82",
+      "text": "分析结果"
+    },
+    {
+      "anchor": "section-82",
+      "text": "假设 Agent 调用天气 API 后收到错误:"
+    },
+    {
+      "anchor": "section-82",
+      "text": "{\"error\": \"城市不存在\"}\n\n1"
+    },
+    {
+      "anchor": "section-82",
+      "text": "但如果有\"分析\"环节，推理层会:"
+    },
+    {
+      "anchor": "section-82",
+      "text": "识别这是错误而非正常数据"
+    },
+    {
+      "anchor": "section-82",
+      "text": "判断需要调整策略(重新询问用户或换个城市)"
+    },
+    {
+      "anchor": "section-82",
+      "text": "决定下一步行动"
+    },
+    {
+      "anchor": "section-82",
+      "text": "这就是为什么观察不只是被动接收，还包含主动分析和判断。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "3. 记忆系统是贯穿整个循环的:"
+    },
+    {
+      "anchor": "section-96",
+      "text": "3. 记忆系统是贯穿整个循环的"
+    },
+    {
+      "anchor": "section-96",
+      "text": "记忆系统不是循环中的某一步，而是全程参与:"
+    },
+    {
+      "anchor": "section-96",
+      "text": "全程参与"
+    },
+    {
+      "anchor": "section-96",
+      "text": "感知时:提取历史记忆"
+    },
+    {
+      "anchor": "section-96",
+      "text": "思考时:参考过往经验"
+    },
+    {
+      "anchor": "section-96",
+      "text": "行动后:记录执行结果"
+    },
+    {
+      "anchor": "section-103",
+      "text": "各模块详解"
+    },
+    {
+      "anchor": "section-104",
+      "text": "感知层(Perception)"
+    },
+    {
+      "anchor": "section-104",
+      "text": "职责:将外部世界的各种输入转化为LLM可以理解的文本形式。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "职责"
+    },
+    {
+      "anchor": "section-104",
+      "text": "可以把感知层想象成Agent的\"翻译官\":它负责把来自物理世界、数字系统、用户交互的各种信息，统一翻译成LLM能理解的语言。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "感知层处理的输入来源:"
+    },
+    {
+      "anchor": "section-104",
+      "text": "感知层处理的输入来源"
+    },
+    {
+      "anchor": "section-104",
+      "text": "用户交互:自然语言指令、图片、语音等"
+    },
+    {
+      "anchor": "section-104",
+      "text": "环境状态:当前时间、用户位置、系统状态等上下文信息"
+    },
+    {
+      "anchor": "section-104",
+      "text": "环境状态"
+    },
+    {
+      "anchor": "section-104",
+      "text": "历史记忆:从记忆系统中检索到的相关对话或经验"
+    },
+    {
+      "anchor": "section-104",
+      "text": "历史记忆"
+    },
+    {
+      "anchor": "section-104",
+      "text": "关键工作："
+    },
+    {
+      "anchor": "section-104",
+      "text": "关键工作"
+    },
+    {
+      "anchor": "section-117",
+      "text": "1. 多模态转文本："
+    },
+    {
+      "anchor": "section-117",
+      "text": "1. 多模态转文本"
+    },
+    {
+      "anchor": "section-117",
+      "text": "图片 → 文本描述（通过GPT-4V等视觉模型）"
+    },
+    {
+      "anchor": "section-117",
+      "text": "语音 → 文字转写（通过Whisper等语音识别）"
+    },
+    {
+      "anchor": "section-121",
+      "text": "2. 结构化数据处理："
+    },
+    {
+      "anchor": "section-121",
+      "text": "2. 结构化数据处理"
+    },
+    {
+      "anchor": "section-121",
+      "text": "工具返回的 JSON 数据不一定要转成自然语言"
+    },
+    {
+      "anchor": "section-121",
+      "text": "关键是：让 LLM 能理解它的含义"
+    },
+    {
+      "anchor": "section-121",
+      "text": "让 LLM 能理解它的含义"
+    },
+    {
+      "anchor": "section-121",
+      "text": "例如天气 API 返回："
+    },
+    {
+      "anchor": "section-121",
+      "text": "{\"city\": \"杭州\", \"temp\": 25, \"weather\": \"晴\"}\n\n1"
+    },
+    {
+      "anchor": "section-121",
+      "text": "两种处理方式都可以："
+    },
+    {
+      "anchor": "section-121",
+      "text": "直接使用 JSON：Observation: {\"city\": \"杭州\", \"temp\": 25, \"weather\": \"晴\"}"
+    },
+    {
+      "anchor": "section-121",
+      "text": "转为自然语言：Observation: 杭州当前温度25度，天气晴朋"
+    },
+    {
+      "anchor": "section-121",
+      "text": "Observation: 杭州当前温度25度，天气晴朋"
+    },
+    {
+      "anchor": "section-121",
+      "text": "转为自然语言"
+    },
+    {
+      "anchor": "section-133",
+      "text": "3. 上下文组装："
+    },
+    {
+      "anchor": "section-133",
+      "text": "3. 上下文组装"
+    },
+    {
+      "anchor": "section-133",
+      "text": "将用户输入、工具返回、历史对话、可用工具列表等"
+    },
+    {
+      "anchor": "section-133",
+      "text": "组装成一个完整的Prompt,送给LLM处理"
+    },
+    {
+      "anchor": "section-133",
+      "text": "这是感知层最核心的价值:让LLM在每一步都能\"看到\"完整的世界"
+    },
+    {
+      "anchor": "section-133",
+      "text": "示例："
+    },
+    {
+      "anchor": "section-133",
+      "text": "示例"
+    },
+    {
+      "anchor": "section-133",
+      "text": "用户输入：“帮我查一下明天杭州的天气”"
+    },
+    {
+      "anchor": "section-133",
+      "text": "感知层组装的 Prompt："
+    },
+    {
+      "anchor": "section-133",
+      "text": "## 系统信息\n当前时间：2024年12月9日 14:30\n用户位置：上海\n\n## 用户信息\n用户偏好：喜欢详细的天气信息（温度、湿度、风力）\n\n## 可用工具\n1. get_weather(city, date): 获取指定城市和日期的天气\n2. search_web(query): 搜索网络信息\n\n## 用户请求\n帮我查一下明天杭州的天气"
+    },
+    {
+      "anchor": "section-133",
+      "text": "这样，LLM 就能全面理解当前的“环境”了。"
+    },
+    {
+      "anchor": "section-133",
+      "text": "再看一个工具返回的例子："
+    },
+    {
+      "anchor": "section-133",
+      "text": "再看一个工具返回的例子"
+    },
+    {
+      "anchor": "section-133",
+      "text": "假设调用 get_weather(\"杭州\", \"2024-12-10\") 后得到："
+    },
+    {
+      "anchor": "section-133",
+      "text": "{\n  \"city\": \"杭州\",\n  \"date\": \"2024-12-10\",\n  \"temperature\": {\"max\": 18, \"min\": 8},\n  \"humidity\": 65,\n  \"wind\": {\"speed\": 12, \"direction\": \"东北\"},\n  \"weather\": \"多云\"\n}"
+    },
+    {
+      "anchor": "section-133",
+      "text": "感知层有两种选择："
+    },
+    {
+      "anchor": "section-133",
+      "text": "方式1：保持 JSON"
+    },
+    {
+      "anchor": "section-133",
+      "text": "Observation: {\"city\": \"杭州\", \"temperature\": {\"max\": 18, \"min\": 8}, ...}\n\n1"
+    },
+    {
+      "anchor": "section-133",
+      "text": "→ 优点：保持结构，如果需要传给下一个工具很方便 → 缺点：嵌套层级多时，LLM 可能难以快速提取关键信息"
+    },
+    {
+      "anchor": "section-133",
+      "text": "方式2：转为自然语言"
+    },
+    {
+      "anchor": "section-133",
+      "text": "Observation: 杭州2024年12月10日天气多云，温度8-18℃，湿度65%，东北风12m/s\n\n1"
+    },
+    {
+      "anchor": "section-133",
+      "text": "→ 优点：LLM 更容易理解和推理，特别是需要总结时 → 缺点：如果下一步需要结构化数据，还得让LLM 重新解析"
+    },
+    {
+      "anchor": "section-133",
+      "text": "实践中的选择原则："
+    },
+    {
+      "anchor": "section-133",
+      "text": "实践中的选择原则"
+    },
+    {
+      "anchor": "section-133",
+      "text": "如果是最后一步（直接回答用户），用自然语言"
+    },
+    {
+      "anchor": "section-133",
+      "text": "如果还需要继续调用工具，保持 JSON"
+    },
+    {
+      "anchor": "section-133",
+      "text": "如果数据结构复杂（如3层以上），提取关键信息后用自然语言"
+    },
+    {
+      "anchor": "section-133",
+      "text": "职责：将高层目标拆解为可执行的子任务序列。"
+    },
+    {
+      "anchor": "section-133",
+      "text": "在最新的 Agent 架构中，规划能力 被认为是 Agent 与普通聊天机器人的最大区别。"
+    },
+    {
+      "anchor": "section-133",
+      "text": "两种规划策略："
+    },
+    {
+      "anchor": "section-133",
+      "text": "两种规划策略"
+    },
+    {
+      "anchor": "section-164",
+      "text": "1. 一次性规划（Plan-then-Execute）"
+    },
+    {
+      "anchor": "section-164",
+      "text": "先生成完整的任务计划，再逐步执行，适合目标明确、环境稳定的场景。比如用户说\"帮我写一份周报\"，Agent 会先制定完整计划："
+    },
+    {
+      "anchor": "section-164",
+      "text": "检索本周工作记录 → 提取关键成果和数据 → 按照模板生成周报正文 → 校对和格式化\n\n1"
+    },
+    {
+      "anchor": "section-164",
+      "text": "然后按照这个计划一步步执行。"
+    },
+    {
+      "anchor": "section-168",
+      "text": "2. 边规划边执行（Interleaved Planning）"
+    },
+    {
+      "anchor": "section-168",
+      "text": "每执行一步后，根据结果重新规划下一步，这就是 ReAct 模式 的核心思想，适合环境动态变化、目标不明确的场景。"
+    },
+    {
+      "anchor": "section-168",
+      "text": "比如用户说\"帮我研究一下最新的 Agent 框架\"："
+    },
+    {
+      "anchor": "section-168",
+      "text": "第 1 步：搜索\"2025 Agent framework\"，发现 CrewAI 和 AutoGen 很热门"
+    },
+    {
+      "anchor": "section-168",
+      "text": "第 2 步：深入查询 CrewAI 的特点，发现它强调团队协作"
+    },
+    {
+      "anchor": "section-168",
+      "text": "第 3 步：对比 CrewAI 和 AutoGen…"
+    },
+    {
+      "anchor": "section-168",
+      "text": "每一步都根据上一步的结果来决定下一步做什么。"
+    },
+    {
+      "anchor": "section-168",
+      "text": "职责：在每一步决策中，分析当前状态，选择最优行动。"
+    },
+    {
+      "anchor": "section-168",
+      "text": "这是 LLM 的核心能力所在。现代 Agent 的推理层通常包括两部分："
+    },
+    {
+      "anchor": "section-177",
+      "text": "1. 知识推理："
+    },
+    {
+      "anchor": "section-177",
+      "text": "1. 知识推理"
+    },
+    {
+      "anchor": "section-177",
+      "text": "基于训练数据的知识：LLM 自身的参数中存储的知识；"
+    },
+    {
+      "anchor": "section-177",
+      "text": "基于训练数据的知识"
+    },
+    {
+      "anchor": "section-177",
+      "text": "外部知识源：通过 RAG（检索增强生成）从向量数据库、知识图谱等获取。"
+    },
+    {
+      "anchor": "section-177",
+      "text": "外部知识源"
+    },
+    {
+      "anchor": "section-183",
+      "text": "2. 逻辑推理："
+    },
+    {
+      "anchor": "section-183",
+      "text": "2. 逻辑推理"
+    },
+    {
+      "anchor": "section-183",
+      "text": "Chain-of-Thought（思维链）：逐步推理，显式化中间步骤；"
+    },
+    {
+      "anchor": "section-183",
+      "text": "Chain-of-Thought（思维链）"
+    },
+    {
+      "anchor": "section-183",
+      "text": "Tree-of-Thought（思维树）：探索多条推理路径，选择最优解；"
+    },
+    {
+      "anchor": "section-183",
+      "text": "Tree-of-Thought（思维树）"
+    },
+    {
+      "anchor": "section-183",
+      "text": "Self-Reflection（自我反思）：检查自己的推理是否合理，必要时回溺修正。"
+    },
+    {
+      "anchor": "section-190",
+      "text": "示例：Chain-of-Thought 推理"
+    },
+    {
+      "anchor": "section-190",
+      "text": "用户问：“我应该选杭州还是南京旅游？”"
+    },
+    {
+      "anchor": "section-190",
+      "text": "Agent 的推理过程："
+    },
+    {
+      "anchor": "section-190",
+      "text": "[Step 1] 首先，我需要了解这两个城市的天气情况\n        → 调用 get_weather(\"杭州\"), get_weather(\"南京\")\n\n[Step 2] 杭州晴天，南京有雨 → 天气角度杭州更好\n\n[Step 3] 接下来，检索用户偏好 → 用户喜欢自然风景\n\n[Step 4] 杭州有西湖，符合用户偏好 → 综合判断：推荐杭州"
+    },
+    {
+      "anchor": "section-190",
+      "text": "这种逐步推理的方式，让 Agent 的决策过程 可解释、可追踪、可调试。"
+    },
+    {
+      "anchor": "section-190",
+      "text": "可解释、可追踪、可调试"
+    },
+    {
+      "anchor": "section-190",
+      "text": "新趋势："
+    },
+    {
+      "anchor": "section-190",
+      "text": "新趋势"
+    },
+    {
+      "anchor": "section-190",
+      "text": "神经符号结合（Neuro-Symbolic）： 将 LLM 的语义理解与符号推理引擎结合； 在需要精确逻辑的场景（如数学、法律）提升可靠性。"
+    },
+    {
+      "anchor": "section-190",
+      "text": "多轮验证机制： Agent 在给出答案后，自我验证推理是否合理； 类似于人类的“检查一遍”过程。"
+    },
+    {
+      "anchor": "section-200",
+      "text": "行动层(Action)"
+    },
+    {
+      "anchor": "section-200",
+      "text": "职责：将决策转化为具体的执行动作。"
+    },
+    {
+      "anchor": "section-200",
+      "text": "LLM Agent 的行动层与传统机器人不同，它不是控制电机转动，而是 调用工具（Tool Calling）。"
+    },
+    {
+      "anchor": "section-200",
+      "text": "常见的行动类型："
+    },
+    {
+      "anchor": "section-200",
+      "text": "常见的行动类型"
+    },
+    {
+      "anchor": "section-200",
+      "text": "查询外部服务： 调用天气 API、搜索引擎、数据库等； 这是最基础、最常用的行动。"
+    },
+    {
+      "anchor": "section-200",
+      "text": "操作文件系统： 读写文件、创建目录、执行脚本； 需要非常严格的 权限控制。"
+    },
+    {
+      "anchor": "section-200",
+      "text": "操作文件系统："
+    },
+    {
+      "anchor": "section-200",
+      "text": "操作文件系统"
+    },
+    {
+      "anchor": "section-200",
+      "text": "读写文件、创建目录、执行脚本；"
+    },
+    {
+      "anchor": "section-200",
+      "text": "需要非常严格的 权限控制。"
+    },
+    {
+      "anchor": "section-200",
+      "text": "权限控制"
+    },
+    {
+      "anchor": "section-200",
+      "text": "与其他 Agent 交互： 在 Multi-Agent 系统中，发送消息给其他 Agent； CrewAI、AutoGen 等框架的核心功能。"
+    },
+    {
+      "anchor": "section-213",
+      "text": "记忆系统(Memory)"
+    },
+    {
+      "anchor": "section-213",
+      "text": "职责：存储和检索历史信息，使 Agent 能够“记住”过去的交互。"
+    },
+    {
+      "anchor": "section-213",
+      "text": "这是目前Agent 研究的 热点领域。没有记忆的 Agent 就像“金鱼”，每次对话都是从零开始；有了记忆，Agent 才能真正成为“助理”。"
+    },
+    {
+      "anchor": "section-213",
+      "text": "两种记忆类型："
+    },
+    {
+      "anchor": "section-213",
+      "text": "两种记忆类型"
+    },
+    {
+      "anchor": "section-218",
+      "text": "1. 短期记忆（Short-term Memory）"
+    },
+    {
+      "anchor": "section-218",
+      "text": "定义：当前对话的上下文；"
+    },
+    {
+      "anchor": "section-218",
+      "text": "定义"
+    },
+    {
+      "anchor": "section-218",
+      "text": "存储方式：直接在 LLM 的上下文窗口中；"
+    },
+    {
+      "anchor": "section-218",
+      "text": "存储方式"
+    },
+    {
+      "anchor": "section-218",
+      "text": "生命周期：单次会话结束后清空。"
+    },
+    {
+      "anchor": "section-218",
+      "text": "生命周期"
+    },
+    {
+      "anchor": "section-218",
+      "text": "用户：我喜欢吃川菜\n（存入短期记忆）\n\nAgent：好的，我记住了。\n\n用户：帮我推荐一家餐厅\nAgent：根据您喜欢川菜，我推荐...\n（从短期记忆中提取）"
+    },
+    {
+      "anchor": "section-218",
+      "text": "挑战："
+    },
+    {
+      "anchor": "section-218",
+      "text": "挑战"
+    },
+    {
+      "anchor": "section-218",
+      "text": "上下文窗口有限（如 GPT-4 的 128K tokens）；"
+    },
+    {
+      "anchor": "section-218",
+      "text": "对话太长时，早期信息会被截断。"
+    },
+    {
+      "anchor": "section-230",
+      "text": "2. 长期记忆（Long-term Memory）"
+    },
+    {
+      "anchor": "section-230",
+      "text": "定义：跨对话的持久化信息；"
+    },
+    {
+      "anchor": "section-230",
+      "text": "存储方式：外部数据库（向量数据库、知识图谱、关系数据库）；"
+    },
+    {
+      "anchor": "section-230",
+      "text": "生命周期：持久存在，需要时检索。"
+    },
+    {
+      "anchor": "section-234",
+      "text": "核心技术：RAG + 向量数据库"
+    },
+    {
+      "anchor": "section-234",
+      "text": "目前，向量数据库 被认为是 Agent 记忆系统的最佳选择："
+    },
+    {
+      "anchor": "section-234",
+      "text": "向量数据库"
+    },
+    {
+      "anchor": "section-234",
+      "text": "[存储阶段]\n用户信息：“我喜欢吃川菜”\n→ Embedding 模型转化为向量\n→ 存入向量数据库（如 Pinecone, Weaviate, Chroma）\n\n[检索阶段]\n用户问：“帮我推荐餐厅”\n→ 将查询转为向量\n→ 在数据库中搜索相似向量\n→ 检索到：“用户喜欢川菜”\n→ 将这条信息添加到当前 Prompt"
+    },
+    {
+      "anchor": "section-238",
+      "text": "新趋势：Agentic RAG"
+    },
+    {
+      "anchor": "section-238",
+      "text": "Agentic 是什么? 现在，你会发现很多技术都加上了\"Agentic\"前缀:Agentic RAG、Agentic Workflow、Agentic Search… Agentic = 赋予 Agent 特性,核心含义是: 从\"被动执行\"变为\"主动决策\" 从\"一次性处理\"变为\"多轮迭代\" 从\"固定流程\"变为\"自主规划\" 简单来说，给任何技术加上Agentic,就是让它具备Agent的自主性和循环能力。"
+    },
+    {
+      "anchor": "section-238",
+      "text": "传统 RAG 是\"一次性检索\":Agent 提问 → 检索 → 生成答案。"
+    },
+    {
+      "anchor": "section-238",
+      "text": "Agentic RAG是\"多轮自主检索\":"
+    },
+    {
+      "anchor": "section-238",
+      "text": "第 1 轮：检索到一些信息\nAgent：这些信息不够，我需要更多关于 X 的内容\n\n第 2 轮：重新检索，调整查询\nAgent：现在信息足够了，可以生成答案"
+    },
+    {
+      "anchor": "section-238",
+      "text": "这种模式让 Agent 对知识的获取更主动、更灵活。"
+    },
+    {
+      "anchor": "section-244",
+      "text": "下节预告"
+    },
+    {
+      "anchor": "section-244",
+      "text": "现在了解了 Agent 的模块架构，但可能会好奇：这些模块背后的核心能力到底是如何实现的？感知如何理解环境？思考如何进行推理？行动如何准确执行？"
+    },
+    {
+      "anchor": "section-244",
+      "text": "下一节，我们将深入剖析 Agent 的三大核心能力——从多模态感知到 Chain-of-Thought 推理，再到工具调用的技术细节，可以看到，原来 Agent 的\"智能\"是通过这些具体的能力实现的。"
+    },
+    {
+      "anchor": "section-247",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-247",
+      "text": "中文 | English | 音标 | 说明\n感知-思考-行动 | PTA (Perceive-Think- Act) | /piː tiː eɪ/ | Agent运行的核心理论循环框架\n感知层 | Perception Layer | /pərˈsepʃn ˈleɪər/ | 将外部输入转化为LLM可理解形式的模块\n规划层 | Planning Layer | /ˈplænɪŋ ˈleɪər/ | 将高层目标拆解为可执行子任务序列的模块\n推理层 | Reasoning Layer | /ˈriːzənɪŋ ˈleɪər/ | 每一步决策中分析当前状态选择最优行动的模块\n行动层 | Action Layer | /ˈækʃn ˈleɪər/ | 将决策转化为具体执行动作的模块\n自主检索增强生成 | Agentic RAG | /eɪˈdʒentɪk ræɡ/ | 多轮自主检索，Agent主动调整查询策略的知识获取方式"
+    },
+    {
+      "anchor": "section-249",
+      "text": "图片"
+    }
+  ]
+}

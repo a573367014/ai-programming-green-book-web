@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>预训练（三）-为什么叫预训练 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-038">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 2 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>预训练</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 039</span></div>
+<h1 class="lesson-title">预训练（三）-为什么叫预训练</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>5 页原文</span><span>约 6 分钟阅读</span><span class="module-name">预训练</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-038.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-038.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节看到了预训练的代价、数据策略和三个局限。但为什么叫&quot;预&quot;训练?它后面还有什么步骤?本节将揭示完整的训练流程,以及一些有趣的行业故事。</p></aside>
+<h2 id="section-1" data-source-page="1">6.1 为什么叫&quot;预&quot;训练?<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">回到开头的问题:为什么叫&quot;预&quot;训练?</p>
+<p data-source-page="1">因为它只是一个基础,后面还有很多工作:</p>
+<p class="list-item" data-source-page="1">1</p>
+<p class="list-item" data-source-page="1">2</p>
+<p class="list-item" data-source-page="1">3</p>
+<p class="list-item" data-source-page="1">4</p>
+<p class="list-item" data-source-page="1">5</p>
+<p class="list-item" data-source-page="1">6</p>
+<p class="list-item" data-source-page="1">7</p>
+<p class="list-item" data-source-page="1">8</p>
+<p class="list-item" data-source-page="1">9</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">预训练是最重要也是最贵的基础,后面的步骤是精雕细琢。</p>
+<h2 id="section-14" data-source-page="2">6.2 趣闻一:谷歌这次没有开源Gemini<a class="heading-link" href="#section-14" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">谷歌一向以开源闻名于业界——Android操作系统、TensorFlow框架、Transformer架构都是开源的。那么在大模型时代,谷歌为什么不开源它的旗舰模型Gemini(双子座)呢?</p>
+<p data-source-page="2">其实谷歌用了现在大多数商业公司的策略:旗舰型模型闭源,轻量级模型开源。</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Gemini(旗舰模型):
+- 对标GPT-4的顶级模型
+- 完全闭源
+- 只能通过API调用
+
+Gemma(轻量级模型):
+- 基于Gemini技术,但参数量小得多(2B、7B)
+- 开源</code></pre></div>
+<p data-source-page="2">谷歌通过开源Gemma,树立&quot;开源&quot;的旗帜,让开发者社区能够使用和研究其模型。但真正最强大的Gemini,却保持闭源,保护了核心竞争力。</p>
+<p data-source-page="2">但其实现在开源的好模型也非常多,比如DeepSeek、Qwen系列、LLaMA。所以谷歌的Gemma并没有太大的影响力。</p>
+<p data-source-page="2">这与Android的策略很相似:谷歌开源Android操作系统,但Google服务(GMS)和核心优化却是闭源的。</p>
+<p data-source-page="2">所以,当你听到&quot;谷歌开源了大模型&quot;时,要明白:开源的是Gemma(小宝石),不是Gemini(大双子)。</p>
+<h2 id="section-22" data-source-page="2">6.3 趣闻二:Common Crawl——互联网的&quot;公共图书馆&quot;<a class="heading-link" href="#section-22" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">GPT-3的训练数据中60%来自Common Crawl。但你知道这是什么吗?</p>
+<p data-source-page="2">Common Crawl是一个非营利组织,从2008年开始免费爬取并开放整个互联网的网页数据。它爬取的数据量是惊人的:</p>
+<p class="list-item" data-source-page="2">自2008年至今已爬取超过250PB的网页</p>
+<p class="list-item" data-source-page="2">每月新增约30-40TB的数据</p>
+<p class="list-item" data-source-page="2">包含超过3500亿个网页</p>
+<p class="list-item" data-source-page="2">完全免费开放给所有研究者</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<aside class="callout" data-source-page="3"><b>补充说明</b><p>数据来源:Common Crawl官方网站公开数据。</p></aside>
+<aside class="callout" data-source-page="3"><b>补充说明</b><p></p></aside>
+<p data-source-page="3">数据来源:Common Crawl官方网站公开数据。</p>
+<p data-source-page="3">几乎所有大模型都用了Common Crawl的数据:</p>
+<p class="list-item" data-source-page="3">GPT-3:60%的训练数据</p>
+<p class="list-item" data-source-page="3">LLaMA:主要数据来源</p>
+<p class="list-item" data-source-page="3">Gemini:使用了大量Common Crawl</p>
+<p class="list-item" data-source-page="3">国内的DeepSeek、Qwen也使用了</p>
+<p data-source-page="3">那么,Common Crawl为什么这么重要?</p>
+<p data-source-page="3">因为Common Crawl解决了一个根本问题:如果每个研究团队都自己爬取数据,不仅成本高昂,还可能违法(侵犯版权)。而Common Crawl提供了一个合法、标准化的数据集,让小团队也能训练大模型。</p>
+<p data-source-page="3">Common Crawl的总预算每年只有约200万美元,但它支撑了价值数千亿美元的AI产业。这可能是历史上投资回报率最高的公益项目之一。</p>
+<h2 id="section-40" data-source-page="3">6.4 趣闻三:为什么小公司也能训练大模型?<a class="heading-link" href="#section-40" aria-label="链接至本节">#</a></h2>
+<p data-source-page="3">预训练GPT-3需要1200万美元,那为什么还有那么多小公司能推出自己的对话模型?</p>
+<p data-source-page="3">答案是:他们不需要从头预训练,只需要在开源模型上做微调和对齐。</p>
+<p data-source-page="3">为什么可以这么做?</p>
+<p data-source-page="3">因为预训练已经完成了最难、最贵的部分——让模型学会了语言的通用能力:</p>
+<p data-source-page="3">语言知识已经学会</p>
+<p data-source-page="3">1750亿个参数里已经&quot;记住&quot;了3000亿个Token的语言规律。</p>
+<p data-source-page="3">成本已经付出</p>
+<p data-source-page="3">预训练花了1200万美元,这个成本你不用再付了。</p>
+<p data-source-page="3">只需微调微调和对齐只需要数万条数据,成本只是预训练的1%。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">这就是为什么Meta开源LLaMA、国内开源DeepSeek,阿里开源Qwen如此重要——降低了大模型的门槛。</p>
+<p data-source-page="4">计算机领域的程序员将代码开源的行为简直就是&quot;人类之光&quot;。很多程序员开源的目的很单纯,就是为了在GitHub上多获取几个Star,拉满自己的成就感,即使一分钱的收入也没有,也会持续更新代码。</p>
+<p data-source-page="4">这在其他很多行业是不多见的。如果没有开源,计算机技术的发展不会如此之快。</p>
+<h2 id="section-53" data-source-page="4">6.5 下一节预告<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">现在你已经知道:ChatGPT通过预训练学会了语言规律,能够预测下一个Token。</p>
+<p data-source-page="4">但这里有个问题:预训练后的模型,只会做一件事——文字接龙。</p>
+<p data-source-page="4">它不会:</p>
+<p class="list-item" data-source-page="4">回答你的问题(它只会接着你的话往下说)</p>
+<p class="list-item" data-source-page="4">遵循你的指令(它不知道什么是&quot;指令&quot;)</p>
+<p class="list-item" data-source-page="4">拒绝不合适的请求(它会根据训练数据生成任何内容)</p>
+<p data-source-page="4">那么,ChatGPT是如何从一个&quot;文字接龙机器&quot;变成一个&quot;能干活的助手&quot;的?</p>
+<p data-source-page="4">答案就在下一节:微调。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h2 id="section-62" data-source-page="5">6.6 ■ 学点英语<a class="heading-link" href="#section-62" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>微调</td><td>Fine-Tuning</td><td>/faɪn ˈtjuːnɪŋ/</td><td>在预训练模型基础上使用少量标注数据做针对性参数调整</td></tr><tr><td>开源</td><td>Open Source</td><td>/ˈoʊpən sɔːrs/</td><td>公开源代码和模型权重供社区使用、研究、修改的方式</td></tr><tr><td>闭源</td><td>Closed Source</td><td>/kloʊzd sɔːrs/</td><td>不公开核心技术细节，仅通过API提供服务的商业模式</td></tr><tr><td>Common Crawl</td><td>Common Crawl</td><td>/ˈkɒmən krɔːl/</td><td>非营利组织运营的免费互联网爬取数据集</td></tr><tr><td>两阶段训练范式</td><td>Two-Stage Training Paradigm</td><td>/tuː steɪdʒ ˈtreɪnɪŋ ˈpærədaɪm/</td><td>先预训练后微调的模型开发流程</td></tr></tbody></table></div>
+<h2 id="section-64" data-source-page="5">6.8 推荐阅读<a class="heading-link" href="#section-64" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">Improving Language Understanding by Generative Pre-Training (GPT-1论文, 2018)</p>
+<p data-source-page="5">OpenAI发布的GPT-1原始论文,首次系统地提出了&quot;预训练+微调&quot;的两阶段训练范式。论文清晰地阐述了为什么预训练能让模型学到通用的语言知识,奠定了GPT系列的基础。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-037.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-4</strong><small>预训练</small></a><a class="chapter-neighbor next" href="lesson-039.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-6</strong><small>预训练</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5258#mid=104886" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">6.1 为什么叫&quot;预&quot;训练?</a><a href="#section-14" class="toc-level-2">6.2 趣闻一:谷歌这次没有开源Gemini</a><a href="#section-22" class="toc-level-2">6.3 趣闻二:Common Crawl——互联网的&quot;公共图书馆&quot;</a><a href="#section-40" class="toc-level-2">6.4 趣闻三:为什么小公司也能训练大模型?</a><a href="#section-53" class="toc-level-2">6.5 下一节预告</a><a href="#section-62" class="toc-level-2">6.6 ■ 学点英语</a><a href="#section-64" class="toc-level-2">6.8 推荐阅读</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-038", "title": "预训练（三）-为什么叫预训练", "stage": 1, "week": 2, "module": "预训练", "minutes": 6, "pages": 5, "type": "article"}</script>
+</body></html>

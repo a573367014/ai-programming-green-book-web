@@ -1,0 +1,215 @@
+{
+  "id": "lesson-056",
+  "title": "RLHF（三）-RLHF的局限与思考",
+  "code": "1-7",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "RLHF",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/008-RLHF/056-图文-1-7-RLHF（三）-RLHF的局限与思考.pdf",
+  "sha256": "6796e34e97c84407b644eb5fb5b68fbf5602c2d03a58363fccdf68ec5064ee28",
+  "pdf": "sources/pdf/lesson-056.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5260#mid=104892",
+  "minutes": 1,
+  "excerpt": "",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "音标",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "说明",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/sɪˈkɒfənsi/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型倾向于说让用户舒服的话而非正确的话",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈdʒeɪlbreɪk/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "通过提示技巧绕过AI安全限制的行为",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˌkɒnstɪˈtjuːʃənl eɪ aɪ/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Anthropic提出的基于原则清单进行自我改进的对齐方法",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ɪnˌtɜːprətəˈbɪləti/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让模型的决策理由对人类可理解、可审查",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/blæk bɒks/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "内部机制不可见、只知输入输出的系统",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/edʒ keɪs/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "处于正常范围之外、容易触发异常行为的罕见输入",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/kənˈtɪnjuəl ˈlɜːnɪŋ/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型随时间推移不断吸收新数据与新偏好的能力",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "/ˈtrɒli ˈprɒbləm/",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "经典伦理思想实验，常被用于讨论AI的道德权衡",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 430,
+    "represented_chars": 297,
+    "removed_chars": 133,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 133
+    }
+  },
+  "videos": [],
+  "order": 57,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "音标"
+    },
+    {
+      "anchor": "article-start",
+      "text": "说明"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/sɪˈkɒfənsi/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "模型倾向于说让用户舒服的话而非正确的话"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈdʒeɪlbreɪk/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "通过提示技巧绕过AI安全限制的行为"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˌkɒnstɪˈtjuːʃənl eɪ aɪ/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "Anthropic提出的基于原则清单进行自我改进的对齐方法"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ɪnˌtɜːprətəˈbɪləti/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "让模型的决策理由对人类可理解、可审查"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/blæk bɒks/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "内部机制不可见、只知输入输出的系统"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/edʒ keɪs/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "处于正常范围之外、容易触发异常行为的罕见输入"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/kənˈtɪnjuəl ˈlɜːnɪŋ/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "模型随时间推移不断吸收新数据与新偏好的能力"
+    },
+    {
+      "anchor": "article-start",
+      "text": "/ˈtrɒli ˈprɒbləm/"
+    },
+    {
+      "anchor": "article-start",
+      "text": "经典伦理思想实验，常被用于讨论AI的道德权衡"
+    }
+  ]
+}

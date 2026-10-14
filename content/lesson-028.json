@@ -1,0 +1,602 @@
+{
+  "id": "lesson-028",
+  "title": "Embedding（一）-从符号到数字",
+  "code": "1-1",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "Embedding",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/005-Embedding/028-图文-1-1-Embedding（一）-从符号到数字.pdf",
+  "sha256": "006a28601bab530db5c3146e2710592154f1181e4ad90555b135955c86f7aa3d",
+  "pdf": "sources/pdf/lesson-028.pdf",
+  "pages": 5,
+  "source_url": "https://class.imooc.com/lesson/5257#mid=104881",
+  "minutes": 7,
+  "excerpt": "前面几节讨论了ChatGPT如何计算概率、预测下一个词。但有一个根本性问题还没有解答:计算机只能处理数字,文字是如何参与计算的?本节将看到向量如何用于语言,让语言变成可以运算的数学对象。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 前面几节讨论了ChatGPT如何计算概率、预测下一个词。但有一个根本性问题还没有解答:计算机只能处理数字,文字是如何参与计算的?本节将看到向量如何用于语言,让语言变成可以运算的数学对象。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "1.1 一个根本性的矛盾",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一方面,人类的语言是符号系统:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“猫”、“cat”、“猫咪”",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些都是符号,本身没有数值意义,只是人类约定俗成的代表一种动物的记号。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Transformer是数值计算系统:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "输入:数字 → 计算 → 输出:数字",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它只能做加减乘除,不能直接处理\"猫\"这个字。如何让Transformer处理语言?",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.2 One-Hot编码",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第一次尝试:One-Hot编码",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "最直观的想法是给每个词分配一个编号。假设词表只有5个词:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "猫、狗、喜欢、吃、鱼",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用One-Hot编码,每个词用一个5维向量表示,只有对应位置是1,其余都是0:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "词表    向量表示\n─────────────────────────────\n猫   =  [1, 0, 0, 0, 0]  ← 第1位是1\n狗   =  [0, 1, 0, 0, 0]  ← 第2位是1\n喜欢 =  [0, 0, 1, 0, 0]  ← 第3位是1\n吃   =  [0, 0, 0, 1, 0]  ← 第4位是1\n鱼   =  [0, 0, 0, 0, 1]  ← 第5位是1",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "文字变成了数字,可以交给Transformer处理。但这个方法有严重的问题。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. 维度灾难",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "例子中只有5个词,需要5维向量。GPT-3的词表有约50000个token,意味着每个词需要一个50000维的向量,其中49999个是0,只有1个是1,极其浪费。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h2",
+      "text": "2. 丢失语义信息",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种编码方式把所有词看作完全独立、没有关系的个体。计算两个向量的相似度(余弦相似度,详见本节补充说明):",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "code",
+      "text": "词对      相似度计算                      结果\n──────────────────────────────────────────────\n(猫, 狗)  [1,0,0,0,0] · [0,1,0,0,0]  =  0\n(猫, 鱼)  [1,0,0,0,0] · [0,0,0,0,1]  =  0\n(猫, 吃)  [1,0,0,0,0] · [0,0,0,1,0]  =  0",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "所有词之间的相似度都是0。“猫\"和\"狗\"都是动物,应该有相似性。One-Hot编码把词变成了数字,但丢失了词的\"意义”。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "类似给每个人分配一个身份证号,号码确实能区分人,但无法反映\"这两个人是兄弟\"、\"那两个人是大学同学\"这些信息。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "1.3 革命性的解决方案:Embedding",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "2013年,Google研究员Tomas Mikolov提出了Word2Vec。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "“Embedding\"的字面意思是\"嵌入”,就像把宝石嵌入戒指,这里把高维的词符号\"嵌入\"到低维的向量空间里。核心思想很简单:",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "不要用稀疏的、高维的、孤立的向量表示词,而是用稠密的、低维的、充满语义的向量表示词。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从50000维降到12288维",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不用One-Hot的50000维,而是把每个词表示成12288维的向量(GPT-3的实际选择)。这12288个数字不是只有1个1其余都是0,而是每个位置都有意义:",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "quote",
+      "text": "猫 = [0.2, -0.5, 0.7, 0.1, -0.3, …, 0.4] ← 12288个小数",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这12288个数字共同编码了\"猫\"的多维语义:它是一种动物(生物属性)、有四条腿(形态特征)、常常和\"鱼\"一起出现(共现关系)、会\"喜欢\"、“抓”、“睡觉”(行为特征)。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是Embedding:把高维稀疏的符号,嵌入到低维稠密的向量空间里。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "One-Hot就像身份证号",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设用身份证号来表示一个人:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "人物    身份证号\n──────────────────────────\n张三    110101199001010001\n李四    110101199002020002\n王五    110101199003030003",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些号码确实能区分不同的人,但无法从号码看出张三和李四是兄弟、李四和王五是同事、张三和王五有相似的爱好。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "Embedding就像DNA",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不用身份证号,而是用一个\"特征向量\"来表示一个人:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "特征    身高   体重   智商   情商   运动   艺术\n─────────────────────────────────────────────────\n张三    175    70     120    85     6      3\n李四    173    68     118    88     7      2   ← 和张三很相似\n王五    165    60     95     120    3      9   ← 完全不同的类型",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在可以计算相似度了。One-Hot只能区分,不能比较。Embedding既能区分,又能比较,还能计算相似度。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些特征不是人工设定的,而是自动学习出来的。模型在训练过程中,自动发现哪些维度对预测下一个词最有用,然后把词的语义\"压缩\"到这些维度里。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "基于统计学习的方法(如Embedding)之所以有效,正是因为让模型自己从数据中学习语义表示,而非人工设定规则。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "1.4 下一节预告",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在知道了Embedding如何解决One-Hot的问题:用低维稠密向量替代高维稀疏向量。但这些向量有什么神奇的性质?它们是怎么学会语义的?",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节将看到,词向量竟然能做代数运算:“国王 - 男人 + 女人 = 女王”。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1.5 ■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n嵌入 | Embedding | /ɪmˈbedɪŋ/ | 将高维稀疏的符号映射到低维稠密向量空间的技术\n独热编码 | One-Hot Encoding | /wʌn hɒt ɪnˈkəʊdɪŋ/ | 每个词用一个只有一位为1其余为0的向量表示的编码方式\n词表 | Vocabulary | /vəˈkæbjʊleri/ | 模型能处理的所有Token的集合\n向量 | Vector | /ˈvektər/ | 一组有序的数字，用于表示词在语义空间中的位置\n语义空间 | Semantic Space | /sɪˈmæntɪk speɪs/ | 词向量分布的高维空间，语义相近的词在空间中距离近\n维度灾难 | Curse of Dimensionality | /kɜːrs əv daɪ menʃə ˌ ˈnæləti/ | 高维向量导致计算和存储开销剧增的问题\n余弦相似度 | Cosine Similarity | /ˈkoʊsaɪn sɪmə ˌ ˈlærəti/ | 衡量两个向量方向相近程度的指标，值域[-1,1]",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "嵌入",
+          "Embedding",
+          "/ɪmˈbedɪŋ/",
+          "将高维稀疏的符号映射到低维稠密向量空间的技术"
+        ],
+        [
+          "独热编码",
+          "One-Hot Encoding",
+          "/wʌn hɒt ɪnˈkəʊdɪŋ/",
+          "每个词用一个只有一位为1其余为0的向量表示的编码方式"
+        ],
+        [
+          "词表",
+          "Vocabulary",
+          "/vəˈkæbjʊleri/",
+          "模型能处理的所有Token的集合"
+        ],
+        [
+          "向量",
+          "Vector",
+          "/ˈvektər/",
+          "一组有序的数字，用于表示词在语义空间中的位置"
+        ],
+        [
+          "语义空间",
+          "Semantic Space",
+          "/sɪˈmæntɪk speɪs/",
+          "词向量分布的高维空间，语义相近的词在空间中距离近"
+        ],
+        [
+          "维度灾难",
+          "Curse of Dimensionality",
+          "/kɜːrs əv daɪ menʃə ˌ ˈnæləti/",
+          "高维向量导致计算和存储开销剧增的问题"
+        ],
+        [
+          "余弦相似度",
+          "Cosine Similarity",
+          "/ˈkoʊsaɪn sɪmə ˌ ˈlærəti/",
+          "衡量两个向量方向相近程度的指标，值域[-1,1]"
+        ]
+      ],
+      "page": 5
+    }
+  ],
+  "accounting": {
+    "source_chars": 2871,
+    "represented_chars": 2658,
+    "removed_chars": 213,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 163,
+      "repeated_title": 50
+    }
+  },
+  "videos": [],
+  "order": 29,
+  "headings": [
+    {
+      "title": "1.1 一个根本性的矛盾",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "1.2 One-Hot编码",
+      "id": "section-8",
+      "level": 2
+    },
+    {
+      "title": "1. 维度灾难",
+      "id": "section-15",
+      "level": 2
+    },
+    {
+      "title": "2. 丢失语义信息",
+      "id": "section-17",
+      "level": 2
+    },
+    {
+      "title": "1.3 革命性的解决方案:Embedding",
+      "id": "section-22",
+      "level": 2
+    },
+    {
+      "title": "1.4 下一节预告",
+      "id": "section-41",
+      "level": 2
+    },
+    {
+      "title": "1.5 ■ 学点英语",
+      "id": "section-44",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "前面几节讨论了ChatGPT如何计算概率、预测下一个词。但有一个根本性问题还没有解答:计算机只能处理数字,文字是如何参与计算的?本节将看到向量如何用于语言,让语言变成可以运算的数学对象。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "1.1 一个根本性的矛盾"
+    },
+    {
+      "anchor": "section-1",
+      "text": "一方面,人类的语言是符号系统:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "“猫”、“cat”、“猫咪”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这些都是符号,本身没有数值意义,只是人类约定俗成的代表一种动物的记号。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Transformer是数值计算系统:"
+    },
+    {
+      "anchor": "section-1",
+      "text": "输入:数字 → 计算 → 输出:数字"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它只能做加减乘除,不能直接处理\"猫\"这个字。如何让Transformer处理语言?"
+    },
+    {
+      "anchor": "section-8",
+      "text": "1.2 One-Hot编码"
+    },
+    {
+      "anchor": "section-8",
+      "text": "第一次尝试:One-Hot编码"
+    },
+    {
+      "anchor": "section-8",
+      "text": "最直观的想法是给每个词分配一个编号。假设词表只有5个词:"
+    },
+    {
+      "anchor": "section-8",
+      "text": "猫、狗、喜欢、吃、鱼"
+    },
+    {
+      "anchor": "section-8",
+      "text": "用One-Hot编码,每个词用一个5维向量表示,只有对应位置是1,其余都是0:"
+    },
+    {
+      "anchor": "section-8",
+      "text": "词表    向量表示\n─────────────────────────────\n猫   =  [1, 0, 0, 0, 0]  ← 第1位是1\n狗   =  [0, 1, 0, 0, 0]  ← 第2位是1\n喜欢 =  [0, 0, 1, 0, 0]  ← 第3位是1\n吃   =  [0, 0, 0, 1, 0]  ← 第4位是1\n鱼   =  [0, 0, 0, 0, 1]  ← 第5位是1"
+    },
+    {
+      "anchor": "section-8",
+      "text": "文字变成了数字,可以交给Transformer处理。但这个方法有严重的问题。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "1. 维度灾难"
+    },
+    {
+      "anchor": "section-15",
+      "text": "例子中只有5个词,需要5维向量。GPT-3的词表有约50000个token,意味着每个词需要一个50000维的向量,其中49999个是0,只有1个是1,极其浪费。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "2. 丢失语义信息"
+    },
+    {
+      "anchor": "section-17",
+      "text": "这种编码方式把所有词看作完全独立、没有关系的个体。计算两个向量的相似度(余弦相似度,详见本节补充说明):"
+    },
+    {
+      "anchor": "section-17",
+      "text": "词对      相似度计算                      结果\n──────────────────────────────────────────────\n(猫, 狗)  [1,0,0,0,0] · [0,1,0,0,0]  =  0\n(猫, 鱼)  [1,0,0,0,0] · [0,0,0,0,1]  =  0\n(猫, 吃)  [1,0,0,0,0] · [0,0,0,1,0]  =  0"
+    },
+    {
+      "anchor": "section-17",
+      "text": "所有词之间的相似度都是0。“猫\"和\"狗\"都是动物,应该有相似性。One-Hot编码把词变成了数字,但丢失了词的\"意义”。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "类似给每个人分配一个身份证号,号码确实能区分人,但无法反映\"这两个人是兄弟\"、\"那两个人是大学同学\"这些信息。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "1.3 革命性的解决方案:Embedding"
+    },
+    {
+      "anchor": "section-22",
+      "text": "2013年,Google研究员Tomas Mikolov提出了Word2Vec。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "“Embedding\"的字面意思是\"嵌入”,就像把宝石嵌入戒指,这里把高维的词符号\"嵌入\"到低维的向量空间里。核心思想很简单:"
+    },
+    {
+      "anchor": "section-22",
+      "text": "不要用稀疏的、高维的、孤立的向量表示词,而是用稠密的、低维的、充满语义的向量表示词。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "从50000维降到12288维"
+    },
+    {
+      "anchor": "section-22",
+      "text": "不用One-Hot的50000维,而是把每个词表示成12288维的向量(GPT-3的实际选择)。这12288个数字不是只有1个1其余都是0,而是每个位置都有意义:"
+    },
+    {
+      "anchor": "section-22",
+      "text": "猫 = [0.2, -0.5, 0.7, 0.1, -0.3, …, 0.4] ← 12288个小数"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这12288个数字共同编码了\"猫\"的多维语义:它是一种动物(生物属性)、有四条腿(形态特征)、常常和\"鱼\"一起出现(共现关系)、会\"喜欢\"、“抓”、“睡觉”(行为特征)。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这就是Embedding:把高维稀疏的符号,嵌入到低维稠密的向量空间里。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "One-Hot就像身份证号"
+    },
+    {
+      "anchor": "section-22",
+      "text": "假设用身份证号来表示一个人:"
+    },
+    {
+      "anchor": "section-22",
+      "text": "人物    身份证号\n──────────────────────────\n张三    110101199001010001\n李四    110101199002020002\n王五    110101199003030003"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这些号码确实能区分不同的人,但无法从号码看出张三和李四是兄弟、李四和王五是同事、张三和王五有相似的爱好。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Embedding就像DNA"
+    },
+    {
+      "anchor": "section-22",
+      "text": "不用身份证号,而是用一个\"特征向量\"来表示一个人:"
+    },
+    {
+      "anchor": "section-22",
+      "text": "特征    身高   体重   智商   情商   运动   艺术\n─────────────────────────────────────────────────\n张三    175    70     120    85     6      3\n李四    173    68     118    88     7      2   ← 和张三很相似\n王五    165    60     95     120    3      9   ← 完全不同的类型"
+    },
+    {
+      "anchor": "section-22",
+      "text": "现在可以计算相似度了。One-Hot只能区分,不能比较。Embedding既能区分,又能比较,还能计算相似度。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这些特征不是人工设定的,而是自动学习出来的。模型在训练过程中,自动发现哪些维度对预测下一个词最有用,然后把词的语义\"压缩\"到这些维度里。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "基于统计学习的方法(如Embedding)之所以有效,正是因为让模型自己从数据中学习语义表示,而非人工设定规则。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "1.4 下一节预告"
+    },
+    {
+      "anchor": "section-41",
+      "text": "现在知道了Embedding如何解决One-Hot的问题:用低维稠密向量替代高维稀疏向量。但这些向量有什么神奇的性质?它们是怎么学会语义的?"
+    },
+    {
+      "anchor": "section-41",
+      "text": "下一节将看到,词向量竟然能做代数运算:“国王 - 男人 + 女人 = 女王”。"
+    },
+    {
+      "anchor": "section-44",
+      "text": "1.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-44",
+      "text": "中文 | English | 音标 | 说明\n嵌入 | Embedding | /ɪmˈbedɪŋ/ | 将高维稀疏的符号映射到低维稠密向量空间的技术\n独热编码 | One-Hot Encoding | /wʌn hɒt ɪnˈkəʊdɪŋ/ | 每个词用一个只有一位为1其余为0的向量表示的编码方式\n词表 | Vocabulary | /vəˈkæbjʊleri/ | 模型能处理的所有Token的集合\n向量 | Vector | /ˈvektər/ | 一组有序的数字，用于表示词在语义空间中的位置\n语义空间 | Semantic Space | /sɪˈmæntɪk speɪs/ | 词向量分布的高维空间，语义相近的词在空间中距离近\n维度灾难 | Curse of Dimensionality | /kɜːrs əv daɪ menʃə ˌ ˈnæləti/ | 高维向量导致计算和存储开销剧增的问题\n余弦相似度 | Cosine Similarity | /ˈkoʊsaɪn sɪmə ˌ ˈlærəti/ | 衡量两个向量方向相近程度的指标，值域[-1,1]"
+    }
+  ]
+}

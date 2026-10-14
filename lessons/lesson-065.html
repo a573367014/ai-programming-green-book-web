@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>涌现能力（三）-涌现的边界 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-065">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 3 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>涌现能力</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 066</span></div>
+<h1 class="lesson-title">涌现能力（三）-涌现的边界</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>4 页原文</span><span>约 6 分钟阅读</span><span class="module-name">涌现能力</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-065.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-065.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上篇让你直观感受了涌现能力的震撼，中篇探讨了涌现的机制和Scaling Laws。下篇将讨论： 涌现的边界：什么能力不会涌现？ 令人不安的一面：涌现的不可预测性 趣闻：Scaling Laws论文背后的故事 推荐阅读与下节预告</p></aside>
+<h2 id="section-1" data-source-page="1">6.1 涌现的边界<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">最后，强调一点:不是所有能力都会通过扩大规模涌现出来。</p>
+<p data-source-page="1">不是所有能力都会通过扩大规模涌现出来</p>
+<p data-source-page="1">有些能力，可能永远不会涌现，或者需要完全不同的训练方式。</p>
+<p data-source-page="1">可能不会涌现的能力：</p>
+<p class="list-item" data-source-page="1">真正的&quot;理解&quot;（如果它确实存在的话）</p>
+<p data-source-page="1">真正的&quot;理解&quot;</p>
+<p data-source-page="1">模型展现出了很多&quot;看起来像理解&quot;的行为，但它是否真的&quot;理解&quot;意义?</p>
+<p data-source-page="1">这可能不是规模能解决的，而是需要根本性的架构改变。</p>
+<p class="list-item" data-source-page="1">长期规划和一致性</p>
+<p data-source-page="1">ChatGPT能做多步推理，但如果要求它维持一个长篇小说的情节一致性，或者规划一个跨越几年的项目，它仍然会出问题。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">这可能需要新的记忆机制和规划机制。</p>
+<p data-source-page="2">如果大模型真的能维持很长的记忆，并能连续推理，那这我这本书也不用吭哧吭哧的写1年了。那时候可能人人都能写出世界名著。</p>
+<p class="list-item" data-source-page="2">与真实世界的交互</p>
+<p data-source-page="2">ChatGPT学到的都是&quot;文本中的世界&quot;,它不知道&quot;拿起一个杯子&quot;是什么感觉，不知道&quot;红色&quot;真正看起来是什么样。这需要多模态学习(视觉、听觉、触觉。…)和与真实世界的交互。</p>
+<p data-source-page="2">AI界对此存在两种分歧:</p>
+<p class="list-item" data-source-page="2">第一种观点：沿着Transformer架构继续扩大，期待新能力涌现</p>
+<p class="list-item" data-source-page="2">第二种观点：Transformer已触及天花板，AI必须从真实世界学习，而非只是反复学习文本</p>
+<p data-source-page="2">这是两条截然不同的路，未来会证明谁对谁错。</p>
+<h2 id="section-20" data-source-page="2">6.2 趣闻：Scaling Laws论文——一个差点被拒稿的&quot;赌局&quot;<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">你可能想不到，那篇奠定了整个大模型时代基础的论文，差点就被学术界拒之门外。</p>
+<p data-source-page="2">2020年1月，OpenAI发表了一篇看起来很&quot;简单&quot;的论文：《Scaling Laws for Neural Language Models》（神经语言模型的扩展定律）。</p>
+<p data-source-page="2">论文的核心发现，用一句话就能说完：</p>
+<aside class="callout" data-source-page="2"><p>&quot;模型的性能与参数量、数据量、算力之间，存在可预测的幂律关系。&quot;</p></aside>
+<p data-source-page="2">这篇论文在评审时遇到了很大的阻力。主要质疑包括:</p>
+<p data-source-page="2">质疑1:“这不就是拟合曲线吗?”</p>
+<aside class="callout" data-source-page="2"><p>批评者认为:你只是在小模型上观察到一些数据点 然后画了一条曲线，凭什么说它能一直成立？</p></aside>
+<p data-source-page="2">质疑2:“外推太大胆”</p>
+<aside class="callout" data-source-page="2"><p>你在100亿参数的模型上发现规律 就敢预测1000亿、10000亿参数的效果？ 这种外推太危险了</p></aside>
+<p data-source-page="2">质疑3:“实用价值有限”</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<aside class="callout" data-source-page="3"><p>即使规律成立，又怎么样呢？ 谁会真的去训练那么大的模型？ 成本太高，不切实际</p></aside>
+<p class="list-item" data-source-page="3">即使规律成立，又怎么样呢？</p>
+<p class="list-item" data-source-page="3">谁会真的去训练那么大的模型？</p>
+<p class="list-item" data-source-page="3">成本太高，不切实际</p>
+<p data-source-page="3">但OpenAI做了一个大胆的决定：相信这个规律，全力押注大模型。</p>
+<p data-source-page="3">相信这个规律，全力押注大模型。</p>
+<aside class="callout" data-source-page="3"><p>2020年5月：在一些质疑声中，论文发表 2020年6月：OpenAI开始训练GPT-3（175B参数） →这是当时最大的模型，参数量是之前的10倍以上 → 训练成本：数百万美元 → 如果Scaling Laws不成立，这笔钱就打水漂了 2020年7月：GPT-3发布 → 性能完全符合Scaling Laws的预测！ →学术界震惊：这个规律真的成立！</p></aside>
+<p data-source-page="3">OpenAI的研究人员后来透露：</p>
+<aside class="callout" data-source-page="3"><p>“当我们决定训练GPT-3时，内部也有很多争论。因为根据Scaling Laws，我们能预测性能会提升多少，但不知道这个提升是否足够产生质变。” “我们是在’赌’涌现现象会发生。”</p></aside>
+<p data-source-page="3">结果，他们赌对了。GPT-3不仅性能提升了，还出现了很多小模型完全没有的能力（如只需要几个例子就能学会新任务、代码生成等）。</p>
+<p data-source-page="3">论文的&quot;复仇&quot;</p>
+<aside class="callout" data-source-page="3"><p>2020年初：论文被质疑&quot;缺乏实用价值&quot; 2020年末：GPT-3震惊世界，各大公司开始疯狂训练大模型 2021年：谷歌、Meta、微软纷纷发布百亿/千亿参数模型 2022年：ChatGPT发布，引爆AI革命 2023年后：这篇论文成为大模型时代的&quot;基石&quot; 几乎每篇大模型相关论文都会引用它 从&quot;差点被拒&quot;到&quot;改变世界&quot;，只用3年。</p></aside>
+<p data-source-page="3"><strong>如果当时放弃了呢？</strong>唯一可以肯定的是：</p>
+<aside class="callout" data-source-page="3"><p>大模型时代可能要推迟好几年。</p></aside>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h2 id="section-45" data-source-page="4">6.3 推荐阅读<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h2>
+<p class="list-item" data-source-page="4">《Scaling Laws for Neural Language Models》(2020) - OpenAI关于模型性能与规模关系的开创性论文</p>
+<h2 id="section-47" data-source-page="4">6.4 下节预告<a class="heading-link" href="#section-47" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">涌现能力中有一个尤其特殊的能力——情境学习。</p>
+<p data-source-page="4">它特殊在哪？</p>
+<aside class="callout" data-source-page="4"><p>你不需要重新训练模型，只需在提示词中给几个例子，模型就能学会一个新任务。</p></aside>
+<p data-source-page="4">这意味着，你不需要收集大量标注数据，也不需要花费数周时间训练。只需要在对话框里打几行字，模型就&quot;学会&quot;了。</p>
+<p data-source-page="4">下一节，我将带你深入这个革命性的能力。</p>
+<h2 id="section-53" data-source-page="4">6.5 ■ 学点英语<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>涌现边界</td><td>Emergence Boundary</td><td>/ɪˈmɜːdʒəns ˈbaʊndri/</td><td>仅靠扩大规模无法获得的能力所形成的上限</td></tr><tr><td>多模态</td><td>Multimodal</td><td>/ mʌltiˈməʊdl/ ˌ</td><td>同时处理文本、图像、音频等多种模态的能力</td></tr><tr><td>长期记忆</td><td>Long-term Memory</td><td>/lɒŋ tɜːm ˈmeməri/</td><td>跨会话、跨年度保持信息一致的能力</td></tr><tr><td>因果</td><td>Causality</td><td>/kɔːˈzæləti/</td><td>输入对输出的驱动关系，与相关性相区分</td></tr><tr><td>真实世界交互</td><td>Real-world Interaction</td><td>/ˈrɪəl wɜːld ɪntər ˌ ˈækʃn/</td><td>与物理世界或动态环境进行行动与反馈的过程</td></tr><tr><td>规划</td><td>Planning</td><td>/ˈplænɪŋ/</td><td>针对长期目标制定多步骤行动序列的能力</td></tr><tr><td>智能体</td><td>Agent</td><td>/ˈeɪdʒənt/</td><td>可感知环境、决策并执行动作的 AI 系统</td></tr><tr><td>幻象</td><td>Mirage</td><td>/ˈmɪrɑːʒ/</td><td>涌现“假象”的典型比喻，对应 Schaeffer 2023 论文</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-064.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>扩展练习（2）</strong><small>涌现能力</small></a><a class="chapter-neighbor next" href="lesson-066.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>选择练习 · 1-8</strong><small>涌现能力</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5261#mid=104895" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">6.1 涌现的边界</a><a href="#section-20" class="toc-level-2">6.2 趣闻：Scaling Laws论文——一个差点被拒稿的&quot;赌局&quot;</a><a href="#section-45" class="toc-level-2">6.3 推荐阅读</a><a href="#section-47" class="toc-level-2">6.4 下节预告</a><a href="#section-53" class="toc-level-2">6.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-065", "title": "涌现能力（三）-涌现的边界", "stage": 1, "week": 3, "module": "涌现能力", "minutes": 6, "pages": 4, "type": "article"}</script>
+</body></html>

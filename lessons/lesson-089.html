@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>流式输出与长度控制 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-089">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 4 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>小试牛刀，做一个简单的翻译器</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 090</span></div>
+<h1 class="lesson-title">流式输出与长度控制</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>5 页原文</span><span>约 7 分钟阅读</span><span class="module-name">小试牛刀，做一个简单的翻译器</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-089.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-089.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节我们完成了多轮对话与上下文管理。现在开始深入API参数——先学习流式输出（stream）和长度控制（max_tokens），这是改善用户体验和控制成本的基础。</p></aside>
+<h2 id="section-1" data-source-page="1">7.1 从简单翻译到专业工具<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">回顾第6节的基础翻译器，它存在几个问题：</p>
+<p class="list-item" data-source-page="1">等待时间长：长文本翻译时，只能干等，看不到进度</p>
+<p class="list-item" data-source-page="1">长度不可控：无法限制翻译结果的长度</p>
+<p class="list-item" data-source-page="1">风格固定：无法调整创意性（直译 vs 意译）</p>
+<p class="list-item" data-source-page="1">成本不透明：不知道消耗了多少Token</p>
+<p class="list-item" data-source-page="1">错误不友好：翻译被截断时没有提示</p>
+<p data-source-page="1">本节先解决前两个问题</p>
+<p data-source-page="1">我们将通过2个核心参数来解决：</p>
+<p class="list-item" data-source-page="1">stream - 流式输出，解决等待问题</p>
+<p class="list-item" data-source-page="1">max_tokens - 控制长度，避免截断</p>
+<p data-source-page="1">其余参数（temperature、top_p等）将在下一节讨论。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-13" data-source-page="2">7.2 流式输出<a class="heading-link" href="#section-13" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">先理解一个大模型开发里常用的方案：流式输出（Streaming）。它常用于改善用户体验。</p>
+<p data-source-page="2">流式输出的原理</p>
+<p class="list-item" data-source-page="2">非流式：AI生成完整个翻译结果后，一次性返回</p>
+<p data-source-page="2">非流式</p>
+<p class="list-item" data-source-page="2">流式：AI每生成一小段内容，就立即返回，可以边生成边看到结果</p>
+<p data-source-page="2">非流式输出：</p>
+<aside class="callout" data-source-page="2"><p>用户输入 → [等待10秒…] → 完整翻译结果一次性显示</p></aside>
+<p data-source-page="2">流式输出：</p>
+<aside class="callout" data-source-page="2"><p>用户输入 → The → weather → is → really → nice → today → … ↑ 立即开始 ↑ 逐字输出 ↑ 像打字机一样</p></aside>
+<p data-source-page="2">流式输出不会让AI生成更快，但会让感知更快。这就是为什么几乎所有现代AI对话产品都使用流式输出。</p>
+<p data-source-page="2">下面看如何在代码中实现它。</p>
+<h2 id="section-25" data-source-page="2">7.3 stream参数实战<a class="heading-link" href="#section-25" aria-label="链接至本节">#</a></h2>
+<aside class="callout" data-source-page="2"><b>阅读提示</b><p>示例代码位置 本节参考的实际代码位于： /samples/chapter4/translator_pro_plus.py 你可以在项目根目录下找到这个文件，里面包含了完整的流式输出实现。</p></aside>
+<p data-source-page="2">翻译一篇1000字的文章，需要等待10秒才能看到结果，体验很差。</p>
+<p data-source-page="2">非流式输出（一次性返回）：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">response = client.chat.completions.create(
+    model=&quot;qwen3.6-plus&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;翻译这段文本...&quot;}],
+    stream=False  # 默认值
+)
+print(response.choices[0].message.content)  # 等待10秒后一次性显示</code></pre></div>
+<p data-source-page="3">流式（逐字返回）:</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">response = client.chat.completions.create(
+    model=&quot;qwen3.6-plus&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;翻译这段文本...&quot;}],
+    stream=True  # 启用流式输出
+)
+
+# 不仅要开启stream=True，还需要使用for逐字打印出来
+for chunk in response:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end=&quot;&quot;, flush=True)</code></pre></div>
+<p data-source-page="3">实际运行效果</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">非流式：
+[等待10秒...]
+The weather is really nice today, let&#x27;s go for a walk in the park.
+
+流式：
+The wea[0.1s]ther is [0.1s]really ni[0.1s]ce today[0.1s], let&#x27;s go[0.1s] for a 
+walk[0.1s]...</code></pre></div>
+<h3 id="section-34" data-source-page="3">max_tokens：长度控制<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h3>
+<p data-source-page="3">在第3节中，我们学习了API响应中的finish_reason字段，它会告诉我们生成结束的原因。当finish_reason=&#x27;length&#x27;时，说明是因为达到了Token限制而被截断。下面看如何通过max_tokens参数来控制这个长度。</p>
+<p data-source-page="3">参数说明</p>
+<p class="list-item" data-source-page="3">max_tokens：限制生成的最大Token数（不包括输入）</p>
+<p data-source-page="3">生成的最大Token数</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p class="list-item" data-source-page="4">默认值：无限制（由模型自行决定何时停止）</p>
+<p class="list-item" data-source-page="4">最大值：受模型上下文窗口限制（例如：如果模型上下文窗口是128K，输入用了1K，那么输出最多127K）</p>
+<aside class="callout" data-source-page="4"><p>Token估算参考 中文：1个汉字 ≈ 1个Token 英文：平均每个单词 ≈ 1.3-1.5个Token（短单词如“the” 是1个，长单词可能被拆分为多个）</p></aside>
+<p data-source-page="4">使用示例</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 限制翻译结果不超过100个Token
+response = client.chat.completions.create(
+    model=&quot;qwen3.6-plus&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;翻译：今天天气真好...&quot;}],
+    max_tokens=100  # 最多生成100个Token
+)
+
+# 检查是否被截断
+if response.choices[0].finish_reason == &#x27;length&#x27;:
+    print(&quot;翻译结果被截断，请增加max_tokens或缩短输入&quot;)
+else:
+    print(response.choices[0].message.content)</code></pre></div>
+<p data-source-page="4">实战建议</p>
+<p class="list-item" data-source-page="4">短文本翻译：max_tokens=200 足够</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">max_tokens=200</code></pre></div>
+<p class="list-item" data-source-page="4">长文章翻译：根据原文长度估算，原文Token数 × 1.5 倍</p>
+<p class="list-item" data-source-page="4">摘要翻译：限制在 max_tokens=50-100，强制精简</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">max_tokens=50-100</code></pre></div>
+<p data-source-page="4">Token数估算技巧</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 粗略估算（中文）
+input_chars = len(&quot;今天天气真好，我们去公园散步吧。&quot;)  # 16个字
+estimated_tokens = input_chars * 1  # 约16个Token（1中文字≈1Token）
+max_tokens = int(estimated_tokens * 1.5)  # 翻译结果预留1.5倍空间
+
+print(f&quot;输入约{estimated_tokens}个Token，建议max_tokens={max_tokens}&quot;)
+# 输出：输入约16个Token，建议max_tokens=24</code></pre></div>
+<h2 id="section-52" data-source-page="5">7.4 下一节预告<a class="heading-link" href="#section-52" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">掌握了流式输出和长度控制后，接下来学习如何控制翻译的创意性——通过temperature、top_p等参数，让翻译在直译和意译之间自由切换。</p>
+<h2 id="section-54" data-source-page="5">7.5 ■ 学点英语<a class="heading-link" href="#section-54" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="5"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>流式输出</td><td>Streaming Output</td><td>/ˈstriːmɪŋ ˈaʊtpʊt/</td><td>AI边生成边返回结果，提升用户体验的技术</td></tr><tr><td>最大令牌数</td><td>Max Tokens</td><td>/mæks ˈtoʊkənz/</td><td>限制模型生成内容的最大Token数量</td></tr><tr><td>逐块输出</td><td>Chunk-by-chunk Output</td><td>/tʃʌŋk baɪ tʃʌŋk ˈaʊtpʊt/</td><td>流式模式下内容逐步返回的呈现方式</td></tr><tr><td>感知速度</td><td>Perceived Speed</td><td>/pərˈsiːvd spiːd/</td><td>用户感受上的响应速度，不等于实际生成速度</td></tr><tr><td>截断检测</td><td>Truncation Detection</td><td>/trʌŋˈkeɪʃn dɪˈtekʃn/</td><td>通过finish reason判断回复是否被截断 _</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-088.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>多轮对话与上下文管理实战</strong><small>小试牛刀，做一个简单的翻译器</small></a><a class="chapter-neighbor next" href="lesson-090.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>创意控制与专业翻译器</strong><small>小试牛刀，做一个简单的翻译器</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5269#mid=104908" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">7.1 从简单翻译到专业工具</a><a href="#section-13" class="toc-level-2">7.2 流式输出</a><a href="#section-25" class="toc-level-2">7.3 stream参数实战</a><a href="#section-34" class="toc-level-3">max_tokens：长度控制</a><a href="#section-52" class="toc-level-2">7.4 下一节预告</a><a href="#section-54" class="toc-level-2">7.5 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-089", "title": "流式输出与长度控制", "stage": 2, "week": 4, "module": "小试牛刀，做一个简单的翻译器", "minutes": 7, "pages": 5, "type": "article"}</script>
+</body></html>

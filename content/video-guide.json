@@ -1,0 +1,26 @@
+{
+  "id": "video-guide",
+  "title": "《程序员 AI 编程绿皮书》导学",
+  "code": "1-1",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "序与前言",
+  "type": "video",
+  "pages": 0,
+  "minutes": 1,
+  "items": [],
+  "excerpt": "全书视频导学，先了解学习路线与课程内容。",
+  "videos": [
+    {
+      "title": "《程序员 AI 编程绿皮书》导学",
+      "path": "sources/video/video-02.mp4",
+      "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/001-序与前言/1-1 《程序员AI编程绿皮书》导学_ev.mp4",
+      "sha256": "0a2d858dce673f7498b208c98ac5572318b88db77a621d8c93bec0d853469378",
+      "target": "video-guide"
+    }
+  ],
+  "order": 1,
+  "headings": [],
+  "search_sections": []
+}

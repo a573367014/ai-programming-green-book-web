@@ -1,0 +1,1805 @@
+{
+  "id": "lesson-004",
+  "title": "Vibe-Spec-Coding，用自然语言来编程",
+  "code": "1-5",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "序与前言",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/001-序与前言/004-图文-1-5-Vibe-Spec-Coding，用自然语言来编程.pdf",
+  "sha256": "5109e57bf2c4a7fee147eed5fe817da4fea456a9661aecf3972d8d569613aee7",
+  "pdf": "sources/pdf/lesson-004.pdf",
+  "pages": 20,
+  "source_url": "https://class.imooc.com/lesson/5252#mid=104868",
+  "minutes": 17,
+  "excerpt": "这是全书的前言，从 Vibe Coding 的视角切入，介绍 AI 如何改变编程方式——从写代码到表达意图。同时引出 Spec-Coding 作为大型项目的进化形态。 读完这一节，你会理解为什么这本书的核心理念是\"从理论到实践\"，以及为什么底层原理比表层操作更重要。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 这是全书的前言，从 Vibe Coding 的视角切入，介绍 AI 如何改变编程方式——从写代码到表达意图。同时引出 Spec-Coding 作为大型项目的进化形态。 读完这一节，你会理解为什么这本书的核心理念是\"从理论到实践\"，以及为什么底层原理比表层操作更重要。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "大学刚毕业时，有人告诉我 AI 能让程序员一行代码不写就完成复杂项目，我会认为这是天方夜谭。即使到了 2023 年，当 ChatGPT 和 DeepSeek 展现出惊人能力时，依然怀疑\"AI 能独立完成复杂项目\"。这种怀疑源于程序员的朴素认知：复杂项目涉及复杂的逻辑和环境问题，任何宣称\"AI 现在能自己做项目了\"的言论，都像是哗众取宠。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "现实中，AI 确实能快速生成简单项目，但面对商业化的真实项目，表现往往不如程序员自己动手。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "过去每隔几年就有技术声称能\"一行代码不写\"完成程序，但都要加上定语：逻辑不太复杂、只能限定在特定行业……这些限制让实用性大打折扣。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "真正的工程师不会把自己系统的命运交给一个黑盒。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "然而 2025 年，一种全新的编程方式改变了这种认知——Vibe Coding。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.1 什么是 Vibe Coding",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Vibe Coding（直译\"感觉编程\"或\"氛围编程\"），由前特斯拉 AI 总监、OpenAI 联合创始人安德烈·卡帕西（Andrej Karpathy）在 2025 年 2 月提出。它有两个核心特征：",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "list",
+      "text": "用自然语言编程。无需学习 C、Python、Java，直接用中文或英文与 AI 对话，描述需求，AI 就会生成代码。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "list",
+      "text": "为什么叫\"氛围（感觉）\"？因为描述可以是模糊的、主观的、带情感色彩的。比如\"配色不要太俗\"、“界面要简洁大气”——这些\"感觉\"而非精确指令，AI 都能理解并转化为代码。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "看一张来自网络的”梗图“：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里没有 Python、C、Java、C++，取而代之的是人类的自然语言。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个调侃背后藏着一个深刻转变：编程的门槛正在从\"精通语法\"向\"表达意图\"迁移。要理解这个转变，需要先回到传统编程的核心逻辑。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统编程的核心是用精确语法告诉计算机\"怎么做\"（How）。程序员必须掌握编程语言的每个细节——变量声明、循环结构、条件判断、函数调用……然后用这些语法元素构建完整逻辑。这个过程就像用\"特殊语言\"与计算机对话，规则严格，容不得半点模糊。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "举个简单的例子，计算列表中所有数字的总和：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 错误示例：语法错误\nsum = 0\nfor num in [1, 2, 3, 4, 5] # 忘记冒号会导致 SyntaxError\n    sum += num\nprint(sum)",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "即使只是少一个冒号，程序就无法运行。这种对精确性的要求构成了传统编程的高门槛。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Vibe Coding 则完全不同。核心是意图表达而非精确控制。无需告诉计算机每一步怎么做，而是用自然语言描述\"想要什么\"（What）和\"期望的感觉\"（Vibe）。AI 理解意图和氛围感，生成符合预期的代码。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统编程方式",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "for user in users:\n    if user.age >= 18 and user.status == 'active':\n        send_notification(user.email, template='welcome')\n        log_action('notification_sent', user.id)",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统编程要求精确定义每个步骤：遍历用户、检查条件、发送通知、记录日志。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Vibe Coding 方式 \"给所有成年活跃用户发送欢迎通知，记得记录日志\"",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Vibe Coding 方式",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI 会理解这句话背后的意图：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“成年活跃用户” → 需要过滤条件",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“发送欢迎通知” → 调用通知系统",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“记得记录日志” → 添加日志记录",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "然后生成相应的代码实现。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "更进一步，当你说：“这个通知的语气要友好一些，不要太正式\"时，AI 会理解这种\"感觉”（Vibe），调整通知的措辞风格，而不是要求精确指定每一个单词。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里从一张对比图可以直观感受两种方式的差别：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "维度 | 传统编程 | Vibe Coding\n输入方式 | 编程语言语法 | 自然语言对话\n关注点 | 如何实现（How） | 想要什么（What + Vibe）\n交互模式 | 单向指令 | 迭代对话\n学习门槛 | 必须精通语法 | 需要理解架构概念\n开发重点 | 编写代码 | 表达意图\n典型指令 | for(int i=0; i<10; i++) | “给活跃用户发通知，语气要友好”\n工作流程 | 设计 → 编码 → 调试 | 描述 → 对话 → 迭代",
+      "rows": [
+        [
+          "维度",
+          "传统编程",
+          "Vibe Coding"
+        ],
+        [
+          "输入方式",
+          "编程语言语法",
+          "自然语言对话"
+        ],
+        [
+          "关注点",
+          "如何实现（How）",
+          "想要什么（What + Vibe）"
+        ],
+        [
+          "交互模式",
+          "单向指令",
+          "迭代对话"
+        ],
+        [
+          "学习门槛",
+          "必须精通语法",
+          "需要理解架构概念"
+        ],
+        [
+          "开发重点",
+          "编写代码",
+          "表达意图"
+        ],
+        [
+          "典型指令",
+          "for(int i=0; i<10; i++)",
+          "“给活跃用户发通知，语气要友好”"
+        ],
+        [
+          "工作流程",
+          "设计 → 编码 → 调试",
+          "描述 → 对话 → 迭代"
+        ]
+      ],
+      "page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个转变看似简单，实则代表了编程范式的根本性革新。传统编程中，开发者是\"翻译者\"，需要把想法翻译成计算机能理解的代码（C、Python、Java 等）。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "而在 Vibe Coding 中，AI 承担了\"翻译者\"角色，开发者只需清晰表达意图和期望的\"感觉\"。正如Andrej Karpathy 所说：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "code",
+      "text": "“这是一种完全屈服于感觉，甚至忘记代码本身存在的编程状态“。\n\n1",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "开发者不再被困在语法规则中，而是专注于表达想要什么、期望什么样的效果。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "某种程度上，开发者是在用中文、英文同 AI 聊天，并没有写代码，确实如同忘却了代码的存在。我现在甚至字都不想打，在环境允许时，直接使用 Wispr Flow（一款 Mac 上的语音转文字软件）同 AI 聊天开发项目。这在过去不敢想。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h3",
+      "text": "为什么现在才实现",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么这种编程方式现在才成为可能？要回答这个问题，需要理解编程语言存在的根本原因：计算机听不懂人类的自然语言。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "计算机擅长处理精确指令，但对人类语言中的模糊性、歧义性、隐含信息却束手无策。一句\"配色不要太俗\"对人类来说意思很明确，但对传统计算机而言完全无法解析——什么是\"俗\"？什么样的配色算\"不俗\"？这些都需要大量上下文和审美理解才能回答。大模型的出现改变了这一切。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在的大模型不仅能理解人类的自然语言，还能捕捉语言中微小的措辞差异，推理出隐含意图。它们可以理解\"配色不要太俗\"意味着要避免过于鲜艳、廉价感的色彩组合，要选择优雅、平衡的配色方案。这种理解能力正是 Vibe Coding 的技术基础。更重要的是，大模型具备强大的推理能力，可以进行\"Step By Step\"的逻辑推导，从高层次意图推导出具体实现方案。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "这让它们不仅能理解\"要什么\"，还能推理出\"怎么做\"。比如，当你说\"实现一个用户登录功能，注意安全问题\"时，大模型会推理：",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "登录需要验证用户身份 → 需要用户名和密码输入框",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "密码不能明文传输 → 需要加密处理",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "要防止暴力破解 → 需要限制登录次数",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从一个简单的意图，推导出完整的技术方案，这正是传统编程方式无法做到的。当大模型遇到不确定的选择时，甚至会主动询问，比如：",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "code",
+      "text": "使用哪种数据库用来存储用户的身份信息？\n\n1",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "Vibe Coding 不同于过去那些\"搭积木\"式的无代码工具。传统无代码平台本质是让用户在预定义组件中选择和组合：平台预先定义了很多的功能组件。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "这样的特点让无代码或者低代码工具的能力边界固定，无法理解真实意图。而 Vibe Coding 中的 AI 可以真正理解想要什么，然后自主生成实现方案——这是从\"预定义规则的组合\"到\"理解意图后的创造\"的质变。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "当前的 Vibe Coding 还需要开发者具备一定编程知识，通过多轮对话来引导和验证 AI 的实现过程。但这已是巨大进步。Vibe Coding 将编程从\"写代码\"推进到\"表达意图\"，从\"精确语法\"推进到\"模糊感觉\"。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然 Vibe Coding 目前还有很多缺点，也有很多严谨的程序员认为Vibe Coding写的代码是豆腐渣。但我认为，它一定是编程的未来。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "关于这一点，我们不在这里争论，每个人会有自己的观点。但对于读者，最好的方式就是亲自去尝试用一下。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "3.2 下载和安装Qoder",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在展开具体能力之前，需要先说明本书的演示背景。Vibe Coding 作为一种编程范式，不依赖于特定工具——无论是 Qoder、Claude Code 还是Codex，只要支持自然语言交互和代码生成，都可以实践Vibe Coding。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "目前业界公认编码能力第一梯队的还是Claude Code。国产AI编程助手主要是Qoder和TRAE。它们也有它们独特的优势，比如对中文支持更好，速度快，有免费的模型使用。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "为了保证每个同学都能快速落地书里的代码，所以本书选择Qoder作为演示工具。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "建议同学们安装Qoder与本书保持同步，以获得更好的阅读体验。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "点击下载、注册Qoder",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "读者如果有自己的偏好完全可以改用上述任意的工具，这并不影响阅读本书。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "本章要展示的是 Vibe Coding 这种编程方式能做到什么，以及它目前的局限在哪里。至于 Qoder 背后的技术思想，阅读完本书后自然会有清晰的认识。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "对于 Qoder，它提供了可视化的开发工具，支持 Mac、Windows 与 Linux。考虑到很多高级开发者可能不希望离开熟悉的开发工具，Qoder 还提供了命令行工具（CLI）。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "3.3 全自动部署项目（以excalidraw为例）",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每个程序员在部署项目时都很头疼。即使一个简单的项目，也需要安装一堆依赖和环境——要么手工安装，要么写脚本。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "初学者在 GitHub 上看到好的项目想体验一下，往往因为环境要求苛刻而放弃。但有了 Qoder 等 AI 工具，可以几乎全自动地跑起来一个项目——甚至不需要看安装说明，Qoder 也能分析代码并代为运行起来。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们以在线画图工具 excalidraw（GitHub下载）为例。这是一个非常火爆的开源项目（GitHub 113K Stars），提供免费基础版和收费 Pro 版。作为开源项目，可以在自己的计算机上部署一个 Pro 版。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个项目使用了 React、TypeScript 等技术，对资深前端程序员来说跑起来不是问题（也要阅读安装说明花费点时间），但初学者往往需要折腾很久。而使用 Qoder，只需以下几步：",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤1 下载源码",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从 GitHub 下载 excalidraw 源码到本地目录。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤2 告诉 Qoder 你的需求 用Qoder打开这个项目，并自然语言告诉Qoder：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "帮我把这个项目跑起来\n\n1",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "就这么简单。不需要查看 README，不需要手动安装 Node.js、npm、依赖包，也不需要配置环境变量。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h3",
+      "text": "简单的小项目",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对于 Qoder，可以使用最简单、朴素、甚至是有错别字或者不连贯的人类自然语言完成各种代码任务，比如告诉Qoder：",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "code",
+      "text": "给我写一个羊了个羊，使用HTML+CSS。\n- 设计为闯关模式，且关卡难度逐步提高\n- 元素之间需要相互覆盖而不是平铺\n- 赛博朋克未来风格\n- 配色为紫色系",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "游戏截图：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当然这种 Demo 级别的小游戏没有很强的说服力，我们继续用更复杂的项目来展示 Vibe Coding 的能力。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果从来没有接触过 Vibe-Coding，建议现在就去下载 Qoder，立刻把想法告诉它，体验自然语言编程。它没有任何门槛，不需要前置技术。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h3",
+      "text": "商业级复杂系统",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下图来自我Vibe-Coding的多智能体数字孪生高校智能教育平台：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是一个高度复杂的多智能体在线教育平台，核心功能包括：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "AI自动根据薄弱知识点出题",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "自动批改与数据跟踪",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "数字化教材",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "全息知识图谱",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些功能几乎不需要自己写一行代码（项目大部分手工代码主要是测试代码）。更关键的是，这么复杂的系统，使用 Vibe Coding 一周就可以落地绝大多数功能。即使没有专业设计师，现在 Vibe-Coding也可以做出漂亮的 UI。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h3",
+      "text": "理解模糊的审美",
+      "page": 7,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我在使用 Qoder 的过程中，发现它是具有一定审美的，这是让我非常惊叹的。因为\"审美\"是非常抽象和模糊的概念。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面这张图片来自于我用Qoder开发的一个文字RPG游戏项目。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "回顾整个调整 UI 的过程，我大致用到的就那么几个关键字：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "复古",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "武侠",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "像素",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "宋代美学",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统编程要求精确的数值和明确的步骤——紫色按钮需要 RGB 值，圆角矩形需要具体半径。但 Qoder只需几个关键字就能理解审美意图，自主完成配色和布局。这背后是 AI 对人类审美和文化背景的理解。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种能力对独立开发者尤其有价值。对于那些前端精确性要求不高的产品，即使不需要专业美术师，也能做出还不错的 UI。它大幅降低了从想法到实现的门槛。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI 能理解\"模糊\"意味着我们正在脱离\"编程语言编码\"的时代，更重要的是——AI 真的更像\"人\"了。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从简单的小游戏，到商业级的复杂系统，最后到能够理解\"模糊\"审美——Vibe Coding 展现出的能力边界远超想象。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "3.4 Vibe Coding 的边界",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Vibe Coding 最大的问题在于，它无法保证代码绝对正确，也无法保证自生成的测试程序能充分检验代码。让 AI 自己写代码再自己测，就像是\"监守自盗\"——它很难发现自己的逻辑漏洞。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "根源在于 AI 的思维惯性。当 AI 按某种逻辑编写代码时，生成的测试用例会延续同样的思路。有问题的代码通过了有问题的测试，形成一个恶性循环。这些 Bug 可能在并发场景、边界情况、异常流程或长时间运行下才会暴露。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就引出了一个重要的结论：Vibe Coding 改变了编程方式，但没有降低对开发者的要求。能力要求从\"精通语法\"转向了\"理解架构\"，从\"编写代码\"转向了\"表达意图\"和\"质量把关\"。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心工作变成了这样几项：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用自然语言清晰表达需求和意图：需要对业务有深入的理解",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用自然语言清晰表达需求和意图",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "理解和把控项目的整体架构：需要技术视野和经验积累",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解和把控项目的整体架构",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "审核 AI 生成的代码是否符合预期：需要代码阅读能力和逻辑判断",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "审核 AI 生成的代码是否符合预期",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "设计和执行独立的测试：需要从不同角度思考问题",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "设计和执行独立的测试",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "编程的门槛从\"写代码\"降低到了\"理解架构\"，但对系统思维、业务理解和质量意识的要求反而更高了。不能盲目信任 AI 生成的任何东西——AI 是助手，最终的质量把关仍然需要人来完成。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "记住，以目前 AI 的发展程度，它是不值得完全信任的。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.5 Spec-Coding：Vibe-Coding的进化",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "随着项目规模的扩大，纯粹的 Vibe Coding 开始遇到一些挑战：需求更复杂、团队协作更重要、代码质量要求更高。这时候，一种更加系统化的方式应运而生——Spec-Coding（Specification-Driven Coding，规格驱动编程）。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "h3",
+      "text": "什么是Spec-Coding",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Spec-Coding 是 Vibe Coding 在大型项目中的进化形态。核心思想是：先用自然语言撰写详细的设计文档（Specification），然后让 AI 基于这些文档生成代码。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个过程可以简化为：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "需求 → AI协助生成设计文档 → AI基于文档生成代码 → 人工审核\n\n1",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "与传统的 Vibe Coding 相比，Spec-Coding 增加了一个关键中间层：设计文档。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "为什么需要Spec-Coding",
+      "page": 8,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "当项目达到一定规模后，纯 Vibe Coding 会遇到几个问题：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "上下文丢失：在多轮对话中，AI 可能\"忘记\"之前的决策，导致前后不一致",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "上下文丢失",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "团队协作困难：不同开发者与AI的对话是分散的，缺乏统一的技术规范",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "团队协作困难",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "质量难以把控：没有明确的设计文档，代码审查缺少参照标准",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "质量难以把控",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "迭代维护成本高：当需要修改时，需要重新\"教\"AI 理解整个项目",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "迭代维护成本高",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Spec-Coding 通过设计文档解决了这些问题。文档同时充当AI的记忆、团队的契约、审核的标准和维护的基础。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h3",
+      "text": "实践案例：游戏数值平衡工具",
+      "page": 9,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "以一个实际游戏案例来说明。在 RPG 游戏中，数值平衡需要不断调整技能的伤害值、冷却时间等参数。首先用 Vibe Coding 编写数值平衡的设计文档：",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "然后告诉 Qoder：\"基于我的设计文档，帮我实现一个技能平衡评估工具。\"最终产出了既能读取技能数据、又能评估强度并给出优化建议的工具。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键价值在于三点：文档保证了一致性（所有计算逻辑基于同一份设计文档）；修改非常方便（更新文档后让AI重新生成）；知识可复用（文档可用于其他游戏项目）。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h3",
+      "text": "Spec-Coding的价值",
+      "page": 9,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Spec-Coding最有价值的地方在于解决了程序员一个根深蒂固的矛盾：都知道文档重要，但就是从来不写。现在文档是生成代码的必经之路，这个矛盾自然就不存在了。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "h3",
+      "text": "从Vibe到Spec",
+      "page": 9,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Spec-Coding 并不是用来取代 Vibe-Coding 的。事实上，他们经常被混合使用。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "选择 Vibe Coding 还是 Spec-Coding，取决于项目特点：Vibe Coding 适合快速原型和个人项目，需求变化快、频繁迭代；Spec-Coding 适合中大型商业项目，多人协作需要统一规范，长期维护质量要求高。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际上，大多数项目会混合使用两种方式：初期用 Vibe Coding 快速验证想法，确定方向后转为 Spec-Coding 规范开发。我给这种混合方式起了个名字：Vibe-Spec-Coding。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "从 Vibe Coding 到 Spec-Coding，AI 辅助编程正在走向成熟。",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "3.6 去用，去写，去实践",
+      "page": 10,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "本书不会花太多篇幅教你如何使用 Qoder、Cursor 等 Vibe Coding 工具。既然是自然语言编程工具，如果使用时还需要学习删减记忆、Quest 模式、Plan 模式，本身就说明工具还不够好。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "paragraph",
+      "text": "好的工具无需过多技巧，把它当成半个人类，和它聊天就行。大量的去使用、去生产价值远比纸上谈兵更具性价比。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "h2",
+      "text": "3.7 下一节预告",
+      "page": 10,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这一节以 Vibe Coding 为引子，展示了AI辅助编程的能力和局限。下一节回到本书第二章，从 API 调用和参数配置开始，一步步走进大模型开发的实战世界。",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 11,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/9a070d4aeb14380d7a5bdeb11028d63e.png",
+      "width": 1046,
+      "height": 1756,
+      "page": 12
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/b773fdc32d7e2cae511c4c9d342bdca7.png",
+      "width": 1660,
+      "height": 1161,
+      "page": 13
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/c189e2290559d99579dec4b6695ba203.png",
+      "width": 1044,
+      "height": 1650,
+      "page": 14
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/1ca0781afa3169357eef03cc63fe19ad.png",
+      "width": 3352,
+      "height": 1824,
+      "page": 15
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/647943f12393284ea1312144c0e16334.png",
+      "width": 3360,
+      "height": 1836,
+      "page": 15
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/ccc1aac9f26b7272e217a5953d8df2a3.png",
+      "width": 3314,
+      "height": 1832,
+      "page": 16
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/b3e78e15b58076e4cf69dc6564df5fbe.png",
+      "width": 3278,
+      "height": 1896,
+      "page": 16
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/fba8bed5163d4d9fa451611608a06594.png",
+      "width": 3278,
+      "height": 1834,
+      "page": 17
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/f65b2e5309d2e8ff4822e0b8c18bd31c.png",
+      "width": 2352,
+      "height": 1772,
+      "page": 17
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/4b46e907c60b9f21dc6870ea3642788f.png",
+      "width": 2230,
+      "height": 1448,
+      "page": 18
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/9d957ab0e1d37a7a8e22fdd7fdf2f20d.png",
+      "width": 1498,
+      "height": 1486,
+      "page": 19
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/964a399326a1f625ee5acd2fe0416fa4.png",
+      "width": 2878,
+      "height": 1898,
+      "page": 20
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/880dc463cc47149af514ef8b6dcc8ab7.png",
+      "width": 2936,
+      "height": 1734,
+      "page": 20
+    }
+  ],
+  "accounting": {
+    "source_chars": 7395,
+    "represented_chars": 7180,
+    "removed_chars": 215,
+    "tables": 1,
+    "images": 13,
+    "image_occurrences": 15,
+    "removals": {
+      "export_metadata": 161,
+      "repeated_title": 54
+    }
+  },
+  "videos": [
+    {
+      "title": "Vibe / Spec Coding 配套演示",
+      "path": "sources/video/video-01.mp4",
+      "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/001-序与前言/004-图文-1-5-Vibe-Spec-Coding，用自然语言来编程.assets/S.mp4",
+      "sha256": "3b0725e74b5cd5f675700bd8bbcfe93daa0e85d4f979b12231cb6ca5b76ade1d",
+      "target": "lesson-004"
+    }
+  ],
+  "order": 5,
+  "headings": [
+    {
+      "title": "3.1 什么是 Vibe Coding",
+      "id": "section-6",
+      "level": 2
+    },
+    {
+      "title": "为什么现在才实现",
+      "id": "section-36",
+      "level": 3
+    },
+    {
+      "title": "3.2 下载和安装Qoder",
+      "id": "section-51",
+      "level": 2
+    },
+    {
+      "title": "3.3 全自动部署项目（以excalidraw为例）",
+      "id": "section-60",
+      "level": 2
+    },
+    {
+      "title": "简单的小项目",
+      "id": "section-70",
+      "level": 3
+    },
+    {
+      "title": "商业级复杂系统",
+      "id": "section-76",
+      "level": 3
+    },
+    {
+      "title": "理解模糊的审美",
+      "id": "section-84",
+      "level": 3
+    },
+    {
+      "title": "3.4 Vibe Coding 的边界",
+      "id": "section-96",
+      "level": 2
+    },
+    {
+      "title": "3.5 Spec-Coding：Vibe-Coding的进化",
+      "id": "section-111",
+      "level": 2
+    },
+    {
+      "title": "什么是Spec-Coding",
+      "id": "section-113",
+      "level": 3
+    },
+    {
+      "title": "为什么需要Spec-Coding",
+      "id": "section-118",
+      "level": 3
+    },
+    {
+      "title": "实践案例：游戏数值平衡工具",
+      "id": "section-129",
+      "level": 3
+    },
+    {
+      "title": "Spec-Coding的价值",
+      "id": "section-133",
+      "level": 3
+    },
+    {
+      "title": "从Vibe到Spec",
+      "id": "section-135",
+      "level": 3
+    },
+    {
+      "title": "3.6 去用，去写，去实践",
+      "id": "section-140",
+      "level": 2
+    },
+    {
+      "title": "3.7 下一节预告",
+      "id": "section-143",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-145",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "这是全书的前言，从 Vibe Coding 的视角切入，介绍 AI 如何改变编程方式——从写代码到表达意图。同时引出 Spec-Coding 作为大型项目的进化形态。 读完这一节，你会理解为什么这本书的核心理念是\"从理论到实践\"，以及为什么底层原理比表层操作更重要。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "大学刚毕业时，有人告诉我 AI 能让程序员一行代码不写就完成复杂项目，我会认为这是天方夜谭。即使到了 2023 年，当 ChatGPT 和 DeepSeek 展现出惊人能力时，依然怀疑\"AI 能独立完成复杂项目\"。这种怀疑源于程序员的朴素认知：复杂项目涉及复杂的逻辑和环境问题，任何宣称\"AI 现在能自己做项目了\"的言论，都像是哗众取宠。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "现实中，AI 确实能快速生成简单项目，但面对商业化的真实项目，表现往往不如程序员自己动手。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "过去每隔几年就有技术声称能\"一行代码不写\"完成程序，但都要加上定语：逻辑不太复杂、只能限定在特定行业……这些限制让实用性大打折扣。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "真正的工程师不会把自己系统的命运交给一个黑盒。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "然而 2025 年，一种全新的编程方式改变了这种认知——Vibe Coding。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "3.1 什么是 Vibe Coding"
+    },
+    {
+      "anchor": "section-6",
+      "text": "Vibe Coding（直译\"感觉编程\"或\"氛围编程\"），由前特斯拉 AI 总监、OpenAI 联合创始人安德烈·卡帕西（Andrej Karpathy）在 2025 年 2 月提出。它有两个核心特征："
+    },
+    {
+      "anchor": "section-6",
+      "text": "用自然语言编程。无需学习 C、Python、Java，直接用中文或英文与 AI 对话，描述需求，AI 就会生成代码。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "为什么叫\"氛围（感觉）\"？因为描述可以是模糊的、主观的、带情感色彩的。比如\"配色不要太俗\"、“界面要简洁大气”——这些\"感觉\"而非精确指令，AI 都能理解并转化为代码。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "看一张来自网络的”梗图“："
+    },
+    {
+      "anchor": "section-6",
+      "text": "这里没有 Python、C、Java、C++，取而代之的是人类的自然语言。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "这个调侃背后藏着一个深刻转变：编程的门槛正在从\"精通语法\"向\"表达意图\"迁移。要理解这个转变，需要先回到传统编程的核心逻辑。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "传统编程的核心是用精确语法告诉计算机\"怎么做\"（How）。程序员必须掌握编程语言的每个细节——变量声明、循环结构、条件判断、函数调用……然后用这些语法元素构建完整逻辑。这个过程就像用\"特殊语言\"与计算机对话，规则严格，容不得半点模糊。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "举个简单的例子，计算列表中所有数字的总和："
+    },
+    {
+      "anchor": "section-6",
+      "text": "# 错误示例：语法错误\nsum = 0\nfor num in [1, 2, 3, 4, 5] # 忘记冒号会导致 SyntaxError\n    sum += num\nprint(sum)"
+    },
+    {
+      "anchor": "section-6",
+      "text": "即使只是少一个冒号，程序就无法运行。这种对精确性的要求构成了传统编程的高门槛。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "Vibe Coding 则完全不同。核心是意图表达而非精确控制。无需告诉计算机每一步怎么做，而是用自然语言描述\"想要什么\"（What）和\"期望的感觉\"（Vibe）。AI 理解意图和氛围感，生成符合预期的代码。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "传统编程方式"
+    },
+    {
+      "anchor": "section-6",
+      "text": "for user in users:\n    if user.age >= 18 and user.status == 'active':\n        send_notification(user.email, template='welcome')\n        log_action('notification_sent', user.id)"
+    },
+    {
+      "anchor": "section-6",
+      "text": "传统编程要求精确定义每个步骤：遍历用户、检查条件、发送通知、记录日志。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "Vibe Coding 方式 \"给所有成年活跃用户发送欢迎通知，记得记录日志\""
+    },
+    {
+      "anchor": "section-6",
+      "text": "Vibe Coding 方式"
+    },
+    {
+      "anchor": "section-6",
+      "text": "AI 会理解这句话背后的意图："
+    },
+    {
+      "anchor": "section-6",
+      "text": "“成年活跃用户” → 需要过滤条件"
+    },
+    {
+      "anchor": "section-6",
+      "text": "“发送欢迎通知” → 调用通知系统"
+    },
+    {
+      "anchor": "section-6",
+      "text": "“记得记录日志” → 添加日志记录"
+    },
+    {
+      "anchor": "section-6",
+      "text": "然后生成相应的代码实现。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "更进一步，当你说：“这个通知的语气要友好一些，不要太正式\"时，AI 会理解这种\"感觉”（Vibe），调整通知的措辞风格，而不是要求精确指定每一个单词。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "这里从一张对比图可以直观感受两种方式的差别："
+    },
+    {
+      "anchor": "section-6",
+      "text": "维度 | 传统编程 | Vibe Coding\n输入方式 | 编程语言语法 | 自然语言对话\n关注点 | 如何实现（How） | 想要什么（What + Vibe）\n交互模式 | 单向指令 | 迭代对话\n学习门槛 | 必须精通语法 | 需要理解架构概念\n开发重点 | 编写代码 | 表达意图\n典型指令 | for(int i=0; i<10; i++) | “给活跃用户发通知，语气要友好”\n工作流程 | 设计 → 编码 → 调试 | 描述 → 对话 → 迭代"
+    },
+    {
+      "anchor": "section-6",
+      "text": "这个转变看似简单，实则代表了编程范式的根本性革新。传统编程中，开发者是\"翻译者\"，需要把想法翻译成计算机能理解的代码（C、Python、Java 等）。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "而在 Vibe Coding 中，AI 承担了\"翻译者\"角色，开发者只需清晰表达意图和期望的\"感觉\"。正如Andrej Karpathy 所说："
+    },
+    {
+      "anchor": "section-6",
+      "text": "“这是一种完全屈服于感觉，甚至忘记代码本身存在的编程状态“。\n\n1"
+    },
+    {
+      "anchor": "section-6",
+      "text": "开发者不再被困在语法规则中，而是专注于表达想要什么、期望什么样的效果。"
+    },
+    {
+      "anchor": "section-6",
+      "text": "某种程度上，开发者是在用中文、英文同 AI 聊天，并没有写代码，确实如同忘却了代码的存在。我现在甚至字都不想打，在环境允许时，直接使用 Wispr Flow（一款 Mac 上的语音转文字软件）同 AI 聊天开发项目。这在过去不敢想。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "为什么现在才实现"
+    },
+    {
+      "anchor": "section-36",
+      "text": "为什么这种编程方式现在才成为可能？要回答这个问题，需要理解编程语言存在的根本原因：计算机听不懂人类的自然语言。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "计算机擅长处理精确指令，但对人类语言中的模糊性、歧义性、隐含信息却束手无策。一句\"配色不要太俗\"对人类来说意思很明确，但对传统计算机而言完全无法解析——什么是\"俗\"？什么样的配色算\"不俗\"？这些都需要大量上下文和审美理解才能回答。大模型的出现改变了这一切。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "现在的大模型不仅能理解人类的自然语言，还能捕捉语言中微小的措辞差异，推理出隐含意图。它们可以理解\"配色不要太俗\"意味着要避免过于鲜艳、廉价感的色彩组合，要选择优雅、平衡的配色方案。这种理解能力正是 Vibe Coding 的技术基础。更重要的是，大模型具备强大的推理能力，可以进行\"Step By Step\"的逻辑推导，从高层次意图推导出具体实现方案。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "这让它们不仅能理解\"要什么\"，还能推理出\"怎么做\"。比如，当你说\"实现一个用户登录功能，注意安全问题\"时，大模型会推理："
+    },
+    {
+      "anchor": "section-36",
+      "text": "登录需要验证用户身份 → 需要用户名和密码输入框"
+    },
+    {
+      "anchor": "section-36",
+      "text": "密码不能明文传输 → 需要加密处理"
+    },
+    {
+      "anchor": "section-36",
+      "text": "要防止暴力破解 → 需要限制登录次数"
+    },
+    {
+      "anchor": "section-36",
+      "text": "从一个简单的意图，推导出完整的技术方案，这正是传统编程方式无法做到的。当大模型遇到不确定的选择时，甚至会主动询问，比如："
+    },
+    {
+      "anchor": "section-36",
+      "text": "使用哪种数据库用来存储用户的身份信息？\n\n1"
+    },
+    {
+      "anchor": "section-36",
+      "text": "Vibe Coding 不同于过去那些\"搭积木\"式的无代码工具。传统无代码平台本质是让用户在预定义组件中选择和组合：平台预先定义了很多的功能组件。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "这样的特点让无代码或者低代码工具的能力边界固定，无法理解真实意图。而 Vibe Coding 中的 AI 可以真正理解想要什么，然后自主生成实现方案——这是从\"预定义规则的组合\"到\"理解意图后的创造\"的质变。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "当前的 Vibe Coding 还需要开发者具备一定编程知识，通过多轮对话来引导和验证 AI 的实现过程。但这已是巨大进步。Vibe Coding 将编程从\"写代码\"推进到\"表达意图\"，从\"精确语法\"推进到\"模糊感觉\"。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "虽然 Vibe Coding 目前还有很多缺点，也有很多严谨的程序员认为Vibe Coding写的代码是豆腐渣。但我认为，它一定是编程的未来。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "关于这一点，我们不在这里争论，每个人会有自己的观点。但对于读者，最好的方式就是亲自去尝试用一下。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "3.2 下载和安装Qoder"
+    },
+    {
+      "anchor": "section-51",
+      "text": "在展开具体能力之前，需要先说明本书的演示背景。Vibe Coding 作为一种编程范式，不依赖于特定工具——无论是 Qoder、Claude Code 还是Codex，只要支持自然语言交互和代码生成，都可以实践Vibe Coding。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "目前业界公认编码能力第一梯队的还是Claude Code。国产AI编程助手主要是Qoder和TRAE。它们也有它们独特的优势，比如对中文支持更好，速度快，有免费的模型使用。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "为了保证每个同学都能快速落地书里的代码，所以本书选择Qoder作为演示工具。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "建议同学们安装Qoder与本书保持同步，以获得更好的阅读体验。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "点击下载、注册Qoder"
+    },
+    {
+      "anchor": "section-51",
+      "text": "读者如果有自己的偏好完全可以改用上述任意的工具，这并不影响阅读本书。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "本章要展示的是 Vibe Coding 这种编程方式能做到什么，以及它目前的局限在哪里。至于 Qoder 背后的技术思想，阅读完本书后自然会有清晰的认识。"
+    },
+    {
+      "anchor": "section-51",
+      "text": "对于 Qoder，它提供了可视化的开发工具，支持 Mac、Windows 与 Linux。考虑到很多高级开发者可能不希望离开熟悉的开发工具，Qoder 还提供了命令行工具（CLI）。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "3.3 全自动部署项目（以excalidraw为例）"
+    },
+    {
+      "anchor": "section-60",
+      "text": "每个程序员在部署项目时都很头疼。即使一个简单的项目，也需要安装一堆依赖和环境——要么手工安装，要么写脚本。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "初学者在 GitHub 上看到好的项目想体验一下，往往因为环境要求苛刻而放弃。但有了 Qoder 等 AI 工具，可以几乎全自动地跑起来一个项目——甚至不需要看安装说明，Qoder 也能分析代码并代为运行起来。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "我们以在线画图工具 excalidraw（GitHub下载）为例。这是一个非常火爆的开源项目（GitHub 113K Stars），提供免费基础版和收费 Pro 版。作为开源项目，可以在自己的计算机上部署一个 Pro 版。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "这个项目使用了 React、TypeScript 等技术，对资深前端程序员来说跑起来不是问题（也要阅读安装说明花费点时间），但初学者往往需要折腾很久。而使用 Qoder，只需以下几步："
+    },
+    {
+      "anchor": "section-60",
+      "text": "步骤1 下载源码"
+    },
+    {
+      "anchor": "section-60",
+      "text": "从 GitHub 下载 excalidraw 源码到本地目录。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "步骤2 告诉 Qoder 你的需求 用Qoder打开这个项目，并自然语言告诉Qoder："
+    },
+    {
+      "anchor": "section-60",
+      "text": "帮我把这个项目跑起来\n\n1"
+    },
+    {
+      "anchor": "section-60",
+      "text": "就这么简单。不需要查看 README，不需要手动安装 Node.js、npm、依赖包，也不需要配置环境变量。"
+    },
+    {
+      "anchor": "section-70",
+      "text": "简单的小项目"
+    },
+    {
+      "anchor": "section-70",
+      "text": "对于 Qoder，可以使用最简单、朴素、甚至是有错别字或者不连贯的人类自然语言完成各种代码任务，比如告诉Qoder："
+    },
+    {
+      "anchor": "section-70",
+      "text": "给我写一个羊了个羊，使用HTML+CSS。\n- 设计为闯关模式，且关卡难度逐步提高\n- 元素之间需要相互覆盖而不是平铺\n- 赛博朋克未来风格\n- 配色为紫色系"
+    },
+    {
+      "anchor": "section-70",
+      "text": "游戏截图："
+    },
+    {
+      "anchor": "section-70",
+      "text": "当然这种 Demo 级别的小游戏没有很强的说服力，我们继续用更复杂的项目来展示 Vibe Coding 的能力。"
+    },
+    {
+      "anchor": "section-70",
+      "text": "如果从来没有接触过 Vibe-Coding，建议现在就去下载 Qoder，立刻把想法告诉它，体验自然语言编程。它没有任何门槛，不需要前置技术。"
+    },
+    {
+      "anchor": "section-76",
+      "text": "商业级复杂系统"
+    },
+    {
+      "anchor": "section-76",
+      "text": "下图来自我Vibe-Coding的多智能体数字孪生高校智能教育平台："
+    },
+    {
+      "anchor": "section-76",
+      "text": "这是一个高度复杂的多智能体在线教育平台，核心功能包括："
+    },
+    {
+      "anchor": "section-76",
+      "text": "AI自动根据薄弱知识点出题"
+    },
+    {
+      "anchor": "section-76",
+      "text": "自动批改与数据跟踪"
+    },
+    {
+      "anchor": "section-76",
+      "text": "数字化教材"
+    },
+    {
+      "anchor": "section-76",
+      "text": "全息知识图谱"
+    },
+    {
+      "anchor": "section-76",
+      "text": "这些功能几乎不需要自己写一行代码（项目大部分手工代码主要是测试代码）。更关键的是，这么复杂的系统，使用 Vibe Coding 一周就可以落地绝大多数功能。即使没有专业设计师，现在 Vibe-Coding也可以做出漂亮的 UI。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "理解模糊的审美"
+    },
+    {
+      "anchor": "section-84",
+      "text": "我在使用 Qoder 的过程中，发现它是具有一定审美的，这是让我非常惊叹的。因为\"审美\"是非常抽象和模糊的概念。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "下面这张图片来自于我用Qoder开发的一个文字RPG游戏项目。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "回顾整个调整 UI 的过程，我大致用到的就那么几个关键字："
+    },
+    {
+      "anchor": "section-84",
+      "text": "复古"
+    },
+    {
+      "anchor": "section-84",
+      "text": "武侠"
+    },
+    {
+      "anchor": "section-84",
+      "text": "像素"
+    },
+    {
+      "anchor": "section-84",
+      "text": "宋代美学"
+    },
+    {
+      "anchor": "section-84",
+      "text": "传统编程要求精确的数值和明确的步骤——紫色按钮需要 RGB 值，圆角矩形需要具体半径。但 Qoder只需几个关键字就能理解审美意图，自主完成配色和布局。这背后是 AI 对人类审美和文化背景的理解。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "这种能力对独立开发者尤其有价值。对于那些前端精确性要求不高的产品，即使不需要专业美术师，也能做出还不错的 UI。它大幅降低了从想法到实现的门槛。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "AI 能理解\"模糊\"意味着我们正在脱离\"编程语言编码\"的时代，更重要的是——AI 真的更像\"人\"了。"
+    },
+    {
+      "anchor": "section-84",
+      "text": "从简单的小游戏，到商业级的复杂系统，最后到能够理解\"模糊\"审美——Vibe Coding 展现出的能力边界远超想象。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "3.4 Vibe Coding 的边界"
+    },
+    {
+      "anchor": "section-96",
+      "text": "Vibe Coding 最大的问题在于，它无法保证代码绝对正确，也无法保证自生成的测试程序能充分检验代码。让 AI 自己写代码再自己测，就像是\"监守自盗\"——它很难发现自己的逻辑漏洞。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "根源在于 AI 的思维惯性。当 AI 按某种逻辑编写代码时，生成的测试用例会延续同样的思路。有问题的代码通过了有问题的测试，形成一个恶性循环。这些 Bug 可能在并发场景、边界情况、异常流程或长时间运行下才会暴露。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "这就引出了一个重要的结论：Vibe Coding 改变了编程方式，但没有降低对开发者的要求。能力要求从\"精通语法\"转向了\"理解架构\"，从\"编写代码\"转向了\"表达意图\"和\"质量把关\"。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "核心工作变成了这样几项："
+    },
+    {
+      "anchor": "section-96",
+      "text": "用自然语言清晰表达需求和意图：需要对业务有深入的理解"
+    },
+    {
+      "anchor": "section-96",
+      "text": "用自然语言清晰表达需求和意图"
+    },
+    {
+      "anchor": "section-96",
+      "text": "理解和把控项目的整体架构：需要技术视野和经验积累"
+    },
+    {
+      "anchor": "section-96",
+      "text": "理解和把控项目的整体架构"
+    },
+    {
+      "anchor": "section-96",
+      "text": "审核 AI 生成的代码是否符合预期：需要代码阅读能力和逻辑判断"
+    },
+    {
+      "anchor": "section-96",
+      "text": "审核 AI 生成的代码是否符合预期"
+    },
+    {
+      "anchor": "section-96",
+      "text": "设计和执行独立的测试：需要从不同角度思考问题"
+    },
+    {
+      "anchor": "section-96",
+      "text": "设计和执行独立的测试"
+    },
+    {
+      "anchor": "section-96",
+      "text": "编程的门槛从\"写代码\"降低到了\"理解架构\"，但对系统思维、业务理解和质量意识的要求反而更高了。不能盲目信任 AI 生成的任何东西——AI 是助手，最终的质量把关仍然需要人来完成。"
+    },
+    {
+      "anchor": "section-96",
+      "text": "记住，以目前 AI 的发展程度，它是不值得完全信任的。"
+    },
+    {
+      "anchor": "section-111",
+      "text": "3.5 Spec-Coding：Vibe-Coding的进化"
+    },
+    {
+      "anchor": "section-111",
+      "text": "随着项目规模的扩大，纯粹的 Vibe Coding 开始遇到一些挑战：需求更复杂、团队协作更重要、代码质量要求更高。这时候，一种更加系统化的方式应运而生——Spec-Coding（Specification-Driven Coding，规格驱动编程）。"
+    },
+    {
+      "anchor": "section-113",
+      "text": "什么是Spec-Coding"
+    },
+    {
+      "anchor": "section-113",
+      "text": "Spec-Coding 是 Vibe Coding 在大型项目中的进化形态。核心思想是：先用自然语言撰写详细的设计文档（Specification），然后让 AI 基于这些文档生成代码。"
+    },
+    {
+      "anchor": "section-113",
+      "text": "这个过程可以简化为："
+    },
+    {
+      "anchor": "section-113",
+      "text": "需求 → AI协助生成设计文档 → AI基于文档生成代码 → 人工审核\n\n1"
+    },
+    {
+      "anchor": "section-113",
+      "text": "与传统的 Vibe Coding 相比，Spec-Coding 增加了一个关键中间层：设计文档。"
+    },
+    {
+      "anchor": "section-118",
+      "text": "为什么需要Spec-Coding"
+    },
+    {
+      "anchor": "section-118",
+      "text": "当项目达到一定规模后，纯 Vibe Coding 会遇到几个问题："
+    },
+    {
+      "anchor": "section-118",
+      "text": "上下文丢失：在多轮对话中，AI 可能\"忘记\"之前的决策，导致前后不一致"
+    },
+    {
+      "anchor": "section-118",
+      "text": "上下文丢失"
+    },
+    {
+      "anchor": "section-118",
+      "text": "团队协作困难：不同开发者与AI的对话是分散的，缺乏统一的技术规范"
+    },
+    {
+      "anchor": "section-118",
+      "text": "团队协作困难"
+    },
+    {
+      "anchor": "section-118",
+      "text": "质量难以把控：没有明确的设计文档，代码审查缺少参照标准"
+    },
+    {
+      "anchor": "section-118",
+      "text": "质量难以把控"
+    },
+    {
+      "anchor": "section-118",
+      "text": "迭代维护成本高：当需要修改时，需要重新\"教\"AI 理解整个项目"
+    },
+    {
+      "anchor": "section-118",
+      "text": "迭代维护成本高"
+    },
+    {
+      "anchor": "section-118",
+      "text": "Spec-Coding 通过设计文档解决了这些问题。文档同时充当AI的记忆、团队的契约、审核的标准和维护的基础。"
+    },
+    {
+      "anchor": "section-129",
+      "text": "实践案例：游戏数值平衡工具"
+    },
+    {
+      "anchor": "section-129",
+      "text": "以一个实际游戏案例来说明。在 RPG 游戏中，数值平衡需要不断调整技能的伤害值、冷却时间等参数。首先用 Vibe Coding 编写数值平衡的设计文档："
+    },
+    {
+      "anchor": "section-129",
+      "text": "然后告诉 Qoder：\"基于我的设计文档，帮我实现一个技能平衡评估工具。\"最终产出了既能读取技能数据、又能评估强度并给出优化建议的工具。"
+    },
+    {
+      "anchor": "section-129",
+      "text": "关键价值在于三点：文档保证了一致性（所有计算逻辑基于同一份设计文档）；修改非常方便（更新文档后让AI重新生成）；知识可复用（文档可用于其他游戏项目）。"
+    },
+    {
+      "anchor": "section-133",
+      "text": "Spec-Coding的价值"
+    },
+    {
+      "anchor": "section-133",
+      "text": "Spec-Coding最有价值的地方在于解决了程序员一个根深蒂固的矛盾：都知道文档重要，但就是从来不写。现在文档是生成代码的必经之路，这个矛盾自然就不存在了。"
+    },
+    {
+      "anchor": "section-135",
+      "text": "从Vibe到Spec"
+    },
+    {
+      "anchor": "section-135",
+      "text": "Spec-Coding 并不是用来取代 Vibe-Coding 的。事实上，他们经常被混合使用。"
+    },
+    {
+      "anchor": "section-135",
+      "text": "选择 Vibe Coding 还是 Spec-Coding，取决于项目特点：Vibe Coding 适合快速原型和个人项目，需求变化快、频繁迭代；Spec-Coding 适合中大型商业项目，多人协作需要统一规范，长期维护质量要求高。"
+    },
+    {
+      "anchor": "section-135",
+      "text": "实际上，大多数项目会混合使用两种方式：初期用 Vibe Coding 快速验证想法，确定方向后转为 Spec-Coding 规范开发。我给这种混合方式起了个名字：Vibe-Spec-Coding。"
+    },
+    {
+      "anchor": "section-135",
+      "text": "从 Vibe Coding 到 Spec-Coding，AI 辅助编程正在走向成熟。"
+    },
+    {
+      "anchor": "section-140",
+      "text": "3.6 去用，去写，去实践"
+    },
+    {
+      "anchor": "section-140",
+      "text": "本书不会花太多篇幅教你如何使用 Qoder、Cursor 等 Vibe Coding 工具。既然是自然语言编程工具，如果使用时还需要学习删减记忆、Quest 模式、Plan 模式，本身就说明工具还不够好。"
+    },
+    {
+      "anchor": "section-140",
+      "text": "好的工具无需过多技巧，把它当成半个人类，和它聊天就行。大量的去使用、去生产价值远比纸上谈兵更具性价比。"
+    },
+    {
+      "anchor": "section-143",
+      "text": "3.7 下一节预告"
+    },
+    {
+      "anchor": "section-143",
+      "text": "这一节以 Vibe Coding 为引子，展示了AI辅助编程的能力和局限。下一节回到本书第二章，从 API 调用和参数配置开始，一步步走进大模型开发的实战世界。"
+    },
+    {
+      "anchor": "section-145",
+      "text": "图片"
+    }
+  ]
+}

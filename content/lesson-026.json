@@ -1,0 +1,893 @@
+{
+  "id": "lesson-026",
+  "title": "语言模型（四）-大语言模型与对话系统",
+  "code": "1-7",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "语言模型",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/004-语言模型/026-图文-1-7-语言模型（四）-大语言模型与对话系统.pdf",
+  "sha256": "3ebf122e859b8a18f8dff90747116fb6627d531d9f8731707978e61cfc69714f",
+  "pdf": "sources/pdf/lesson-026.pdf",
+  "pages": 6,
+  "source_url": "https://class.imooc.com/lesson/5255#mid=104880",
+  "minutes": 8,
+  "excerpt": "上一节回顾了语言模型的三代演进史。既然Transformer这么强大，模型需要多大才够用？为什么要搞得那么大？本节将探讨\"大\"语言模型的规模革命，以及语言模型与对话系统的本质区别。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节回顾了语言模型的三代演进史。既然Transformer这么强大，模型需要多大才够用？为什么要搞得那么大？本节将探讨\"大\"语言模型的规模革命，以及语言模型与对话系统的本质区别。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "11.1 \"大\"语言模型",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "经常听到\"大语言模型\"（Large Language Model, LLM）这个词。这个\"大\"，到底有多大？为什么要这么大？",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "参数规模的爆炸式增长",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一组数字记录了AI领域一场真正的军备竞赛：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "GPT系列的参数，从2018年的GPT-1（1.17亿参数）到GPT-3（1750亿参数），仅仅两年时间，参数量就增长了约1500倍。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "到2025-2026年，主流大模型已经进入万亿级时代：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "GPT-4o (OpenAI, 2024): ~1.8万亿 参数 GPT-5 (OpenAI, 2025): 约2万亿 参数 Google Gemini 3 (2025): 1万亿 参数 Claude 4 (Anthropic, 2025): 约1.5万亿 参数",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "训练数据的海量堆积",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "GPT-2: 40GB文本 ≈ 80本百万字小说 GPT-3: 570GB文本 ≈ 1140本百万字小说 GPT-4/5: 未公开(估计更大规模)",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么需要这么多数据？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言模型是通过\"见识\"来学习的。想象要学一门外语，如果只读过10篇文章，能掌握多少？但读过10万篇文章，语感会完全不同。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT\"读\"过的文本，比一个人一辈子能读的多出几万倍。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "\"大\"的哲学意义",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里有一个深刻的发现，也是过去十年AI研究最重要的洞察之一：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在语言模型领域，\"大力出奇迹\"是真实存在的。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不是线性的\"大一点好一点\"，而是规模达到某个临界点后，能力突然跃升。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这种现象被称为\"涌现能力\"，会在第8节详细讲解。那里会深入探讨Scaling Laws（缩放法则）——一个描述模型性能与规模之间数学关系的重要发现。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在只需要记住：“大\"不是虚荣，而是必需。没有这个\"大”，就没有ChatGPT的智能。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.2 大语言模型与小语言模型",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "\"大\"的标准是什么？多大才算大？目前行业内没有严格的官方划分，但有一个约定俗成的分界线。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "小语言模型（SLM - Small Language Model）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "参数量小于100亿（< 10B）。代表模型包括ChatGLM-6B、Mistral-7B、LLaMA-2-7B。这类模型轻量级，可以在个人电脑或手机上运行。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "中型语言模型",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "参数量在100亿到1000亿之间（10B - 100B）。代表模型有LLaMA-2-70B、Qwen-72B。需要多块GPU，但仍能本地部署。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "大语言模型（LLM）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "参数量大于1000亿（> 100B）。代表模型如GPT-3（175B）、GPT-4（估计万亿级）。需要巨型计算集群，通常只能通过云服务访问。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个区分很重要，因为它决定了能力边界、部署成本和应用场景。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "小模型适合特定领域任务，如文本分类、情感分析。大模型具备通用智能，能处理复杂的推理、创作任务。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "小模型几千元的个人电脑就能运行。大模型需要数百万甚至数千万的GPU集群。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "小模型适用于移动设备、边缘计算、隐私敏感场景。大模型适用于云服务、复杂任务、通用AI助手。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一个趣味的趋势：\"小而精\"的崛起",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "近年来，一个有意思的现象出现了。以前的思路是模型越大越好，现在的发现是小模型也可以很强。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "例如：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "Mistral-7B（仅70亿参数），能力接近GPT-3.5 ChatGLM-6B，能在个人电脑上运行，效果也不错",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这说明：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "\"大\"不是唯一的路",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "更好的训练方法、数据质量、模型架构同样重要",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "未来可能是\"大小共存\"：大模型做通用任务，小模型做专用任务",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对于现在的ChatGPT来说，它确实是一个\"大\"语言模型。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.3 语言模型与对话模型",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "需要澄清一个容易混淆的概念。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT不仅仅是一个语言模型，更是一个对话模型。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键区分",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可能听说过这些名字：GPT-3、GPT-4、GPT-3.5、ChatGPT……它们之间是什么关系？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "GPT-1/2/3/4/5（基础语言模型）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "GPT-1 (2018): 1.17亿参数 GPT-2 (2019): 15亿参数 GPT-3 (2020): 1750亿参数 GPT-3.5 (2022):未公开（GPT-3的优化版） GPT-4 (2023): 未公开 GPT-4o (2024): 未公开 GPT-5 (2025): 未公开",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些是技术名称，指的是基础语言模型。它们只经过预训练，能力是\"预测下一个词\"。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT（对话产品）ChatGPT 是产品名称，不是模型名称。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "quote",
+      "text": "ChatGPT = 基础模型 + 对话训练 例如： ChatGPT（早期）= GPT-3.5 + 对话训练 ChatGPT（后期）= GPT-4 + 对话训练 ChatGPT（最新）= GPT-4o/GPT-5 + 对话训练",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "使用ChatGPT时，用的不是纯GPT-4，而是经过对话训练的ChatGPT（基于GPT-4）。它会\"聊天\"而不是简单\"接龙\"，就是因为有额外的对话训练。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "纯粹的语言模型只会\"接龙\"，不会\"对话\"",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果直接用GPT-3（纯语言模型），问它：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“如何学习编程？”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它可能会这样\"接龙\"：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“如何学习编程？这个问题很多人问过。首先，你需要明确你的学习目标……”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "或者：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“如何学习编程？我也不知道。我从来没学过编程……”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么会这样？",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "纯语言模型的训练目标，只是\"预测下一个词\"。它在互联网文本中见过：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有文章以\"如何学习编程？这个问题……\"开头",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有论坛帖子是\"如何学习编程？我也不知道……\"",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "有网页列举\"如何学习编程？如何学习……\"",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它只是在\"接龙\"，把输入当成一篇文章的开头，继续写下去。它不知道你在问问题，也不知道要给出答案。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "而对话模型可以理解\"问答\"这个概念。如果是ChatGPT（对话模型）会这样回应：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "\"学习编程可以遵循以下步骤： 选择一门编程语言：对于初学者，推荐Python，因为语法简单易读。 学习基础语法：通过在线教程（如Codecademy、freeCodeCamp）掌握变量、循环、函数等基本概念。 动手实践：做小项目，比如计算器、待办事项列表等，把知识应用到实际中。 阅读他人代码：看GitHub上的优秀项目，学习他人的编程思路。 持续学习：编程是一个不断学习的过程，保持好奇心和练习习惯很重要。 你想从哪门语言开始？\"",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "它理解了你在提问，它知道要给出结构化的建议，它甚至会反问，引导对话继续。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个差别是怎么来的？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "答案是：预训练之后的额外训练步骤。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "纯语言模型 = 预训练",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "对话模型 = 预训练 + 监督微调（SFT）+ 强化学习对齐（RLHF）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "后面的章节会详细讲这个过程。现在只需要知道：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT的\"聊天\"能力，不是预训练自然产生的，而是通过额外的训练\"教\"会的。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这也是为什么ChatGPT比GPT-3好用得多，虽然底层的语言模型可能差不多。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "产品化的最后一公里，比技术突破更重要。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.4 ■ 学点英语",
+      "page": 6,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n大语言模型 | Large Language Model (LLM) | /lɑːdʒ ˈlæŋɡwɪdʒ ˈmɒdl/ | 参数量通常在数十亿到数千亿级别的语言模型\n涌现能力 | Emergent Abilities | /ɪˈmɜːdʒənt əˈbɪlətiz/ | 模型规模超过某个阈值后突然出现的、 小模型不具备的能力\n基础模型 | Foundation Model | /faʊnˈdeɪʃən ˈmɒdl/ | 经过大规模预训练的通用语言模型，可作为下游任务微调的基础\n监督微调 | Supervised Fine-Tuning (SFT) | / suːpərvaɪzd faɪn ˌ ˈtjuːnɪŋ/ | 使用人工标注的指令-回答数据训练模型理解和遵循人类指令\n人类反馈强化学习 | Reinforcement Learning from Human Feedback (RLHF) | / riːɪnˈfɔːrsmənt ˈlɜːnɪŋ ˌ frəm ˈhjuːmən ˈfiːdbæk/ | 通过人类偏好评分训练奖励模型，再用强化学习优化模型输出使其符合人类期望\n对话模型 | Dialogue Model | /ˈdaɪəlɒɡ ˈmɒdl/ | 经过指令微调和对齐训练的、能进行多轮对话的语言模型\n规模定律 | Scaling Laws | /ˈskeɪlɪŋ lɔːz/ | 描述模型性能随参数、数据、计算量增长而提升的经验规律",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "大语言模型",
+          "Large Language Model (LLM)",
+          "/lɑːdʒ ˈlæŋɡwɪdʒ ˈmɒdl/",
+          "参数量通常在数十亿到数千亿级别的语言模型"
+        ],
+        [
+          "涌现能力",
+          "Emergent Abilities",
+          "/ɪˈmɜːdʒənt əˈbɪlətiz/",
+          "模型规模超过某个阈值后突然出现的、 小模型不具备的能力"
+        ],
+        [
+          "基础模型",
+          "Foundation Model",
+          "/faʊnˈdeɪʃən ˈmɒdl/",
+          "经过大规模预训练的通用语言模型，可作为下游任务微调的基础"
+        ],
+        [
+          "监督微调",
+          "Supervised Fine-Tuning (SFT)",
+          "/ suːpərvaɪzd faɪn ˌ ˈtjuːnɪŋ/",
+          "使用人工标注的指令-回答数据训练模型理解和遵循人类指令"
+        ],
+        [
+          "人类反馈强化学习",
+          "Reinforcement Learning from Human Feedback (RLHF)",
+          "/ riːɪnˈfɔːrsmənt ˈlɜːnɪŋ ˌ frəm ˈhjuːmən ˈfiːdbæk/",
+          "通过人类偏好评分训练奖励模型，再用强化学习优化模型输出使其符合人类期望"
+        ],
+        [
+          "对话模型",
+          "Dialogue Model",
+          "/ˈdaɪəlɒɡ ˈmɒdl/",
+          "经过指令微调和对齐训练的、能进行多轮对话的语言模型"
+        ],
+        [
+          "规模定律",
+          "Scaling Laws",
+          "/ˈskeɪlɪŋ lɔːz/",
+          "描述模型性能随参数、数据、计算量增长而提升的经验规律"
+        ]
+      ],
+      "page": 6
+    }
+  ],
+  "accounting": {
+    "source_chars": 3582,
+    "represented_chars": 3395,
+    "removed_chars": 187,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 147,
+      "repeated_title": 40
+    }
+  },
+  "videos": [],
+  "order": 27,
+  "headings": [
+    {
+      "title": "11.1 \"大\"语言模型",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "11.2 大语言模型与小语言模型",
+      "id": "section-19",
+      "level": 2
+    },
+    {
+      "title": "11.3 语言模型与对话模型",
+      "id": "section-40",
+      "level": 2
+    },
+    {
+      "title": "11.4 ■ 学点英语",
+      "id": "section-75",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节回顾了语言模型的三代演进史。既然Transformer这么强大，模型需要多大才够用？为什么要搞得那么大？本节将探讨\"大\"语言模型的规模革命，以及语言模型与对话系统的本质区别。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "11.1 \"大\"语言模型"
+    },
+    {
+      "anchor": "section-1",
+      "text": "经常听到\"大语言模型\"（Large Language Model, LLM）这个词。这个\"大\"，到底有多大？为什么要这么大？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "参数规模的爆炸式增长"
+    },
+    {
+      "anchor": "section-1",
+      "text": "一组数字记录了AI领域一场真正的军备竞赛："
+    },
+    {
+      "anchor": "section-1",
+      "text": "GPT系列的参数，从2018年的GPT-1（1.17亿参数）到GPT-3（1750亿参数），仅仅两年时间，参数量就增长了约1500倍。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "到2025-2026年，主流大模型已经进入万亿级时代："
+    },
+    {
+      "anchor": "section-1",
+      "text": "GPT-4o (OpenAI, 2024): ~1.8万亿 参数 GPT-5 (OpenAI, 2025): 约2万亿 参数 Google Gemini 3 (2025): 1万亿 参数 Claude 4 (Anthropic, 2025): 约1.5万亿 参数"
+    },
+    {
+      "anchor": "section-1",
+      "text": "训练数据的海量堆积"
+    },
+    {
+      "anchor": "section-1",
+      "text": "GPT-2: 40GB文本 ≈ 80本百万字小说 GPT-3: 570GB文本 ≈ 1140本百万字小说 GPT-4/5: 未公开(估计更大规模)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "为什么需要这么多数据？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "语言模型是通过\"见识\"来学习的。想象要学一门外语，如果只读过10篇文章，能掌握多少？但读过10万篇文章，语感会完全不同。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "ChatGPT\"读\"过的文本，比一个人一辈子能读的多出几万倍。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "\"大\"的哲学意义"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这里有一个深刻的发现，也是过去十年AI研究最重要的洞察之一："
+    },
+    {
+      "anchor": "section-1",
+      "text": "在语言模型领域，\"大力出奇迹\"是真实存在的。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "不是线性的\"大一点好一点\"，而是规模达到某个临界点后，能力突然跃升。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这种现象被称为\"涌现能力\"，会在第8节详细讲解。那里会深入探讨Scaling Laws（缩放法则）——一个描述模型性能与规模之间数学关系的重要发现。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "现在只需要记住：“大\"不是虚荣，而是必需。没有这个\"大”，就没有ChatGPT的智能。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "11.2 大语言模型与小语言模型"
+    },
+    {
+      "anchor": "section-19",
+      "text": "\"大\"的标准是什么？多大才算大？目前行业内没有严格的官方划分，但有一个约定俗成的分界线。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "小语言模型（SLM - Small Language Model）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "参数量小于100亿（< 10B）。代表模型包括ChatGLM-6B、Mistral-7B、LLaMA-2-7B。这类模型轻量级，可以在个人电脑或手机上运行。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "中型语言模型"
+    },
+    {
+      "anchor": "section-19",
+      "text": "参数量在100亿到1000亿之间（10B - 100B）。代表模型有LLaMA-2-70B、Qwen-72B。需要多块GPU，但仍能本地部署。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "大语言模型（LLM）"
+    },
+    {
+      "anchor": "section-19",
+      "text": "参数量大于1000亿（> 100B）。代表模型如GPT-3（175B）、GPT-4（估计万亿级）。需要巨型计算集群，通常只能通过云服务访问。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "这个区分很重要，因为它决定了能力边界、部署成本和应用场景。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "小模型适合特定领域任务，如文本分类、情感分析。大模型具备通用智能，能处理复杂的推理、创作任务。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "小模型几千元的个人电脑就能运行。大模型需要数百万甚至数千万的GPU集群。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "小模型适用于移动设备、边缘计算、隐私敏感场景。大模型适用于云服务、复杂任务、通用AI助手。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "一个趣味的趋势：\"小而精\"的崛起"
+    },
+    {
+      "anchor": "section-19",
+      "text": "近年来，一个有意思的现象出现了。以前的思路是模型越大越好，现在的发现是小模型也可以很强。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "例如："
+    },
+    {
+      "anchor": "section-19",
+      "text": "Mistral-7B（仅70亿参数），能力接近GPT-3.5 ChatGLM-6B，能在个人电脑上运行，效果也不错"
+    },
+    {
+      "anchor": "section-19",
+      "text": "这说明："
+    },
+    {
+      "anchor": "section-19",
+      "text": "\"大\"不是唯一的路"
+    },
+    {
+      "anchor": "section-19",
+      "text": "更好的训练方法、数据质量、模型架构同样重要"
+    },
+    {
+      "anchor": "section-19",
+      "text": "未来可能是\"大小共存\"：大模型做通用任务，小模型做专用任务"
+    },
+    {
+      "anchor": "section-19",
+      "text": "对于现在的ChatGPT来说，它确实是一个\"大\"语言模型。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "11.3 语言模型与对话模型"
+    },
+    {
+      "anchor": "section-40",
+      "text": "需要澄清一个容易混淆的概念。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "ChatGPT不仅仅是一个语言模型，更是一个对话模型。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "关键区分"
+    },
+    {
+      "anchor": "section-40",
+      "text": "可能听说过这些名字：GPT-3、GPT-4、GPT-3.5、ChatGPT……它们之间是什么关系？"
+    },
+    {
+      "anchor": "section-40",
+      "text": "GPT-1/2/3/4/5（基础语言模型）"
+    },
+    {
+      "anchor": "section-40",
+      "text": "GPT-1 (2018): 1.17亿参数 GPT-2 (2019): 15亿参数 GPT-3 (2020): 1750亿参数 GPT-3.5 (2022):未公开（GPT-3的优化版） GPT-4 (2023): 未公开 GPT-4o (2024): 未公开 GPT-5 (2025): 未公开"
+    },
+    {
+      "anchor": "section-40",
+      "text": "这些是技术名称，指的是基础语言模型。它们只经过预训练，能力是\"预测下一个词\"。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "ChatGPT（对话产品）ChatGPT 是产品名称，不是模型名称。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "ChatGPT = 基础模型 + 对话训练 例如： ChatGPT（早期）= GPT-3.5 + 对话训练 ChatGPT（后期）= GPT-4 + 对话训练 ChatGPT（最新）= GPT-4o/GPT-5 + 对话训练"
+    },
+    {
+      "anchor": "section-40",
+      "text": "使用ChatGPT时，用的不是纯GPT-4，而是经过对话训练的ChatGPT（基于GPT-4）。它会\"聊天\"而不是简单\"接龙\"，就是因为有额外的对话训练。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "纯粹的语言模型只会\"接龙\"，不会\"对话\""
+    },
+    {
+      "anchor": "section-40",
+      "text": "如果直接用GPT-3（纯语言模型），问它："
+    },
+    {
+      "anchor": "section-40",
+      "text": "“如何学习编程？”"
+    },
+    {
+      "anchor": "section-40",
+      "text": "它可能会这样\"接龙\"："
+    },
+    {
+      "anchor": "section-40",
+      "text": "“如何学习编程？这个问题很多人问过。首先，你需要明确你的学习目标……”"
+    },
+    {
+      "anchor": "section-40",
+      "text": "或者："
+    },
+    {
+      "anchor": "section-40",
+      "text": "“如何学习编程？我也不知道。我从来没学过编程……”"
+    },
+    {
+      "anchor": "section-40",
+      "text": "为什么会这样？"
+    },
+    {
+      "anchor": "section-40",
+      "text": "纯语言模型的训练目标，只是\"预测下一个词\"。它在互联网文本中见过："
+    },
+    {
+      "anchor": "section-40",
+      "text": "有文章以\"如何学习编程？这个问题……\"开头"
+    },
+    {
+      "anchor": "section-40",
+      "text": "有论坛帖子是\"如何学习编程？我也不知道……\""
+    },
+    {
+      "anchor": "section-40",
+      "text": "有网页列举\"如何学习编程？如何学习……\""
+    },
+    {
+      "anchor": "section-40",
+      "text": "它只是在\"接龙\"，把输入当成一篇文章的开头，继续写下去。它不知道你在问问题，也不知道要给出答案。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "而对话模型可以理解\"问答\"这个概念。如果是ChatGPT（对话模型）会这样回应："
+    },
+    {
+      "anchor": "section-40",
+      "text": "\"学习编程可以遵循以下步骤： 选择一门编程语言：对于初学者，推荐Python，因为语法简单易读。 学习基础语法：通过在线教程（如Codecademy、freeCodeCamp）掌握变量、循环、函数等基本概念。 动手实践：做小项目，比如计算器、待办事项列表等，把知识应用到实际中。 阅读他人代码：看GitHub上的优秀项目，学习他人的编程思路。 持续学习：编程是一个不断学习的过程，保持好奇心和练习习惯很重要。 你想从哪门语言开始？\""
+    },
+    {
+      "anchor": "section-40",
+      "text": "它理解了你在提问，它知道要给出结构化的建议，它甚至会反问，引导对话继续。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "这个差别是怎么来的？"
+    },
+    {
+      "anchor": "section-40",
+      "text": "答案是：预训练之后的额外训练步骤。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "纯语言模型 = 预训练"
+    },
+    {
+      "anchor": "section-40",
+      "text": "对话模型 = 预训练 + 监督微调（SFT）+ 强化学习对齐（RLHF）"
+    },
+    {
+      "anchor": "section-40",
+      "text": "后面的章节会详细讲这个过程。现在只需要知道："
+    },
+    {
+      "anchor": "section-40",
+      "text": "ChatGPT的\"聊天\"能力，不是预训练自然产生的，而是通过额外的训练\"教\"会的。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "这也是为什么ChatGPT比GPT-3好用得多，虽然底层的语言模型可能差不多。"
+    },
+    {
+      "anchor": "section-40",
+      "text": "产品化的最后一公里，比技术突破更重要。"
+    },
+    {
+      "anchor": "section-75",
+      "text": "11.4 ■ 学点英语"
+    },
+    {
+      "anchor": "section-75",
+      "text": "中文 | English | 音标 | 说明\n大语言模型 | Large Language Model (LLM) | /lɑːdʒ ˈlæŋɡwɪdʒ ˈmɒdl/ | 参数量通常在数十亿到数千亿级别的语言模型\n涌现能力 | Emergent Abilities | /ɪˈmɜːdʒənt əˈbɪlətiz/ | 模型规模超过某个阈值后突然出现的、 小模型不具备的能力\n基础模型 | Foundation Model | /faʊnˈdeɪʃən ˈmɒdl/ | 经过大规模预训练的通用语言模型，可作为下游任务微调的基础\n监督微调 | Supervised Fine-Tuning (SFT) | / suːpərvaɪzd faɪn ˌ ˈtjuːnɪŋ/ | 使用人工标注的指令-回答数据训练模型理解和遵循人类指令\n人类反馈强化学习 | Reinforcement Learning from Human Feedback (RLHF) | / riːɪnˈfɔːrsmənt ˈlɜːnɪŋ ˌ frəm ˈhjuːmən ˈfiːdbæk/ | 通过人类偏好评分训练奖励模型，再用强化学习优化模型输出使其符合人类期望\n对话模型 | Dialogue Model | /ˈdaɪəlɒɡ ˈmɒdl/ | 经过指令微调和对齐训练的、能进行多轮对话的语言模型\n规模定律 | Scaling Laws | /ˈskeɪlɪŋ lɔːz/ | 描述模型性能随参数、数据、计算量增长而提升的经验规律"
+    }
+  ]
+}

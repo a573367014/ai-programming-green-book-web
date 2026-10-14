@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>游戏知识问答系统 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-100">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-2">实战入门</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 5 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第一个RAG应用：游戏知识问答系统</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 101</span></div>
+<h1 class="lesson-title">游戏知识问答系统</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>12 页原文</span><span>约 16 分钟阅读</span><span class="module-name">第一个RAG应用：游戏知识问答系统</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-100.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-100.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>理论讲了这么多，该动手了。 这一节做一个真实的RAG应用——游戏知识问答助手。 《原神》玩家经常遇到各种问题：可莉的毕业武器是什么？胡桃的最优配装是什么？这个助手能从海量的游戏攻略、角色图鉴、玩家心得中找到最准确的答案。</p></aside>
+<h2 id="section-1" data-source-page="1">7.1 《原神》角色知识库问答系统<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">做一个简易的《原神》角色知识库问答系统</p>
+<p data-source-page="1">数据资料</p>
+<p class="list-item" data-source-page="1">角色图鉴（角色介绍、属性、技能）</p>
+<p class="list-item" data-source-page="1">武器资料（武器类型、基础属性、特效）</p>
+<p class="list-item" data-source-page="1">圣遗物搭配（套装效果、推荐搭配）</p>
+<p class="list-item" data-source-page="1">玩家攻略（配队思路、输出手法）</p>
+<p data-source-page="1">功能</p>
+<p class="list-item" data-source-page="1">用户问：“胡桃用什么武器最好？”</p>
+<p class="list-item" data-source-page="1">系统检索相关资料</p>
+<p class="list-item" data-source-page="1">AI基于真实数据给出专业回答</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<h2 id="section-12" data-source-page="2">7.2 技术思路<a class="heading-link" href="#section-12" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">回顾一下第2节讲的RAG流程：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">准备数据 → 文档分块 → 向量化存储 → 用户提问 → 检索+生成
+
+1</code></pre></div>
+<p data-source-page="2">1</p>
+<p data-source-page="2">今天把这5步全部走一遍。</p>
+<p data-source-page="2">技术栈</p>
+<p class="list-item" data-source-page="2">向量数据库：Chroma</p>
+<p data-source-page="2">向量数据库</p>
+<p class="list-item" data-source-page="2">Embedding模型：通义千问Embedding</p>
+<p data-source-page="2">Embedding模型</p>
+<p class="list-item" data-source-page="2">大模型：Qwen3.6-plus</p>
+<p data-source-page="2">大模型</p>
+<p class="list-item" data-source-page="2">编程语言：Python</p>
+<p data-source-page="2">编程语言</p>
+<p data-source-page="2">两阶段设计</p>
+<p data-source-page="2">在正式开始之前，先理解一个重要的概念：RAG系统分为离线构建和在线查询两个阶段。</p>
+<p data-source-page="2">这两个词来自软件系统的设计模式：</p>
+<p class="list-item" data-source-page="2">离线（Offline）：在用户访问之前就提前做好的准备工作，就像餐厅在开门前把食材都切好、调料都配好。</p>
+<p class="list-item" data-source-page="2">在线（Online）：用户实际访问时执行的操作，就像客人点菜后厨师现场烹饪。</p>
+<p data-source-page="2">在线（Online）</p>
+<p data-source-page="2">在RAG系统中：</p>
+<p class="list-item" data-source-page="2">离线程序：build_kb.py，提前把文档向量化存好，只运行一次</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">build_kb.py</code></pre></div>
+<p data-source-page="3">离线程序</p>
+<p class="list-item" data-source-page="3">在线程序：query.py，每次用户提问时运行，负责检索和回答</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">query.py</code></pre></div>
+<p data-source-page="3">在线程序</p>
+<p data-source-page="3">离线阶段（只运行一次）</p>
+<aside class="callout" data-source-page="3"><p>读取原始文档 文档分块 向量化（调用Embedding API） 存储到向量数据库 输出：持久化的向量数据库</p></aside>
+<p data-source-page="3">在线阶段（每次查询都运行）</p>
+<aside class="callout" data-source-page="3"><p>加载已有的向量数据库 用户提问 检索相关文档 生成回答 输出：用户得到答案</p></aside>
+<p class="list-item" data-source-page="3">加载已有的向量数据库</p>
+<p class="list-item" data-source-page="3">用户提问</p>
+<p class="list-item" data-source-page="3">检索相关文档</p>
+<p class="list-item" data-source-page="3">生成回答 输出：用户得到答案</p>
+<p data-source-page="3">生成回答</p>
+<p data-source-page="3">输出：用户得到答案</p>
+<p data-source-page="3">如果每次用户提问都重新向量化所有文档，完全没有必要，因为文档内容没变，向量也不会变。离线程序只需成功执行一次，把文本向量化存入数据库即可。</p>
+<p data-source-page="3">项目文件结构</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">game-rag/
+├── data/                    # 原始数据
+│   ├── 胡桃.txt
+│   ├── 可莉.txt
+│   ├── 钟离.txt
+│   └── 甘雨.txt
+├── build_kb.py              # 离线：构建知识库（运行一次）
+├── query.py                 # 在线：问答系统（每次查询运行）
+└── chroma_db/               # 向量数据库（自动生成）
+    └── ...</code></pre></div>
+<aside class="callout" data-source-page="4"><b>阅读提示</b><p>完整项目代码参考：samples/chapter5/game-rag/</p></aside>
+<h2 id="section-53" data-source-page="4">7.3 离线构建<a class="heading-link" href="#section-53" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">离线构建脚本负责读取文档、分块、向量化、存储。这个脚本只需要运行一次。</p>
+<p data-source-page="4">这个脚本只需要运行一次</p>
+<aside class="callout" data-source-page="4"><b>阅读提示</b><p>完整源码参考：samples/chapter5/game-rag/build_kb.py</p></aside>
+<p data-source-page="4">按照RAG的流程，来看实现中的关键点。</p>
+<h3 id="section-58" data-source-page="4">配置区<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">API_KEY = os.getenv(&quot;DASHSCOPE_API_KEY&quot;, &quot;sk-xxxxxxxxxxxx&quot;)
+API_BASE = &quot;https://dashscope.aliyuncs.com/compatible-mode/v1&quot;
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(SCRIPT_DIR, &quot;data&quot;)
+DB_PATH = os.path.join(SCRIPT_DIR, &quot;chroma_db&quot;)</code></pre></div>
+<p class="list-item" data-source-page="4">环境变量优先：使用 os.getenv() 从环境变量读取API Key，避免硬编码泄露（强烈建议在生产环境使用这种方式）</p>
+<p class="list-item" data-source-page="4">路径变量：SCRIPT_DIR/DATA_DIR/DB_PATH 是目录和路径定义，不是API配置。它们属于脚本的&quot;基础设施&quot;，后面会被复用到多个地方</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<h3 id="section-62" data-source-page="5">文档分块函数<a class="heading-link" href="#section-62" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def split_document(file_path):
+    &quot;&quot;&quot;读取文档并按空行分块&quot;&quot;&quot;
+    with open(file_path, &#x27;r&#x27;, encoding=&#x27;utf-8&#x27;) as f:
+        content = f.read()
+    return [chunk.strip() for chunk in content.split(&#x27;\n\n&#x27;) if chunk.strip()]</code></pre></div>
+<p class="list-item" data-source-page="5">按空行切分：split(&#x27;\n\n&#x27;) 利用数据文件的结构化特点</p>
+<p data-source-page="5">按空行切分</p>
+<p class="list-item" data-source-page="5">过滤空块：if chunk.strip() 避免空内容进入数据库</p>
+<p data-source-page="5">过滤空块</p>
+<p class="list-item" data-source-page="5">简单高效：对于结构化数据，简单的字符串切分就够了。如果是普通文档（如PDF、Word），可能需要使用NLP工具（spaCy、LangChain等）进行智能分句。但我们给出的示例数据已经用【】标记和空行预处理好了</p>
+<h3 id="section-69" data-source-page="5">创建客户端与Embedding函数<a class="heading-link" href="#section-69" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 创建持久化客户端
+client = chromadb.PersistentClient(path=DB_PATH)
+
+qwen_ef = embedding_functions.OpenAIEmbeddingFunction(
+    api_key=API_KEY,
+    api_base=API_BASE,
+    model_name=&quot;text-embedding-v2&quot;
+)
+
+collection = client.create_collection(
+    name=&quot;genshin_knowledge&quot;,
+    embedding_function=qwen_ef,  # 注入Embedding函数
+    metadata={&quot;hnsw:space&quot;: &quot;cosine&quot;}  # 使用余弦相似度
+)</code></pre></div>
+<p class="list-item" data-source-page="5">持久化客户端：PersistentClient(path=DB_PATH) 告诉Chroma数据存到磁盘上chroma_db目录，而不是临时内存。下次启动时可以重新加载</p>
+<p class="list-item" data-source-page="5">依赖注入模式：Chroma不需要手动调用Embedding API，只需配置函数 qwen_ef</p>
+<p class="list-item" data-source-page="5">自动调用：在 collection.add() 时，Chroma会自动调用 qwen_ef 进行向量化</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p class="list-item" data-source-page="6">余弦相似度：&quot;hnsw:space&quot;: &quot;cosine&quot; 适合文本检索场景</p>
+<h3 id="section-75" data-source-page="6">批量加载文档<a class="heading-link" href="#section-75" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">all_chunks, all_metadata, all_ids = [], [], []
+
+txt_files = [f for f in os.listdir(DATA_DIR) if f.endswith(&#x27;.txt&#x27;)]
+for filename in txt_files:
+    character_name = filename.replace(&#x27;.txt&#x27;, &#x27;&#x27;)
+    file_path = os.path.join(DATA_DIR, filename)
+
+    chunks = split_document(file_path)
+
+    # 批量构建当前文件的所有数据
+    all_chunks.extend(chunks)
+    all_metadata.extend([
+        {&quot;character&quot;: character_name, &quot;source&quot;: filename, &quot;chunk_id&quot;: i}
+        for i in range(len(chunks))
+    ])
+    all_ids.extend([f&quot;{character_name}_{i}&quot; for i in range(len(chunks))])</code></pre></div>
+<p class="list-item" data-source-page="6">元数据设计：character、source、chunk_id 三个字段，方便检索后追溯</p>
+<p class="list-item" data-source-page="6">唯一ID：f&quot;{character_name}_{i}&quot; 确保每个文档块都有唯一标识</p>
+<p class="list-item" data-source-page="6">列表推导式：使用 extend() 配合列表推导，代码简洁</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">extend()</code></pre></div>
+<p data-source-page="6">列表推导式</p>
+<h3 id="section-82" data-source-page="6">分批向量化存储<a class="heading-link" href="#section-82" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">batch_size = 25  # Qwen API限制每批最多25个文本
+
+for i in range(0, len(all_chunks), batch_size):
+    collection.add(
+        documents=all_chunks[i:i+batch_size],
+        metadatas=all_metadata[i:i+batch_size],
+        ids=all_ids[i:i+batch_size]
+    )</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<p class="list-item" data-source-page="7">API限制：通义千问Embedding API一次最多处理25个文本，必须分批</p>
+<p class="list-item" data-source-page="7">直接传文本：Chroma会自动调用 qwen_ef 进行向量化，不需要手动调用</p>
+<p data-source-page="7">直接传文本</p>
+<p class="list-item" data-source-page="7">成本优化：44个文档块分2次API调用，之后就不再需要</p>
+<p data-source-page="7">成本优化</p>
+<h3 id="section-89" data-source-page="7">运行效果<a class="heading-link" href="#section-89" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">$ python build_kb.py
+
+开始构建知识库...
+处理文件: 钟离.txt
+处理文件: 胡桃.txt
+处理文件: 可莉.txt
+处理文件: 甘雨.txt
+
+正在向量化 44 个文档块...
+处理第 1 批（25 个文档块）...
+处理第 2 批（19 个文档块）...
+
+知识库构建完成！
+数据库位置: ./chroma_db
+总文档块数: 44
+角色数量: 4</code></pre></div>
+<h2 id="section-91" data-source-page="7">7.4 在线查询<a class="heading-link" href="#section-91" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">在线查询脚本负责加载知识库、检索、生成回答。这个脚本每次用户查询时运行。</p>
+<p data-source-page="7">这个脚本每次用户查询时运行</p>
+<aside class="callout" data-source-page="7"><b>阅读提示</b><p>完整源码参考：samples/chapter5/game-rag/query.py</p></aside>
+<p data-source-page="7">继续按照RAG的流程，来看实现中的关键点。</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<h3 id="section-96" data-source-page="8">加载知识库<a class="heading-link" href="#section-96" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def load_knowledge_base():
+    &quot;&quot;&quot;加载已有的向量知识库&quot;&quot;&quot;
+    client = chromadb.PersistentClient(path=DB_PATH)
+
+    # 配置Embedding（必须与构建时一致）
+    qwen_ef = embedding_functions.OpenAIEmbeddingFunction(
+        api_key=API_KEY,
+        api_base=API_BASE,
+        model_name=&quot;text-embedding-v2&quot;
+    )
+
+    # 获取集合（不是create，而是get）
+    collection = client.get_collection(
+        name=&quot;genshin_knowledge&quot;,
+        embedding_function=qwen_ef
+    )
+
+    return collection</code></pre></div>
+<p class="list-item" data-source-page="8">get 而非 create：使用 get_collection() 而不是 create_collection()，加载已有数据</p>
+<p class="list-item" data-source-page="8">非常快：加载只需0.1秒，因为不需要向量化，只是读取元数据</p>
+<p data-source-page="8">非常快</p>
+<p class="list-item" data-source-page="8">Embedding一致性：查询时使用的Embedding函数必须和构建时一致。因为查询时Chroma会用这个函数把问题向量化，然后和知识库中的向量计算相似度</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def ask_question(collection, query):
+    &quot;&quot;&quot;基于RAG回答问题&quot;&quot;&quot;
+    # 检索相关文档
+    results = collection.query(
+        query_texts=[query],
+        n_results=3
+    )
+    retrieved_docs = results[&#x27;documents&#x27;][0]
+
+    # 构造上下文
+    context = &quot;\n\n&quot;.join([
+        f&quot;【参考资料{i+1}】\n{doc}&quot;
+        for i, doc in enumerate(retrieved_docs)
+    ])</code></pre></div>
+<p class="list-item" data-source-page="9">自动向量化：Chroma会自动调用 qwen_ef 把问题向量化</p>
+<p data-source-page="9">自动向量化</p>
+<p class="list-item" data-source-page="9">Top-3检索：n_results=3 返回最相关的3个文档块</p>
+<p data-source-page="9">Top-3检索</p>
+<h3 id="section-107" data-source-page="9">构造Prompt<a class="heading-link" href="#section-107" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">prompt = f&quot;&quot;&quot;你是一个《原神》游戏助手，请基于以下参考资料回答用户的问题。
+
+参考资料：
+{context}
+
+用户问题：{query}
+
+回答要求：
+1. 基于参考资料回答，不要编造信息
+2. 回答要专业但不失亲和力
+3. 如果有多个选择，要说明优先级
+4. 可以适当补充游戏常识
+
+&quot;&quot;&quot;</code></pre></div>
+<p class="list-item" data-source-page="9">角色定位：“你是一个《原神》游戏助手”，让AI进入角色</p>
+<p data-source-page="9">角色定位</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<p class="list-item" data-source-page="10">明确指令：要求基于资料回答，不要编造，减少幻觉。这是RAG非常核心的意义——让大模型基于查询到的资料来回答，而不是直接凭记忆生成。</p>
+<h3 id="section-112" data-source-page="10">调用大模型<a class="heading-link" href="#section-112" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">client = OpenAI(api_key=API_KEY, base_url=API_BASE)
+response = client.chat.completions.create(
+    model=&quot;qwen3.6-plus&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}],
+    temperature=0.7
+)
+
+return response.choices[0].message.content</code></pre></div>
+<p class="list-item" data-source-page="10">temperature=0.7：适度创造性，既不僵化也不过分发散</p>
+<p class="list-item" data-source-page="10">单轮对话：每次都是新对话，没有历史记忆（可扩展）</p>
+<p data-source-page="10">单轮对话</p>
+<h3 id="section-117" data-source-page="10">主程序：交互式问答<a class="heading-link" href="#section-117" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="10"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">def main():
+    # 加载知识库（只加载一次）
+    collection = load_knowledge_base()
+
+    # 交互式问答
+    while True:
+        query = input(&quot;你：&quot;).strip()
+        if query in [&#x27;退出&#x27;, &#x27;quit&#x27;, &#x27;exit&#x27;]:
+            break
+
+        if not query:
+            continue
+
+        answer = ask_question(collection, query)
+        print(f&quot;\n助手：{answer}\n&quot;)</code></pre></div>
+<p class="list-item" data-source-page="10">只加载一次：知识库在循环外加载，多次查询复用</p>
+<p class="list-item" data-source-page="10">空输入过滤：if not query: continue 避免空查询</p>
+<p data-source-page="10">空输入过滤</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<p class="list-item" data-source-page="11">退出机制：支持中英文多种退出方式</p>
+<p data-source-page="11">退出机制</p>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">$ python query.py
+
+==================================================
+《原神》知识问答助手
+==================================================
+
+正在加载知识库...
+知识库加载完成
+
+开始对话（输入&#x27;退出&#x27;结束）
+
+你：胡桃用什么武器最好？
+
+助手：胡桃的最佳武器推荐如下：
+
+毕业武器（首选）
+**护摩之杖**（五星）
+- 基础攻击：608
+- 副属性：暴击伤害66.2%
+- 特效：生命值转化攻击力，完美契合胡桃机制
+
+替代选择
+**龙吟**（五星）适合暴伤型配装
+**决斗之枪**（四星）平民神器，性价比高
+
+建议：有护摩优先护摩，没有可以用龙吟或决斗之枪。</code></pre></div>
+<h3 id="section-125" data-source-page="11">测试：超出知识库范围<a class="heading-link" href="#section-125" aria-label="链接至本节">#</a></h3>
+<div class="code-block" data-source-page="11"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">问：明天会下雨吗？
+答：哎呀，旅行者，关于&quot;明天会不会下雨&quot;这个问题，我得老实告诉你——我的参考资料里可没有天气预报
+功能哦！😅。不过既然你提到了&quot;雨&quot;，咱们倒是可以聊聊《原神》里的角色配队！比如在甘雨的冻结队
+中，行秋或莫娜就能提供稳定的水元素附着，配合甘雨的冰箭打出&quot;冻结&quot;反应，
+
+1
+2</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<h2 id="section-127" data-source-page="12">7.5 下一节预告<a class="heading-link" href="#section-127" aria-label="链接至本节">#</a></h2>
+<p data-source-page="12">到这里，已经用不到200行代码实现了一个能跑的RAG应用。但现实中的文档不会这么规整——100页的PDF、扫描版、双栏排版、表格跨页……该怎么切？切得太大，检索不精准；切得太小，语义不完整。下一节来看文档分块这门艺术，看看它是如何决定RAG系统的生死。</p>
+<h2 id="section-129" data-source-page="12">7.6 ■ 学点英语<a class="heading-link" href="#section-129" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="12"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>知识库</td><td>Knowledge Base</td><td>/ˈnɑːlɪdʒ beɪs/</td><td>存储结构化/非结构化文档的系统，RAG检索的数据来源</td></tr><tr><td>元数据</td><td>Metadata</td><td>/ˈmetədeɪtə/</td><td>描述数据的数据，如文档来源、类型、标签、时间等</td></tr><tr><td>语义相关度</td><td>Semantic Relevance</td><td>/sɪˈmæntɪk ˈreləvəns/</td><td>检索结果与用户查询之间的语义匹配程度</td></tr><tr><td>上下文质量</td><td>Context Quality</td><td>/ˈkɑːntekst ˈkwɑːləti/</td><td>传给AI的检索结果的相关性和完整性度量</td></tr></tbody></table></div></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-099.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>向量数据库（二）-进阶算法与Chroma实战</strong><small>向量数据库</small></a><a class="chapter-neighbor next" href="lesson-101.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>文档分块：Chunking的艺术</strong><small>第一个RAG应用：游戏知识问答系统</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5273#mid=104919" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">7.1 《原神》角色知识库问答系统</a><a href="#section-12" class="toc-level-2">7.2 技术思路</a><a href="#section-53" class="toc-level-2">7.3 离线构建</a><a href="#section-58" class="toc-level-3">配置区</a><a href="#section-62" class="toc-level-3">文档分块函数</a><a href="#section-69" class="toc-level-3">创建客户端与Embedding函数</a><a href="#section-75" class="toc-level-3">批量加载文档</a><a href="#section-82" class="toc-level-3">分批向量化存储</a><a href="#section-89" class="toc-level-3">运行效果</a><a href="#section-91" class="toc-level-2">7.4 在线查询</a><a href="#section-96" class="toc-level-3">加载知识库</a><a href="#section-107" class="toc-level-3">构造Prompt</a><a href="#section-112" class="toc-level-3">调用大模型</a><a href="#section-117" class="toc-level-3">主程序：交互式问答</a><a href="#section-125" class="toc-level-3">测试：超出知识库范围</a><a href="#section-127" class="toc-level-2">7.5 下一节预告</a><a href="#section-129" class="toc-level-2">7.6 ■ 学点英语</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-100", "title": "游戏知识问答系统", "stage": 2, "week": 5, "module": "第一个RAG应用：游戏知识问答系统", "minutes": 16, "pages": 12, "type": "article"}</script>
+</body></html>

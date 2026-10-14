@@ -1,0 +1,122 @@
+{
+  "id": "lesson-051",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "RLHF",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/008-RLHF/051-练习-1-2-选择练习.pdf",
+  "sha256": "04b7916e186dcd4644ba3ad1e5c95b3aa75137aaecfeee8ee26fbdd4811fa1e9",
+  "pdf": "sources/pdf/lesson-051.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5260#mid=104970",
+  "minutes": 1,
+  "excerpt": "",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "\"统计上最可能\"和\"人性上最恰当\"并不是同一件事",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "B",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型的训练数据量还不够大",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "C",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型缺少足够的 GPU 算力来完成推理",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "D",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型的词表规模过小，无法表达关怀用语",
+      "page": 1,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 195,
+    "represented_chars": 76,
+    "removed_chars": 119,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 118,
+      "repeated_title": 1
+    }
+  },
+  "videos": [],
+  "order": 52,
+  "headings": [
+    {
+      "title": "B",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "C",
+      "id": "section-3",
+      "level": 2
+    },
+    {
+      "title": "D",
+      "id": "section-5",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "\"统计上最可能\"和\"人性上最恰当\"并不是同一件事"
+    },
+    {
+      "anchor": "section-1",
+      "text": "B"
+    },
+    {
+      "anchor": "section-1",
+      "text": "模型的训练数据量还不够大"
+    },
+    {
+      "anchor": "section-3",
+      "text": "C"
+    },
+    {
+      "anchor": "section-3",
+      "text": "模型缺少足够的 GPU 算力来完成推理"
+    },
+    {
+      "anchor": "section-5",
+      "text": "D"
+    },
+    {
+      "anchor": "section-5",
+      "text": "模型的词表规模过小，无法表达关怀用语"
+    }
+  ]
+}

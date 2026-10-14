@@ -1,0 +1,820 @@
+{
+  "id": "lesson-153",
+  "title": "CrewAI 最终实战：习题生成与考试评测系统",
+  "code": "1-2",
+  "stage": 6,
+  "week": 12,
+  "week_title": "Multi-Agent：多智能体协作",
+  "module": "CrewAI 实战",
+  "type": "article",
+  "repo_path": "006-阶段六 【智能体】从单体到多体/002-第12周 Multi-Agent：多智能体协作/007-CrewAI 实战/018-图文-1-2-CrewAI 最终实战：习题生成与考试评测系统.pdf",
+  "sha256": "e6b433e1d6ba21e8f7034ce23a402019563d6c197fc30bce0e3202106dcaa3ca",
+  "pdf": "sources/pdf/lesson-153.pdf",
+  "pages": 8,
+  "source_url": "https://class.imooc.com/lesson/5293#mid=105158",
+  "minutes": 13,
+  "excerpt": "前面两节我们系统学习了A2A协议和CrewAI框架的理论基础。现在，让我们通过一个完整的实战项目来巩固所学知识：智能练习题系统。",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "前面两节我们系统学习了A2A协议和CrewAI框架的理论基础。现在，让我们通过一个完整的实战项目来巩固所学知识：智能练习题系统。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个系统展示了如何将CrewAI框架应用到真实教育场景，实现了从题目生成、学生答题、AI批改到学习分析的完整闭环。本节不会逐行讲解代码，而是聚焦于系统架构、设计思路和关键技术点，帮助你理解如何将理论转化为实践。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码位于：samples/chapter12/exercise_system/ 建议边阅读文档边查看源码，理解系统的设计思想。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "系统概览",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "核心设计理念",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个系统采用了双程序架构，将教师和学生的职责清晰分离。每个程序包含传统业务逻辑和AI智能决策两类任务。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序1: 题目生成器 (管理员/教师使用)",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序1: 题目生成器",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "question_generator.py (Sequential模式)\n\n─────────────────────────────────────────\n  阶段1: 设计题目框架\n  • AI决策：分析大纲，规划题目结构\n  • 输出：题目设计方案\n─────────────────────────────────────────\n  阶段2: 生成具体题目\n  • AI决策：生成题目内容和选项\n  • 输出：JSON格式题目\n─────────────────────────────────────────\n  阶段3: 数据持久化\n  • 传统业务：保存到 data/questions.json\n─────────────────────────────────────────",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序2: 考试系统 (学生使用)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序2: 考试系统",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "main.py (Hierarchical模式)\n\n─────────────────────────────────────────\n  阶段1: 组卷\n  • 传统业务：从题库随机抽题\n  • 逻辑：min(题库总数, 配置数量)\n─────────────────────────────────────────\n  阶段2: 学生答题\n  • 传统业务：收集学生输入（A/B/C/D）\n─────────────────────────────────────────\n  阶段3: 自动批改\n  • 传统业务：对比答案，计算分数\n  • 无需AI：选择题答案确定\n─────────────────────────────────────────\n  阶段4: AI深度分析（可选，用户询问）\n  • AI决策：Manager协调2个Agent\n    - Agent1: 答案解析专家\n    - Agent2: 学习诊断教练\n─────────────────────────────────────────",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键设计原则：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键设计原则",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "✓ 非常重要：并非所有的业务都要用AI！这是新手最常见的误区，AI业务与非AI业务可以搭配。能不用AI就尽量不要用AI，切记，否则你会发现你的token在疯狂燃烧。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "list",
+      "text": "✓ AI负责创造性任务：生成题目、分析错题、个性化建议",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI负责创造性任务",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "✓ 传统代码负责确定性任务：随机抽题、对比答案、数据存储",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "传统代码负责确定性任务",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "目录结构",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "系统采用模块化设计，每个模块职责清晰：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "exercise_system/\n│\n├── core/                       # 核心基础模块\n│   ├── __init__.py\n│   ├── config.py              # 配置管理（API密钥、模型参数）\n│   ├── llm.py                 # LLM初始化\n│   ├── database.py            # 题库管理（增删改查）\n│   ├── models.py              # 数据模型（Question、Option等）\n│   └── tools.py               # 工具函数\n│\n├── agents/                     # Agent角色定义\n│   ├── __init__.py\n│   ├── question_expert.py     # 题目生成专家Agent\n│   ├── explanation_agent.py   # 答案解析专家Agent\n│   └── learning_advisor.py    # 学习诊断教练Agent\n│\n├── tasks/                      # Task任务定义\n│   ├── __init__.py\n│   ├── question_tasks.py      # 题目生成任务\n│   ├── explanation_tasks.py   # 答案解析任务\n│   └── learning_tasks.py      # 学习建议任务\n│\n├── crews/                      # Crew团队组织\n│   ├── __init__.py\n│   └── exercise_crew.py       # 统一的Crew（单一Crew架构）\n│\n├── ui/                         # 用户界面\n│   ├── __init__.py\n│   ├── console.py             # Rich控制台配置\n│   └── display.py             # 显示函数（欢迎界面、题目展示、结果报告）\n│\n├── data/                       # 数据文件\n│   ├── syllabus.txt           # 教学大纲（输入）\n│   ├── questions.json         # 题库（持久化）\n│   ├── task1_design_framework.txt  # Task1输出缓存\n│   ├── task2_raw_json.txt     # Task2原始JSON\n│   └── llm_full_output.txt    # LLM完整输出日志\n│\n├── question_generator.py       # 程序1：题目生成器（Sequential模式）\n├── main.py                     # 程序2：考试系统（Hierarchical模式）\n├── config.yaml                 # 业务配置（题目数量、模型参数等）\n├── requirements.txt            # Python依赖\n└── README.md                   # 项目说明",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "学习目标：这个实战项目教你什么",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在深入代码之前，先明确本节的学习重点。这个实战项目不是简单的\"照着敲代码\"，而是要让你掌握将CrewAI应用到真实业务的核心能力。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心学习目标",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目标1：AI业务与传统业务的分界线",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是新手最容易犯的错误：以为用了AI框架，所有代码都要交给AI处理。实际上：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "✓ AI负责的任务：\n  • 创造性工作（生成题目、分析错题、个性化建议）\n  • 需要理解语义的工作（分析大纲、理解学生错误模式）\n  • 没有明确规则的决策\n\n✗ 传统代码负责的任务：\n  • 确定性逻辑（随机抽题、对比答案、计算分数）\n  • 数据操作（读写JSON、数据库查询）\n  • UI交互（显示界面、收集输入）",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "判断标准：如果一个任务可以用10行Python代码写出确定性逻辑，就不要用AI。AI的价值在于处理不确定性和创造性。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "目标2：代码组织：函数式 vs 面向对象",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "CrewAI项目的典型代码结构：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "agents/                    # 函数式：创建Agent的工厂函数\n  question_expert.py       → create_question_expert(llm) -> Agent\n  explanation_agent.py     → create_explanation_agent(llm) -> Agent\n\ntasks/                     # 函数式：创建Task的工厂函数\n  question_tasks.py        → create_design_task(agent, syllabus) -> Task\n  explanation_tasks.py     → create_explanation_task(agent, result) -> Task\n\ncrews/                     # 面向对象：Crew作为业务流程的封装\n  exercise_crew.py         → class ExerciseCrew (协调Agent和Task)\n\nmain.py                    # 面向对象：主程序封装业务逻辑\n                           → class ExamSystem (完整业务流程)",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "设计原则：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "设计原则",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Agent和Task用函数：它们是\"配置\"而非\"状态机\"，函数式更清晰",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Agent和Task用函数",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Crew和主程序用类：它们需要管理状态（如LLM实例、配置），面向对象更合适",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Crew和主程序用类",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目标3：Crew、Agent、Task的协作模式",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解三者的职责边界和依赖关系：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "┌─────────────────────────────────────────\n  Crew (ExerciseCrew)\n  • 职责：协调全局，决定执行模式\n  • 持有：所有Agent实例、LLM配置\n  • 方法：run_xxx() 封装不同业务流程\n├─────────────────────────────────────────\n  Agent (QuestionExpert, ExamAnalyzer...)\n  • 职责：执行具体Task\n  • 特性：角色定位、专业能力、背景故事\n  • 依赖：LLM实例（由Crew传入）\n├─────────────────────────────────────────\n  Task (设计题目、生成题目...)\n  • 职责：定义工作内容和输出要求\n  • 关键：description（给Agent的Prompt）\n  • 依赖：绑定的Agent、上游Task的输出\n└─────────────────────────────────────────",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键问题：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键问题",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Q: Agent和Task谁先创建？ A: Agent先创建，Task创建时绑定Agent",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Q: Task之间如何传递数据？ A: 通过context参数或Sequential模式自动传递",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Q: 一个Agent可以执行多个Task吗？ A: 可以，程序1中QuestionExpert执行了Task1和Task2",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目标4：Sequential vs Hierarchical的选择依据",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不要死记硬背模式特点，而要理解业务场景：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "业务场景",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "场景特征 | 选择模式 | 本项目实例\n任务有明确的先后顺序 （A完成后才能做B） | Sequential | 程序1：设计框架→生成题目\n多个任务需要并行执行 （可以同时进行） | Hierarchical | 程序2：答案解析 + 学习建议\n需要Manager动态分配任务 | Hierarchical | 程序2：Manager协调2个Agent\n任务间没有强依赖关系 | Hierarchical | -",
+      "rows": [
+        [
+          "场景特征",
+          "选择模式",
+          "本项目实例"
+        ],
+        [
+          "任务有明确的先后顺序 （A完成后才能做B）",
+          "Sequential",
+          "程序1：设计框架→生成题目"
+        ],
+        [
+          "多个任务需要并行执行 （可以同时进行）",
+          "Hierarchical",
+          "程序2：答案解析 + 学习建议"
+        ],
+        [
+          "需要Manager动态分配任务",
+          "Hierarchical",
+          "程序2：Manager协调2个Agent"
+        ],
+        [
+          "任务间没有强依赖关系",
+          "Hierarchical",
+          "-"
+        ]
+      ],
+      "page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "经验法则：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "经验法则",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "默认用Sequential（更简单、更容易调试）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "只有在需要并行或动态协调时才用Hierarchical",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "学习路径建议",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "建议按以下顺序学习本节：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "步骤1: 先学程序1（question_generator.py）\n  ├─ 理解最简单的Sequential流程\n  ├─ 掌握Agent、Task、Crew的基本用法\n  └─ 学会如何定义Prompt和输出格式\n\n步骤2: 再学程序2的阶段1-3（传统业务部分）\n  ├─ 看清楚哪些逻辑不需要AI\n  └─ 理解AI业务和传统业务如何衔接\n\n步骤3: 最后学程序2的阶段4（Hierarchical模式）\n  ├─ 对比Sequential和Hierarchical的差异\n  ├─ 理解Manager如何协调多个Agent\n  └─ 学会HITL（Human-in-the-Loop）模式",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "带着问题去阅读",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "阅读代码时，思考这些问题：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "程序1为什么要拆成2个Task？ 直接一个Task生成题目不行吗？",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序1为什么要拆成2个Task？",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "程序2的批改为什么不用AI？ 用AI批改不是更智能吗？",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "程序2的批改为什么不用AI？",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "为什么需要ExerciseCrew这个类？ 直接在main.py里创建Crew不行吗？",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Task的expected_output有什么用？ 不写会怎么样？",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Task的expected_output有什么用？",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Hierarchical模式的Manager是怎么工作的？ 它会调用LLM吗？",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Hierarchical模式的Manager是怎么工作的？",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "带着这些问题继续阅读，你会对架构设计有更深的理解。",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "下一节预告",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "第5节我们将深入剖析程序1（题目生成器），详细讲解Crew、Agent、Task三大组件如何协同工作，以及Sequential模式的执行流程。通过真实代码示例，你将掌握CrewAI框架的核心用法。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    }
+  ],
+  "accounting": {
+    "source_chars": 5707,
+    "represented_chars": 5491,
+    "removed_chars": 216,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 166,
+      "repeated_title": 50
+    }
+  },
+  "videos": [],
+  "order": 154,
+  "headings": [
+    {
+      "title": "系统概览",
+      "id": "section-3",
+      "level": 2
+    },
+    {
+      "title": "核心设计理念",
+      "id": "section-4",
+      "level": 3
+    },
+    {
+      "title": "目录结构",
+      "id": "section-19",
+      "level": 3
+    },
+    {
+      "title": "学习目标：这个实战项目教你什么",
+      "id": "section-22",
+      "level": 2
+    },
+    {
+      "title": "下一节预告",
+      "id": "section-69",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "前面两节我们系统学习了A2A协议和CrewAI框架的理论基础。现在，让我们通过一个完整的实战项目来巩固所学知识：智能练习题系统。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "这个系统展示了如何将CrewAI框架应用到真实教育场景，实现了从题目生成、学生答题、AI批改到学习分析的完整闭环。本节不会逐行讲解代码，而是聚焦于系统架构、设计思路和关键技术点，帮助你理解如何将理论转化为实践。"
+    },
+    {
+      "anchor": "article-start",
+      "text": "完整源码位于：samples/chapter12/exercise_system/ 建议边阅读文档边查看源码，理解系统的设计思想。"
+    },
+    {
+      "anchor": "section-3",
+      "text": "系统概览"
+    },
+    {
+      "anchor": "section-4",
+      "text": "核心设计理念"
+    },
+    {
+      "anchor": "section-4",
+      "text": "这个系统采用了双程序架构，将教师和学生的职责清晰分离。每个程序包含传统业务逻辑和AI智能决策两类任务。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "程序1: 题目生成器 (管理员/教师使用)"
+    },
+    {
+      "anchor": "section-4",
+      "text": "程序1: 题目生成器"
+    },
+    {
+      "anchor": "section-4",
+      "text": "question_generator.py (Sequential模式)\n\n─────────────────────────────────────────\n  阶段1: 设计题目框架\n  • AI决策：分析大纲，规划题目结构\n  • 输出：题目设计方案\n─────────────────────────────────────────\n  阶段2: 生成具体题目\n  • AI决策：生成题目内容和选项\n  • 输出：JSON格式题目\n─────────────────────────────────────────\n  阶段3: 数据持久化\n  • 传统业务：保存到 data/questions.json\n─────────────────────────────────────────"
+    },
+    {
+      "anchor": "section-4",
+      "text": "程序2: 考试系统 (学生使用)"
+    },
+    {
+      "anchor": "section-4",
+      "text": "程序2: 考试系统"
+    },
+    {
+      "anchor": "section-4",
+      "text": "main.py (Hierarchical模式)\n\n─────────────────────────────────────────\n  阶段1: 组卷\n  • 传统业务：从题库随机抽题\n  • 逻辑：min(题库总数, 配置数量)\n─────────────────────────────────────────\n  阶段2: 学生答题\n  • 传统业务：收集学生输入（A/B/C/D）\n─────────────────────────────────────────\n  阶段3: 自动批改\n  • 传统业务：对比答案，计算分数\n  • 无需AI：选择题答案确定\n─────────────────────────────────────────\n  阶段4: AI深度分析（可选，用户询问）\n  • AI决策：Manager协调2个Agent\n    - Agent1: 答案解析专家\n    - Agent2: 学习诊断教练\n─────────────────────────────────────────"
+    },
+    {
+      "anchor": "section-4",
+      "text": "关键设计原则："
+    },
+    {
+      "anchor": "section-4",
+      "text": "关键设计原则"
+    },
+    {
+      "anchor": "section-4",
+      "text": "✓ 非常重要：并非所有的业务都要用AI！这是新手最常见的误区，AI业务与非AI业务可以搭配。能不用AI就尽量不要用AI，切记，否则你会发现你的token在疯狂燃烧。"
+    },
+    {
+      "anchor": "section-4",
+      "text": "✓ AI负责创造性任务：生成题目、分析错题、个性化建议"
+    },
+    {
+      "anchor": "section-4",
+      "text": "AI负责创造性任务"
+    },
+    {
+      "anchor": "section-4",
+      "text": "✓ 传统代码负责确定性任务：随机抽题、对比答案、数据存储"
+    },
+    {
+      "anchor": "section-4",
+      "text": "传统代码负责确定性任务"
+    },
+    {
+      "anchor": "section-19",
+      "text": "目录结构"
+    },
+    {
+      "anchor": "section-19",
+      "text": "系统采用模块化设计，每个模块职责清晰："
+    },
+    {
+      "anchor": "section-19",
+      "text": "exercise_system/\n│\n├── core/                       # 核心基础模块\n│   ├── __init__.py\n│   ├── config.py              # 配置管理（API密钥、模型参数）\n│   ├── llm.py                 # LLM初始化\n│   ├── database.py            # 题库管理（增删改查）\n│   ├── models.py              # 数据模型（Question、Option等）\n│   └── tools.py               # 工具函数\n│\n├── agents/                     # Agent角色定义\n│   ├── __init__.py\n│   ├── question_expert.py     # 题目生成专家Agent\n│   ├── explanation_agent.py   # 答案解析专家Agent\n│   └── learning_advisor.py    # 学习诊断教练Agent\n│\n├── tasks/                      # Task任务定义\n│   ├── __init__.py\n│   ├── question_tasks.py      # 题目生成任务\n│   ├── explanation_tasks.py   # 答案解析任务\n│   └── learning_tasks.py      # 学习建议任务\n│\n├── crews/                      # Crew团队组织\n│   ├── __init__.py\n│   └── exercise_crew.py       # 统一的Crew（单一Crew架构）\n│\n├── ui/                         # 用户界面\n│   ├── __init__.py\n│   ├── console.py             # Rich控制台配置\n│   └── display.py             # 显示函数（欢迎界面、题目展示、结果报告）\n│\n├── data/                       # 数据文件\n│   ├── syllabus.txt           # 教学大纲（输入）\n│   ├── questions.json         # 题库（持久化）\n│   ├── task1_design_framework.txt  # Task1输出缓存\n│   ├── task2_raw_json.txt     # Task2原始JSON\n│   └── llm_full_output.txt    # LLM完整输出日志\n│\n├── question_generator.py       # 程序1：题目生成器（Sequential模式）\n├── main.py                     # 程序2：考试系统（Hierarchical模式）\n├── config.yaml                 # 业务配置（题目数量、模型参数等）\n├── requirements.txt            # Python依赖\n└── README.md                   # 项目说明"
+    },
+    {
+      "anchor": "section-22",
+      "text": "学习目标：这个实战项目教你什么"
+    },
+    {
+      "anchor": "section-22",
+      "text": "在深入代码之前，先明确本节的学习重点。这个实战项目不是简单的\"照着敲代码\"，而是要让你掌握将CrewAI应用到真实业务的核心能力。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "核心学习目标"
+    },
+    {
+      "anchor": "section-22",
+      "text": "目标1：AI业务与传统业务的分界线"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这是新手最容易犯的错误：以为用了AI框架，所有代码都要交给AI处理。实际上："
+    },
+    {
+      "anchor": "section-22",
+      "text": "✓ AI负责的任务：\n  • 创造性工作（生成题目、分析错题、个性化建议）\n  • 需要理解语义的工作（分析大纲、理解学生错误模式）\n  • 没有明确规则的决策\n\n✗ 传统代码负责的任务：\n  • 确定性逻辑（随机抽题、对比答案、计算分数）\n  • 数据操作（读写JSON、数据库查询）\n  • UI交互（显示界面、收集输入）"
+    },
+    {
+      "anchor": "section-22",
+      "text": "判断标准：如果一个任务可以用10行Python代码写出确定性逻辑，就不要用AI。AI的价值在于处理不确定性和创造性。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "目标2：代码组织：函数式 vs 面向对象"
+    },
+    {
+      "anchor": "section-22",
+      "text": "CrewAI项目的典型代码结构："
+    },
+    {
+      "anchor": "section-22",
+      "text": "agents/                    # 函数式：创建Agent的工厂函数\n  question_expert.py       → create_question_expert(llm) -> Agent\n  explanation_agent.py     → create_explanation_agent(llm) -> Agent\n\ntasks/                     # 函数式：创建Task的工厂函数\n  question_tasks.py        → create_design_task(agent, syllabus) -> Task\n  explanation_tasks.py     → create_explanation_task(agent, result) -> Task\n\ncrews/                     # 面向对象：Crew作为业务流程的封装\n  exercise_crew.py         → class ExerciseCrew (协调Agent和Task)\n\nmain.py                    # 面向对象：主程序封装业务逻辑\n                           → class ExamSystem (完整业务流程)"
+    },
+    {
+      "anchor": "section-22",
+      "text": "设计原则："
+    },
+    {
+      "anchor": "section-22",
+      "text": "设计原则"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Agent和Task用函数：它们是\"配置\"而非\"状态机\"，函数式更清晰"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Agent和Task用函数"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Crew和主程序用类：它们需要管理状态（如LLM实例、配置），面向对象更合适"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Crew和主程序用类"
+    },
+    {
+      "anchor": "section-22",
+      "text": "目标3：Crew、Agent、Task的协作模式"
+    },
+    {
+      "anchor": "section-22",
+      "text": "理解三者的职责边界和依赖关系："
+    },
+    {
+      "anchor": "section-22",
+      "text": "┌─────────────────────────────────────────\n  Crew (ExerciseCrew)\n  • 职责：协调全局，决定执行模式\n  • 持有：所有Agent实例、LLM配置\n  • 方法：run_xxx() 封装不同业务流程\n├─────────────────────────────────────────\n  Agent (QuestionExpert, ExamAnalyzer...)\n  • 职责：执行具体Task\n  • 特性：角色定位、专业能力、背景故事\n  • 依赖：LLM实例（由Crew传入）\n├─────────────────────────────────────────\n  Task (设计题目、生成题目...)\n  • 职责：定义工作内容和输出要求\n  • 关键：description（给Agent的Prompt）\n  • 依赖：绑定的Agent、上游Task的输出\n└─────────────────────────────────────────"
+    },
+    {
+      "anchor": "section-22",
+      "text": "关键问题："
+    },
+    {
+      "anchor": "section-22",
+      "text": "关键问题"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Q: Agent和Task谁先创建？ A: Agent先创建，Task创建时绑定Agent"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Q: Task之间如何传递数据？ A: 通过context参数或Sequential模式自动传递"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Q: 一个Agent可以执行多个Task吗？ A: 可以，程序1中QuestionExpert执行了Task1和Task2"
+    },
+    {
+      "anchor": "section-22",
+      "text": "目标4：Sequential vs Hierarchical的选择依据"
+    },
+    {
+      "anchor": "section-22",
+      "text": "不要死记硬背模式特点，而要理解业务场景："
+    },
+    {
+      "anchor": "section-22",
+      "text": "业务场景"
+    },
+    {
+      "anchor": "section-22",
+      "text": "场景特征 | 选择模式 | 本项目实例\n任务有明确的先后顺序 （A完成后才能做B） | Sequential | 程序1：设计框架→生成题目\n多个任务需要并行执行 （可以同时进行） | Hierarchical | 程序2：答案解析 + 学习建议\n需要Manager动态分配任务 | Hierarchical | 程序2：Manager协调2个Agent\n任务间没有强依赖关系 | Hierarchical | -"
+    },
+    {
+      "anchor": "section-22",
+      "text": "经验法则："
+    },
+    {
+      "anchor": "section-22",
+      "text": "经验法则"
+    },
+    {
+      "anchor": "section-22",
+      "text": "默认用Sequential（更简单、更容易调试）"
+    },
+    {
+      "anchor": "section-22",
+      "text": "只有在需要并行或动态协调时才用Hierarchical"
+    },
+    {
+      "anchor": "section-22",
+      "text": "学习路径建议"
+    },
+    {
+      "anchor": "section-22",
+      "text": "建议按以下顺序学习本节："
+    },
+    {
+      "anchor": "section-22",
+      "text": "步骤1: 先学程序1（question_generator.py）\n  ├─ 理解最简单的Sequential流程\n  ├─ 掌握Agent、Task、Crew的基本用法\n  └─ 学会如何定义Prompt和输出格式\n\n步骤2: 再学程序2的阶段1-3（传统业务部分）\n  ├─ 看清楚哪些逻辑不需要AI\n  └─ 理解AI业务和传统业务如何衔接\n\n步骤3: 最后学程序2的阶段4（Hierarchical模式）\n  ├─ 对比Sequential和Hierarchical的差异\n  ├─ 理解Manager如何协调多个Agent\n  └─ 学会HITL（Human-in-the-Loop）模式"
+    },
+    {
+      "anchor": "section-22",
+      "text": "带着问题去阅读"
+    },
+    {
+      "anchor": "section-22",
+      "text": "阅读代码时，思考这些问题："
+    },
+    {
+      "anchor": "section-22",
+      "text": "程序1为什么要拆成2个Task？ 直接一个Task生成题目不行吗？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "程序1为什么要拆成2个Task？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "程序2的批改为什么不用AI？ 用AI批改不是更智能吗？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "程序2的批改为什么不用AI？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "为什么需要ExerciseCrew这个类？ 直接在main.py里创建Crew不行吗？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Task的expected_output有什么用？ 不写会怎么样？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Task的expected_output有什么用？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Hierarchical模式的Manager是怎么工作的？ 它会调用LLM吗？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Hierarchical模式的Manager是怎么工作的？"
+    },
+    {
+      "anchor": "section-22",
+      "text": "带着这些问题继续阅读，你会对架构设计有更深的理解。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "下一节预告"
+    },
+    {
+      "anchor": "section-69",
+      "text": "第5节我们将深入剖析程序1（题目生成器），详细讲解Crew、Agent、Task三大组件如何协同工作，以及Sequential模式的执行流程。通过真实代码示例，你将掌握CrewAI框架的核心用法。"
+    }
+  ]
+}

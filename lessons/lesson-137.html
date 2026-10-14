@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Skill的扩展能力 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-137">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-5">能力封装</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 10 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Skill核心概念与扩展能力</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 138</span></div>
+<h1 class="lesson-title">Skill的扩展能力</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>6 页原文</span><span>约 12 分钟阅读</span><span class="module-name">Skill核心概念与扩展能力</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-137.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-137.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>前面几节我们接触的 Skill——从 Humanizer 到 Algorithmic Art——本质上都是在做同一件事：用文本指导大模型如何完成任务。Humanizer 教大模型识别并去除 AI 痕迹，Algorithmic Art 教大模型生成 p5.js 代码。这些 Skill 的 SKILL.md 里写的是规则、规范、步骤，大模型读完自己就能执行。 但有一些任务是文本指导搞不定的。比如：转换一个文件格式、压缩一张图片、解析一份 PDF、调用一个 API。这些事情需要 Agent 真正去&quot;动手&quot;——运行一段代码、执行一个脚本、调用一个函数。 这就是本节要讨论的主题：Skill 如何与工具协作，让系统不仅能&quot;想&quot;，还能&quot;做&quot;。</p></aside>
+<h2 id="section-1" data-source-page="1">文本指引的边界<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">先搞清楚一个问题：什么情况下只用文本就够了？</p>
+<p data-source-page="1">回顾 Humanizer 的工作方式：大模型读取 SKILL.md 中的规则（“检测否定式排比”“去掉教科书式论述腔调”），然后在生成回答时应用这些规则。整个过程停留在文本生成层面——大模型读规则，写文本，结束。</p>
+<p data-source-page="1">类似地，代码审查 Skill 也是文本指引：SKILL.md 里写了命名规范、格式化标准、错误处理要求，大模型读完之后去审查用户提供的代码，给出评审意见。</p>
+<p data-source-page="1">这些场景有一个共同点：大模型本身具备完成该任务所需的所有能力，缺的只是专业知识。Skill 补充了知识缺口，大模型就能自己干。</p>
+<p data-source-page="1">但换个场景就不行了。假设你要创建一个 Skill，功能是&quot;把 Markdown 文件批量转换成 PDF&quot;。大模型再怎么聪明，也没法凭空在服务器上调用 pandoc 或 wkhtmltopdf（生成PDF的库）——它需要Agent 帮它执行这些操作。</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p data-source-page="2">这就是文本指引的边界。跨越这个边界，就需要引入工具（工具）。</p>
+<p data-source-page="2">工具（工具）</p>
+<h2 id="section-9" data-source-page="2">Skill 如何调用工具<a class="heading-link" href="#section-9" aria-label="链接至本节">#</a></h2>
+<p data-source-page="2">在讨论具体细节之前，需要先理清一个三方关系：Skill、大模型、Agent。这三者各司其职：</p>
+<p data-source-page="2">关于 Agent，本书第 11 章会有专门的深入讨论。这里你可以暂时把它理解为运行 Skill 的那个 AI 工具——比如 Claude Code 或 Qoder。回忆一下，前面几节我们实际使用 Skill 时，都是在这些工具里操作的——Skill 必须寄生在 AI 工具中才能运转。这个宿主，就是 Agent。</p>
+<p data-source-page="2">有了这个前提，来看三者的分工：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">Skill（知识）
+  │
+  │ 提供指令和规则
+  ▼
+大模型（大脑）
+  │
+  │ 读取 Skill 后，判断该调用哪个脚本、传什么参数
+  ▼
+Agent（手脚）
+  │
+  │ 实际执行：运行 Python 脚本、调用系统终端、操作文件
+  ▼
+最终结果返回给用户</code></pre></div>
+<p data-source-page="2">Skill 只负责&quot;教&quot;，不负责&quot;做&quot;。真正动手的是 Agent——它才是那个运行脚本、执行命令的角色。大模型在中间扮演决策者：它读取 Skill 里的指令，理解用户当前的需求，然后告诉 Agent 该干什么。</p>
+<p data-source-page="2">打一个比方：Skill 是一本方子书，大模型是读方子的老中医，Agent 是抓药熬药的学徒。缺了任何一个环节，药都熬不出来。</p>
+<p data-source-page="2">在 Skill 的目录结构中，scripts/ 目录就是专门为这个场景设计的：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">scripts/
+my-skill/
+├── SKILL.md              ← 核心指令（必需）
+├── scripts/              ← 可执行脚本（可选，但这里就是重点）
+│   ├── convert.py        ← Python 脚本
+│   ├── generate.sh       ← Shell 脚本
+│   └── template.js       ← Node.js 脚本
+├── references/           ← 参考文档（可选）
+└── assets/               ← 输出资源（可选）</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p data-source-page="3">与 SKILL.md 的&quot;教大模型怎么做&quot;不同，scripts/ 里的文件是交给 Agent 去执行的。大模型读取 Skill触发后，看到 SKILL.md 中指向 scripts/convert.py 的指令，就会通知 Agent 去运行这个脚本。Agent通过第 6 章讨论的 Function Calling 机制来完成调用。</p>
+<p data-source-page="3">一个直观的例子</p>
+<p data-source-page="3">假设我们写一个&quot;PDF 内容提取&quot; Skill：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">pdf-content-extractor/
+├── SKILL.md
+└── scripts/
+    ├── extract_text.py     ← 提取 PDF 中的文字
+    └── split_pages.py      ← 按页切分内容</code></pre></div>
+<p data-source-page="3">SKILL.md 中会这样引导大模型：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">当用户需要提取 PDF 里的文字内容时：
+
+1. 运行 scripts/extract_text.py &lt;pdf文件路径&gt;
+   这个脚本会返回 PDF 里的文字内容
+
+2. 根据返回结果回答用户的问题</code></pre></div>
+<p data-source-page="3">大模型看到这些指令后，通知 Agent 调用代码执行功能来运行 extract_text.py，获取结果，然后回复用户。整个过程对用户来说是透明的——用户只知道自己问了&quot;这份 PDF 里写了什么&quot;，后台已经完成了Skill 指导、模型决策、Agent 执行三个步骤的接力。</p>
+<p data-source-page="3">script 与执行者的对应关系</p>
+<p data-source-page="3">Agent 执行这些脚本时，依赖的是第 4 章讲过的 Function Calling 机制。不同类型的脚本对应不同的执行方式：</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="4"><table><thead><tr><th scope="col">脚本类型</th><th scope="col">执行方式</th><th scope="col">典型场景</th></tr></thead><tbody><tr><td>Python 脚本</td><td>通过 Python 解释器运行</td><td>数据处理、格式转换、API 调用</td></tr><tr><td>Shell 脚本</td><td>通过系统终端运行</td><td>文件操作、批处理、系统命令</td></tr><tr><td>Node.js 脚本</td><td>通过 Node 运行时运行</td><td>前端构建、npm 包调用</td></tr></tbody></table></div>
+<p data-source-page="4">Skill 的 scripts/ 目录把&quot;该用什么工具&quot;和&quot;怎么用&quot;打包在一起——大模型不需要自己想办法安装依赖、拼接命令行，告诉 Agent 照着执行就行。</p>
+<h2 id="section-29" data-source-page="4">References：为大模型补充背景知识<a class="heading-link" href="#section-29" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">references/ 目录装的是大模型执行任务时可能需要查阅的参考资料，而不是直接执行的代码。</p>
+<p data-source-page="4">它的使用场景很明确：当 SKILL.md 的核心指令不足以覆盖所有细节时，把详细内容拆到 references/中，保持 SKILL.md 精简。</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">my-skill/
+├── SKILL.md                  ← 核心流程 + 导航
+└── references/
+    ├── finance.md            ← 财务相关表结构
+    ├── sales.md              ← 销售相关查询模式
+    └── api_docs.md           ← API 文档</code></pre></div>
+<p data-source-page="4">与 scripts/ 的区别在于：script 是执行的，reference 是阅读的。Agent 不会自动运行 references/ 下的文件，只有当大模型（通过 SKILL.md 的指引）判断&quot;去查阅 references/finance.md 了解表结构&quot;时，才会去读取。</p>
+<p data-source-page="4">这种设计解决了 SKILL.md 膨胀的问题。如果一个 Skill 涉及多个业务领域（比如财务、销售、市场各有不同的数据模式），全部塞进 SKILL.md 会让文件变得臃肿。分拆到 references/ 后，大模型只加载当前任务需要的部分，节省上下文窗口。</p>
+<p data-source-page="4">这其实就是 Skill 的渐进加载能力：SKILL.md 是入口，永远加载；references/ 是按需查阅的词典，只在任务涉及某个领域时才被翻开。用户问财务问题时，大模型只加载 finance.md，sales.md 和api_docs.md 不会被拖进上下文——既节省了资源，也让大模型能专注于当前问题的领域知识。</p>
+<h2 id="section-36" data-source-page="4">Assets：准备输出需要的素材<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h2>
+<p data-source-page="4">assets/ 目录存放的是 Agent 在生成最终输出时需要用到的素材文件。这些文件不会被加载到大模型的上下文中，而是直接作为输出的一部分被使用。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">典型场景：</p>
+<p class="list-item" data-source-page="5">模板文件——assets/template.pptx，Agent 把它作为基准文件，复制并填充内容后输出</p>
+<p class="list-item" data-source-page="5">图片和图标——assets/logo.png，Agent 在生成 HTML 页面时引用</p>
+<p class="list-item" data-source-page="5">前端脚手架——assets/hello-world/，Agent 复制整个目录作为项目的初始代码</p>
+<h2 id="section-42" data-source-page="5">什么时候该用脚本，什么时候该用文本<a class="heading-link" href="#section-42" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">这里给出一个简单的判断原则：</p>
+<p class="list-item" data-source-page="5">如果任务可以用规则描述清楚，大模型自己就能指导 Agent 完成 → 写在 SKILL.md 正文中（文本指引）</p>
+<p class="list-item" data-source-page="5">如果任务需要执行确定性的、反复出现的代码逻辑 → 写成 scripts/ 下的脚本，交给 Agent</p>
+<p class="list-item" data-source-page="5">如果任务需要大模型查阅大量背景信息 → 放到 references/ 中</p>
+<p class="list-item" data-source-page="5">如果任务需要输出固定的模板或资源文件 → 放到 assets/ 中</p>
+<p data-source-page="5">以 Humanizer 为例：它只用了 SKILL.md 正文，没有 scripts、没有 references、没有 assets。因为它的任务就是&quot;识别 AI 痕迹并改写&quot;，这完全属于大模型自身的文本能力范畴——一台顶级跑车，加好油（知识）就能跑，不需要额外挂载设备。</p>
+<p data-source-page="5">但 PDF 处理 Skill 就不一样了：大模型没法直接操作出一个 PDF 文件（记住，大模型只能做决策，他永远不能直接调用工具），必须让 Agent 实际运行 Python 脚本来操作 PDF。</p>
+<h2 id="section-50" data-source-page="5">实战对照：Humanizer 与 PDF 处理<a class="heading-link" href="#section-50" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">来看两个 Skill 的结构差异：</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">humanizer-zh-1.0.0/              pdf-processor/
+├── SKILL.md                      ├── SKILL.md
+                                  ├── scripts/
+                                  │   ├── extract_text.py
+                                  │   ├── merge_pages.py
+                                  │   └── compress.py
+                                  └── references/
+                                      └── pdf_spec.md</code></pre></div>
+<p data-source-page="5">Humanizer 只需要一个 SKILL.md，因为它的全部逻辑就是&quot;告诉大模型哪些是 AI 痕迹&quot;。大模型知道这些规则后，自己能完成改写。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">PDF 处理 Skill 则必须有脚本——大模型无法通过文本描述来压缩一个 PDF 文件，必须让 Agent 调用scripts/compress.py 来实际执行操作。</p>
+<p data-source-page="6">这个对比帮助理解 Skill 的一个设计原则：能用文本说清楚的事，就不要写脚本。脚本是对大模型能力边界的补充，而不是替代。好的 Skill 会先问自己：大模型本身能不能做这件事？如果不能，才用脚本补上。</p>
+<h2 id="section-56" data-source-page="6">■ 学点英语<a class="heading-link" href="#section-56" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="6"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>脚本目录</td><td>Scripts</td><td>/ˈskrɪpts/</td><td>Skill目录中的可执行脚本，交由Agent运行，补充大模型无法直接操作的能力</td></tr><tr><td>参考资料</td><td>References</td><td>/ˈrefrənsɪz/</td><td>Skill目录中的阅读型文件，大模型按需查阅，用于补充背景知识</td></tr><tr><td>资源目录</td><td>Assets</td><td>/ˈæsets/</td><td>存放Agent生成输出时需用的素材文件和模板</td></tr><tr><td>函数调用</td><td>Function Calling</td><td>/ˈfʌŋkʃn ˈkɔːlɪŋ/</td><td>Agent调用外部工具/脚本的核心机制，Agent通过它执行scripts/ 中的代码</td></tr></tbody></table></div>
+<h2 id="section-58" data-source-page="6">下一节预告<a class="heading-link" href="#section-58" aria-label="链接至本节">#</a></h2>
+<p data-source-page="6">掌握了 Skill 与工具的协作方式后，下一节我们换一个角度：与其手写繁杂的 SKILL.md，不如让 AI 来帮你写。我们将用 Qoder 的内置功能，只需描述需求，AI 就能自动生成一个规范的 Skill。</p></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-136.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Skill 核心概念</strong><small>Skill核心概念与扩展能力</small></a><a class="chapter-neighbor next" href="lesson-138.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>让 AI 帮你创建 Skill</strong><small>frontend-design实战</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5287#mid=105139" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">文本指引的边界</a><a href="#section-9" class="toc-level-2">Skill 如何调用工具</a><a href="#section-29" class="toc-level-2">References：为大模型补充背景知识</a><a href="#section-36" class="toc-level-2">Assets：准备输出需要的素材</a><a href="#section-42" class="toc-level-2">什么时候该用脚本，什么时候该用文本</a><a href="#section-50" class="toc-level-2">实战对照：Humanizer 与 PDF 处理</a><a href="#section-56" class="toc-level-2">■ 学点英语</a><a href="#section-58" class="toc-level-2">下一节预告</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-137", "title": "Skill的扩展能力", "stage": 5, "week": 10, "module": "Skill核心概念与扩展能力", "minutes": 12, "pages": 6, "type": "article"}</script>
+</body></html>

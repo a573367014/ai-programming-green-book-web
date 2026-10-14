@@ -1,0 +1,1351 @@
+{
+  "id": "lesson-068",
+  "title": "Context Learning",
+  "code": "1-1",
+  "stage": 1,
+  "week": 3,
+  "week_title": "语言模型的进阶能力",
+  "module": "Context Learning",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/003-第3周 语言模型的进阶能力/010-Context Learning/068-图文-1-1-Context Learning.pdf",
+  "sha256": "f0a14252b6dd5cf143d31c07ad18be9a1e050107263deb549b3a50c7075a1cbe",
+  "pdf": "sources/pdf/lesson-068.pdf",
+  "pages": 8,
+  "source_url": "https://class.imooc.com/lesson/5262#mid=104896",
+  "minutes": 9,
+  "excerpt": "上一节，我带你看了“涌现能力”——当模型规模足够大时，会突然展现出从未被明确训练过的能力。但在所有涌现出来的能力中，有一个能力尤其特殊，特殊到它几乎改变了我们使用AI的方式。 这个能力叫做In-Context Learning（情境学习，或称上下文学习）。 简单来说：不需要重新训练模型，只需要在提示",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节，我带你看了“涌现能力”——当模型规模足够大时，会突然展现出从未被明确训练过的能力。但在所有涌现出来的能力中，有一个能力尤其特殊，特殊到它几乎改变了我们使用AI的方式。 这个能力叫做In-Context Learning（情境学习，或称上下文学习）。 简单来说：不需要重新训练模型，只需要在提示词中给几个例子，模型就能学会一个新任务。 第一次听到这个能力时，可能会觉得：“这有什么特别的？” 但这是一个革命性的突破。一起来看看。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "7.1 从一个具体的例子开始",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "情感分类任务示例",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我用一个非常直观的例子，展示情境学习是什么。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "任务：情感分类 假设要让ChatGPT判断电影评论是“正面”还是“负面”。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "传统机器学习方法",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "list",
+      "text": "收集数据",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "需要标注几千到几万条评论：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“这部电影太棒了！” → 正面 “浪费时间” → 负面 ……",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用这些数据训练一个分类器。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "时间：几小时到几天。 成本：数千到数万元。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "部署使用",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型学会了这个任务。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "方法很简单——直接告诉ChatGPT：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "输入： “请判断以下电影评论的情感（正面/负面）： 例子1： 评论：‘这部电影太棒了！’ 情感：正面 例子2： 评论：‘浪费时间’ 情感：负面 例子3： 评论：‘演员表演很自然’ 情感：正面 现在请判断： 评论：‘剧情拖沓，让人昏昏欲睡’ 情感： ChatGPT的回答： “负面”",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "只是给了3个例子，ChatGPT就“学会”了这个任务，不需要任何训练。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是情境学习。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.2 什么是情境学习",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "核心定义",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型在推理时（不改变预训练参数的情况下），通过提示词中的示例，学会执行一个新任务的能力。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个定义有几个关键点：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不改变参数",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "传统训练：调整模型的1750亿个参数",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "情境学习：参数完全不变，只改变输入",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "通过示例学习",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不是通过明确的指令，而是通过几个具体的例子，让模型自己总结规律。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "推理时学习不是在训练阶段学习，而是在使用模型的时候实时学习。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "7.3 情境学习的三种形式",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "研究者们发现，情境学习有三种主要形式，能力依次递增：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Zero-Shot（零样本）：不给任何例子，只给任务描述",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Zero-Shot（零样本）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Few-Shot（少样本）：给几个例子，然后执行新任务",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Few-Shot（少样本）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "One-Shot（单样本）：只给一个例子",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "One-Shot（单样本）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 关于Shot这个词 在英语中，“shot”原意是“射击”、“尝试”。在机器学习领域，它被借用来指“示例”或“样本”。 Zero-Shot：零次尝试/零个示例 → 不给任何例子 One-Shot：一次尝试/一个示例 → 只给一个例子 Few-Shot：少数尝试/少量示例 → 给3-5个例子 这个词来源于体育比赛中的“射门”（shot）概念——就像篮球运动员投篮，每投一次算一次“shot”。在AI领域，每给一个示例，就算给模型一次“尝试的机会”。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h3",
+      "text": "零样本学习",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不给任何例子，只给任务描述。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "输入： “请将以下句子翻译成英文： 今天天气真好” ChatGPT： “The weather is really nice today”",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是最直观的。为什么没有给样本也能给出答案？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为在预训练阶段，模型已经见过无数翻译相关的文本：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“The weather is nice (天气很好)” “How are you? (你好吗?)” …",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它在预训练中已经学会了中英文之间的对应关系。当收到“请翻译成英文”的指令时，模型能理解意图，并调用这个能力。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就像Zero-Shot——不需要示例，只需要任务描述，就能激活模型预训练时学到的知识。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "少样本学习",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "给几个例子（通常1-10个），然后执行新任务。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是情境学习最经典的形式，也是最常用的。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "输入： “请识别以下编程语言： print(‘Hello, World!’) → Python console.log(‘Hello,World!’); → JavaScript System.out.println(“Hello, World!”); → Java 现在请识别： echo“Hello, World!” → ChatGPT： “PHP”",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型从这三个例子中学到了：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "任务是识别代码片段对应的编程语言",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "答案应该简洁，只给语言名称",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "不需要额外解释",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些都没有明说，但模型从例子中\"悟\"出来了。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "更好玩的例子:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "输入: \"将以下句子改为更正式的表达: 原句:这东西挺好的 正式:此物品质量上乘 原句:他跑得飞快 正式:其奔跑速度极快 原句:这事儿太搞笑了 正式:\" ChatGPT: “此事颇为滑稽”",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型学会了:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "用\"此\"\"其\"等文言词汇",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "避免\"挺\"“飞快”\"搞笑\"等口语",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "保持原意但提升正式程度",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这些都是从3个例子中学到的。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "单样本学习",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "顾名思义：只给一个例子。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "只给一个例子。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这比Zero-Shot简单，但比Few-Shot困难——模型要从单个例子中推断出整个任务的模式。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "输入： “按照示例格式回答： 示例： 输入：苹果 输出：Apple 现在： 输入：香蕉 输出：ChatGPT： “Banana”",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "从一个例子中，模型推断出：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "任务是中英翻译",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "只翻译单词，不加其他内容",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "首字母大写",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "情境学习甚至能学习全新的、人工设计的任务。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“按照示例转换： 示例： 输入：cat 输出：tac 现在： 输入：dog 输出：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“god”",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它学会了：反转字母顺序。这是一个完全人工的、训练数据中几乎不可能出现的任务，但模型从一个例子中学会了。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "7.4 能力边界",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "依赖预训练知识",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然情境学习很强大，但它也有明确的局限。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型只能学习那些与预训练知识“相关”的任务。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "可以学习的：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "翻译（训练数据中有大量翻译文本）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "情感分类（训练数据中有情感表达）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "文本改写（训练数据中有各种表达方式）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "很难学习的：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "识别图像（模型只见过文本）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "实时数据分析（训练数据一般早于当前日期）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "需要大量专业知识的任务（如医学诊断）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "示例数量有限",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "受限于上下文窗口长度。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "GPT-3的上下文窗口：约4000个Token。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果一个任务需要看100个例子才能学会，但100个例子超过了4000个Token，模型就学不了。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这限制了情境学习能处理的任务复杂度。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "无法学习真正新的知识",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "情境学习学习的是\"模式\"，不是\"知识\"。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "比如，给几个\"中文→拼音\"的例子，模型能学会转换。但这只是应用已有的语音知识，不是真正学到了新东西。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果告诉模型一个新发明的化学元素的性质，期待它能推理这个元素的其他性质，这是做不到的。模型没有真正\"学习\"这个新知识，只是记住了输入的内容。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "h3",
+      "text": "性能通常不如微调",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对于重要的、固定的任务，微调仍然更好。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "情境学习：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "优势：快速、灵活、不需要训练",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "劣势：准确率通常较低（70-85%）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "监督微调：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "优势：准确率高（90-95%以上）",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "劣势：需要数据、时间、成本",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "如何选择",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果是临时任务、快速原型，用情境学习。 如果是核心业务、长期使用，值得微调。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.5 下节预告",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "情境学习让模型能从几个例子中快速学会新任务。但在复杂任务上，可能会发现一个问题：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "模型直接给出答案，但不展示推理过程；关键是这个答案往往还是错误的。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "模型直接给出答案，但不展示推理过程；关键是这个答案往往还是错误的",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "就像学生做数学题，直接写答案而不展示解题步骤，容易出错。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节，我们将学习思维链（Chain-of-Thought）——一种让AI“一步步思考”的方法。这种方法可以让AI展示他的思考过程，同时提高准确率。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是提示工程中性价比最高的技巧。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "7.6 推荐阅读",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Language Models are Few-Shot Learners (GPT-3论文， 2020)",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "OpenAI发布的GPT-3论文，首次系统地展示In-Context Learning的惊人能力。论文详细探讨了Zero-Shot、One-Shot和Few-Shot三种形式的效果，证明了大模型能够无需重新训练就学会新任务。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "7.7 ■ 学点英语",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n情境学习 | In-Context Learning | /ɪn ˈkɒntekst ˈlɜːnɪŋ/ | 不更新参数、仅靠提示词示例让模型执行新任务的能力\n零样本 | Zero-Shot | /ˈzɪərəʊ ʃɒt/ | 不提供任何示例只给任务描述的情境学习形式\n单样本 | One-Shot | /wʌn ʃɒt/ | 只提供一个示例的情境学习形式\n少样本 | Few-Shot | /fjuː ʃɒt/ | 提供少量示例（通常 3-10 个）的情境学习形式\n示例 | Demonstration | / demənˈstreɪʃn/ ˌ | 在 Prompt 中放置的“问题-答案”样本\n梯度更新 | Gradient Update | /ˈɡreɪdiənt ʌpˈdeɪt/ | 通过反向传播调整模型参数的训练步骤\n归纳 | Induction | /ɪnˈdʌkʃn/ | 从具体示例推断一般模式的过程\n提示词 | Prompt | /prɒmpt/ | 输入给模型的文字指令与上下文",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "情境学习",
+          "In-Context Learning",
+          "/ɪn ˈkɒntekst ˈlɜːnɪŋ/",
+          "不更新参数、仅靠提示词示例让模型执行新任务的能力"
+        ],
+        [
+          "零样本",
+          "Zero-Shot",
+          "/ˈzɪərəʊ ʃɒt/",
+          "不提供任何示例只给任务描述的情境学习形式"
+        ],
+        [
+          "单样本",
+          "One-Shot",
+          "/wʌn ʃɒt/",
+          "只提供一个示例的情境学习形式"
+        ],
+        [
+          "少样本",
+          "Few-Shot",
+          "/fjuː ʃɒt/",
+          "提供少量示例（通常 3-10 个）的情境学习形式"
+        ],
+        [
+          "示例",
+          "Demonstration",
+          "/ demənˈstreɪʃn/ ˌ",
+          "在 Prompt 中放置的“问题-答案”样本"
+        ],
+        [
+          "梯度更新",
+          "Gradient Update",
+          "/ˈɡreɪdiənt ʌpˈdeɪt/",
+          "通过反向传播调整模型参数的训练步骤"
+        ],
+        [
+          "归纳",
+          "Induction",
+          "/ɪnˈdʌkʃn/",
+          "从具体示例推断一般模式的过程"
+        ],
+        [
+          "提示词",
+          "Prompt",
+          "/prɒmpt/",
+          "输入给模型的文字指令与上下文"
+        ]
+      ],
+      "page": 8
+    }
+  ],
+  "accounting": {
+    "source_chars": 3778,
+    "represented_chars": 3569,
+    "removed_chars": 209,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 165,
+      "repeated_title": 44
+    }
+  },
+  "videos": [],
+  "order": 69,
+  "headings": [
+    {
+      "title": "7.1 从一个具体的例子开始",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "传统机器学习方法",
+      "id": "section-5",
+      "level": 3
+    },
+    {
+      "title": "7.2 什么是情境学习",
+      "id": "section-17",
+      "level": 2
+    },
+    {
+      "title": "核心定义",
+      "id": "section-18",
+      "level": 3
+    },
+    {
+      "title": "7.3 情境学习的三种形式",
+      "id": "section-27",
+      "level": 2
+    },
+    {
+      "title": "零样本学习",
+      "id": "section-36",
+      "level": 3
+    },
+    {
+      "title": "少样本学习",
+      "id": "section-44",
+      "level": 3
+    },
+    {
+      "title": "单样本学习",
+      "id": "section-60",
+      "level": 3
+    },
+    {
+      "title": "7.4 能力边界",
+      "id": "section-73",
+      "level": 2
+    },
+    {
+      "title": "依赖预训练知识",
+      "id": "section-74",
+      "level": 3
+    },
+    {
+      "title": "示例数量有限",
+      "id": "section-85",
+      "level": 3
+    },
+    {
+      "title": "无法学习真正新的知识",
+      "id": "section-90",
+      "level": 3
+    },
+    {
+      "title": "性能通常不如微调",
+      "id": "section-94",
+      "level": 3
+    },
+    {
+      "title": "如何选择",
+      "id": "section-102",
+      "level": 3
+    },
+    {
+      "title": "7.5 下节预告",
+      "id": "section-104",
+      "level": 2
+    },
+    {
+      "title": "7.6 推荐阅读",
+      "id": "section-111",
+      "level": 2
+    },
+    {
+      "title": "7.7 ■ 学点英语",
+      "id": "section-114",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节，我带你看了“涌现能力”——当模型规模足够大时，会突然展现出从未被明确训练过的能力。但在所有涌现出来的能力中，有一个能力尤其特殊，特殊到它几乎改变了我们使用AI的方式。 这个能力叫做In-Context Learning（情境学习，或称上下文学习）。 简单来说：不需要重新训练模型，只需要在提示词中给几个例子，模型就能学会一个新任务。 第一次听到这个能力时，可能会觉得：“这有什么特别的？” 但这是一个革命性的突破。一起来看看。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "7.1 从一个具体的例子开始"
+    },
+    {
+      "anchor": "section-1",
+      "text": "情感分类任务示例"
+    },
+    {
+      "anchor": "section-1",
+      "text": "我用一个非常直观的例子，展示情境学习是什么。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "任务：情感分类 假设要让ChatGPT判断电影评论是“正面”还是“负面”。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "传统机器学习方法"
+    },
+    {
+      "anchor": "section-5",
+      "text": "收集数据"
+    },
+    {
+      "anchor": "section-5",
+      "text": "需要标注几千到几万条评论："
+    },
+    {
+      "anchor": "section-5",
+      "text": "“这部电影太棒了！” → 正面 “浪费时间” → 负面 ……"
+    },
+    {
+      "anchor": "section-5",
+      "text": "用这些数据训练一个分类器。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "时间：几小时到几天。 成本：数千到数万元。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "部署使用"
+    },
+    {
+      "anchor": "section-5",
+      "text": "模型学会了这个任务。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "方法很简单——直接告诉ChatGPT："
+    },
+    {
+      "anchor": "section-5",
+      "text": "输入： “请判断以下电影评论的情感（正面/负面）： 例子1： 评论：‘这部电影太棒了！’ 情感：正面 例子2： 评论：‘浪费时间’ 情感：负面 例子3： 评论：‘演员表演很自然’ 情感：正面 现在请判断： 评论：‘剧情拖沓，让人昏昏欲睡’ 情感： ChatGPT的回答： “负面”"
+    },
+    {
+      "anchor": "section-5",
+      "text": "只是给了3个例子，ChatGPT就“学会”了这个任务，不需要任何训练。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "这就是情境学习。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "7.2 什么是情境学习"
+    },
+    {
+      "anchor": "section-18",
+      "text": "核心定义"
+    },
+    {
+      "anchor": "section-18",
+      "text": "模型在推理时（不改变预训练参数的情况下），通过提示词中的示例，学会执行一个新任务的能力。"
+    },
+    {
+      "anchor": "section-18",
+      "text": "这个定义有几个关键点："
+    },
+    {
+      "anchor": "section-18",
+      "text": "不改变参数"
+    },
+    {
+      "anchor": "section-18",
+      "text": "传统训练：调整模型的1750亿个参数"
+    },
+    {
+      "anchor": "section-18",
+      "text": "情境学习：参数完全不变，只改变输入"
+    },
+    {
+      "anchor": "section-18",
+      "text": "通过示例学习"
+    },
+    {
+      "anchor": "section-18",
+      "text": "不是通过明确的指令，而是通过几个具体的例子，让模型自己总结规律。"
+    },
+    {
+      "anchor": "section-18",
+      "text": "推理时学习不是在训练阶段学习，而是在使用模型的时候实时学习。"
+    },
+    {
+      "anchor": "section-27",
+      "text": "7.3 情境学习的三种形式"
+    },
+    {
+      "anchor": "section-27",
+      "text": "研究者们发现，情境学习有三种主要形式，能力依次递增："
+    },
+    {
+      "anchor": "section-27",
+      "text": "Zero-Shot（零样本）：不给任何例子，只给任务描述"
+    },
+    {
+      "anchor": "section-27",
+      "text": "Zero-Shot（零样本）"
+    },
+    {
+      "anchor": "section-27",
+      "text": "Few-Shot（少样本）：给几个例子，然后执行新任务"
+    },
+    {
+      "anchor": "section-27",
+      "text": "Few-Shot（少样本）"
+    },
+    {
+      "anchor": "section-27",
+      "text": "One-Shot（单样本）：只给一个例子"
+    },
+    {
+      "anchor": "section-27",
+      "text": "One-Shot（单样本）"
+    },
+    {
+      "anchor": "section-27",
+      "text": "关于Shot这个词 在英语中，“shot”原意是“射击”、“尝试”。在机器学习领域，它被借用来指“示例”或“样本”。 Zero-Shot：零次尝试/零个示例 → 不给任何例子 One-Shot：一次尝试/一个示例 → 只给一个例子 Few-Shot：少数尝试/少量示例 → 给3-5个例子 这个词来源于体育比赛中的“射门”（shot）概念——就像篮球运动员投篮，每投一次算一次“shot”。在AI领域，每给一个示例，就算给模型一次“尝试的机会”。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "零样本学习"
+    },
+    {
+      "anchor": "section-36",
+      "text": "不给任何例子，只给任务描述。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "输入： “请将以下句子翻译成英文： 今天天气真好” ChatGPT： “The weather is really nice today”"
+    },
+    {
+      "anchor": "section-36",
+      "text": "这是最直观的。为什么没有给样本也能给出答案？"
+    },
+    {
+      "anchor": "section-36",
+      "text": "因为在预训练阶段，模型已经见过无数翻译相关的文本："
+    },
+    {
+      "anchor": "section-36",
+      "text": "“The weather is nice (天气很好)” “How are you? (你好吗?)” …"
+    },
+    {
+      "anchor": "section-36",
+      "text": "它在预训练中已经学会了中英文之间的对应关系。当收到“请翻译成英文”的指令时，模型能理解意图，并调用这个能力。"
+    },
+    {
+      "anchor": "section-36",
+      "text": "这就像Zero-Shot——不需要示例，只需要任务描述，就能激活模型预训练时学到的知识。"
+    },
+    {
+      "anchor": "section-44",
+      "text": "少样本学习"
+    },
+    {
+      "anchor": "section-44",
+      "text": "给几个例子（通常1-10个），然后执行新任务。"
+    },
+    {
+      "anchor": "section-44",
+      "text": "这是情境学习最经典的形式，也是最常用的。"
+    },
+    {
+      "anchor": "section-44",
+      "text": "输入： “请识别以下编程语言： print(‘Hello, World!’) → Python console.log(‘Hello,World!’); → JavaScript System.out.println(“Hello, World!”); → Java 现在请识别： echo“Hello, World!” → ChatGPT： “PHP”"
+    },
+    {
+      "anchor": "section-44",
+      "text": "模型从这三个例子中学到了："
+    },
+    {
+      "anchor": "section-44",
+      "text": "任务是识别代码片段对应的编程语言"
+    },
+    {
+      "anchor": "section-44",
+      "text": "答案应该简洁，只给语言名称"
+    },
+    {
+      "anchor": "section-44",
+      "text": "不需要额外解释"
+    },
+    {
+      "anchor": "section-44",
+      "text": "这些都没有明说，但模型从例子中\"悟\"出来了。"
+    },
+    {
+      "anchor": "section-44",
+      "text": "更好玩的例子:"
+    },
+    {
+      "anchor": "section-44",
+      "text": "输入: \"将以下句子改为更正式的表达: 原句:这东西挺好的 正式:此物品质量上乘 原句:他跑得飞快 正式:其奔跑速度极快 原句:这事儿太搞笑了 正式:\" ChatGPT: “此事颇为滑稽”"
+    },
+    {
+      "anchor": "section-44",
+      "text": "模型学会了:"
+    },
+    {
+      "anchor": "section-44",
+      "text": "用\"此\"\"其\"等文言词汇"
+    },
+    {
+      "anchor": "section-44",
+      "text": "避免\"挺\"“飞快”\"搞笑\"等口语"
+    },
+    {
+      "anchor": "section-44",
+      "text": "保持原意但提升正式程度"
+    },
+    {
+      "anchor": "section-44",
+      "text": "这些都是从3个例子中学到的。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "单样本学习"
+    },
+    {
+      "anchor": "section-60",
+      "text": "顾名思义：只给一个例子。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "只给一个例子。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "这比Zero-Shot简单，但比Few-Shot困难——模型要从单个例子中推断出整个任务的模式。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "输入： “按照示例格式回答： 示例： 输入：苹果 输出：Apple 现在： 输入：香蕉 输出：ChatGPT： “Banana”"
+    },
+    {
+      "anchor": "section-60",
+      "text": "从一个例子中，模型推断出："
+    },
+    {
+      "anchor": "section-60",
+      "text": "任务是中英翻译"
+    },
+    {
+      "anchor": "section-60",
+      "text": "只翻译单词，不加其他内容"
+    },
+    {
+      "anchor": "section-60",
+      "text": "首字母大写"
+    },
+    {
+      "anchor": "section-60",
+      "text": "情境学习甚至能学习全新的、人工设计的任务。"
+    },
+    {
+      "anchor": "section-60",
+      "text": "“按照示例转换： 示例： 输入：cat 输出：tac 现在： 输入：dog 输出："
+    },
+    {
+      "anchor": "section-60",
+      "text": "“god”"
+    },
+    {
+      "anchor": "section-60",
+      "text": "它学会了：反转字母顺序。这是一个完全人工的、训练数据中几乎不可能出现的任务，但模型从一个例子中学会了。"
+    },
+    {
+      "anchor": "section-73",
+      "text": "7.4 能力边界"
+    },
+    {
+      "anchor": "section-74",
+      "text": "依赖预训练知识"
+    },
+    {
+      "anchor": "section-74",
+      "text": "虽然情境学习很强大，但它也有明确的局限。"
+    },
+    {
+      "anchor": "section-74",
+      "text": "模型只能学习那些与预训练知识“相关”的任务。"
+    },
+    {
+      "anchor": "section-74",
+      "text": "可以学习的："
+    },
+    {
+      "anchor": "section-74",
+      "text": "翻译（训练数据中有大量翻译文本）"
+    },
+    {
+      "anchor": "section-74",
+      "text": "情感分类（训练数据中有情感表达）"
+    },
+    {
+      "anchor": "section-74",
+      "text": "文本改写（训练数据中有各种表达方式）"
+    },
+    {
+      "anchor": "section-74",
+      "text": "很难学习的："
+    },
+    {
+      "anchor": "section-74",
+      "text": "识别图像（模型只见过文本）"
+    },
+    {
+      "anchor": "section-74",
+      "text": "实时数据分析（训练数据一般早于当前日期）"
+    },
+    {
+      "anchor": "section-74",
+      "text": "需要大量专业知识的任务（如医学诊断）"
+    },
+    {
+      "anchor": "section-85",
+      "text": "示例数量有限"
+    },
+    {
+      "anchor": "section-85",
+      "text": "受限于上下文窗口长度。"
+    },
+    {
+      "anchor": "section-85",
+      "text": "GPT-3的上下文窗口：约4000个Token。"
+    },
+    {
+      "anchor": "section-85",
+      "text": "如果一个任务需要看100个例子才能学会，但100个例子超过了4000个Token，模型就学不了。"
+    },
+    {
+      "anchor": "section-85",
+      "text": "这限制了情境学习能处理的任务复杂度。"
+    },
+    {
+      "anchor": "section-90",
+      "text": "无法学习真正新的知识"
+    },
+    {
+      "anchor": "section-90",
+      "text": "情境学习学习的是\"模式\"，不是\"知识\"。"
+    },
+    {
+      "anchor": "section-90",
+      "text": "比如，给几个\"中文→拼音\"的例子，模型能学会转换。但这只是应用已有的语音知识，不是真正学到了新东西。"
+    },
+    {
+      "anchor": "section-90",
+      "text": "如果告诉模型一个新发明的化学元素的性质，期待它能推理这个元素的其他性质，这是做不到的。模型没有真正\"学习\"这个新知识，只是记住了输入的内容。"
+    },
+    {
+      "anchor": "section-94",
+      "text": "性能通常不如微调"
+    },
+    {
+      "anchor": "section-94",
+      "text": "对于重要的、固定的任务，微调仍然更好。"
+    },
+    {
+      "anchor": "section-94",
+      "text": "情境学习："
+    },
+    {
+      "anchor": "section-94",
+      "text": "优势：快速、灵活、不需要训练"
+    },
+    {
+      "anchor": "section-94",
+      "text": "劣势：准确率通常较低（70-85%）"
+    },
+    {
+      "anchor": "section-94",
+      "text": "监督微调："
+    },
+    {
+      "anchor": "section-94",
+      "text": "优势：准确率高（90-95%以上）"
+    },
+    {
+      "anchor": "section-94",
+      "text": "劣势：需要数据、时间、成本"
+    },
+    {
+      "anchor": "section-102",
+      "text": "如何选择"
+    },
+    {
+      "anchor": "section-102",
+      "text": "如果是临时任务、快速原型，用情境学习。 如果是核心业务、长期使用，值得微调。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "7.5 下节预告"
+    },
+    {
+      "anchor": "section-104",
+      "text": "情境学习让模型能从几个例子中快速学会新任务。但在复杂任务上，可能会发现一个问题："
+    },
+    {
+      "anchor": "section-104",
+      "text": "模型直接给出答案，但不展示推理过程；关键是这个答案往往还是错误的。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "模型直接给出答案，但不展示推理过程；关键是这个答案往往还是错误的"
+    },
+    {
+      "anchor": "section-104",
+      "text": "就像学生做数学题，直接写答案而不展示解题步骤，容易出错。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "下一节，我们将学习思维链（Chain-of-Thought）——一种让AI“一步步思考”的方法。这种方法可以让AI展示他的思考过程，同时提高准确率。"
+    },
+    {
+      "anchor": "section-104",
+      "text": "这是提示工程中性价比最高的技巧。"
+    },
+    {
+      "anchor": "section-111",
+      "text": "7.6 推荐阅读"
+    },
+    {
+      "anchor": "section-111",
+      "text": "Language Models are Few-Shot Learners (GPT-3论文， 2020)"
+    },
+    {
+      "anchor": "section-111",
+      "text": "OpenAI发布的GPT-3论文，首次系统地展示In-Context Learning的惊人能力。论文详细探讨了Zero-Shot、One-Shot和Few-Shot三种形式的效果，证明了大模型能够无需重新训练就学会新任务。"
+    },
+    {
+      "anchor": "section-114",
+      "text": "7.7 ■ 学点英语"
+    },
+    {
+      "anchor": "section-114",
+      "text": "中文 | English | 音标 | 说明\n情境学习 | In-Context Learning | /ɪn ˈkɒntekst ˈlɜːnɪŋ/ | 不更新参数、仅靠提示词示例让模型执行新任务的能力\n零样本 | Zero-Shot | /ˈzɪərəʊ ʃɒt/ | 不提供任何示例只给任务描述的情境学习形式\n单样本 | One-Shot | /wʌn ʃɒt/ | 只提供一个示例的情境学习形式\n少样本 | Few-Shot | /fjuː ʃɒt/ | 提供少量示例（通常 3-10 个）的情境学习形式\n示例 | Demonstration | / demənˈstreɪʃn/ ˌ | 在 Prompt 中放置的“问题-答案”样本\n梯度更新 | Gradient Update | /ˈɡreɪdiənt ʌpˈdeɪt/ | 通过反向传播调整模型参数的训练步骤\n归纳 | Induction | /ɪnˈdʌkʃn/ | 从具体示例推断一般模式的过程\n提示词 | Prompt | /prɒmpt/ | 输入给模型的文字指令与上下文"
+    }
+  ]
+}

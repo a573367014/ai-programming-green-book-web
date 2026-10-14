@@ -1,0 +1,440 @@
+{
+  "id": "lesson-139",
+  "title": "个人技能可视化：frontend-design实战",
+  "code": "1-2",
+  "stage": 5,
+  "week": 10,
+  "week_title": "Skill：可复用技能封装",
+  "module": "frontend-design实战",
+  "type": "article",
+  "repo_path": "005-阶段五 【能力封装】可复用技能/001-第10周 Skill：可复用技能封装/003-frontend-design实战/006-图文-1-2-个人技能可视化：frontend-design实战.pdf",
+  "sha256": "f647c5c72956e00d5f01f9f35d17db73495f45430f55f17708942a52bb201603",
+  "pdf": "sources/pdf/lesson-139.pdf",
+  "pages": 5,
+  "source_url": "https://class.imooc.com/lesson/5288#mid=105143",
+  "minutes": 6,
+  "excerpt": "前面几节我们一直在自己写 Skill。但社区里还有很多别人写好的 Skill，装完就能用。这一节的目的不是教你写 Skill，而是推荐一个非常有用的 Skill——frontend-design。frontend-design 是一个前端设计 Skill，它的核心能力是帮非专业设计的程序员做出有品质",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 前面几节我们一直在自己写 Skill。但社区里还有很多别人写好的 Skill，装完就能用。这一节的目的不是教你写 Skill，而是推荐一个非常有用的 Skill——frontend-design。frontend-design 是一个前端设计 Skill，它的核心能力是帮非专业设计的程序员做出有品质的网页 UI。为了让你直观感受它能做到什么程度，我们拿「个人技能展示页」作为演示案例：准备一份假数据的 JS 文件，写一段 Prompt 调用 frontend-design，让它自动生成一个完整的展示页面。 本节你将完成： 了解 frontend-design 这个 Skill 能做什么 准备一份 19 个技能的假数据（JS 模块） 看一段 Prompt 如何引用 frontend-design 来设计页面",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "推荐一个优秀的 Skill：frontend-design",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "写网页是 AI 最能快速出效果的场景之一。你给它一段描述，它就能生成 HTML。但这里有一个明显的问题——质量不稳定。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "直接让 AI 写网页，大概率得到的是这种风格：白底、居中排版、圆角卡片、紫色渐变按钮。它不是不能用，但每个页面都长一个样，一看就知道是 AI 生成的。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "社区里有一个专门解决这个问题的 Skill——frontend-design。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "frontend-design 不是一个「教 AI 怎么写 HTML」的工具。它的核心是一套经过验证的设计规范和审美标准。当 AI 遵循它的指引生成页面时，会自动避开那些 AI 廉价审美的坑：不会出现莫名其妙的紫色渐变、不会滥用圆角卡片、不会用无聊的居中布局。从字体搭配到配色选择，从动画微交互相到页面构图，它都有明确的主张。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "简单说：你不需要自己会设计，你只需要装一个 frontend-design，然后告诉 AI「按它的标准来做」。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "演示案例：个人技能展示页",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为了直观感受 frontend-design 的能力，我们准备了一个简单的演示场景。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "数据准备",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们准备了 19 个技能的假数据，放在一个 JS 文件里。每个技能包含 id、name、displayName、category、description、fullDescription、tags、stats、installCmd 等字段。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "code",
+      "text": "{\n  id: 'frontend-design',\n  name: 'frontend-design',\n  displayName: '前端设计引擎',\n  category: '设计创作',\n  description: '创建有品质的前端界面...',\n  fullDescription: '一个注重设计品质的前端生成技能...',\n  tags: ['UI', '设计', '前端', 'CSS', 'HTML'],\n  stats: { stars: 934, used: 6200, updated: '2025-04' },\n  installCmd: 'qoder install frontend-design',\n  icon: 'pencil-ruler',\n  version: '2.7.0',\n  author: 'Anthropic'\n}",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "完整的数据文件在 samples/chapter10/skill-portfolio/assets/skills-data.js。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "数据准备好了。怎么让 AI 把这些数据变成一个漂亮的网页？答案是一段 Prompt：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "使用 **frontend-design** 技能生成一个高质量的个人技能可视化网页。\n\n## 数据\n- 数据文件：assets/skills-data.js\n- 导出了 skills（技能列表）和 categories（分类列表）\n\n## 页面\n- 首页：卡片网格展示所有技能\n- 详情页：点击卡片后切换，展示完整信息",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这段 Prompt 比你想象中短得多。没有设计规范、没有样式说明——不是因为不需要，而是因为那些已经写在 frontend-design 的 SKILL.md 里了。你只需要告诉 AI「使用 frontend-design」，它会自己去加载 frontend-design 的设计指引。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "完整的 Prompt 文件在 samples/chapter10/skill-portfolio/SKILL.md。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "运行",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "把数据和 Prompt 一起交给 AI：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "这里有一份技能数据（assets/skills-data.js），\n请按这段 Prompt（SKILL.md）的要求，\n用 frontend-design 生成一个个人技能展示页。",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI 收到后，先读取你的 Prompt 了解页面结构，再加载 frontend-design 的设计规范，然后从 skills-data.js 读取数据，开始生成 HTML。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "生成的结果有几个值得注意的特点：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "完全自主手写样式，不依赖 Bootstrap、Tailwind 等外部 CSS 框架",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "零 emoji，所有图标用内联 SVG 实现（个人经验，想要好看的UI，必须禁止使用Emoji这种AI超喜欢的东西）",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "list",
+      "text": "深色主题 + 强调色，没有紫青渐变（AI一般默认会选用紫色，他认为紫色具有赛博朋克的科技感）、没有无聊的居中布局",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "list",
+      "text": "两视图切换：首页卡片网格带分类筛选，点击后平滑过渡到详情页",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "两视图切换",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "19 个技能、5 个分类、一份 JS 数据文件、一段不到 10 行的 Prompt——剩下的 HTML、CSS、交互逻辑全部由 frontend-design 指挥 AI 自动完成。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "h2",
+      "text": "■ 学点英语",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n前端设计技能 | frontend- design | /frʌnt end dɪ ˈzaɪn/ | 社区推荐的高质量前端设计Skill，提供经过验证的设计规范和审美标准\n可缩放矢量图形 | SVG | /es viː dʒiː/ | 用XML描述2D图形的格式，frontend-design用它替代 emoji实现高质量图标\n主题 | Theme | /θiːm/ | 页面的视觉风格，frontend-design采用深色主题+强调色的方案\nCSS框架 | CSS Framework | /siː es es ˈfreɪmwɜːrk/ | 外部样式库（如Bootstrap、Tailwind），frontend-design 不使用任何外部框架",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "前端设计技能",
+          "frontend- design",
+          "/frʌnt end dɪ ˈzaɪn/",
+          "社区推荐的高质量前端设计Skill，提供经过验证的设计规范和审美标准"
+        ],
+        [
+          "可缩放矢量图形",
+          "SVG",
+          "/es viː dʒiː/",
+          "用XML描述2D图形的格式，frontend-design用它替代 emoji实现高质量图标"
+        ],
+        [
+          "主题",
+          "Theme",
+          "/θiːm/",
+          "页面的视觉风格，frontend-design采用深色主题+强调色的方案"
+        ],
+        [
+          "CSS框架",
+          "CSS Framework",
+          "/siː es es ˈfreɪmwɜːrk/",
+          "外部样式库（如Bootstrap、Tailwind），frontend-design 不使用任何外部框架"
+        ]
+      ],
+      "page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/a7cc93dfa6e107b696369b3db036cf06.png",
+      "width": 2754,
+      "height": 1784,
+      "page": 4
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/36277af13f10aa6ff7d2d3e2c9e4c2f6.png",
+      "width": 2072,
+      "height": 1694,
+      "page": 5
+    }
+  ],
+  "accounting": {
+    "source_chars": 2821,
+    "represented_chars": 2594,
+    "removed_chars": 227,
+    "tables": 1,
+    "images": 2,
+    "image_occurrences": 2,
+    "removals": {
+      "export_metadata": 173,
+      "repeated_title": 54
+    }
+  },
+  "videos": [],
+  "order": 140,
+  "headings": [
+    {
+      "title": "推荐一个优秀的 Skill：frontend-design",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "演示案例：个人技能展示页",
+      "id": "section-7",
+      "level": 2
+    },
+    {
+      "title": "数据准备",
+      "id": "section-9",
+      "level": 3
+    },
+    {
+      "title": "运行",
+      "id": "section-17",
+      "level": 3
+    },
+    {
+      "title": "■ 学点英语",
+      "id": "section-28",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-30",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "前面几节我们一直在自己写 Skill。但社区里还有很多别人写好的 Skill，装完就能用。这一节的目的不是教你写 Skill，而是推荐一个非常有用的 Skill——frontend-design。frontend-design 是一个前端设计 Skill，它的核心能力是帮非专业设计的程序员做出有品质的网页 UI。为了让你直观感受它能做到什么程度，我们拿「个人技能展示页」作为演示案例：准备一份假数据的 JS 文件，写一段 Prompt 调用 frontend-design，让它自动生成一个完整的展示页面。 本节你将完成： 了解 frontend-design 这个 Skill 能做什么 准备一份 19 个技能的假数据（JS 模块） 看一段 Prompt 如何引用 frontend-design 来设计页面"
+    },
+    {
+      "anchor": "section-1",
+      "text": "推荐一个优秀的 Skill：frontend-design"
+    },
+    {
+      "anchor": "section-1",
+      "text": "写网页是 AI 最能快速出效果的场景之一。你给它一段描述，它就能生成 HTML。但这里有一个明显的问题——质量不稳定。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "直接让 AI 写网页，大概率得到的是这种风格：白底、居中排版、圆角卡片、紫色渐变按钮。它不是不能用，但每个页面都长一个样，一看就知道是 AI 生成的。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "社区里有一个专门解决这个问题的 Skill——frontend-design。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "frontend-design 不是一个「教 AI 怎么写 HTML」的工具。它的核心是一套经过验证的设计规范和审美标准。当 AI 遵循它的指引生成页面时，会自动避开那些 AI 廉价审美的坑：不会出现莫名其妙的紫色渐变、不会滥用圆角卡片、不会用无聊的居中布局。从字体搭配到配色选择，从动画微交互相到页面构图，它都有明确的主张。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "简单说：你不需要自己会设计，你只需要装一个 frontend-design，然后告诉 AI「按它的标准来做」。"
+    },
+    {
+      "anchor": "section-7",
+      "text": "演示案例：个人技能展示页"
+    },
+    {
+      "anchor": "section-7",
+      "text": "为了直观感受 frontend-design 的能力，我们准备了一个简单的演示场景。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "数据准备"
+    },
+    {
+      "anchor": "section-9",
+      "text": "我们准备了 19 个技能的假数据，放在一个 JS 文件里。每个技能包含 id、name、displayName、category、description、fullDescription、tags、stats、installCmd 等字段。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "{\n  id: 'frontend-design',\n  name: 'frontend-design',\n  displayName: '前端设计引擎',\n  category: '设计创作',\n  description: '创建有品质的前端界面...',\n  fullDescription: '一个注重设计品质的前端生成技能...',\n  tags: ['UI', '设计', '前端', 'CSS', 'HTML'],\n  stats: { stars: 934, used: 6200, updated: '2025-04' },\n  installCmd: 'qoder install frontend-design',\n  icon: 'pencil-ruler',\n  version: '2.7.0',\n  author: 'Anthropic'\n}"
+    },
+    {
+      "anchor": "section-9",
+      "text": "完整的数据文件在 samples/chapter10/skill-portfolio/assets/skills-data.js。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "数据准备好了。怎么让 AI 把这些数据变成一个漂亮的网页？答案是一段 Prompt："
+    },
+    {
+      "anchor": "section-9",
+      "text": "使用 **frontend-design** 技能生成一个高质量的个人技能可视化网页。\n\n## 数据\n- 数据文件：assets/skills-data.js\n- 导出了 skills（技能列表）和 categories（分类列表）\n\n## 页面\n- 首页：卡片网格展示所有技能\n- 详情页：点击卡片后切换，展示完整信息"
+    },
+    {
+      "anchor": "section-9",
+      "text": "这段 Prompt 比你想象中短得多。没有设计规范、没有样式说明——不是因为不需要，而是因为那些已经写在 frontend-design 的 SKILL.md 里了。你只需要告诉 AI「使用 frontend-design」，它会自己去加载 frontend-design 的设计指引。"
+    },
+    {
+      "anchor": "section-9",
+      "text": "完整的 Prompt 文件在 samples/chapter10/skill-portfolio/SKILL.md。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "运行"
+    },
+    {
+      "anchor": "section-17",
+      "text": "把数据和 Prompt 一起交给 AI："
+    },
+    {
+      "anchor": "section-17",
+      "text": "这里有一份技能数据（assets/skills-data.js），\n请按这段 Prompt（SKILL.md）的要求，\n用 frontend-design 生成一个个人技能展示页。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "AI 收到后，先读取你的 Prompt 了解页面结构，再加载 frontend-design 的设计规范，然后从 skills-data.js 读取数据，开始生成 HTML。"
+    },
+    {
+      "anchor": "section-17",
+      "text": "生成的结果有几个值得注意的特点："
+    },
+    {
+      "anchor": "section-17",
+      "text": "完全自主手写样式，不依赖 Bootstrap、Tailwind 等外部 CSS 框架"
+    },
+    {
+      "anchor": "section-17",
+      "text": "零 emoji，所有图标用内联 SVG 实现（个人经验，想要好看的UI，必须禁止使用Emoji这种AI超喜欢的东西）"
+    },
+    {
+      "anchor": "section-17",
+      "text": "深色主题 + 强调色，没有紫青渐变（AI一般默认会选用紫色，他认为紫色具有赛博朋克的科技感）、没有无聊的居中布局"
+    },
+    {
+      "anchor": "section-17",
+      "text": "两视图切换：首页卡片网格带分类筛选，点击后平滑过渡到详情页"
+    },
+    {
+      "anchor": "section-17",
+      "text": "两视图切换"
+    },
+    {
+      "anchor": "section-17",
+      "text": "19 个技能、5 个分类、一份 JS 数据文件、一段不到 10 行的 Prompt——剩下的 HTML、CSS、交互逻辑全部由 frontend-design 指挥 AI 自动完成。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "■ 学点英语"
+    },
+    {
+      "anchor": "section-28",
+      "text": "中文 | English | 音标 | 说明\n前端设计技能 | frontend- design | /frʌnt end dɪ ˈzaɪn/ | 社区推荐的高质量前端设计Skill，提供经过验证的设计规范和审美标准\n可缩放矢量图形 | SVG | /es viː dʒiː/ | 用XML描述2D图形的格式，frontend-design用它替代 emoji实现高质量图标\n主题 | Theme | /θiːm/ | 页面的视觉风格，frontend-design采用深色主题+强调色的方案\nCSS框架 | CSS Framework | /siː es es ˈfreɪmwɜːrk/ | 外部样式库（如Bootstrap、Tailwind），frontend-design 不使用任何外部框架"
+    },
+    {
+      "anchor": "section-30",
+      "text": "图片"
+    }
+  ]
+}

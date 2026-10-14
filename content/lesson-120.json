@@ -1,0 +1,1033 @@
+{
+  "id": "lesson-120",
+  "title": "需求分析与流程",
+  "code": "1-3",
+  "stage": 3,
+  "week": 7,
+  "week_title": "MCP：模型上下文协议",
+  "module": "MCP通信协议与实战",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/002-第7周 MCP：模型上下文协议/007-MCP通信协议与实战/120-图文-1-3-需求分析与流程.pdf",
+  "sha256": "7f5e4d289143dc61b34a613b6fd4a274f362b5ba3b88ac15ed09185c80cf6d58",
+  "pdf": "sources/pdf/lesson-120.pdf",
+  "pages": 11,
+  "source_url": "https://class.imooc.com/lesson/5281#mid=104939",
+  "minutes": 9,
+  "excerpt": "本节不再讲概念，而是从零开始实现一个游戏装备计算助手。先做需求分析和交互流程设计，搞清楚要做什么、怎么运转。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 本节不再讲概念，而是从零开始实现一个游戏装备计算助手。先做需求分析和交互流程设计，搞清楚要做什么、怎么运转。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "10.1 需求分析：从玩家痛点出发",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "项目目标",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在 RPG 或 MOBA 类游戏中，玩家常面临复杂的装备属性抉择：这把新武器比旧的强多少？换了这件装备，总伤害能提升几成？传统的做法是查攻略或拉 Excel 表格，既繁琐又不直观。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们的目标是打造一个「游戏助手」，让玩家只需通过自然语言提问，即可获得精准的数值计算与对比建议。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "理想的交互体验",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "你：\"这把「破晓之剑」比我现在的武器强多少？\"\n\nAI：\"让我帮你计算一下……\n     破晓之剑：基础攻击 674，相比当前武器提升了 32.2%。\n     算上暴击加成，总伤害预计提升约 40%。建议更换！\"",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是我们要做的事情。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "为什么需要 MCP",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们可能会疑惑，让AI学会计算游戏数值就好了，为什么要用MCP？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让我们对比两种实现方式。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "方案A：纯提示词方案（不用MCP）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "你：帮我算一下破晓之剑的总伤害\n\nAI：要计算总伤害，需要基础攻击力、暴击率、\n    暴击伤害等数据。请问这把武器的具体\n    属性是……（开始问一堆问题）",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "或者，AI干脆会给你一个公式，让你自己去计算。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题在于：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "[×] AI不知道装备数据，你得手动输入\n[×] 每次查询都要重复说明装备属性\n[×] AI没有\"记忆\"，无法对比多件装备",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "方案B：MCP方案（我们要做的）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "你：帮我算一下破晓之剑的总伤害\n\nAI：【调用 get_equipment 工具查询装备数据】\n   【调用 calculate_damage 工具计算伤害】\n\n    破晓之剑总伤害：2,847\n    （基础攻击674 × 暴击加成2.85 × 其他加成1.48）",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是MCP的价值: 它让AI从\"会说\"变成\"会做\"。更重要的是，你可以把这个MCP发布出去，让其他的AI应用也可以使用你的MCP Server。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "我们要实现什么",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "基于上面的分析，我们的目标很明确：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "项目定位：游戏装备计算助手",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "核心功能：装备查询、伤害计算、对比分析、升级规划",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心功能",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "交互方式：自然语言对话",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "交互方式",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "技术方案：AI Client + MCP Server",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "技术方案",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "具体来说，玩家可以：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. 查询装备属性",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "code",
+      "text": "\"破晓之剑有什么属性？\"\n→ 通过Resources查询装备数据，返回详细属性\n\n1\n2",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "2. 计算战斗数值",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "code",
+      "text": "\"我用破晓之剑打史莱姆能造成多少伤害？\"\n→ 调用伤害计算工具，返回准确结果\n\n1\n2",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "3. 对比装备性能",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "code",
+      "text": "\"破晓之剑和无锋重剑哪个更强？\"\n→ 调用对比分析工具，给出建议\n\n1\n2",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "完整交互流程：从 LLM 决策到最终输出",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在让我展示一个完整的交互流程图，看看用户问一个问题后，系统是如何一步步地处理并生成最终答案的：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "完整流程解读",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "1. 用户提问阶段",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "list",
+      "text": "用户输入问题",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "AI Client 接收并处理输入",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "2. LLM 决策阶段",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "list",
+      "text": "Client 将问题发送给 LLM（通义千问）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "关键：Client 会携带 MCP Server 提供的所有能力列表（Resources/Tools/Prompts）",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LLM 分析问题，自主决定需要调用哪种能力： Resources：查询装备数据 Tools：执行计算或对比Prompts：获取分析模板 None：不需要 MCP 能力直接回答",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "3. MCP Server 执行阶段",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "list",
+      "text": "Client 根据 LLM 的决策，调用对应的 MCP 能力",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "MCP Server 执行具体操作： Resources 模块：读取装备数据，返回格式化卡片 Tools 模块：执行复杂计算（如对比、伤害计算） Prompts 模块：返回预设的 Prompt 模板",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "list",
+      "text": "所有模块都从 equipments.json 读取数据",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "equipments.json",
+      "page": 4,
+      "size": 9.75,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "4. LLM 生成阶段",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "list",
+      "text": "MCP Server 将结果返回给 Client",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Client 将结果作为上下文发送给 LLM",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "LLM 基于 MCP 返回的数据生成答案",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "5. 循环判断",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "list",
+      "text": "LLM 判断当前信息是否足够回答问题",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "需要更多信息：返回决策阶段，继续调用 MCP 能力（虚线箭头）",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "需要更多信息",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "信息已足够：进入输出阶段",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "信息已足够",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "6. 最终输出",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "list",
+      "text": "LLM 生成完整的自然语言回答",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "返回给用户",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "核心要点",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "[✓] LLM 全程主导 - 自主决定调用哪些 MCP 能力\n[✓] 自动循环 - 可多次调用，直到信息足够\n[✓] 最终由 LLM 生成 - 保证输出自然流畅\n[✓] MCP Server 只负责执行 - 不做决策，只提供数据/计算",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "不同场景下的调用次数示例",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "场景 1：调用 1 次 MCP",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户输入：「请查询装备\"破晓之剑\"的属性」\n    ↓\nLLM 分析：需要读取装备数据\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(weapon_破晓之剑) ← 第 1 次\n    ↓\nMCP 返回：装备卡片数据（类型、攻击、暴击等）\n    ↓\nLLM 判断：信息已足够\n    ↓\n生成答案：输出该装备的属性说明",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "总计：1 次 MCP 调用",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "场景 2：调用 3 次 MCP",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户问：\"帮我详细分析破晓之剑，并推荐搭配的护甲\"\n    ↓\nLLM 分析：需要分析模板\n    ↓\nLLM 决定：调用 Prompts\n    ↓\n调用 MCP：get_prompt(equipment_analysis) ← 第 1 次\n    ↓\nMCP 返回：分析模板（属性解读、适用场景、优缺点、搭配建议）\n    ↓\nLLM 判断：需要装备详细数据\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(weapon_破晓之剑) ← 第 2 次\n    ↓\nMCP 返回：破晓之剑完整属性\n    ↓\nLLM 判断：需要护甲数据用于搭配建议\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(armor_龙鳞甲) ← 第 3 次\n    ↓\nMCP 返回：龙鳞甲属性\n    ↓\nLLM 判断：信息已足够\n    ↓\n生成答案：完整的分析报告 + 搭配建议",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "总计：3 次 MCP 调用",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "场景 3：调用 5 次 MCP",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "用户问：\"对比所有武器，给我推荐最适合暴击流的装备组合\"\n    ↓\nLLM 分析：需要获取所有武器数据\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(weapon_破晓之剑) ← 第 1 次\n调用 MCP：read_resource(weapon_无锋重剑) ← 第 2 次\n调用 MCP：read_resource(weapon_疾风短刃) ← 第 3 次\n    ↓\nMCP 返回：3 件武器的完整属性\n    ↓\nLLM 判断：需要计算暴击收益\n    ↓\nLLM 决定：调用 Tools\n    ↓\n调用 MCP：calculate_damage(疾风短刃) ← 第 4 次\n    ↓\nMCP 返回：疾风短刃伤害详情（暴击率 75%）\n    ↓\nLLM 判断：需要护甲搭配\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(armor_暗影斗篷) ← 第 5 次\n    ↓\nMCP 返回：暗影斗篷属性\n    ↓\nLLM 判断：信息已足够\n    ↓\n生成答案：\"暴击流推荐：疾风短刃（75% 暴击率）+ 暗影斗篷，\n          总暴击收益最高...\"",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "总计：5 次 MCP 调用",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "三种 MCP 能力的对比",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "table",
+      "text": "能力 | LLM 何时选择 | 适用场景\nResources | 需要查询装备的详细信息 | 简单数据查询\nTools | 需要计算、对比、复杂逻辑 | 复杂计算\nPrompts | 需要结构化分析模板 | 深度分析",
+      "rows": [
+        [
+          "能力",
+          "LLM 何时选择",
+          "适用场景"
+        ],
+        [
+          "Resources",
+          "需要查询装备的详细信息",
+          "简单数据查询"
+        ],
+        [
+          "Tools",
+          "需要计算、对比、复杂逻辑",
+          "复杂计算"
+        ],
+        [
+          "Prompts",
+          "需要结构化分析模板",
+          "深度分析"
+        ]
+      ],
+      "page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "10.2 下一节预告",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "需求分析和交互流程已经清楚了。接下来进入技术选型与实现环节——为什么 Server 用 Node.js、Client 用 Python？项目的整体架构和目录结构是怎样的？下一节将给出答案。",
+      "page": 8,
+      "size": 11.25,
+      "end_page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "10.3 ■ 学点英语",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n交互流程设计 | Interaction Flow Design | / ɪntərˈækʃn floʊ dɪ ˌ ˈzaɪn/ | 设计用户、AI应用和MCP Server之间的多步交互流程\n渐进式决策 | Progressive Decision | /prəˈɡresɪv dɪˈsɪʒn/ | LLM在调用过程中持续观察结果，动态决定后续步骤\n参数引导 | Parameter Guidance | /pəˈræmɪtər ˈɡaɪdns/ | Prompt在参数缺失时主动询问用户补充的交互机制\n资源调用计数 | Resource Call Count | /ˈriːsɔːrs kɔːl kaʊnt/ | 完成一个用户需求所需的MCP调用次数统计",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "交互流程设计",
+          "Interaction Flow Design",
+          "/ ɪntərˈækʃn floʊ dɪ ˌ ˈzaɪn/",
+          "设计用户、AI应用和MCP Server之间的多步交互流程"
+        ],
+        [
+          "渐进式决策",
+          "Progressive Decision",
+          "/prəˈɡresɪv dɪˈsɪʒn/",
+          "LLM在调用过程中持续观察结果，动态决定后续步骤"
+        ],
+        [
+          "参数引导",
+          "Parameter Guidance",
+          "/pəˈræmɪtər ˈɡaɪdns/",
+          "Prompt在参数缺失时主动询问用户补充的交互机制"
+        ],
+        [
+          "资源调用计数",
+          "Resource Call Count",
+          "/ˈriːsɔːrs kɔːl kaʊnt/",
+          "完成一个用户需求所需的MCP调用次数统计"
+        ]
+      ],
+      "page": 8
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 9,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/f80299a64b62dc351306c37bbef1dd1c.png",
+      "width": 1786,
+      "height": 3548,
+      "page": 10
+    }
+  ],
+  "accounting": {
+    "source_chars": 3706,
+    "represented_chars": 3540,
+    "removed_chars": 166,
+    "tables": 2,
+    "images": 1,
+    "image_occurrences": 2,
+    "removals": {
+      "export_metadata": 139,
+      "repeated_title": 27
+    }
+  },
+  "videos": [],
+  "order": 121,
+  "headings": [
+    {
+      "title": "10.1 需求分析：从玩家痛点出发",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "为什么需要 MCP",
+      "id": "section-8",
+      "level": 3
+    },
+    {
+      "title": "我们要实现什么",
+      "id": "section-19",
+      "level": 3
+    },
+    {
+      "title": "1. 查询装备属性",
+      "id": "section-29",
+      "level": 2
+    },
+    {
+      "title": "2. 计算战斗数值",
+      "id": "section-31",
+      "level": 2
+    },
+    {
+      "title": "3. 对比装备性能",
+      "id": "section-33",
+      "level": 2
+    },
+    {
+      "title": "完整交互流程：从 LLM 决策到最终输出",
+      "id": "section-35",
+      "level": 3
+    },
+    {
+      "title": "1. 用户提问阶段",
+      "id": "section-38",
+      "level": 2
+    },
+    {
+      "title": "2. LLM 决策阶段",
+      "id": "section-41",
+      "level": 2
+    },
+    {
+      "title": "3. MCP Server 执行阶段",
+      "id": "section-45",
+      "level": 2
+    },
+    {
+      "title": "4. LLM 生成阶段",
+      "id": "section-50",
+      "level": 2
+    },
+    {
+      "title": "5. 循环判断",
+      "id": "section-54",
+      "level": 2
+    },
+    {
+      "title": "6. 最终输出",
+      "id": "section-60",
+      "level": 2
+    },
+    {
+      "title": "不同场景下的调用次数示例",
+      "id": "section-65",
+      "level": 3
+    },
+    {
+      "title": "10.2 下一节预告",
+      "id": "section-77",
+      "level": 2
+    },
+    {
+      "title": "10.3 ■ 学点英语",
+      "id": "section-79",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-81",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "本节不再讲概念，而是从零开始实现一个游戏装备计算助手。先做需求分析和交互流程设计，搞清楚要做什么、怎么运转。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "10.1 需求分析：从玩家痛点出发"
+    },
+    {
+      "anchor": "section-1",
+      "text": "项目目标"
+    },
+    {
+      "anchor": "section-1",
+      "text": "在 RPG 或 MOBA 类游戏中，玩家常面临复杂的装备属性抉择：这把新武器比旧的强多少？换了这件装备，总伤害能提升几成？传统的做法是查攻略或拉 Excel 表格，既繁琐又不直观。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "我们的目标是打造一个「游戏助手」，让玩家只需通过自然语言提问，即可获得精准的数值计算与对比建议。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "理想的交互体验"
+    },
+    {
+      "anchor": "section-1",
+      "text": "你：\"这把「破晓之剑」比我现在的武器强多少？\"\n\nAI：\"让我帮你计算一下……\n     破晓之剑：基础攻击 674，相比当前武器提升了 32.2%。\n     算上暴击加成，总伤害预计提升约 40%。建议更换！\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "这就是我们要做的事情。"
+    },
+    {
+      "anchor": "section-8",
+      "text": "为什么需要 MCP"
+    },
+    {
+      "anchor": "section-8",
+      "text": "我们可能会疑惑，让AI学会计算游戏数值就好了，为什么要用MCP？"
+    },
+    {
+      "anchor": "section-8",
+      "text": "让我们对比两种实现方式。"
+    },
+    {
+      "anchor": "section-8",
+      "text": "方案A：纯提示词方案（不用MCP）"
+    },
+    {
+      "anchor": "section-8",
+      "text": "你：帮我算一下破晓之剑的总伤害\n\nAI：要计算总伤害，需要基础攻击力、暴击率、\n    暴击伤害等数据。请问这把武器的具体\n    属性是……（开始问一堆问题）"
+    },
+    {
+      "anchor": "section-8",
+      "text": "或者，AI干脆会给你一个公式，让你自己去计算。"
+    },
+    {
+      "anchor": "section-8",
+      "text": "问题在于："
+    },
+    {
+      "anchor": "section-8",
+      "text": "[×] AI不知道装备数据，你得手动输入\n[×] 每次查询都要重复说明装备属性\n[×] AI没有\"记忆\"，无法对比多件装备"
+    },
+    {
+      "anchor": "section-8",
+      "text": "方案B：MCP方案（我们要做的）"
+    },
+    {
+      "anchor": "section-8",
+      "text": "你：帮我算一下破晓之剑的总伤害\n\nAI：【调用 get_equipment 工具查询装备数据】\n   【调用 calculate_damage 工具计算伤害】\n\n    破晓之剑总伤害：2,847\n    （基础攻击674 × 暴击加成2.85 × 其他加成1.48）"
+    },
+    {
+      "anchor": "section-8",
+      "text": "这就是MCP的价值: 它让AI从\"会说\"变成\"会做\"。更重要的是，你可以把这个MCP发布出去，让其他的AI应用也可以使用你的MCP Server。"
+    },
+    {
+      "anchor": "section-19",
+      "text": "我们要实现什么"
+    },
+    {
+      "anchor": "section-19",
+      "text": "基于上面的分析，我们的目标很明确："
+    },
+    {
+      "anchor": "section-19",
+      "text": "项目定位：游戏装备计算助手"
+    },
+    {
+      "anchor": "section-19",
+      "text": "核心功能：装备查询、伤害计算、对比分析、升级规划"
+    },
+    {
+      "anchor": "section-19",
+      "text": "核心功能"
+    },
+    {
+      "anchor": "section-19",
+      "text": "交互方式：自然语言对话"
+    },
+    {
+      "anchor": "section-19",
+      "text": "交互方式"
+    },
+    {
+      "anchor": "section-19",
+      "text": "技术方案：AI Client + MCP Server"
+    },
+    {
+      "anchor": "section-19",
+      "text": "技术方案"
+    },
+    {
+      "anchor": "section-19",
+      "text": "具体来说，玩家可以："
+    },
+    {
+      "anchor": "section-29",
+      "text": "1. 查询装备属性"
+    },
+    {
+      "anchor": "section-29",
+      "text": "\"破晓之剑有什么属性？\"\n→ 通过Resources查询装备数据，返回详细属性\n\n1\n2"
+    },
+    {
+      "anchor": "section-31",
+      "text": "2. 计算战斗数值"
+    },
+    {
+      "anchor": "section-31",
+      "text": "\"我用破晓之剑打史莱姆能造成多少伤害？\"\n→ 调用伤害计算工具，返回准确结果\n\n1\n2"
+    },
+    {
+      "anchor": "section-33",
+      "text": "3. 对比装备性能"
+    },
+    {
+      "anchor": "section-33",
+      "text": "\"破晓之剑和无锋重剑哪个更强？\"\n→ 调用对比分析工具，给出建议\n\n1\n2"
+    },
+    {
+      "anchor": "section-35",
+      "text": "完整交互流程：从 LLM 决策到最终输出"
+    },
+    {
+      "anchor": "section-35",
+      "text": "现在让我展示一个完整的交互流程图，看看用户问一个问题后，系统是如何一步步地处理并生成最终答案的："
+    },
+    {
+      "anchor": "section-35",
+      "text": "完整流程解读"
+    },
+    {
+      "anchor": "section-38",
+      "text": "1. 用户提问阶段"
+    },
+    {
+      "anchor": "section-38",
+      "text": "用户输入问题"
+    },
+    {
+      "anchor": "section-38",
+      "text": "AI Client 接收并处理输入"
+    },
+    {
+      "anchor": "section-41",
+      "text": "2. LLM 决策阶段"
+    },
+    {
+      "anchor": "section-41",
+      "text": "Client 将问题发送给 LLM（通义千问）"
+    },
+    {
+      "anchor": "section-41",
+      "text": "关键：Client 会携带 MCP Server 提供的所有能力列表（Resources/Tools/Prompts）"
+    },
+    {
+      "anchor": "section-41",
+      "text": "LLM 分析问题，自主决定需要调用哪种能力： Resources：查询装备数据 Tools：执行计算或对比Prompts：获取分析模板 None：不需要 MCP 能力直接回答"
+    },
+    {
+      "anchor": "section-45",
+      "text": "3. MCP Server 执行阶段"
+    },
+    {
+      "anchor": "section-45",
+      "text": "Client 根据 LLM 的决策，调用对应的 MCP 能力"
+    },
+    {
+      "anchor": "section-45",
+      "text": "MCP Server 执行具体操作： Resources 模块：读取装备数据，返回格式化卡片 Tools 模块：执行复杂计算（如对比、伤害计算） Prompts 模块：返回预设的 Prompt 模板"
+    },
+    {
+      "anchor": "section-45",
+      "text": "所有模块都从 equipments.json 读取数据"
+    },
+    {
+      "anchor": "section-45",
+      "text": "equipments.json"
+    },
+    {
+      "anchor": "section-50",
+      "text": "4. LLM 生成阶段"
+    },
+    {
+      "anchor": "section-50",
+      "text": "MCP Server 将结果返回给 Client"
+    },
+    {
+      "anchor": "section-50",
+      "text": "Client 将结果作为上下文发送给 LLM"
+    },
+    {
+      "anchor": "section-50",
+      "text": "LLM 基于 MCP 返回的数据生成答案"
+    },
+    {
+      "anchor": "section-54",
+      "text": "5. 循环判断"
+    },
+    {
+      "anchor": "section-54",
+      "text": "LLM 判断当前信息是否足够回答问题"
+    },
+    {
+      "anchor": "section-54",
+      "text": "需要更多信息：返回决策阶段，继续调用 MCP 能力（虚线箭头）"
+    },
+    {
+      "anchor": "section-54",
+      "text": "需要更多信息"
+    },
+    {
+      "anchor": "section-54",
+      "text": "信息已足够：进入输出阶段"
+    },
+    {
+      "anchor": "section-54",
+      "text": "信息已足够"
+    },
+    {
+      "anchor": "section-60",
+      "text": "6. 最终输出"
+    },
+    {
+      "anchor": "section-60",
+      "text": "LLM 生成完整的自然语言回答"
+    },
+    {
+      "anchor": "section-60",
+      "text": "返回给用户"
+    },
+    {
+      "anchor": "section-60",
+      "text": "核心要点"
+    },
+    {
+      "anchor": "section-60",
+      "text": "[✓] LLM 全程主导 - 自主决定调用哪些 MCP 能力\n[✓] 自动循环 - 可多次调用，直到信息足够\n[✓] 最终由 LLM 生成 - 保证输出自然流畅\n[✓] MCP Server 只负责执行 - 不做决策，只提供数据/计算"
+    },
+    {
+      "anchor": "section-65",
+      "text": "不同场景下的调用次数示例"
+    },
+    {
+      "anchor": "section-65",
+      "text": "场景 1：调用 1 次 MCP"
+    },
+    {
+      "anchor": "section-65",
+      "text": "用户输入：「请查询装备\"破晓之剑\"的属性」\n    ↓\nLLM 分析：需要读取装备数据\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(weapon_破晓之剑) ← 第 1 次\n    ↓\nMCP 返回：装备卡片数据（类型、攻击、暴击等）\n    ↓\nLLM 判断：信息已足够\n    ↓\n生成答案：输出该装备的属性说明"
+    },
+    {
+      "anchor": "section-65",
+      "text": "总计：1 次 MCP 调用"
+    },
+    {
+      "anchor": "section-65",
+      "text": "场景 2：调用 3 次 MCP"
+    },
+    {
+      "anchor": "section-65",
+      "text": "用户问：\"帮我详细分析破晓之剑，并推荐搭配的护甲\"\n    ↓\nLLM 分析：需要分析模板\n    ↓\nLLM 决定：调用 Prompts\n    ↓\n调用 MCP：get_prompt(equipment_analysis) ← 第 1 次\n    ↓\nMCP 返回：分析模板（属性解读、适用场景、优缺点、搭配建议）\n    ↓\nLLM 判断：需要装备详细数据\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(weapon_破晓之剑) ← 第 2 次\n    ↓\nMCP 返回：破晓之剑完整属性\n    ↓\nLLM 判断：需要护甲数据用于搭配建议\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(armor_龙鳞甲) ← 第 3 次\n    ↓\nMCP 返回：龙鳞甲属性\n    ↓\nLLM 判断：信息已足够\n    ↓\n生成答案：完整的分析报告 + 搭配建议"
+    },
+    {
+      "anchor": "section-65",
+      "text": "总计：3 次 MCP 调用"
+    },
+    {
+      "anchor": "section-65",
+      "text": "场景 3：调用 5 次 MCP"
+    },
+    {
+      "anchor": "section-65",
+      "text": "用户问：\"对比所有武器，给我推荐最适合暴击流的装备组合\"\n    ↓\nLLM 分析：需要获取所有武器数据\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(weapon_破晓之剑) ← 第 1 次\n调用 MCP：read_resource(weapon_无锋重剑) ← 第 2 次\n调用 MCP：read_resource(weapon_疾风短刃) ← 第 3 次\n    ↓\nMCP 返回：3 件武器的完整属性\n    ↓\nLLM 判断：需要计算暴击收益\n    ↓\nLLM 决定：调用 Tools\n    ↓\n调用 MCP：calculate_damage(疾风短刃) ← 第 4 次\n    ↓\nMCP 返回：疾风短刃伤害详情（暴击率 75%）\n    ↓\nLLM 判断：需要护甲搭配\n    ↓\nLLM 决定：调用 Resources\n    ↓\n调用 MCP：read_resource(armor_暗影斗篷) ← 第 5 次\n    ↓\nMCP 返回：暗影斗篷属性\n    ↓\nLLM 判断：信息已足够\n    ↓\n生成答案：\"暴击流推荐：疾风短刃（75% 暴击率）+ 暗影斗篷，\n          总暴击收益最高...\""
+    },
+    {
+      "anchor": "section-65",
+      "text": "总计：5 次 MCP 调用"
+    },
+    {
+      "anchor": "section-65",
+      "text": "三种 MCP 能力的对比"
+    },
+    {
+      "anchor": "section-65",
+      "text": "能力 | LLM 何时选择 | 适用场景\nResources | 需要查询装备的详细信息 | 简单数据查询\nTools | 需要计算、对比、复杂逻辑 | 复杂计算\nPrompts | 需要结构化分析模板 | 深度分析"
+    },
+    {
+      "anchor": "section-77",
+      "text": "10.2 下一节预告"
+    },
+    {
+      "anchor": "section-77",
+      "text": "需求分析和交互流程已经清楚了。接下来进入技术选型与实现环节——为什么 Server 用 Node.js、Client 用 Python？项目的整体架构和目录结构是怎样的？下一节将给出答案。"
+    },
+    {
+      "anchor": "section-79",
+      "text": "10.3 ■ 学点英语"
+    },
+    {
+      "anchor": "section-79",
+      "text": "中文 | English | 音标 | 说明\n交互流程设计 | Interaction Flow Design | / ɪntərˈækʃn floʊ dɪ ˌ ˈzaɪn/ | 设计用户、AI应用和MCP Server之间的多步交互流程\n渐进式决策 | Progressive Decision | /prəˈɡresɪv dɪˈsɪʒn/ | LLM在调用过程中持续观察结果，动态决定后续步骤\n参数引导 | Parameter Guidance | /pəˈræmɪtər ˈɡaɪdns/ | Prompt在参数缺失时主动询问用户补充的交互机制\n资源调用计数 | Resource Call Count | /ˈriːsɔːrs kɔːl kaʊnt/ | 完成一个用户需求所需的MCP调用次数统计"
+    },
+    {
+      "anchor": "section-81",
+      "text": "图片"
+    }
+  ]
+}

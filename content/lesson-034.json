@@ -1,0 +1,1018 @@
+{
+  "id": "lesson-034",
+  "title": "预训练（一）-本质",
+  "code": "1-1",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "预训练",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/006-预训练/034-图文-1-1-预训练（一）-本质.pdf",
+  "sha256": "ad5e2ce0bc655636d5be4aedf6f9c221980230e42c17a9b559a5b149d6209929",
+  "pdf": "sources/pdf/lesson-034.pdf",
+  "pages": 8,
+  "source_url": "https://class.imooc.com/lesson/5258#mid=104884",
+  "minutes": 9,
+  "excerpt": "前面几节讨论了ChatGPT的参数规模、文字接龙游戏、语言建模思想和Embedding词向量。但最核心的问题还没有回答:那1750亿个参数,到底是怎么\"训练\"出来的?本节将揭示预训练的核心机制。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 前面几节讨论了ChatGPT的参数规模、文字接龙游戏、语言建模思想和Embedding词向量。但最核心的问题还没有回答:那1750亿个参数,到底是怎么\"训练\"出来的?本节将揭示预训练的核心机制。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "4.1 什么是预训练?",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "预训练就是让模型在海量文本上学习语言规律,像人类\"读万卷书\"一样积累知识。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它的核心思想很简单:给模型看大量文本,让它不断预测下一个词,然后根据正确答案调整参数。经过数十亿次的调整,模型就\"记住\"了语言的规律。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个过程分为4个步骤:收集数据、定义任务、训练模型、训练完成。让我们详细看看每一步。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "4.2 预训练的4个步骤",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "h3",
+      "text": "第1步:收集海量数据",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "GPT-3的训练数据约3000亿个词,相当于600万本书。这些数据来自互联网的各个角落:",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "数据源                占比    说明\n────────────────────────────────────────────────────\nCommon Crawl(网页)     60%    互联网网页爬取\nWebText2(精选网页)     22%    Reddit高赞链接\nBooks(书籍)           16%    精选书籍\nWikipedia(维基百科)    3%    英文维基百科条目",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "quote",
+      "text": "[!NOTE] 数据来源基于OpenAI论文公开的比例,详见《Language Models are Few-Shot Learners》,OpenAI,2020。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "h3",
+      "text": "第2步:定义训练任务",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "训练数据多是连续的文本,那么如何从一句完整的话变成训练任务?",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "假设原始文本:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“人工智能是计算机科学的一个分支”",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Token化",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "ChatGPT不能直接处理文字,必须先把文字切成Token:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "原始文本: \"人工智能是计算机科学的一个分支\"\n          ↓ Token化(切分)\n\n[\"人工智能\", \"是\", \"计算机科学\", \"的\", \"一个\", \"分支\"]\n ↑         ↑      ↑            ↑    ↑      ↑\nToken1   Token2 Token3       Token4 Token5 Token6\n\n总共 6 个 Token",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "所以:",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "从互联网爬取的是原始文本(字符串)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "经过Token化后变成Token序列(数字序列)",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Token序列",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "训练时使用的是Token,不是原始文字",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "自动切分成训练样本",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "计算机把这些Token切成很多个\"填空题\",答案就在原文里:",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "原始文本:\"人工智能是计算机科学的一个分支\"\n               ↓ 自动切分并配对\n\n训练样本1:\n输入:\"人工智能____\"\n答案:\"是\"  ← 从原文取下一个Token\n\n训练样本2:\n输入:\"人工智能是____\"\n答案:\"计算机科学\"\n\n训练样本3:\n输入:\"人工智能是计算机科学____\"\n答案:\"的\"\n\n训练样本4:\n输入:\"人工智能是计算机科学的____\"\n答案:\"一个\"\n\n训练样本5:\n输入:\"人工智能是计算机科学的一个____\"\n答案:\"分支\"\n\n↑ T1(人工智能)前面没有Token,不能作为预测目标,所以6个Token只生成5个训练样本",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "quote",
+      "text": "[!CAUTION] 预训练是从左到右预测的,只能根据前面的词预测下一个词,不能\"挖空\"中间的词。这就是为什么叫\"语言模型\"——它模拟人类从左往右阅读和写作的过程。 即:不会出现\"人工智能是___计算机科学的一个分支\"这样的训练数据。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在我们有了无数个训练样本,每个样本都有输入和答案。接下来的问题是:模型如何利用这些数据学习?",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "第3步:训练模型——不断预测、对比、调整",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "训练的核心机制很简单:让模型做预测,然后把预测结果与正确答案对比,根据差距调整参数。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "单次训练过程:\n\n1. 给模型看输入:\"人工智能是计算机科学的一个____\"\n2. 模型预测:\"领域\" (初期是随机猜的)\n3. 对比答案:\"分支\" (从原文匹配到的)\n4. 计算错误:预测\"领域\" ≠ 答案\"分支\" → 错了!\n5. 调整参数:修正1750亿个参数,让模型下次更可能输出\"分支\"",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "但这只是一次训练!真正的训练是一个循环往复的过程:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键点:",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "一句话\"人工智能是计算机科学的一个分支\"切成6个Token,能生成5个训练样本(每个Token位置一个)",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "3000亿Token ≈ 3000亿次调整 ≈ 3000亿次学习机会",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "3000亿次调整",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "每次调整,1750亿个参数都会轻微改变",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "经过3000亿次循环,模型逐渐\"学会\"了语言规律",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "第4步:训练完成",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "1750亿个参数调整完毕,模型\"记住\"了语言的规律,就像一个\"读过\"3000亿词的语言专家。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "4.3 监督学习 vs 自监督学习",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在来解释一个至关重要的概念,它是预训练能够规模化的关键。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "传统的监督学习:需要人工标注",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用情感分析作为例子(这已经是监督学习中最简单、成本最低的任务了):",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "情感分析",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "任务:情感分析(分类任务)\n\n数据:\n\"这部电影真好看!\"    → 标签:正面 ← 需要人工判断并标注\n\"浪费时间,很无聊\"    → 标签:负面 ← 需要人工判断并标注\n\"还准备看第二遍!\"    → 标签:正面 ← 需要人工判断并标注\n...",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "标注10万条数据,耗时数月,可能花费成本数十万美元,然后只能训练一个做情感分析的模型。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里有个常见误区:很多同学认为监督学习的流程是机器回答问题,然后人类标注员告诉机器是否正确。但其实更常见的方式是人类标注员预先标注好答案。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "举例来说:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "情感分析:标注员看到\"这部电影真好看\" → 判断是正面情感 → 打上\"正面\"标签",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "机器翻译:标注员看到\"I love this book\" → 翻译为\"我喜欢这本书\" → 形成一对训练数据",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "收集到足够多的标注数据后,才开始训练模型。所以监督学习的训练数据都是成对的:文本-答案。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "看似合理,但有很大问题:",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "标注成本高昂,无法规模化",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每条数据都需要人工判断,成本极高。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "任务单一化",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "对于同一个例句,可能有不同角度的用途:情感分析(正负)、翻译、摘要。但往往一批标注员只做某一个方向的标注,没有将训练数据的收益最大化。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "list",
+      "text": "数据量受限",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用于训练模型的数据量极其庞大,要想尽可能处理这些信息,只靠人工根本不可能。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "而且,情感分析属于分类任务,已经是监督学习中相对最简单的类型(只需选择预定义的标签)。如果是更复杂的任务,成本会更高:",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "list",
+      "text": "机器翻译:需要专业翻译人员,标注一段文本可能需要1分钟左右",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "问答系统:需要理解问题并撰写答案,标注一条问答对可能需要1到5分钟",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问答系统",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "文本摘要:需要阅读长文并提炼核心,标注一条摘要可能需要10-20分钟",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "文本摘要",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "监督学习的标注成本,会随着任务复杂度指数级增长。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "指数级增长",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "预训练的自监督学习:完全不同",
+      "page": 5,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "任务:预测下一个Token(填空任务)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "数据:\n原始文本:\"人工智能是计算机科学的一个分支\"\n\n自动生成训练样本(每个位置都有一道填空题):\n\n填空题1:\n输入:\"人工智能____\"\n答案:\"是\" ← 不需要人工标注,原文里就有!\n\n填空题2:\n输入:\"人工智能是____\"\n答案:\"计算机科学\"\n\n填空题3:\n输入:\"人工智能是计算机科学____\"\n答案:\"的\"\n\n填空题4:\n输入:\"人工智能是计算机科学的____\"\n答案:\"一个\"\n\n填空题5:\n输入:\"人工智能是计算机科学的一个____\"\n答案:\"分支\" ← 每个位置自动生成一道题",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "自监督学习的优势很明显:",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "答案在原文里",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一个Token就是标签,不需要人工判断。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "样本自动生成",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一句话能生成无数个训练样本,把原文切开就行。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "零标注成本",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从互联网爬取文本即可,不需要人工打标签。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "规模爆炸式增长",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "监督学习可能只能标注10万条,但预训练可以到3000亿个Token。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是预训练能够改变AI的根本原因。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "4.4 下一节预告",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在知道了预训练的4个步骤和自监督学习的优势。但训练这样一个模型需要多少资源?为什么只有少数科技巨头能玩这个游戏?",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一节将看到预训练的惊人代价,以及数据质量的重要性。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "4.5 ■ 学点英语",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n预训练 | Pre-training | /priː ˈtreɪnɪŋ/ | 在海量无标注文本上训练语言模型学习通用语言能力的过程\n监督学习 | Supervised Learning | / suːpərvaɪzd ˌ ˈlɜːnɪŋ/ | 使用人工标注的数据训练模型做特定任务的方法\n自监督学习 | Self-Supervised Learning | /self ˈsuːpərvaɪzd ˈlɜːnɪŋ/ | 从数据本身自动生成标签（如下一个Token预测） 的训练方式\n下一Token 预测 | Next-Token Prediction | /nekst ˈtoʊkən prɪ ˈdɪkʃən/ | 语言模型根据已有Token序列预测下一个Token的核心训练任务\n训练样本 | Training Sample | /ˈtreɪnɪŋ ˈsæmpl/ | 模型训练中用到的输入-输出对（输入文本+要预测的下一个Token）\n收敛 | Convergence | /kənˈvɜːrdʒəns/ | 模型训练中参数接近最优解、损失不再显著下降的状态",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "预训练",
+          "Pre-training",
+          "/priː ˈtreɪnɪŋ/",
+          "在海量无标注文本上训练语言模型学习通用语言能力的过程"
+        ],
+        [
+          "监督学习",
+          "Supervised Learning",
+          "/ suːpərvaɪzd ˌ ˈlɜːnɪŋ/",
+          "使用人工标注的数据训练模型做特定任务的方法"
+        ],
+        [
+          "自监督学习",
+          "Self-Supervised Learning",
+          "/self ˈsuːpərvaɪzd ˈlɜːnɪŋ/",
+          "从数据本身自动生成标签（如下一个Token预测） 的训练方式"
+        ],
+        [
+          "下一Token 预测",
+          "Next-Token Prediction",
+          "/nekst ˈtoʊkən prɪ ˈdɪkʃən/",
+          "语言模型根据已有Token序列预测下一个Token的核心训练任务"
+        ],
+        [
+          "训练样本",
+          "Training Sample",
+          "/ˈtreɪnɪŋ ˈsæmpl/",
+          "模型训练中用到的输入-输出对（输入文本+要预测的下一个Token）"
+        ],
+        [
+          "收敛",
+          "Convergence",
+          "/kənˈvɜːrdʒəns/",
+          "模型训练中参数接近最优解、损失不再显著下降的状态"
+        ]
+      ],
+      "page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "image",
+      "text": "",
+      "src": "assets/figures/9ed5eb4019b42ce2a0ef6c7537957646.png",
+      "width": 1740,
+      "height": 1748,
+      "page": 8
+    }
+  ],
+  "accounting": {
+    "source_chars": 3798,
+    "represented_chars": 3631,
+    "removed_chars": 167,
+    "tables": 1,
+    "images": 1,
+    "image_occurrences": 1,
+    "removals": {
+      "export_metadata": 137,
+      "repeated_title": 30
+    }
+  },
+  "videos": [],
+  "order": 35,
+  "headings": [
+    {
+      "title": "4.1 什么是预训练?",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "4.2 预训练的4个步骤",
+      "id": "section-5",
+      "level": 2
+    },
+    {
+      "title": "第1步:收集海量数据",
+      "id": "section-6",
+      "level": 3
+    },
+    {
+      "title": "第2步:定义训练任务",
+      "id": "section-10",
+      "level": 3
+    },
+    {
+      "title": "第3步:训练模型——不断预测、对比、调整",
+      "id": "section-27",
+      "level": 3
+    },
+    {
+      "title": "第4步:训练完成",
+      "id": "section-37",
+      "level": 3
+    },
+    {
+      "title": "4.3 监督学习 vs 自监督学习",
+      "id": "section-39",
+      "level": 2
+    },
+    {
+      "title": "传统的监督学习:需要人工标注",
+      "id": "section-41",
+      "level": 3
+    },
+    {
+      "title": "预训练的自监督学习:完全不同",
+      "id": "section-66",
+      "level": 3
+    },
+    {
+      "title": "4.4 下一节预告",
+      "id": "section-79",
+      "level": 2
+    },
+    {
+      "title": "4.5 ■ 学点英语",
+      "id": "section-82",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-84",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "前面几节讨论了ChatGPT的参数规模、文字接龙游戏、语言建模思想和Embedding词向量。但最核心的问题还没有回答:那1750亿个参数,到底是怎么\"训练\"出来的?本节将揭示预训练的核心机制。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "4.1 什么是预训练?"
+    },
+    {
+      "anchor": "section-1",
+      "text": "预训练就是让模型在海量文本上学习语言规律,像人类\"读万卷书\"一样积累知识。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "它的核心思想很简单:给模型看大量文本,让它不断预测下一个词,然后根据正确答案调整参数。经过数十亿次的调整,模型就\"记住\"了语言的规律。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个过程分为4个步骤:收集数据、定义任务、训练模型、训练完成。让我们详细看看每一步。"
+    },
+    {
+      "anchor": "section-5",
+      "text": "4.2 预训练的4个步骤"
+    },
+    {
+      "anchor": "section-6",
+      "text": "第1步:收集海量数据"
+    },
+    {
+      "anchor": "section-6",
+      "text": "GPT-3的训练数据约3000亿个词,相当于600万本书。这些数据来自互联网的各个角落:"
+    },
+    {
+      "anchor": "section-6",
+      "text": "数据源                占比    说明\n────────────────────────────────────────────────────\nCommon Crawl(网页)     60%    互联网网页爬取\nWebText2(精选网页)     22%    Reddit高赞链接\nBooks(书籍)           16%    精选书籍\nWikipedia(维基百科)    3%    英文维基百科条目"
+    },
+    {
+      "anchor": "section-6",
+      "text": "数据来源基于OpenAI论文公开的比例,详见《Language Models are Few-Shot Learners》,OpenAI,2020。"
+    },
+    {
+      "anchor": "section-10",
+      "text": "第2步:定义训练任务"
+    },
+    {
+      "anchor": "section-10",
+      "text": "训练数据多是连续的文本,那么如何从一句完整的话变成训练任务?"
+    },
+    {
+      "anchor": "section-10",
+      "text": "假设原始文本:"
+    },
+    {
+      "anchor": "section-10",
+      "text": "“人工智能是计算机科学的一个分支”"
+    },
+    {
+      "anchor": "section-10",
+      "text": "Token化"
+    },
+    {
+      "anchor": "section-10",
+      "text": "ChatGPT不能直接处理文字,必须先把文字切成Token:"
+    },
+    {
+      "anchor": "section-10",
+      "text": "原始文本: \"人工智能是计算机科学的一个分支\"\n          ↓ Token化(切分)\n\n[\"人工智能\", \"是\", \"计算机科学\", \"的\", \"一个\", \"分支\"]\n ↑         ↑      ↑            ↑    ↑      ↑\nToken1   Token2 Token3       Token4 Token5 Token6\n\n总共 6 个 Token"
+    },
+    {
+      "anchor": "section-10",
+      "text": "所以:"
+    },
+    {
+      "anchor": "section-10",
+      "text": "从互联网爬取的是原始文本(字符串)"
+    },
+    {
+      "anchor": "section-10",
+      "text": "经过Token化后变成Token序列(数字序列)"
+    },
+    {
+      "anchor": "section-10",
+      "text": "Token序列"
+    },
+    {
+      "anchor": "section-10",
+      "text": "训练时使用的是Token,不是原始文字"
+    },
+    {
+      "anchor": "section-10",
+      "text": "自动切分成训练样本"
+    },
+    {
+      "anchor": "section-10",
+      "text": "计算机把这些Token切成很多个\"填空题\",答案就在原文里:"
+    },
+    {
+      "anchor": "section-10",
+      "text": "原始文本:\"人工智能是计算机科学的一个分支\"\n               ↓ 自动切分并配对\n\n训练样本1:\n输入:\"人工智能____\"\n答案:\"是\"  ← 从原文取下一个Token\n\n训练样本2:\n输入:\"人工智能是____\"\n答案:\"计算机科学\"\n\n训练样本3:\n输入:\"人工智能是计算机科学____\"\n答案:\"的\"\n\n训练样本4:\n输入:\"人工智能是计算机科学的____\"\n答案:\"一个\"\n\n训练样本5:\n输入:\"人工智能是计算机科学的一个____\"\n答案:\"分支\"\n\n↑ T1(人工智能)前面没有Token,不能作为预测目标,所以6个Token只生成5个训练样本"
+    },
+    {
+      "anchor": "section-10",
+      "text": "预训练是从左到右预测的,只能根据前面的词预测下一个词,不能\"挖空\"中间的词。这就是为什么叫\"语言模型\"——它模拟人类从左往右阅读和写作的过程。 即:不会出现\"人工智能是___计算机科学的一个分支\"这样的训练数据。"
+    },
+    {
+      "anchor": "section-10",
+      "text": "现在我们有了无数个训练样本,每个样本都有输入和答案。接下来的问题是:模型如何利用这些数据学习?"
+    },
+    {
+      "anchor": "section-27",
+      "text": "第3步:训练模型——不断预测、对比、调整"
+    },
+    {
+      "anchor": "section-27",
+      "text": "训练的核心机制很简单:让模型做预测,然后把预测结果与正确答案对比,根据差距调整参数。"
+    },
+    {
+      "anchor": "section-27",
+      "text": "单次训练过程:\n\n1. 给模型看输入:\"人工智能是计算机科学的一个____\"\n2. 模型预测:\"领域\" (初期是随机猜的)\n3. 对比答案:\"分支\" (从原文匹配到的)\n4. 计算错误:预测\"领域\" ≠ 答案\"分支\" → 错了!\n5. 调整参数:修正1750亿个参数,让模型下次更可能输出\"分支\""
+    },
+    {
+      "anchor": "section-27",
+      "text": "但这只是一次训练!真正的训练是一个循环往复的过程:"
+    },
+    {
+      "anchor": "section-27",
+      "text": "关键点:"
+    },
+    {
+      "anchor": "section-27",
+      "text": "一句话\"人工智能是计算机科学的一个分支\"切成6个Token,能生成5个训练样本(每个Token位置一个)"
+    },
+    {
+      "anchor": "section-27",
+      "text": "3000亿Token ≈ 3000亿次调整 ≈ 3000亿次学习机会"
+    },
+    {
+      "anchor": "section-27",
+      "text": "3000亿次调整"
+    },
+    {
+      "anchor": "section-27",
+      "text": "每次调整,1750亿个参数都会轻微改变"
+    },
+    {
+      "anchor": "section-27",
+      "text": "经过3000亿次循环,模型逐渐\"学会\"了语言规律"
+    },
+    {
+      "anchor": "section-37",
+      "text": "第4步:训练完成"
+    },
+    {
+      "anchor": "section-37",
+      "text": "1750亿个参数调整完毕,模型\"记住\"了语言的规律,就像一个\"读过\"3000亿词的语言专家。"
+    },
+    {
+      "anchor": "section-39",
+      "text": "4.3 监督学习 vs 自监督学习"
+    },
+    {
+      "anchor": "section-39",
+      "text": "现在来解释一个至关重要的概念,它是预训练能够规模化的关键。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "传统的监督学习:需要人工标注"
+    },
+    {
+      "anchor": "section-41",
+      "text": "用情感分析作为例子(这已经是监督学习中最简单、成本最低的任务了):"
+    },
+    {
+      "anchor": "section-41",
+      "text": "情感分析"
+    },
+    {
+      "anchor": "section-41",
+      "text": "任务:情感分析(分类任务)\n\n数据:\n\"这部电影真好看!\"    → 标签:正面 ← 需要人工判断并标注\n\"浪费时间,很无聊\"    → 标签:负面 ← 需要人工判断并标注\n\"还准备看第二遍!\"    → 标签:正面 ← 需要人工判断并标注\n..."
+    },
+    {
+      "anchor": "section-41",
+      "text": "标注10万条数据,耗时数月,可能花费成本数十万美元,然后只能训练一个做情感分析的模型。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "这里有个常见误区:很多同学认为监督学习的流程是机器回答问题,然后人类标注员告诉机器是否正确。但其实更常见的方式是人类标注员预先标注好答案。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "举例来说:"
+    },
+    {
+      "anchor": "section-41",
+      "text": "情感分析:标注员看到\"这部电影真好看\" → 判断是正面情感 → 打上\"正面\"标签"
+    },
+    {
+      "anchor": "section-41",
+      "text": "机器翻译:标注员看到\"I love this book\" → 翻译为\"我喜欢这本书\" → 形成一对训练数据"
+    },
+    {
+      "anchor": "section-41",
+      "text": "收集到足够多的标注数据后,才开始训练模型。所以监督学习的训练数据都是成对的:文本-答案。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "看似合理,但有很大问题:"
+    },
+    {
+      "anchor": "section-41",
+      "text": "标注成本高昂,无法规模化"
+    },
+    {
+      "anchor": "section-41",
+      "text": "每条数据都需要人工判断,成本极高。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "任务单一化"
+    },
+    {
+      "anchor": "section-41",
+      "text": "对于同一个例句,可能有不同角度的用途:情感分析(正负)、翻译、摘要。但往往一批标注员只做某一个方向的标注,没有将训练数据的收益最大化。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "数据量受限"
+    },
+    {
+      "anchor": "section-41",
+      "text": "用于训练模型的数据量极其庞大,要想尽可能处理这些信息,只靠人工根本不可能。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "而且,情感分析属于分类任务,已经是监督学习中相对最简单的类型(只需选择预定义的标签)。如果是更复杂的任务,成本会更高:"
+    },
+    {
+      "anchor": "section-41",
+      "text": "机器翻译:需要专业翻译人员,标注一段文本可能需要1分钟左右"
+    },
+    {
+      "anchor": "section-41",
+      "text": "问答系统:需要理解问题并撰写答案,标注一条问答对可能需要1到5分钟"
+    },
+    {
+      "anchor": "section-41",
+      "text": "问答系统"
+    },
+    {
+      "anchor": "section-41",
+      "text": "文本摘要:需要阅读长文并提炼核心,标注一条摘要可能需要10-20分钟"
+    },
+    {
+      "anchor": "section-41",
+      "text": "文本摘要"
+    },
+    {
+      "anchor": "section-41",
+      "text": "监督学习的标注成本,会随着任务复杂度指数级增长。"
+    },
+    {
+      "anchor": "section-41",
+      "text": "指数级增长"
+    },
+    {
+      "anchor": "section-66",
+      "text": "预训练的自监督学习:完全不同"
+    },
+    {
+      "anchor": "section-66",
+      "text": "任务:预测下一个Token(填空任务)"
+    },
+    {
+      "anchor": "section-66",
+      "text": "数据:\n原始文本:\"人工智能是计算机科学的一个分支\"\n\n自动生成训练样本(每个位置都有一道填空题):\n\n填空题1:\n输入:\"人工智能____\"\n答案:\"是\" ← 不需要人工标注,原文里就有!\n\n填空题2:\n输入:\"人工智能是____\"\n答案:\"计算机科学\"\n\n填空题3:\n输入:\"人工智能是计算机科学____\"\n答案:\"的\"\n\n填空题4:\n输入:\"人工智能是计算机科学的____\"\n答案:\"一个\"\n\n填空题5:\n输入:\"人工智能是计算机科学的一个____\"\n答案:\"分支\" ← 每个位置自动生成一道题"
+    },
+    {
+      "anchor": "section-66",
+      "text": "自监督学习的优势很明显:"
+    },
+    {
+      "anchor": "section-66",
+      "text": "答案在原文里"
+    },
+    {
+      "anchor": "section-66",
+      "text": "下一个Token就是标签,不需要人工判断。"
+    },
+    {
+      "anchor": "section-66",
+      "text": "样本自动生成"
+    },
+    {
+      "anchor": "section-66",
+      "text": "一句话能生成无数个训练样本,把原文切开就行。"
+    },
+    {
+      "anchor": "section-66",
+      "text": "零标注成本"
+    },
+    {
+      "anchor": "section-66",
+      "text": "从互联网爬取文本即可,不需要人工打标签。"
+    },
+    {
+      "anchor": "section-66",
+      "text": "规模爆炸式增长"
+    },
+    {
+      "anchor": "section-66",
+      "text": "监督学习可能只能标注10万条,但预训练可以到3000亿个Token。"
+    },
+    {
+      "anchor": "section-66",
+      "text": "这就是预训练能够改变AI的根本原因。"
+    },
+    {
+      "anchor": "section-79",
+      "text": "4.4 下一节预告"
+    },
+    {
+      "anchor": "section-79",
+      "text": "现在知道了预训练的4个步骤和自监督学习的优势。但训练这样一个模型需要多少资源?为什么只有少数科技巨头能玩这个游戏?"
+    },
+    {
+      "anchor": "section-79",
+      "text": "下一节将看到预训练的惊人代价,以及数据质量的重要性。"
+    },
+    {
+      "anchor": "section-82",
+      "text": "4.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-82",
+      "text": "中文 | English | 音标 | 说明\n预训练 | Pre-training | /priː ˈtreɪnɪŋ/ | 在海量无标注文本上训练语言模型学习通用语言能力的过程\n监督学习 | Supervised Learning | / suːpərvaɪzd ˌ ˈlɜːnɪŋ/ | 使用人工标注的数据训练模型做特定任务的方法\n自监督学习 | Self-Supervised Learning | /self ˈsuːpərvaɪzd ˈlɜːnɪŋ/ | 从数据本身自动生成标签（如下一个Token预测） 的训练方式\n下一Token 预测 | Next-Token Prediction | /nekst ˈtoʊkən prɪ ˈdɪkʃən/ | 语言模型根据已有Token序列预测下一个Token的核心训练任务\n训练样本 | Training Sample | /ˈtreɪnɪŋ ˈsæmpl/ | 模型训练中用到的输入-输出对（输入文本+要预测的下一个Token）\n收敛 | Convergence | /kənˈvɜːrdʒəns/ | 模型训练中参数接近最优解、损失不再显著下降的状态"
+    },
+    {
+      "anchor": "section-84",
+      "text": "图片"
+    }
+  ]
+}

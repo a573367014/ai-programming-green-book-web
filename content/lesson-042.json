@@ -1,0 +1,67 @@
+{
+  "id": "lesson-042",
+  "title": "选择练习 · 1-2",
+  "code": "1-2",
+  "stage": 1,
+  "week": 2,
+  "week_title": "语言模型怎么训练",
+  "module": "监督微调",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/002-第2周 语言模型怎么训练/007-监督微调/042-练习-1-2-选择练习.pdf",
+  "sha256": "25b8e0f33b93e5173f088e924cddd5141d65d269db95f6f8a0725bbcc1c62ec3",
+  "pdf": "sources/pdf/lesson-042.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5259#mid=104965",
+  "minutes": 1,
+  "excerpt": "纯预训练模型（如GPT-3）在回答\"太阳是什么时候开始绕着地球转的？\"时，可能会像文章续写一样继续\"接龙\"下去。这说明了什么？ (复习题)",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "纯预训练模型（如GPT-3）在回答\"太阳是什么时候开始绕着地球转的？\"时，可能会像文章续写一样继续\"接龙\"下去。这说明了什么？ (复习题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. 预训练模型的推理能力还不够强 B. 预训练模型的训练数据中有太多错误信息 C. 预训练模型没有任务意识，不知道自己在被提问而不是在写文章 D. 预训练模型只能处理长文本，不能处理短问题",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 354,
+    "represented_chars": 167,
+    "removed_chars": 187,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 187
+    }
+  },
+  "videos": [],
+  "order": 43,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "纯预训练模型（如GPT-3）在回答\"太阳是什么时候开始绕着地球转的？\"时，可能会像文章续写一样继续\"接龙\"下去。这说明了什么？ (复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. 预训练模型的推理能力还不够强 B. 预训练模型的训练数据中有太多错误信息 C. 预训练模型没有任务意识，不知道自己在被提问而不是在写文章 D. 预训练模型只能处理长文本，不能处理短问题"
+    }
+  ]
+}

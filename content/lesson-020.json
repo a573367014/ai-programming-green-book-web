@@ -1,0 +1,1165 @@
+{
+  "id": "lesson-020",
+  "title": "语言模型（一）-什么是语言模型",
+  "code": "1-1",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "语言模型",
+  "type": "article",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/004-语言模型/020-图文-1-1-语言模型（一）-什么是语言模型.pdf",
+  "sha256": "d7680824b7f4f655f2b5109a33d5810a50383a6266d36dd59857e14ed6a5741c",
+  "pdf": "sources/pdf/lesson-020.pdf",
+  "pages": 7,
+  "source_url": "https://class.imooc.com/lesson/5255#mid=104877",
+  "minutes": 10,
+  "excerpt": "前面几节，我们了解了ChatGPT如何玩文字接龙游戏。现在，让我们稍微正式一点，引入一个经常听到的术语：语言模型（Language Model）。这个词听起来很学术，但理解之后会发现它并不神秘。",
+  "items": [
+    {
+      "kind": "h2",
+      "text": "8.1 阅读指南",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "前面几节，我们了解了ChatGPT如何玩文字接龙游戏。现在，让我们稍微正式一点，引入一个经常听到的术语：语言模型（Language Model）。这个词听起来很学术，但理解之后会发现它并不神秘。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "8.2 人类理解世界的方式",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在谈\"语言模型\"之前，先聊聊\"模型\"这个词本身。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "我们生活在一个复杂得难以想象的世界里。为了理解这个世界，人类发明了一种强大的工具：用简化的数学来描述复杂的现实，这就是\"模型\"。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "物理学中的模型",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "比如，一个小孩抛出一个球，球划出一道弧线落地。这个简单的动作，背后涉及无数的物理因素：球的材质、空气阻力、地球引力、风速、温度……",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "但牛顿给了我们一个优雅的模型：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "ℎ = 𝑣 0 𝑡 − 1 2 𝑔 𝑡 2 h=v 0  t− 2 1  gt 2",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "t2",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "v0",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个公式忽略了无数细节，却能相当准确地预测球的轨迹。这就是模型的力量：用简单的数学，抓住现象的本质。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "气象学中的模型",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "再比如，明天会不会下雨？这涉及大气中数万亿个分子的运动，地球自转，太阳辐射……",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "气象学家建立的模型，用几千个方程，数百万个数据点，模拟大气的运动，最终给出：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "明天降雨概率：65%",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "不完美，但有用。这就是模型的价值：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "在复杂中找到规律，在不确定中给出预测。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "那么，\"语言模型\"呢？",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "类似地，人类语言是一个极其复杂的现象。当发一条朋友圈\"今天emo了\"，这背后涉及：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "成长经历（学会了中文和网络文化）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "情绪状态（正处于低落或失落的心境）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "表达意图（想分享这种心情但不想说得太直白）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "语言的演化历史（\"emo\"从英文emotional缩略而来，在中文网络语境中变成动词）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "文化的共同理解（同龄人知道这不是\"真的很悲伤\"，而是一种轻松的自嘲）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这么复杂的现象，怎么用数学来描述呢？似乎不可能。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但语言模型给了我们一个数学的角度：把语言看作一个概率过程。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "概率过程",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.3 语言模型的数学定义",
+      "page": 2,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在，给出一个正式的定义：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "语言模型，就是对语言概率分布的数学建模。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "什么意思？拆解一下。",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言是随机过程想象一下，正在写一篇文章。写到\"今天天气\"这四个字之后，下一个词可能是：",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "list",
+      "text": "“真好”（可能性比较大）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“很好”（也挺常见）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“糟糕”（也有可能）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "“紫色”（几乎不可能）",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一个词不是确定的，而是有多种可能性，每种可能性有一个概率。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言模型计算概率",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言模型做的事情，就是用数学方法，计算出这个概率分布：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "𝑃 ( 𝑤 ∣ 𝐶 ) P(w∣C)",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "(",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": ")",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "w",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个符号读作：“在给定前文的条件下，某个词出现的概率”。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "具体例子：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "𝑃 ( 真好 ∣ 今天天气 ) = 0 . 3 5 P(真好∣今天天气)=0.35 𝑃 ( 很好 ∣ 今天天气 ) = 0 . 2 5 P(很好∣今天天气)=0.25 𝑃 ( 不错 ∣ 今天天气 ) = 0 . 1 5 P(不错∣今天天气)=0.15 𝑃 ( 糟糕 ∣ 今天天气 ) = 0 .0 8 P(糟糕∣今天天气)=0.08 𝑃 ( 紫色 ∣ 今天天气 ) = 0 . 0 0 0 1 P(紫色∣今天天气)=0.0001",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个概率分布，就是对\"人类在这个上下文中会说什么\"的数学建模。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么叫\"建模\"？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为这个概率分布不是随意的，它反映了语言的内在规律。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "继续用\"今天天气\"这个例子来说明：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "规律一：语法约束",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "为什么 𝑃 ( 紫色 ∣ 今天天气 ) = 0 . 0 0 0 1 P(紫色∣今天天气)=0.0001 这么低？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "因为中文语法不允许\"天气\"后面接颜色词。语言模型学会了这个规律，所以给了极低的概率。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "再看一个例子：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "𝑃 ( 吃 ∣ 我喜欢 ) = 0 . 1 5 P(吃∣我喜欢)=0.15 𝑃 ( 苹果 ∣ 我喜欢 ) = 0 . 1 2 P(苹果∣我喜欢)=0.12𝑃 ( 的 ∣ 我喜欢 ) = 0 . 0 0 1 P(的∣我喜欢)=0.001",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么\"的\"概率这么低？因为\"我喜欢的\"这种说法不符合中文语法（虽然口语中偶尔也有，但很罕见）。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "规律二：语义连贯",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "𝑃 ( 爬树 ∣ 猫会 ) = 0 . 1 8 P(爬树∣猫会)=0.18 𝑃 ( 飞 ∣ 猫会 ) = 0 . 0 0 1 P(飞∣猫会)=0.001",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "为什么\"飞\"概率这么低？因为在现实世界中，猫不会飞。语言模型从数据中学会了这个常识。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "规律三：上下文相关",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "想象这个场景：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "前文A：\"我买了一部新手机，它的____\" 前文B：“我做了一道菜，它的____”",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "虽然都是\"它的\"，但下一个词的概率分布完全不同。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "𝑃 ( 屏幕 ∣ … 它的 ) = 0 . 2 5 P(屏幕∣…它的)=0.25 𝑃 ( 味道 ∣ … 它的 ) = 0 . 0 0 1 P(味道∣…它的)=0.001",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "quote",
+      "text": "𝑃 ( 味道 ∣ … 它的 ) = 0 . 3 0 P(味道∣…它的)=0.30 𝑃 ( 屏幕 ∣ … 它的 ) = 0 . 0 0 1 P(屏幕∣…它的)=0.001",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言模型会根据更前的上下文（手机 vs 菜）来调整概率。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "小结：",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言模型就是用数学的方式，把这些规律\"编码\"进概率分布中。这就是为什么我们说，语言模型是对语言的\"建模\"。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "h2",
+      "text": "8.4 冷知识：香农游戏——语言模型的\"祖先\"（1948年）",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "你可能没想到，语言模型的思想，早在1948年就被提出了——比ChatGPT早了75年！",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "克劳德·香农是谁？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "克劳德·香农（Claude Shannon），信息论之父，现代数字通信的奠基人。他在1948年发表了一篇划时代的论文《通信的数学理论》，奠定了整个信息时代的理论基础。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "但很少有人知道，他在这篇论文中，还提出了一个有趣的\"游戏\"。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "香农游戏：人类版的\"预测下一个词\"",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "香农做了一个实验：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "给你一段英文文本的开头（来自小说《名利场》）： “THE ROOM WAS NOT VERY LIGHT A SMALL OBLONG READI___” 请你猜下一个字母是什么？ 如果猜对了，继续猜下一个；如果猜错了，告诉你正确答案，然后继续。 记录你猜对/猜错的次数。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "他让志愿者玩这个游戏，发现了一个惊人的规律：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "人类能够相当准确地预测下一个字母！",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "例如：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“THE ROOM WAS NOT VERY LIGHT A SMALL OBLONG READI___” 大部分人会猜：N, G →“READING” (阅读/阅览室) 人类的大脑，自动学会了英语的： 语法规律（“a small” 后面通常是名词） 语义规律（房间不是很明亮，可能是阅览室或类似地方） 统计规律（“readi” 开头，最常见的是 “reading”）",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "这和语言模型有什么关系？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "香农的核心洞察是：语言不是随机的，而是有规律的。这种规律可以用概率来描述。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "语言不是随机的，而是有规律的。这种规律可以用概率来描述。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "他甚至给出了一个数学公式，计算英语的\"熵\"（Entropy）——衡量语言的不确定性：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "math",
+      "text": "𝐻 = − ∑ 𝑃 ( 𝑥 ) log ⁡ 𝑃 ( 𝑥 ) H=−∑P(x)logP(x)",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是现代语言模型的数学基础。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从香农游戏到ChatGPT对比一下：",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "quote",
+      "text": "香农游戏（1948）： 人类根据经验，猜下一个字母 依靠的是大脑中积累的语言统计规律ChatGPT（2022）： AI根据训练数据，预测下一个词 依靠的是1750亿参数中编码的语言统计规律 本质是一样的，都是在建模： 𝑃 ( 下一个 ∣ 前文 ) P(下一个∣前文)",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "香农的预言",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "更神奇的是，香农在1948年就预言了：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "“如果我们能够精确计算语言的概率分布，我们就能制造出一台’写作机器’，它能够生成像人类一样的文本。”",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "这不就是ChatGPT吗？！",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一个有趣的对比",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "1948年，香农用人类志愿者做实验： 任务：预测下一个字母 处理速度：约1个字母/秒 准确率：60-70% “参数量”：一个人类大脑 2023年，ChatGPT： 任务：预测下一个词/字母 处理速度：约100个词/秒（约500倍于人类） 准确率：在简单文本上接近90%，超过人类 参数量：1750亿",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "75年后，用机器实现了香农的梦想，而且远超他的预期。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果香农还活着……",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "克劳德·香农于2001年去世，享年84岁。他没能看到ChatGPT的诞生。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "但如果他还活着，看到自己75年前的理论，最终变成了改变世界的AI产品，他会说什么呢？",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "也许他会说：“我早就知道了。数学不会骗人。”",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "每当用ChatGPT的时候，不妨想一想：75年前，一个天才数学家，已经在纸上勾勒出了这一切的蓝图。",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "8.5 ■ 学点英语",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n语言模型 | Language Model | /ˈlæŋɡwɪdʒ ˈmɒdl/ | 对语言序列概率分布进行建模的数学模型\n条件概率 | Conditional Probability | /kənˈdɪʃənl prɒbə ˌ ˈbɪləti/ | 在已知某事件发生的条件下另一事件发生的概率，记为P(词\n联合概率 | Joint Probability | /dʒɔɪnt prɒbə ˌ ˈbɪləti/ | 多个事件同时发生的概率，记为P(词1,词2,…,词n)\n概率分布 | Probability Distribution | / prɒbəˈbɪləti ˌ dɪstrɪˈbjuːʃən/ ˌ | 描述随机变量所有可能取值及其概率的函数，语言模型的核心输出对象\n香农游戏 | Shannon Game | /ˈʃænən ɡeɪm/ | 香农在1948年提出的根据前文预测下一个字母的思想实验，语言模型概念的雏形\n自回归生成 | Autoregressive Generation | /ɔːtoʊrɪˈɡresɪv dʒenəˈreɪʃən/ ˌ | 从左到右逐词生成文本序列的过程，每一步依赖之前已生成的全部内容\n下一 Token预测 | Next-Token Prediction | /nekst ˈtoʊkən prɪ ˈdɪkʃən/ | 语言模型根据已有Token序列预测下一个Token的核心训练任务和目标\n信息熵 | Entropy | /ˈentrəpi/ | 衡量信息不确定性的度量单位，香农提出的核心概念",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "语言模型",
+          "Language Model",
+          "/ˈlæŋɡwɪdʒ ˈmɒdl/",
+          "对语言序列概率分布进行建模的数学模型"
+        ],
+        [
+          "条件概率",
+          "Conditional Probability",
+          "/kənˈdɪʃənl prɒbə ˌ ˈbɪləti/",
+          "在已知某事件发生的条件下另一事件发生的概率，记为P(词"
+        ],
+        [
+          "联合概率",
+          "Joint Probability",
+          "/dʒɔɪnt prɒbə ˌ ˈbɪləti/",
+          "多个事件同时发生的概率，记为P(词1,词2,…,词n)"
+        ],
+        [
+          "概率分布",
+          "Probability Distribution",
+          "/ prɒbəˈbɪləti ˌ dɪstrɪˈbjuːʃən/ ˌ",
+          "描述随机变量所有可能取值及其概率的函数，语言模型的核心输出对象"
+        ],
+        [
+          "香农游戏",
+          "Shannon Game",
+          "/ˈʃænən ɡeɪm/",
+          "香农在1948年提出的根据前文预测下一个字母的思想实验，语言模型概念的雏形"
+        ],
+        [
+          "自回归生成",
+          "Autoregressive Generation",
+          "/ɔːtoʊrɪˈɡresɪv dʒenəˈreɪʃən/ ˌ",
+          "从左到右逐词生成文本序列的过程，每一步依赖之前已生成的全部内容"
+        ],
+        [
+          "下一 Token预测",
+          "Next-Token Prediction",
+          "/nekst ˈtoʊkən prɪ ˈdɪkʃən/",
+          "语言模型根据已有Token序列预测下一个Token的核心训练任务和目标"
+        ],
+        [
+          "信息熵",
+          "Entropy",
+          "/ˈentrəpi/",
+          "衡量信息不确定性的度量单位，香农提出的核心概念"
+        ]
+      ],
+      "page": 7
+    }
+  ],
+  "accounting": {
+    "source_chars": 4170,
+    "represented_chars": 3995,
+    "removed_chars": 175,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 141,
+      "repeated_title": 34
+    }
+  },
+  "videos": [],
+  "order": 21,
+  "headings": [
+    {
+      "title": "8.1 阅读指南",
+      "id": "section-0",
+      "level": 2
+    },
+    {
+      "title": "8.2 人类理解世界的方式",
+      "id": "section-2",
+      "level": 2
+    },
+    {
+      "title": "8.3 语言模型的数学定义",
+      "id": "section-28",
+      "level": 2
+    },
+    {
+      "title": "8.4 冷知识：香农游戏——语言模型的\"祖先\"（1948年）",
+      "id": "section-69",
+      "level": 2
+    },
+    {
+      "title": "8.5 ■ 学点英语",
+      "id": "section-101",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "section-0",
+      "text": "8.1 阅读指南"
+    },
+    {
+      "anchor": "section-0",
+      "text": "前面几节，我们了解了ChatGPT如何玩文字接龙游戏。现在，让我们稍微正式一点，引入一个经常听到的术语：语言模型（Language Model）。这个词听起来很学术，但理解之后会发现它并不神秘。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "8.2 人类理解世界的方式"
+    },
+    {
+      "anchor": "section-2",
+      "text": "在谈\"语言模型\"之前，先聊聊\"模型\"这个词本身。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "我们生活在一个复杂得难以想象的世界里。为了理解这个世界，人类发明了一种强大的工具：用简化的数学来描述复杂的现实，这就是\"模型\"。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "物理学中的模型"
+    },
+    {
+      "anchor": "section-2",
+      "text": "比如，一个小孩抛出一个球，球划出一道弧线落地。这个简单的动作，背后涉及无数的物理因素：球的材质、空气阻力、地球引力、风速、温度……"
+    },
+    {
+      "anchor": "section-2",
+      "text": "但牛顿给了我们一个优雅的模型："
+    },
+    {
+      "anchor": "section-2",
+      "text": "ℎ = 𝑣 0 𝑡 − 1 2 𝑔 𝑡 2 h=v 0  t− 2 1  gt 2"
+    },
+    {
+      "anchor": "section-2",
+      "text": "t2"
+    },
+    {
+      "anchor": "section-2",
+      "text": "v0"
+    },
+    {
+      "anchor": "section-2",
+      "text": "这个公式忽略了无数细节，却能相当准确地预测球的轨迹。这就是模型的力量：用简单的数学，抓住现象的本质。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "气象学中的模型"
+    },
+    {
+      "anchor": "section-2",
+      "text": "再比如，明天会不会下雨？这涉及大气中数万亿个分子的运动，地球自转，太阳辐射……"
+    },
+    {
+      "anchor": "section-2",
+      "text": "气象学家建立的模型，用几千个方程，数百万个数据点，模拟大气的运动，最终给出："
+    },
+    {
+      "anchor": "section-2",
+      "text": "明天降雨概率：65%"
+    },
+    {
+      "anchor": "section-2",
+      "text": "不完美，但有用。这就是模型的价值："
+    },
+    {
+      "anchor": "section-2",
+      "text": "在复杂中找到规律，在不确定中给出预测。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "那么，\"语言模型\"呢？"
+    },
+    {
+      "anchor": "section-2",
+      "text": "类似地，人类语言是一个极其复杂的现象。当发一条朋友圈\"今天emo了\"，这背后涉及："
+    },
+    {
+      "anchor": "section-2",
+      "text": "成长经历（学会了中文和网络文化）"
+    },
+    {
+      "anchor": "section-2",
+      "text": "情绪状态（正处于低落或失落的心境）"
+    },
+    {
+      "anchor": "section-2",
+      "text": "表达意图（想分享这种心情但不想说得太直白）"
+    },
+    {
+      "anchor": "section-2",
+      "text": "语言的演化历史（\"emo\"从英文emotional缩略而来，在中文网络语境中变成动词）"
+    },
+    {
+      "anchor": "section-2",
+      "text": "文化的共同理解（同龄人知道这不是\"真的很悲伤\"，而是一种轻松的自嘲）"
+    },
+    {
+      "anchor": "section-2",
+      "text": "这么复杂的现象，怎么用数学来描述呢？似乎不可能。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "但语言模型给了我们一个数学的角度：把语言看作一个概率过程。"
+    },
+    {
+      "anchor": "section-2",
+      "text": "概率过程"
+    },
+    {
+      "anchor": "section-28",
+      "text": "8.3 语言模型的数学定义"
+    },
+    {
+      "anchor": "section-28",
+      "text": "现在，给出一个正式的定义："
+    },
+    {
+      "anchor": "section-28",
+      "text": "语言模型，就是对语言概率分布的数学建模。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "什么意思？拆解一下。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "语言是随机过程想象一下，正在写一篇文章。写到\"今天天气\"这四个字之后，下一个词可能是："
+    },
+    {
+      "anchor": "section-28",
+      "text": "“真好”（可能性比较大）"
+    },
+    {
+      "anchor": "section-28",
+      "text": "“很好”（也挺常见）"
+    },
+    {
+      "anchor": "section-28",
+      "text": "“糟糕”（也有可能）"
+    },
+    {
+      "anchor": "section-28",
+      "text": "“紫色”（几乎不可能）"
+    },
+    {
+      "anchor": "section-28",
+      "text": "下一个词不是确定的，而是有多种可能性，每种可能性有一个概率。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "语言模型计算概率"
+    },
+    {
+      "anchor": "section-28",
+      "text": "语言模型做的事情，就是用数学方法，计算出这个概率分布："
+    },
+    {
+      "anchor": "section-28",
+      "text": "𝑃 ( 𝑤 ∣ 𝐶 ) P(w∣C)"
+    },
+    {
+      "anchor": "section-28",
+      "text": "("
+    },
+    {
+      "anchor": "section-28",
+      "text": ")"
+    },
+    {
+      "anchor": "section-28",
+      "text": "w"
+    },
+    {
+      "anchor": "section-28",
+      "text": "这个符号读作：“在给定前文的条件下，某个词出现的概率”。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "具体例子："
+    },
+    {
+      "anchor": "section-28",
+      "text": "𝑃 ( 真好 ∣ 今天天气 ) = 0 . 3 5 P(真好∣今天天气)=0.35 𝑃 ( 很好 ∣ 今天天气 ) = 0 . 2 5 P(很好∣今天天气)=0.25 𝑃 ( 不错 ∣ 今天天气 ) = 0 . 1 5 P(不错∣今天天气)=0.15 𝑃 ( 糟糕 ∣ 今天天气 ) = 0 .0 8 P(糟糕∣今天天气)=0.08 𝑃 ( 紫色 ∣ 今天天气 ) = 0 . 0 0 0 1 P(紫色∣今天天气)=0.0001"
+    },
+    {
+      "anchor": "section-28",
+      "text": "这个概率分布，就是对\"人类在这个上下文中会说什么\"的数学建模。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "为什么叫\"建模\"？"
+    },
+    {
+      "anchor": "section-28",
+      "text": "因为这个概率分布不是随意的，它反映了语言的内在规律。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "继续用\"今天天气\"这个例子来说明："
+    },
+    {
+      "anchor": "section-28",
+      "text": "规律一：语法约束"
+    },
+    {
+      "anchor": "section-28",
+      "text": "为什么 𝑃 ( 紫色 ∣ 今天天气 ) = 0 . 0 0 0 1 P(紫色∣今天天气)=0.0001 这么低？"
+    },
+    {
+      "anchor": "section-28",
+      "text": "因为中文语法不允许\"天气\"后面接颜色词。语言模型学会了这个规律，所以给了极低的概率。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "再看一个例子："
+    },
+    {
+      "anchor": "section-28",
+      "text": "𝑃 ( 吃 ∣ 我喜欢 ) = 0 . 1 5 P(吃∣我喜欢)=0.15 𝑃 ( 苹果 ∣ 我喜欢 ) = 0 . 1 2 P(苹果∣我喜欢)=0.12𝑃 ( 的 ∣ 我喜欢 ) = 0 . 0 0 1 P(的∣我喜欢)=0.001"
+    },
+    {
+      "anchor": "section-28",
+      "text": "为什么\"的\"概率这么低？因为\"我喜欢的\"这种说法不符合中文语法（虽然口语中偶尔也有，但很罕见）。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "规律二：语义连贯"
+    },
+    {
+      "anchor": "section-28",
+      "text": "𝑃 ( 爬树 ∣ 猫会 ) = 0 . 1 8 P(爬树∣猫会)=0.18 𝑃 ( 飞 ∣ 猫会 ) = 0 . 0 0 1 P(飞∣猫会)=0.001"
+    },
+    {
+      "anchor": "section-28",
+      "text": "为什么\"飞\"概率这么低？因为在现实世界中，猫不会飞。语言模型从数据中学会了这个常识。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "规律三：上下文相关"
+    },
+    {
+      "anchor": "section-28",
+      "text": "想象这个场景："
+    },
+    {
+      "anchor": "section-28",
+      "text": "前文A：\"我买了一部新手机，它的____\" 前文B：“我做了一道菜，它的____”"
+    },
+    {
+      "anchor": "section-28",
+      "text": "虽然都是\"它的\"，但下一个词的概率分布完全不同。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "𝑃 ( 屏幕 ∣ … 它的 ) = 0 . 2 5 P(屏幕∣…它的)=0.25 𝑃 ( 味道 ∣ … 它的 ) = 0 . 0 0 1 P(味道∣…它的)=0.001"
+    },
+    {
+      "anchor": "section-28",
+      "text": "𝑃 ( 味道 ∣ … 它的 ) = 0 . 3 0 P(味道∣…它的)=0.30 𝑃 ( 屏幕 ∣ … 它的 ) = 0 . 0 0 1 P(屏幕∣…它的)=0.001"
+    },
+    {
+      "anchor": "section-28",
+      "text": "语言模型会根据更前的上下文（手机 vs 菜）来调整概率。"
+    },
+    {
+      "anchor": "section-28",
+      "text": "小结："
+    },
+    {
+      "anchor": "section-28",
+      "text": "语言模型就是用数学的方式，把这些规律\"编码\"进概率分布中。这就是为什么我们说，语言模型是对语言的\"建模\"。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "8.4 冷知识：香农游戏——语言模型的\"祖先\"（1948年）"
+    },
+    {
+      "anchor": "section-69",
+      "text": "你可能没想到，语言模型的思想，早在1948年就被提出了——比ChatGPT早了75年！"
+    },
+    {
+      "anchor": "section-69",
+      "text": "克劳德·香农是谁？"
+    },
+    {
+      "anchor": "section-69",
+      "text": "克劳德·香农（Claude Shannon），信息论之父，现代数字通信的奠基人。他在1948年发表了一篇划时代的论文《通信的数学理论》，奠定了整个信息时代的理论基础。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "但很少有人知道，他在这篇论文中，还提出了一个有趣的\"游戏\"。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "香农游戏：人类版的\"预测下一个词\""
+    },
+    {
+      "anchor": "section-69",
+      "text": "香农做了一个实验："
+    },
+    {
+      "anchor": "section-69",
+      "text": "给你一段英文文本的开头（来自小说《名利场》）： “THE ROOM WAS NOT VERY LIGHT A SMALL OBLONG READI___” 请你猜下一个字母是什么？ 如果猜对了，继续猜下一个；如果猜错了，告诉你正确答案，然后继续。 记录你猜对/猜错的次数。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "他让志愿者玩这个游戏，发现了一个惊人的规律："
+    },
+    {
+      "anchor": "section-69",
+      "text": "人类能够相当准确地预测下一个字母！"
+    },
+    {
+      "anchor": "section-69",
+      "text": "例如："
+    },
+    {
+      "anchor": "section-69",
+      "text": "“THE ROOM WAS NOT VERY LIGHT A SMALL OBLONG READI___” 大部分人会猜：N, G →“READING” (阅读/阅览室) 人类的大脑，自动学会了英语的： 语法规律（“a small” 后面通常是名词） 语义规律（房间不是很明亮，可能是阅览室或类似地方） 统计规律（“readi” 开头，最常见的是 “reading”）"
+    },
+    {
+      "anchor": "section-69",
+      "text": "这和语言模型有什么关系？"
+    },
+    {
+      "anchor": "section-69",
+      "text": "香农的核心洞察是：语言不是随机的，而是有规律的。这种规律可以用概率来描述。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "语言不是随机的，而是有规律的。这种规律可以用概率来描述。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "他甚至给出了一个数学公式，计算英语的\"熵\"（Entropy）——衡量语言的不确定性："
+    },
+    {
+      "anchor": "section-69",
+      "text": "𝐻 = − ∑ 𝑃 ( 𝑥 ) log ⁡ 𝑃 ( 𝑥 ) H=−∑P(x)logP(x)"
+    },
+    {
+      "anchor": "section-69",
+      "text": "这就是现代语言模型的数学基础。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "从香农游戏到ChatGPT对比一下："
+    },
+    {
+      "anchor": "section-69",
+      "text": "香农游戏（1948）： 人类根据经验，猜下一个字母 依靠的是大脑中积累的语言统计规律ChatGPT（2022）： AI根据训练数据，预测下一个词 依靠的是1750亿参数中编码的语言统计规律 本质是一样的，都是在建模： 𝑃 ( 下一个 ∣ 前文 ) P(下一个∣前文)"
+    },
+    {
+      "anchor": "section-69",
+      "text": "香农的预言"
+    },
+    {
+      "anchor": "section-69",
+      "text": "更神奇的是，香农在1948年就预言了："
+    },
+    {
+      "anchor": "section-69",
+      "text": "“如果我们能够精确计算语言的概率分布，我们就能制造出一台’写作机器’，它能够生成像人类一样的文本。”"
+    },
+    {
+      "anchor": "section-69",
+      "text": "这不就是ChatGPT吗？！"
+    },
+    {
+      "anchor": "section-69",
+      "text": "一个有趣的对比"
+    },
+    {
+      "anchor": "section-69",
+      "text": "1948年，香农用人类志愿者做实验： 任务：预测下一个字母 处理速度：约1个字母/秒 准确率：60-70% “参数量”：一个人类大脑 2023年，ChatGPT： 任务：预测下一个词/字母 处理速度：约100个词/秒（约500倍于人类） 准确率：在简单文本上接近90%，超过人类 参数量：1750亿"
+    },
+    {
+      "anchor": "section-69",
+      "text": "75年后，用机器实现了香农的梦想，而且远超他的预期。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "如果香农还活着……"
+    },
+    {
+      "anchor": "section-69",
+      "text": "克劳德·香农于2001年去世，享年84岁。他没能看到ChatGPT的诞生。"
+    },
+    {
+      "anchor": "section-69",
+      "text": "但如果他还活着，看到自己75年前的理论，最终变成了改变世界的AI产品，他会说什么呢？"
+    },
+    {
+      "anchor": "section-69",
+      "text": "也许他会说：“我早就知道了。数学不会骗人。”"
+    },
+    {
+      "anchor": "section-69",
+      "text": "每当用ChatGPT的时候，不妨想一想：75年前，一个天才数学家，已经在纸上勾勒出了这一切的蓝图。"
+    },
+    {
+      "anchor": "section-101",
+      "text": "8.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-101",
+      "text": "中文 | English | 音标 | 说明\n语言模型 | Language Model | /ˈlæŋɡwɪdʒ ˈmɒdl/ | 对语言序列概率分布进行建模的数学模型\n条件概率 | Conditional Probability | /kənˈdɪʃənl prɒbə ˌ ˈbɪləti/ | 在已知某事件发生的条件下另一事件发生的概率，记为P(词\n联合概率 | Joint Probability | /dʒɔɪnt prɒbə ˌ ˈbɪləti/ | 多个事件同时发生的概率，记为P(词1,词2,…,词n)\n概率分布 | Probability Distribution | / prɒbəˈbɪləti ˌ dɪstrɪˈbjuːʃən/ ˌ | 描述随机变量所有可能取值及其概率的函数，语言模型的核心输出对象\n香农游戏 | Shannon Game | /ˈʃænən ɡeɪm/ | 香农在1948年提出的根据前文预测下一个字母的思想实验，语言模型概念的雏形\n自回归生成 | Autoregressive Generation | /ɔːtoʊrɪˈɡresɪv dʒenəˈreɪʃən/ ˌ | 从左到右逐词生成文本序列的过程，每一步依赖之前已生成的全部内容\n下一 Token预测 | Next-Token Prediction | /nekst ˈtoʊkən prɪ ˈdɪkʃən/ | 语言模型根据已有Token序列预测下一个Token的核心训练任务和目标\n信息熵 | Entropy | /ˈentrəpi/ | 衡量信息不确定性的度量单位，香农提出的核心概念"
+    }
+  ]
+}

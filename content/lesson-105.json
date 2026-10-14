@@ -1,0 +1,426 @@
+{
+  "id": "lesson-105",
+  "title": "LlamaIndex（二）-实战：Java规范问答系统",
+  "code": "1-2",
+  "stage": 2,
+  "week": 5,
+  "week_title": "RAG：知识接入技术",
+  "module": "LlamaIndex",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/002-第5周 RAG：知识接入技术/008-LlamaIndex/105-图文-1-2-LlamaIndex（二）-实战：Java规范问答系统.pdf",
+  "sha256": "4e8b18c99d47aa84eae781f4817cbbefb4bb1c52d39b7f19b56c1d9118bc66ac",
+  "pdf": "sources/pdf/lesson-105.pdf",
+  "pages": 5,
+  "source_url": "https://class.imooc.com/lesson/5274#mid=104924",
+  "minutes": 7,
+  "excerpt": "还记得第8节我们手写的Java编程规范问答系统吗？那个系统需要：",
+  "items": [
+    {
+      "kind": "h2",
+      "text": "12.1 实战：Java编程规范问答系统",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "还记得第8节我们手写的Java编程规范问答系统吗？那个系统需要：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "1. PDF提取：用pdfplumber提取文本\n2. 文本清洗：手写正则去除干扰\n3. 结构化分块：手写规则识别条目\n4. 向量化：调用Embedding API\n5. 入库：手动操作Chroma\n6. 查询：手动检索 + 拼接上下文 + 调用LLM\n\n总代码：约200行",
+      "page": 1,
+      "size": 9.75,
+      "end_page": 1,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在，用LlamaIndex重写这个系统，看看能简化多少。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "quote",
+      "text": "[!TIP] 完整源码参考：samples/chapter5/llamaindex/java_qa_llamaindex.py",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "h3",
+      "text": "场景回顾",
+      "page": 1,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在第8节，我们手写了一个完整的Java编程规范问答系统：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "目标 做一个能回答Java编程规范问题的智能助手目标",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "数据源 阿里巴巴Java开发手册（PDF，37页，约4万字）",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "数据源",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用户问题示例",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "Q: \"Java左大括号应该换行还是不换行？\"\nA: \"根据《Java编程规范》：左大括号前不换行，左大括号后必须换行...\"\n\n1\n2",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "核心实现",
+      "page": 2,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "在实际项目中，我们使用的是自定义分块策略（详见10.4.3节）。因为Java规范需要按条目切分，而不是用LlamaIndex的默认分块。",
+      "page": 2,
+      "size": 11.25,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤1 读取数据并结构化分块",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 1. 读取示例数据（与第8节相同sample_data.txt）\nwith open(SAMPLE_DATA_PATH, 'r', encoding='utf-8') as f:\n    text = f.read()\n\n# 2. 使用自定义的结构化分块函数（复用第8节逻辑）\nchunks = structure_based_chunking(text)\n# 按【强制】【推荐】等条目切分，共50个chunk\n\n# 3. 包装成Document对象\ndocuments = [\n    Document(\n        text=chunk,\n        metadata={\"chunk_id\": i, \"source\": \"Java开发手册\"}\n    )\n    for i, chunk in enumerate(chunks)\n]\n# 这样LlamaIndex就不会再次切分，直接使用我们的chunks",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "quote",
+      "text": "为什么不用LlamaIndex的Reader？ LlamaIndex提供了PDFReader、SimpleDirectoryReader等多种Reader，可以自动读取各种格式。但我们的场景需要结构化分块（按条目），所以选择自己分好块再交给LlamaIndex。",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤2 构建索引",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "index = VectorStoreIndex.from_documents(documents)\n\n1",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "LlamaIndex自动完成向量化和存储。",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤3 持久化存储",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 首次运行：构建并保存\nindex.storage_context.persist(persist_dir=\"kb/\")\n\n# 之后运行：直接加载\nfrom llama_index.core import StorageContext, load_index_from_storage\nstorage_context = StorageContext.from_defaults(persist_dir=\"kb/\")\nindex = load_index_from_storage(storage_context)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "步骤4 查询",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "query_engine = index.as_query_engine(\n    similarity_top_k=3,\n    response_mode=\"compact\"\n)\n\nresponse = query_engine.query(\"变量命名有什么规范？\")\nprint(response)",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "运行效果",
+      "page": 3,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "运行示例",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "$ python samples/chapter5/llamaindex/java_qa_llamaindex.py\n\n=============================================\n离线处理：构建Java编程规范知识库（LlamaIndex版）\n=============================================\n\n[1/5] 加载示例数据...\n✓ 加载完成，共50个chunk\n\n[2/5] 构建VectorStoreIndex...\nGenerating embeddings: 100%|█| 50/50 [00:03<00:00]\n✓ 索引构建完成\n\n[3/5] 持久化存储...\n✓ 知识库已保存到: kb/\n\n=============================================\nJava编程规范问答系统（LlamaIndex版）\n=============================================\n\n请输入问题（输入q退出）: 变量命名有什么规范？\n\n思考中...\n\n【答案】\n变量命名应使用完整、清晰的单词组合，力求语义表达完整清楚。\n常量命名需全部大写，单词间用下划线隔开。\n\n【引用来源】\n[1] 相似度: 70.05%\n    16. 【参考】各层命名规约...\n[2] 相似度: 67.02%\n    5. 【强制】常量命名全部大写...\n[3] 相似度: 64.57%\n    11. 【推荐】为了达到代码自解释的目标...",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "12.2 下节预告",
+      "page": 4,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "到这里，我们已经掌握了RAG的核心技术：从原理讲解到检索优化，从手写实现到LlamaIndex框架。但你可能已经意识到，传统RAG总是被动地等待用户提问，然后一次性检索并返回结果——它不会主动思考\"这个问题是否需要检索\"“检索结果是否足够”“要不要换个角度再查查”。下一章，我们将进入第4章，系统讲解 Function Calling，让大模型不仅会回答问题，还能主动调用工具完成更复杂的任务。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "12.3 ■ 学点英语",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n手写实现 | Manual Implementation | /ˈmænjuəl ɪmplɪmen ˈteɪʃn/ | 不依赖框架，从零编写所有RAG流程代码的方式\n框架自动化 | Framework Automation | /ˈfreɪmwɜːrk ɔːtəˈmeɪʃn/ ˌ | 利用框架封装好的功能简化开发流程\n可维护性 | Maintainability | /meɪn teɪnəˈbɪləti/ ˌ | 代码易于修改、扩展和排错的特性\n管道化处理 | Pipeline Processing | /ˈpaɪplaɪn ˈprɑːsesɪŋ/ | 将数据处理流程组织为有序的阶段式处理链",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "手写实现",
+          "Manual Implementation",
+          "/ˈmænjuəl ɪmplɪmen ˈteɪʃn/",
+          "不依赖框架，从零编写所有RAG流程代码的方式"
+        ],
+        [
+          "框架自动化",
+          "Framework Automation",
+          "/ˈfreɪmwɜːrk ɔːtəˈmeɪʃn/ ˌ",
+          "利用框架封装好的功能简化开发流程"
+        ],
+        [
+          "可维护性",
+          "Maintainability",
+          "/meɪn teɪnəˈbɪləti/ ˌ",
+          "代码易于修改、扩展和排错的特性"
+        ],
+        [
+          "管道化处理",
+          "Pipeline Processing",
+          "/ˈpaɪplaɪn ˈprɑːsesɪŋ/",
+          "将数据处理流程组织为有序的阶段式处理链"
+        ]
+      ],
+      "page": 5
+    }
+  ],
+  "accounting": {
+    "source_chars": 2922,
+    "represented_chars": 2675,
+    "removed_chars": 247,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 180,
+      "repeated_title": 67
+    }
+  },
+  "videos": [],
+  "order": 106,
+  "headings": [
+    {
+      "title": "12.1 实战：Java编程规范问答系统",
+      "id": "section-0",
+      "level": 2
+    },
+    {
+      "title": "场景回顾",
+      "id": "section-5",
+      "level": 3
+    },
+    {
+      "title": "核心实现",
+      "id": "section-12",
+      "level": 3
+    },
+    {
+      "title": "运行效果",
+      "id": "section-24",
+      "level": 3
+    },
+    {
+      "title": "12.2 下节预告",
+      "id": "section-27",
+      "level": 2
+    },
+    {
+      "title": "12.3 ■ 学点英语",
+      "id": "section-29",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "section-0",
+      "text": "12.1 实战：Java编程规范问答系统"
+    },
+    {
+      "anchor": "section-0",
+      "text": "还记得第8节我们手写的Java编程规范问答系统吗？那个系统需要："
+    },
+    {
+      "anchor": "section-0",
+      "text": "1. PDF提取：用pdfplumber提取文本\n2. 文本清洗：手写正则去除干扰\n3. 结构化分块：手写规则识别条目\n4. 向量化：调用Embedding API\n5. 入库：手动操作Chroma\n6. 查询：手动检索 + 拼接上下文 + 调用LLM\n\n总代码：约200行"
+    },
+    {
+      "anchor": "section-0",
+      "text": "现在，用LlamaIndex重写这个系统，看看能简化多少。"
+    },
+    {
+      "anchor": "section-0",
+      "text": "完整源码参考：samples/chapter5/llamaindex/java_qa_llamaindex.py"
+    },
+    {
+      "anchor": "section-5",
+      "text": "场景回顾"
+    },
+    {
+      "anchor": "section-5",
+      "text": "在第8节，我们手写了一个完整的Java编程规范问答系统："
+    },
+    {
+      "anchor": "section-5",
+      "text": "目标 做一个能回答Java编程规范问题的智能助手目标"
+    },
+    {
+      "anchor": "section-5",
+      "text": "数据源 阿里巴巴Java开发手册（PDF，37页，约4万字）"
+    },
+    {
+      "anchor": "section-5",
+      "text": "数据源"
+    },
+    {
+      "anchor": "section-5",
+      "text": "用户问题示例"
+    },
+    {
+      "anchor": "section-5",
+      "text": "Q: \"Java左大括号应该换行还是不换行？\"\nA: \"根据《Java编程规范》：左大括号前不换行，左大括号后必须换行...\"\n\n1\n2"
+    },
+    {
+      "anchor": "section-12",
+      "text": "核心实现"
+    },
+    {
+      "anchor": "section-12",
+      "text": "在实际项目中，我们使用的是自定义分块策略（详见10.4.3节）。因为Java规范需要按条目切分，而不是用LlamaIndex的默认分块。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "步骤1 读取数据并结构化分块"
+    },
+    {
+      "anchor": "section-12",
+      "text": "# 1. 读取示例数据（与第8节相同sample_data.txt）\nwith open(SAMPLE_DATA_PATH, 'r', encoding='utf-8') as f:\n    text = f.read()\n\n# 2. 使用自定义的结构化分块函数（复用第8节逻辑）\nchunks = structure_based_chunking(text)\n# 按【强制】【推荐】等条目切分，共50个chunk\n\n# 3. 包装成Document对象\ndocuments = [\n    Document(\n        text=chunk,\n        metadata={\"chunk_id\": i, \"source\": \"Java开发手册\"}\n    )\n    for i, chunk in enumerate(chunks)\n]\n# 这样LlamaIndex就不会再次切分，直接使用我们的chunks"
+    },
+    {
+      "anchor": "section-12",
+      "text": "为什么不用LlamaIndex的Reader？ LlamaIndex提供了PDFReader、SimpleDirectoryReader等多种Reader，可以自动读取各种格式。但我们的场景需要结构化分块（按条目），所以选择自己分好块再交给LlamaIndex。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "步骤2 构建索引"
+    },
+    {
+      "anchor": "section-12",
+      "text": "index = VectorStoreIndex.from_documents(documents)\n\n1"
+    },
+    {
+      "anchor": "section-12",
+      "text": "LlamaIndex自动完成向量化和存储。"
+    },
+    {
+      "anchor": "section-12",
+      "text": "步骤3 持久化存储"
+    },
+    {
+      "anchor": "section-12",
+      "text": "# 首次运行：构建并保存\nindex.storage_context.persist(persist_dir=\"kb/\")\n\n# 之后运行：直接加载\nfrom llama_index.core import StorageContext, load_index_from_storage\nstorage_context = StorageContext.from_defaults(persist_dir=\"kb/\")\nindex = load_index_from_storage(storage_context)"
+    },
+    {
+      "anchor": "section-12",
+      "text": "步骤4 查询"
+    },
+    {
+      "anchor": "section-12",
+      "text": "query_engine = index.as_query_engine(\n    similarity_top_k=3,\n    response_mode=\"compact\"\n)\n\nresponse = query_engine.query(\"变量命名有什么规范？\")\nprint(response)"
+    },
+    {
+      "anchor": "section-24",
+      "text": "运行效果"
+    },
+    {
+      "anchor": "section-24",
+      "text": "运行示例"
+    },
+    {
+      "anchor": "section-24",
+      "text": "$ python samples/chapter5/llamaindex/java_qa_llamaindex.py\n\n=============================================\n离线处理：构建Java编程规范知识库（LlamaIndex版）\n=============================================\n\n[1/5] 加载示例数据...\n✓ 加载完成，共50个chunk\n\n[2/5] 构建VectorStoreIndex...\nGenerating embeddings: 100%|█| 50/50 [00:03<00:00]\n✓ 索引构建完成\n\n[3/5] 持久化存储...\n✓ 知识库已保存到: kb/\n\n=============================================\nJava编程规范问答系统（LlamaIndex版）\n=============================================\n\n请输入问题（输入q退出）: 变量命名有什么规范？\n\n思考中...\n\n【答案】\n变量命名应使用完整、清晰的单词组合，力求语义表达完整清楚。\n常量命名需全部大写，单词间用下划线隔开。\n\n【引用来源】\n[1] 相似度: 70.05%\n    16. 【参考】各层命名规约...\n[2] 相似度: 67.02%\n    5. 【强制】常量命名全部大写...\n[3] 相似度: 64.57%\n    11. 【推荐】为了达到代码自解释的目标..."
+    },
+    {
+      "anchor": "section-27",
+      "text": "12.2 下节预告"
+    },
+    {
+      "anchor": "section-27",
+      "text": "到这里，我们已经掌握了RAG的核心技术：从原理讲解到检索优化，从手写实现到LlamaIndex框架。但你可能已经意识到，传统RAG总是被动地等待用户提问，然后一次性检索并返回结果——它不会主动思考\"这个问题是否需要检索\"“检索结果是否足够”“要不要换个角度再查查”。下一章，我们将进入第4章，系统讲解 Function Calling，让大模型不仅会回答问题，还能主动调用工具完成更复杂的任务。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "12.3 ■ 学点英语"
+    },
+    {
+      "anchor": "section-29",
+      "text": "中文 | English | 音标 | 说明\n手写实现 | Manual Implementation | /ˈmænjuəl ɪmplɪmen ˈteɪʃn/ | 不依赖框架，从零编写所有RAG流程代码的方式\n框架自动化 | Framework Automation | /ˈfreɪmwɜːrk ɔːtəˈmeɪʃn/ ˌ | 利用框架封装好的功能简化开发流程\n可维护性 | Maintainability | /meɪn teɪnəˈbɪləti/ ˌ | 代码易于修改、扩展和排错的特性\n管道化处理 | Pipeline Processing | /ˈpaɪplaɪn ˈprɑːsesɪŋ/ | 将数据处理流程组织为有序的阶段式处理链"
+    }
+  ]
+}

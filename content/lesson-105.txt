@@ -1,0 +1,144 @@
+--- PDF 第 1 页 ---
+第5章 第12节 LlamaIndex（二）-实战：Java规范问
+答系统
+来源: https://class.imooc.com/lesson/5274#mid=104924
+阶段: 阶段二: 【实战入门】大模型开发与知识接入
+周: 第5周 RAG：知识接入技术
+模块: LlamaIndex
+课节: 图文 1-2 LlamaIndex（二）-实战：Java规范问答系统
+1-2 LlamaIndex（二）-实战：Java规范问答系统
+第5章 第12节 LlamaIndex（二）-实战：Java规范问答系统
+12.1 实战：Java编程规范问答系统
+还记得第8节我们手写的Java编程规范问答系统吗？那个系统需要：
+1. PDF提取：用pdfplumber提取文本
+2. 文本清洗：手写正则去除干扰
+3. 结构化分块：手写规则识别条目
+4. 向量化：调用Embedding API
+5. 入库：手动操作Chroma
+6. 查询：手动检索 + 拼接上下文 + 调用LLM
+总代码：约200行
+现在，用LlamaIndex重写这个系统，看看能简化多少。
+[!TIP] 完整源码参考：samples/chapter5/llamaindex/java_qa_llamaindex.py
+场景回顾
+在第8节，我们手写了一个完整的Java编程规范问答系统：
+目标 做一个能回答Java编程规范问题的智能助手
+
+
+--- PDF 第 2 页 ---
+目标
+数据源 阿里巴巴Java开发手册（PDF，37页，约4万字）
+数据源
+用户问题示例
+Q: "Java左大括号应该换行还是不换行？"
+A: "根据《Java编程规范》：左大括号前不换行，左大括号后必须换行..."
+1
+2
+核心实现
+在实际项目中，我们使用的是自定义分块策略（详见10.4.3节）。因为Java规范需要按条目切分，而不
+是用LlamaIndex的默认分块。
+步骤1 读取数据并结构化分块
+# 1. 读取示例数据（与第8节相同sample_data.txt）
+with open(SAMPLE_DATA_PATH, 'r', encoding='utf-8') as f:
+    text = f.read()
+# 2. 使用自定义的结构化分块函数（复用第8节逻辑）
+chunks = structure_based_chunking(text)
+# 按【强制】【推荐】等条目切分，共50个chunk
+# 3. 包装成Document对象
+documents = [
+    Document(
+        text=chunk,
+        metadata={"chunk_id": i, "source": "Java开发手册"}
+    )
+    for i, chunk in enumerate(chunks)
+]
+# 这样LlamaIndex就不会再次切分，直接使用我们的chunks
+
+
+--- PDF 第 3 页 ---
+为什么不用LlamaIndex的Reader？ LlamaIndex提供了PDFReader、SimpleDirectoryReader等
+多种Reader，可以自动读取各种格式。但我们的场景需要结构化分块（按条目），所以选择自己
+分好块再交给LlamaIndex。
+步骤2 构建索引
+index = VectorStoreIndex.from_documents(documents)
+1
+LlamaIndex自动完成向量化和存储。
+步骤3 持久化存储
+# 首次运行：构建并保存
+index.storage_context.persist(persist_dir="kb/")
+# 之后运行：直接加载
+from llama_index.core import StorageContext, load_index_from_storage
+storage_context = StorageContext.from_defaults(persist_dir="kb/")
+index = load_index_from_storage(storage_context)
+步骤4 查询
+query_engine = index.as_query_engine(
+    similarity_top_k=3,
+    response_mode="compact"
+)
+response = query_engine.query("变量命名有什么规范？")
+print(response)
+运行效果
+运行示例
+
+
+--- PDF 第 4 页 ---
+$ python samples/chapter5/llamaindex/java_qa_llamaindex.py
+=============================================
+离线处理：构建Java编程规范知识库（LlamaIndex版）
+=============================================
+[1/5] 加载示例数据...
+✓ 加载完成，共50个chunk
+[2/5] 构建VectorStoreIndex...
+Generating embeddings: 100%|█| 50/50 [00:03<00:00]
+✓ 索引构建完成
+[3/5] 持久化存储...
+✓ 知识库已保存到: kb/
+=============================================
+Java编程规范问答系统（LlamaIndex版）
+=============================================
+请输入问题（输入q退出）: 变量命名有什么规范？
+思考中...
+【答案】
+变量命名应使用完整、清晰的单词组合，力求语义表达完整清楚。
+常量命名需全部大写，单词间用下划线隔开。
+【引用来源】
+[1] 相似度: 70.05%
+    16. 【参考】各层命名规约...
+[2] 相似度: 67.02%
+    5. 【强制】常量命名全部大写...
+[3] 相似度: 64.57%
+    11. 【推荐】为了达到代码自解释的目标...
+12.2 下节预告
+到这里，我们已经掌握了RAG的核心技术：从原理讲解到检索优化，从手写实现到LlamaIndex框架。但
+你可能已经意识到，传统RAG总是被动地等待用户提问，然后一次性检索并返回结果——它不会主动思
+
+
+--- PDF 第 5 页 ---
+考"这个问题是否需要检索"“检索结果是否足够”“要不要换个角度再查查”。下一章，我们将进入第4
+章，系统讲解 Function Calling，让大模型不仅会回答问题，还能主动调用工具完成更复杂的任务。
+12.3 ■ 学点英语
+中文
+English
+音标
+说明
+手写实现
+Manual
+Implementation
+/ˈmænjuəl ɪmplɪmen
+ˈteɪʃn/
+不依赖框架，从零编写所有RAG流程代码的
+方式
+框架自动
+化
+Framework
+Automation
+/ˈfreɪmwɜːrk ˌɔːtəˈmeɪʃn/
+利用框架封装好的功能简化开发流程
+可维护性
+Maintainability
+/meɪnˌteɪnəˈbɪləti/
+代码易于修改、扩展和排错的特性
+管道化处
+理
+Pipeline Processing
+/ˈpaɪplaɪn ˈprɑːsesɪŋ/
+将数据处理流程组织为有序的阶段式处理链

@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>Vibe-Spec-Coding，用自然语言来编程 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-004">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-1">认知基石</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 1 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>序与前言</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 005</span></div>
+<h1 class="lesson-title">Vibe-Spec-Coding，用自然语言来编程</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>20 页原文</span><span>约 17 分钟阅读</span><span class="module-name">序与前言</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-004.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-004.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><section class="video-section"><h2 id="video-0">Vibe / Spec Coding 配套演示</h2><video controls preload="metadata" playsinline src="../sources/video/video-01.mp4"></video><p class="video-caption">本地视频 · <a href="../sources/video/video-01.mp4" download>下载视频</a></p></section><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>这是全书的前言，从 Vibe Coding 的视角切入，介绍 AI 如何改变编程方式——从写代码到表达意图。同时引出 Spec-Coding 作为大型项目的进化形态。 读完这一节，你会理解为什么这本书的核心理念是&quot;从理论到实践&quot;，以及为什么底层原理比表层操作更重要。</p></aside>
+<p data-source-page="1">大学刚毕业时，有人告诉我 AI 能让程序员一行代码不写就完成复杂项目，我会认为这是天方夜谭。即使到了 2023 年，当 ChatGPT 和 DeepSeek 展现出惊人能力时，依然怀疑&quot;AI 能独立完成复杂项目&quot;。这种怀疑源于程序员的朴素认知：复杂项目涉及复杂的逻辑和环境问题，任何宣称&quot;AI 现在能自己做项目了&quot;的言论，都像是哗众取宠。</p>
+<p data-source-page="1">现实中，AI 确实能快速生成简单项目，但面对商业化的真实项目，表现往往不如程序员自己动手。</p>
+<p data-source-page="1">过去每隔几年就有技术声称能&quot;一行代码不写&quot;完成程序，但都要加上定语：逻辑不太复杂、只能限定在特定行业……这些限制让实用性大打折扣。</p>
+<p data-source-page="1">真正的工程师不会把自己系统的命运交给一个黑盒。</p>
+<p data-source-page="1">然而 2025 年，一种全新的编程方式改变了这种认知——Vibe Coding。</p>
+<h2 id="section-6" data-source-page="1">3.1 什么是 Vibe Coding<a class="heading-link" href="#section-6" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">Vibe Coding（直译&quot;感觉编程&quot;或&quot;氛围编程&quot;），由前特斯拉 AI 总监、OpenAI 联合创始人安德烈·卡帕西（Andrej Karpathy）在 2025 年 2 月提出。它有两个核心特征：</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<p class="list-item" data-source-page="2">用自然语言编程。无需学习 C、Python、Java，直接用中文或英文与 AI 对话，描述需求，AI 就会生成代码。</p>
+<p class="list-item" data-source-page="2">为什么叫&quot;氛围（感觉）&quot;？因为描述可以是模糊的、主观的、带情感色彩的。比如&quot;配色不要太俗&quot;、“界面要简洁大气”——这些&quot;感觉&quot;而非精确指令，AI 都能理解并转化为代码。</p>
+<p data-source-page="2">看一张来自网络的”梗图“：</p>
+<p data-source-page="2">这里没有 Python、C、Java、C++，取而代之的是人类的自然语言。</p>
+<p data-source-page="2">这个调侃背后藏着一个深刻转变：编程的门槛正在从&quot;精通语法&quot;向&quot;表达意图&quot;迁移。要理解这个转变，需要先回到传统编程的核心逻辑。</p>
+<p data-source-page="2">传统编程的核心是用精确语法告诉计算机&quot;怎么做&quot;（How）。程序员必须掌握编程语言的每个细节——变量声明、循环结构、条件判断、函数调用……然后用这些语法元素构建完整逻辑。这个过程就像用&quot;特殊语言&quot;与计算机对话，规则严格，容不得半点模糊。</p>
+<p data-source-page="2">举个简单的例子，计算列表中所有数字的总和：</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 错误示例：语法错误
+sum = 0
+for num in [1, 2, 3, 4, 5] # 忘记冒号会导致 SyntaxError
+    sum += num
+print(sum)</code></pre></div>
+<p data-source-page="2">即使只是少一个冒号，程序就无法运行。这种对精确性的要求构成了传统编程的高门槛。</p>
+<p data-source-page="2">Vibe Coding 则完全不同。核心是意图表达而非精确控制。无需告诉计算机每一步怎么做，而是用自然语言描述&quot;想要什么&quot;（What）和&quot;期望的感觉&quot;（Vibe）。AI 理解意图和氛围感，生成符合预期的代码。</p>
+<p data-source-page="2">传统编程方式</p>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">for user in users:
+    if user.age &gt;= 18 and user.status == &#x27;active&#x27;:
+        send_notification(user.email, template=&#x27;welcome&#x27;)
+        log_action(&#x27;notification_sent&#x27;, user.id)</code></pre></div>
+<p data-source-page="2">传统编程要求精确定义每个步骤：遍历用户、检查条件、发送通知、记录日志。</p>
+<p data-source-page="2">Vibe Coding 方式 &quot;给所有成年活跃用户发送欢迎通知，记得记录日志&quot;</p>
+<p data-source-page="2">Vibe Coding 方式</p>
+<p data-source-page="2">AI 会理解这句话背后的意图：</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<p class="list-item" data-source-page="3">“成年活跃用户” → 需要过滤条件</p>
+<p class="list-item" data-source-page="3">“发送欢迎通知” → 调用通知系统</p>
+<p class="list-item" data-source-page="3">“记得记录日志” → 添加日志记录</p>
+<p data-source-page="3">然后生成相应的代码实现。</p>
+<p data-source-page="3">更进一步，当你说：“这个通知的语气要友好一些，不要太正式&quot;时，AI 会理解这种&quot;感觉”（Vibe），调整通知的措辞风格，而不是要求精确指定每一个单词。</p>
+<p data-source-page="3">这里从一张对比图可以直观感受两种方式的差别：</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="3"><table><thead><tr><th scope="col">维度</th><th scope="col">传统编程</th><th scope="col">Vibe Coding</th></tr></thead><tbody><tr><td>输入方式</td><td>编程语言语法</td><td>自然语言对话</td></tr><tr><td>关注点</td><td>如何实现（How）</td><td>想要什么（What + Vibe）</td></tr><tr><td>交互模式</td><td>单向指令</td><td>迭代对话</td></tr><tr><td>学习门槛</td><td>必须精通语法</td><td>需要理解架构概念</td></tr><tr><td>开发重点</td><td>编写代码</td><td>表达意图</td></tr><tr><td>典型指令</td><td>for(int i=0; i&lt;10; i++)</td><td>“给活跃用户发通知，语气要友好”</td></tr><tr><td>工作流程</td><td>设计 → 编码 → 调试</td><td>描述 → 对话 → 迭代</td></tr></tbody></table></div>
+<p data-source-page="3">这个转变看似简单，实则代表了编程范式的根本性革新。传统编程中，开发者是&quot;翻译者&quot;，需要把想法翻译成计算机能理解的代码（C、Python、Java 等）。</p>
+<p data-source-page="3">而在 Vibe Coding 中，AI 承担了&quot;翻译者&quot;角色，开发者只需清晰表达意图和期望的&quot;感觉&quot;。正如Andrej Karpathy 所说：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">“这是一种完全屈服于感觉，甚至忘记代码本身存在的编程状态“。
+
+1</code></pre></div>
+<p data-source-page="3">开发者不再被困在语法规则中，而是专注于表达想要什么、期望什么样的效果。</p>
+<p data-source-page="3">某种程度上，开发者是在用中文、英文同 AI 聊天，并没有写代码，确实如同忘却了代码的存在。我现在甚至字都不想打，在环境允许时，直接使用 Wispr Flow（一款 Mac 上的语音转文字软件）同 AI 聊天开发项目。这在过去不敢想。</p>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<h3 id="section-36" data-source-page="4">为什么现在才实现<a class="heading-link" href="#section-36" aria-label="链接至本节">#</a></h3>
+<p data-source-page="4">为什么这种编程方式现在才成为可能？要回答这个问题，需要理解编程语言存在的根本原因：计算机听不懂人类的自然语言。</p>
+<p data-source-page="4">计算机擅长处理精确指令，但对人类语言中的模糊性、歧义性、隐含信息却束手无策。一句&quot;配色不要太俗&quot;对人类来说意思很明确，但对传统计算机而言完全无法解析——什么是&quot;俗&quot;？什么样的配色算&quot;不俗&quot;？这些都需要大量上下文和审美理解才能回答。大模型的出现改变了这一切。</p>
+<p data-source-page="4">现在的大模型不仅能理解人类的自然语言，还能捕捉语言中微小的措辞差异，推理出隐含意图。它们可以理解&quot;配色不要太俗&quot;意味着要避免过于鲜艳、廉价感的色彩组合，要选择优雅、平衡的配色方案。这种理解能力正是 Vibe Coding 的技术基础。更重要的是，大模型具备强大的推理能力，可以进行&quot;Step By Step&quot;的逻辑推导，从高层次意图推导出具体实现方案。</p>
+<p data-source-page="4">这让它们不仅能理解&quot;要什么&quot;，还能推理出&quot;怎么做&quot;。比如，当你说&quot;实现一个用户登录功能，注意安全问题&quot;时，大模型会推理：</p>
+<p class="list-item" data-source-page="4">登录需要验证用户身份 → 需要用户名和密码输入框</p>
+<p class="list-item" data-source-page="4">密码不能明文传输 → 需要加密处理</p>
+<p class="list-item" data-source-page="4">要防止暴力破解 → 需要限制登录次数</p>
+<p data-source-page="4">从一个简单的意图，推导出完整的技术方案，这正是传统编程方式无法做到的。当大模型遇到不确定的选择时，甚至会主动询问，比如：</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">使用哪种数据库用来存储用户的身份信息？
+
+1</code></pre></div>
+<p data-source-page="4">Vibe Coding 不同于过去那些&quot;搭积木&quot;式的无代码工具。传统无代码平台本质是让用户在预定义组件中选择和组合：平台预先定义了很多的功能组件。</p>
+<p data-source-page="4">这样的特点让无代码或者低代码工具的能力边界固定，无法理解真实意图。而 Vibe Coding 中的 AI 可以真正理解想要什么，然后自主生成实现方案——这是从&quot;预定义规则的组合&quot;到&quot;理解意图后的创造&quot;的质变。</p>
+<p data-source-page="4">当前的 Vibe Coding 还需要开发者具备一定编程知识，通过多轮对话来引导和验证 AI 的实现过程。但这已是巨大进步。Vibe Coding 将编程从&quot;写代码&quot;推进到&quot;表达意图&quot;，从&quot;精确语法&quot;推进到&quot;模糊感觉&quot;。</p>
+<p data-source-page="4">虽然 Vibe Coding 目前还有很多缺点，也有很多严谨的程序员认为Vibe Coding写的代码是豆腐渣。但我认为，它一定是编程的未来。</p>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">关于这一点，我们不在这里争论，每个人会有自己的观点。但对于读者，最好的方式就是亲自去尝试用一下。</p>
+<h2 id="section-51" data-source-page="5">3.2 下载和安装Qoder<a class="heading-link" href="#section-51" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">在展开具体能力之前，需要先说明本书的演示背景。Vibe Coding 作为一种编程范式，不依赖于特定工具——无论是 Qoder、Claude Code 还是Codex，只要支持自然语言交互和代码生成，都可以实践Vibe Coding。</p>
+<p data-source-page="5">目前业界公认编码能力第一梯队的还是Claude Code。国产AI编程助手主要是Qoder和TRAE。它们也有它们独特的优势，比如对中文支持更好，速度快，有免费的模型使用。</p>
+<p data-source-page="5">为了保证每个同学都能快速落地书里的代码，所以本书选择Qoder作为演示工具。</p>
+<p data-source-page="5">建议同学们安装Qoder与本书保持同步，以获得更好的阅读体验。</p>
+<p data-source-page="5">点击下载、注册Qoder</p>
+<p data-source-page="5">读者如果有自己的偏好完全可以改用上述任意的工具，这并不影响阅读本书。</p>
+<p data-source-page="5">本章要展示的是 Vibe Coding 这种编程方式能做到什么，以及它目前的局限在哪里。至于 Qoder 背后的技术思想，阅读完本书后自然会有清晰的认识。</p>
+<p data-source-page="5">对于 Qoder，它提供了可视化的开发工具，支持 Mac、Windows 与 Linux。考虑到很多高级开发者可能不希望离开熟悉的开发工具，Qoder 还提供了命令行工具（CLI）。</p>
+<h2 id="section-60" data-source-page="5">3.3 全自动部署项目（以excalidraw为例）<a class="heading-link" href="#section-60" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">每个程序员在部署项目时都很头疼。即使一个简单的项目，也需要安装一堆依赖和环境——要么手工安装，要么写脚本。</p>
+<p data-source-page="5">初学者在 GitHub 上看到好的项目想体验一下，往往因为环境要求苛刻而放弃。但有了 Qoder 等 AI 工具，可以几乎全自动地跑起来一个项目——甚至不需要看安装说明，Qoder 也能分析代码并代为运行起来。</p>
+<p data-source-page="5">我们以在线画图工具 excalidraw（GitHub下载）为例。这是一个非常火爆的开源项目（GitHub 113K Stars），提供免费基础版和收费 Pro 版。作为开源项目，可以在自己的计算机上部署一个 Pro 版。</p>
+<p data-source-page="5">这个项目使用了 React、TypeScript 等技术，对资深前端程序员来说跑起来不是问题（也要阅读安装说明花费点时间），但初学者往往需要折腾很久。而使用 Qoder，只需以下几步：</p>
+<p data-source-page="5">步骤1 下载源码</p>
+<p data-source-page="5">从 GitHub 下载 excalidraw 源码到本地目录。</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<p data-source-page="6">步骤2 告诉 Qoder 你的需求 用Qoder打开这个项目，并自然语言告诉Qoder：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">帮我把这个项目跑起来
+
+1</code></pre></div>
+<p data-source-page="6">就这么简单。不需要查看 README，不需要手动安装 Node.js、npm、依赖包，也不需要配置环境变量。</p>
+<h3 id="section-70" data-source-page="6">简单的小项目<a class="heading-link" href="#section-70" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">对于 Qoder，可以使用最简单、朴素、甚至是有错别字或者不连贯的人类自然语言完成各种代码任务，比如告诉Qoder：</p>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">给我写一个羊了个羊，使用HTML+CSS。
+- 设计为闯关模式，且关卡难度逐步提高
+- 元素之间需要相互覆盖而不是平铺
+- 赛博朋克未来风格
+- 配色为紫色系</code></pre></div>
+<p data-source-page="6">游戏截图：</p>
+<p data-source-page="6">当然这种 Demo 级别的小游戏没有很强的说服力，我们继续用更复杂的项目来展示 Vibe Coding 的能力。</p>
+<p data-source-page="6">如果从来没有接触过 Vibe-Coding，建议现在就去下载 Qoder，立刻把想法告诉它，体验自然语言编程。它没有任何门槛，不需要前置技术。</p>
+<h3 id="section-76" data-source-page="6">商业级复杂系统<a class="heading-link" href="#section-76" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">下图来自我Vibe-Coding的多智能体数字孪生高校智能教育平台：</p>
+<p data-source-page="6">这是一个高度复杂的多智能体在线教育平台，核心功能包括：</p>
+<p class="list-item" data-source-page="6">AI自动根据薄弱知识点出题</p>
+<p class="list-item" data-source-page="6">自动批改与数据跟踪</p>
+<p class="list-item" data-source-page="6">数字化教材</p>
+<p class="list-item" data-source-page="6">全息知识图谱</p>
+<p data-source-page="6">这些功能几乎不需要自己写一行代码（项目大部分手工代码主要是测试代码）。更关键的是，这么复杂的系统，使用 Vibe Coding 一周就可以落地绝大多数功能。即使没有专业设计师，现在 Vibe-Coding也可以做出漂亮的 UI。</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<h3 id="section-84" data-source-page="7">理解模糊的审美<a class="heading-link" href="#section-84" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">我在使用 Qoder 的过程中，发现它是具有一定审美的，这是让我非常惊叹的。因为&quot;审美&quot;是非常抽象和模糊的概念。</p>
+<p data-source-page="7">下面这张图片来自于我用Qoder开发的一个文字RPG游戏项目。</p>
+<p data-source-page="7">回顾整个调整 UI 的过程，我大致用到的就那么几个关键字：</p>
+<p class="list-item" data-source-page="7">复古</p>
+<p class="list-item" data-source-page="7">武侠</p>
+<p class="list-item" data-source-page="7">像素</p>
+<p class="list-item" data-source-page="7">宋代美学</p>
+<p data-source-page="7">传统编程要求精确的数值和明确的步骤——紫色按钮需要 RGB 值，圆角矩形需要具体半径。但 Qoder只需几个关键字就能理解审美意图，自主完成配色和布局。这背后是 AI 对人类审美和文化背景的理解。</p>
+<p data-source-page="7">这种能力对独立开发者尤其有价值。对于那些前端精确性要求不高的产品，即使不需要专业美术师，也能做出还不错的 UI。它大幅降低了从想法到实现的门槛。</p>
+<p data-source-page="7">AI 能理解&quot;模糊&quot;意味着我们正在脱离&quot;编程语言编码&quot;的时代，更重要的是——AI 真的更像&quot;人&quot;了。</p>
+<p data-source-page="7">从简单的小游戏，到商业级的复杂系统，最后到能够理解&quot;模糊&quot;审美——Vibe Coding 展现出的能力边界远超想象。</p>
+<h2 id="section-96" data-source-page="7">3.4 Vibe Coding 的边界<a class="heading-link" href="#section-96" aria-label="链接至本节">#</a></h2>
+<p data-source-page="7">Vibe Coding 最大的问题在于，它无法保证代码绝对正确，也无法保证自生成的测试程序能充分检验代码。让 AI 自己写代码再自己测，就像是&quot;监守自盗&quot;——它很难发现自己的逻辑漏洞。</p>
+<p data-source-page="7">根源在于 AI 的思维惯性。当 AI 按某种逻辑编写代码时，生成的测试用例会延续同样的思路。有问题的代码通过了有问题的测试，形成一个恶性循环。这些 Bug 可能在并发场景、边界情况、异常流程或长时间运行下才会暴露。</p>
+<p data-source-page="7">这就引出了一个重要的结论：Vibe Coding 改变了编程方式，但没有降低对开发者的要求。能力要求从&quot;精通语法&quot;转向了&quot;理解架构&quot;，从&quot;编写代码&quot;转向了&quot;表达意图&quot;和&quot;质量把关&quot;。</p>
+<p data-source-page="7">核心工作变成了这样几项：</p>
+<p class="list-item" data-source-page="7">用自然语言清晰表达需求和意图：需要对业务有深入的理解</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<p data-source-page="8">用自然语言清晰表达需求和意图</p>
+<p class="list-item" data-source-page="8">理解和把控项目的整体架构：需要技术视野和经验积累</p>
+<p data-source-page="8">理解和把控项目的整体架构</p>
+<p class="list-item" data-source-page="8">审核 AI 生成的代码是否符合预期：需要代码阅读能力和逻辑判断</p>
+<p data-source-page="8">审核 AI 生成的代码是否符合预期</p>
+<p class="list-item" data-source-page="8">设计和执行独立的测试：需要从不同角度思考问题</p>
+<p data-source-page="8">设计和执行独立的测试</p>
+<p data-source-page="8">编程的门槛从&quot;写代码&quot;降低到了&quot;理解架构&quot;，但对系统思维、业务理解和质量意识的要求反而更高了。不能盲目信任 AI 生成的任何东西——AI 是助手，最终的质量把关仍然需要人来完成。</p>
+<p data-source-page="8">记住，以目前 AI 的发展程度，它是不值得完全信任的。</p>
+<h2 id="section-111" data-source-page="8">3.5 Spec-Coding：Vibe-Coding的进化<a class="heading-link" href="#section-111" aria-label="链接至本节">#</a></h2>
+<p data-source-page="8">随着项目规模的扩大，纯粹的 Vibe Coding 开始遇到一些挑战：需求更复杂、团队协作更重要、代码质量要求更高。这时候，一种更加系统化的方式应运而生——Spec-Coding（Specification-Driven Coding，规格驱动编程）。</p>
+<h3 id="section-113" data-source-page="8">什么是Spec-Coding<a class="heading-link" href="#section-113" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">Spec-Coding 是 Vibe Coding 在大型项目中的进化形态。核心思想是：先用自然语言撰写详细的设计文档（Specification），然后让 AI 基于这些文档生成代码。</p>
+<p data-source-page="8">这个过程可以简化为：</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">需求 → AI协助生成设计文档 → AI基于文档生成代码 → 人工审核
+
+1</code></pre></div>
+<p data-source-page="8">与传统的 Vibe Coding 相比，Spec-Coding 增加了一个关键中间层：设计文档。</p>
+<h3 id="section-118" data-source-page="8">为什么需要Spec-Coding<a class="heading-link" href="#section-118" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">当项目达到一定规模后，纯 Vibe Coding 会遇到几个问题：</p>
+<p class="list-item" data-source-page="8">上下文丢失：在多轮对话中，AI 可能&quot;忘记&quot;之前的决策，导致前后不一致</p>
+<p data-source-page="8">上下文丢失</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<p class="list-item" data-source-page="9">团队协作困难：不同开发者与AI的对话是分散的，缺乏统一的技术规范</p>
+<p data-source-page="9">团队协作困难</p>
+<p class="list-item" data-source-page="9">质量难以把控：没有明确的设计文档，代码审查缺少参照标准</p>
+<p data-source-page="9">质量难以把控</p>
+<p class="list-item" data-source-page="9">迭代维护成本高：当需要修改时，需要重新&quot;教&quot;AI 理解整个项目</p>
+<p data-source-page="9">迭代维护成本高</p>
+<p data-source-page="9">Spec-Coding 通过设计文档解决了这些问题。文档同时充当AI的记忆、团队的契约、审核的标准和维护的基础。</p>
+<h3 id="section-129" data-source-page="9">实践案例：游戏数值平衡工具<a class="heading-link" href="#section-129" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">以一个实际游戏案例来说明。在 RPG 游戏中，数值平衡需要不断调整技能的伤害值、冷却时间等参数。首先用 Vibe Coding 编写数值平衡的设计文档：</p>
+<p data-source-page="9">然后告诉 Qoder：&quot;基于我的设计文档，帮我实现一个技能平衡评估工具。&quot;最终产出了既能读取技能数据、又能评估强度并给出优化建议的工具。</p>
+<p data-source-page="9">关键价值在于三点：文档保证了一致性（所有计算逻辑基于同一份设计文档）；修改非常方便（更新文档后让AI重新生成）；知识可复用（文档可用于其他游戏项目）。</p>
+<h3 id="section-133" data-source-page="9">Spec-Coding的价值<a class="heading-link" href="#section-133" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">Spec-Coding最有价值的地方在于解决了程序员一个根深蒂固的矛盾：都知道文档重要，但就是从来不写。现在文档是生成代码的必经之路，这个矛盾自然就不存在了。</p>
+<h3 id="section-135" data-source-page="9">从Vibe到Spec<a class="heading-link" href="#section-135" aria-label="链接至本节">#</a></h3>
+<p data-source-page="9">Spec-Coding 并不是用来取代 Vibe-Coding 的。事实上，他们经常被混合使用。</p>
+<p data-source-page="9">选择 Vibe Coding 还是 Spec-Coding，取决于项目特点：Vibe Coding 适合快速原型和个人项目，需求变化快、频繁迭代；Spec-Coding 适合中大型商业项目，多人协作需要统一规范，长期维护质量要求高。</p>
+<p data-source-page="9">实际上，大多数项目会混合使用两种方式：初期用 Vibe Coding 快速验证想法，确定方向后转为 Spec-Coding 规范开发。我给这种混合方式起了个名字：Vibe-Spec-Coding。</p>
+<p data-source-page="9">从 Vibe Coding 到 Spec-Coding，AI 辅助编程正在走向成熟。</p>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<h2 id="section-140" data-source-page="10">3.6 去用，去写，去实践<a class="heading-link" href="#section-140" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">本书不会花太多篇幅教你如何使用 Qoder、Cursor 等 Vibe Coding 工具。既然是自然语言编程工具，如果使用时还需要学习删减记忆、Quest 模式、Plan 模式，本身就说明工具还不够好。</p>
+<p data-source-page="10">好的工具无需过多技巧，把它当成半个人类，和它聊天就行。大量的去使用、去生产价值远比纸上谈兵更具性价比。</p>
+<h2 id="section-143" data-source-page="10">3.7 下一节预告<a class="heading-link" href="#section-143" aria-label="链接至本节">#</a></h2>
+<p data-source-page="10">这一节以 Vibe Coding 为引子，展示了AI辅助编程的能力和局限。下一节回到本书第二章，从 API 调用和参数配置开始，一步步走进大模型开发的实战世界。</p>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<h2 id="section-145" data-source-page="11">图片<a class="heading-link" href="#section-145" aria-label="链接至本节">#</a></h2>
+<span class="source-page-anchor" id="pdf-page-12"></span>
+<figure data-source-page="12"><button class="figure-open" aria-label="放大查看第 12 页图示"><img src="../assets/figures/9a070d4aeb14380d7a5bdeb11028d63e.png" width="1046" height="1756" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 12 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-13"></span>
+<figure data-source-page="13"><button class="figure-open" aria-label="放大查看第 13 页图示"><img src="../assets/figures/b773fdc32d7e2cae511c4c9d342bdca7.png" width="1660" height="1161" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 13 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-14"></span>
+<figure data-source-page="14"><button class="figure-open" aria-label="放大查看第 14 页图示"><img src="../assets/figures/c189e2290559d99579dec4b6695ba203.png" width="1044" height="1650" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 14 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-15"></span>
+<figure data-source-page="15"><button class="figure-open" aria-label="放大查看第 15 页图示"><img src="../assets/figures/1ca0781afa3169357eef03cc63fe19ad.png" width="3352" height="1824" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 15 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<figure data-source-page="15"><button class="figure-open" aria-label="放大查看第 15 页图示"><img src="../assets/figures/647943f12393284ea1312144c0e16334.png" width="3360" height="1836" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 15 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-16"></span>
+<figure data-source-page="16"><button class="figure-open" aria-label="放大查看第 16 页图示"><img src="../assets/figures/ccc1aac9f26b7272e217a5953d8df2a3.png" width="3314" height="1832" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 16 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<figure data-source-page="16"><button class="figure-open" aria-label="放大查看第 16 页图示"><img src="../assets/figures/b3e78e15b58076e4cf69dc6564df5fbe.png" width="3278" height="1896" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 16 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-17"></span>
+<figure data-source-page="17"><button class="figure-open" aria-label="放大查看第 17 页图示"><img src="../assets/figures/fba8bed5163d4d9fa451611608a06594.png" width="3278" height="1834" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 17 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<figure data-source-page="17"><button class="figure-open" aria-label="放大查看第 17 页图示"><img src="../assets/figures/f65b2e5309d2e8ff4822e0b8c18bd31c.png" width="2352" height="1772" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 17 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-18"></span>
+<figure data-source-page="18"><button class="figure-open" aria-label="放大查看第 18 页图示"><img src="../assets/figures/4b46e907c60b9f21dc6870ea3642788f.png" width="2230" height="1448" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 18 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-19"></span>
+<figure data-source-page="19"><button class="figure-open" aria-label="放大查看第 19 页图示"><img src="../assets/figures/9d957ab0e1d37a7a8e22fdd7fdf2f20d.png" width="1498" height="1486" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 19 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<span class="source-page-anchor" id="pdf-page-20"></span>
+<figure data-source-page="20"><button class="figure-open" aria-label="放大查看第 20 页图示"><img src="../assets/figures/964a399326a1f625ee5acd2fe0416fa4.png" width="2878" height="1898" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 20 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure>
+<figure data-source-page="20"><button class="figure-open" aria-label="放大查看第 20 页图示"><img src="../assets/figures/880dc463cc47149af514ef8b6dcc8ab7.png" width="2936" height="1734" loading="lazy" alt="Vibe-Spec-Coding，用自然语言来编程 · 原 PDF 第 20 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-003.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>本数字教材特色</strong><small>序与前言</small></a><a class="chapter-neighbor next" href="lesson-005.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>ChatGPT的本质</strong><small>ChatGPT的本质</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5252#mid=104868" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-6" class="toc-level-2">3.1 什么是 Vibe Coding</a><a href="#section-36" class="toc-level-3">为什么现在才实现</a><a href="#section-51" class="toc-level-2">3.2 下载和安装Qoder</a><a href="#section-60" class="toc-level-2">3.3 全自动部署项目（以excalidraw为例）</a><a href="#section-70" class="toc-level-3">简单的小项目</a><a href="#section-76" class="toc-level-3">商业级复杂系统</a><a href="#section-84" class="toc-level-3">理解模糊的审美</a><a href="#section-96" class="toc-level-2">3.4 Vibe Coding 的边界</a><a href="#section-111" class="toc-level-2">3.5 Spec-Coding：Vibe-Coding的进化</a><a href="#section-113" class="toc-level-3">什么是Spec-Coding</a><a href="#section-118" class="toc-level-3">为什么需要Spec-Coding</a><a href="#section-129" class="toc-level-3">实践案例：游戏数值平衡工具</a><a href="#section-133" class="toc-level-3">Spec-Coding的价值</a><a href="#section-135" class="toc-level-3">从Vibe到Spec</a><a href="#section-140" class="toc-level-2">3.6 去用，去写，去实践</a><a href="#section-143" class="toc-level-2">3.7 下一节预告</a><a href="#section-145" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-004", "title": "Vibe-Spec-Coding，用自然语言来编程", "stage": 1, "week": 1, "module": "序与前言", "minutes": 17, "pages": 20, "type": "article"}</script>
+</body></html>

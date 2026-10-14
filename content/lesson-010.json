@@ -1,0 +1,67 @@
+{
+  "id": "lesson-010",
+  "title": "选择练习 · 1-6",
+  "code": "1-6",
+  "stage": 1,
+  "week": 1,
+  "week_title": "语言模型是什么",
+  "module": "ChatGPT的本质",
+  "type": "exercise",
+  "repo_path": "001-阶段一 【认知基石】理解大模型的本质与工作原理/001-第1周 语言模型是什么/002-ChatGPT的本质/010-练习-1-6-选择练习.pdf",
+  "sha256": "ff2f09709c17bad26972b48b9196fbf57f0559ac56733e1257b0119d822b6173",
+  "pdf": "sources/pdf/lesson-010.pdf",
+  "pages": 1,
+  "source_url": "https://class.imooc.com/lesson/5253#mid=104947",
+  "minutes": 2,
+  "excerpt": "In the formula 参数新值 = 参数旧值 - 学习率 × 梯度, why does subtracting the product of learning rate and gradient guarantee the parameter moves in the direction t",
+  "items": [
+    {
+      "kind": "paragraph",
+      "text": "1. ",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "In the formula 参数新值 = 参数旧值 - 学习率 × 梯度, why does subtracting the product of learning rate and gradient guarantee the parameter moves in the direction that reduces loss?(复习题)",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "A. Because the gradient is always positive, so subtracting it always decreases the parameter,thus reducing loss B. Because the minus sign ensures that regardless of whether the gradient is positive or negative, the parameter moves in the direction that reduces loss C. Because the learning rate is always positive, multiplying it with any gradient yields a positive value, and subtracting a positive value decreases the parameter D. Because the gradient represents the correct direction for adjustment, and the subtraction cancels out the gradient's effect",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    }
+  ],
+  "accounting": {
+    "source_chars": 963,
+    "represented_chars": 726,
+    "removed_chars": 237,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 237
+    }
+  },
+  "videos": [],
+  "order": 11,
+  "headings": [],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "1. "
+    },
+    {
+      "anchor": "article-start",
+      "text": "In the formula 参数新值 = 参数旧值 - 学习率 × 梯度, why does subtracting the product of learning rate and gradient guarantee the parameter moves in the direction that reduces loss?(复习题)"
+    },
+    {
+      "anchor": "article-start",
+      "text": "A. Because the gradient is always positive, so subtracting it always decreases the parameter,thus reducing loss B. Because the minus sign ensures that regardless of whether the gradient is positive or negative, the parameter moves in the direction that reduces loss C. Because the learning rate is always positive, multiplying it with any gradient yields a positive value, and subtracting a positive value decreases the parameter D. Because the gradient represents the correct direction for adjustment, and the subtraction cancels out the gradient's effect"
+    }
+  ]
+}

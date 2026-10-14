@@ -1,0 +1,459 @@
+{
+  "id": "lesson-157",
+  "title": "Loop Engineering：让AI Agent自己转起来的工程方法论",
+  "code": "1-1",
+  "stage": 7,
+  "week": 13,
+  "week_title": "一本会不断增加内容的书",
+  "module": "Loop Engineering",
+  "type": "article",
+  "repo_path": "007-阶段七：【新增规划】持续扩展内容/第13周：一本会不断增加内容的书/Loop Engineering/1-1 Loop Engineering：让AI Agent自己转起来的工程方法论 .pdf",
+  "sha256": "65b64326ffa5146db1c81b997c63a74098671f7e68333eae1dee95be5255a26f",
+  "pdf": "sources/pdf/lesson-157.pdf",
+  "pages": 3,
+  "source_url": "",
+  "minutes": 5,
+  "excerpt": "前面几章，我们学会了怎么给 Agent 写 prompt、怎么配置 Skill、怎么搭建 MCP 连接器。但一个更根本的问题来了：如果每次都要你自己发指令，Agent 再强又有什么用？Loop Engineering 是 2026 年夏天突然火起来的一个新概念。它的核心主张——把你从“操作员”变成“",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 前面几章，我们学会了怎么给 Agent 写 prompt、怎么配置 Skill、怎么搭建 MCP 连接器。但一个更根本的问题来了：如果每次都要你自己发指令，Agent 再强又有什么用？Loop Engineering 是 2026 年夏天突然火起来的一个新概念。它的核心主张——把你从“操作员”变成“监督员”，让 Agent 自己按循环自动运转。这一节我们从故事讲起，逐步拆解它的六个积木块、三个核心文件、八个 CLI 工具，以及它和 Goal Engineering、Shell Engineering 的关系。",
+      "page": 1,
+      "size": 12.0,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "1.1 先讲一个故事",
+      "page": 1,
+      "size": 16.5
+    },
+    {
+      "kind": "paragraph",
+      "text": "回想一下你平时怎么用 AI 的。",
+      "page": 1,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "“帮我把这些截图转成 WebP。”“帮我把这个 issue 分类一下。”“看看 npm 依赖有没有更新。”",
+      "page": 1,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "你有没有发现，你在做一件事：你发现问题，然后告诉 AI 去解决。",
+      "page": 1,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "你发现截图要转格式，你告诉 AI。你发现 issue 没人处理，你告诉 AI。你发现依赖该更新了，你告诉AI。你像是一个“问题搬运工”——把现实世界里的问题，一条条搬进对话框里。",
+      "page": 1,
+      "size": 12.0,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "这个模式有个隐藏的成本：你得一直在场。",
+      "page": 1,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "你不在，AI 不会自己发现“哦，今天有新 issue 了”。你没想到，AI 不会主动说“哎，依赖该升了”。你跟 AI 的关系，本质上是你在驱动它——你发现问题，它解决问题。",
+      "page": 1,
+      "size": 12.0,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "那能不能反过来？",
+      "page": 1,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "不是“你发现问题，告诉 AI 去解决”，而是让 AI 自己去发现问题、决定优先级、动手解决、最后告诉你结果。",
+      "page": 1,
+      "size": 12.0,
+      "end_page": 1
+    },
+    {
+      "kind": "paragraph",
+      "text": "你给它一个角色，而不是一个任务：",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "> 你的工作是维护这个项目的健康度。",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": ">",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "> 每天早上 9 点，你自己去看 GitHub 上有没有新 issue，判断要不要处理。",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": ">",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "> 每 4 小时，检查依赖有没有更新，小版本补丁自己升，大版本升之前问我。",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": ">",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "> 每次有人提 PR，你自己去跑测试，过不了就打回去，过了就告诉我一声。",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": ">",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "> 你不确定的事，记在日志里，我每天看一次。",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "看到了吗？区别在于——你没有告诉它“今天要干什么”，而是告诉它“你的工作是什么”。 它自己决定今天该干什么。你不需要发现问题了再告诉它，因为发现问题本来就是它的工作。",
+      "page": 2,
+      "size": 12.0,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "Loop Engineering 就是给 AI 定义“岗位职责”，而不是给它下“任务指令”。",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "h2",
+      "text": "1.2 谁点燃了这把火",
+      "page": 2,
+      "size": 16.5
+    },
+    {
+      "kind": "paragraph",
+      "text": "2026 年 6 月，两个背景完全不同的人，几乎同时说了同一件事。",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "Peter Steinberger，奥地利开发者，PSPDFKit 创始人（2021 年出售），2026 年初加入 OpenAI。他在 X 上发了一条帖子：",
+      "page": 2,
+      "size": 12.0,
+      "end_page": 2
+    },
+    {
+      "kind": "paragraph",
+      "text": "“你不应该再亲自给 coding agent 写 prompt 了。你应该设计 loop，让 loop 去 prompt agent。”",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "这条帖子迅速引爆了开发者社区。来源：Addy Osmani 博客引用。",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "Boris Cherny，Anthropic 公司 Claude Code 的负责人，在同一周接受采访时说了类似的话：",
+      "page": 2,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "“我已经不亲自 prompt Claude 了。我有一堆 loop 在跑，它们自己 prompt Claude，自己决定要干什么。我的工作是写 loop。”",
+      "page": 3,
+      "size": 12.0,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "\\[来源同上]",
+      "page": 3,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "两个人，一个在 OpenAI，一个在 Anthropic，做的产品不同，却得出了同一个结论——最会用 Agent的人，已经不跟 Agent 直接对话了。 他们写“脚本”，Agent 按脚本自己演。",
+      "page": 3,
+      "size": 12.0,
+      "end_page": 3
+    },
+    {
+      "kind": "code",
+      "text": "这个想法很快有了工程实现。就在同一时期，Cobus Greyling 在 GitHub 上创建了 loop-\nengineering 仓库，把这套理念变成了可用的 CLI 工具。而 Addy Osmani（Google Chrome 工程",
+      "page": 3,
+      "size": 12.0,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "总监，后任 Google Cloud AI 总监）也写了博客详细介绍了这个思路，让 Loop Engineering 进入了更多开发者的视野。",
+      "page": 3,
+      "size": 12.0,
+      "end_page": 3
+    },
+    {
+      "kind": "paragraph",
+      "text": "但听完这些来龙去脉，你可能更关心一个实际的问题：它到底能解决什么？",
+      "page": 3,
+      "size": 12.0
+    },
+    {
+      "kind": "h2",
+      "text": "1.3 它在解决什么问题",
+      "page": 3,
+      "size": 16.5
+    },
+    {
+      "kind": "h3",
+      "text": "现在的用法有什么问题",
+      "page": 3,
+      "size": 15.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在大多数人用 AI Agent 还是这样的：",
+      "page": 3,
+      "size": 12.0
+    },
+    {
+      "kind": "paragraph",
+      "text": "代码块",
+      "page": 3,
+      "size": 10.5
+    },
+    {
+      "kind": "code",
+      "text": "1\n你：\"帮我看一下这个 GitHub issue，分类一下\"\n2\nAgent：看了，是个 bug 报告，优先级 P1\n3\n4\n你：\"检查一下 npm 依赖有没有更新\"\n5\nAgent：检查了，lodash 有一个安全更新\n6\n7\n你：\"PR #42 的测试跑过了吗？帮我 review 一下\"\n8\n9\n...",
+      "page": 3,
+      "size": 10.5,
+      "end_page": 3,
+      "language": "text"
+    }
+  ],
+  "accounting": {
+    "source_chars": 1863,
+    "represented_chars": 1822,
+    "removed_chars": 41,
+    "tables": 0,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "repeated_title": 41
+    }
+  },
+  "videos": [],
+  "order": 158,
+  "headings": [
+    {
+      "title": "1.1 先讲一个故事",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "1.2 谁点燃了这把火",
+      "id": "section-22",
+      "level": 2
+    },
+    {
+      "title": "1.3 它在解决什么问题",
+      "id": "section-34",
+      "level": 2
+    },
+    {
+      "title": "现在的用法有什么问题",
+      "id": "section-35",
+      "level": 3
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "前面几章，我们学会了怎么给 Agent 写 prompt、怎么配置 Skill、怎么搭建 MCP 连接器。但一个更根本的问题来了：如果每次都要你自己发指令，Agent 再强又有什么用？Loop Engineering 是 2026 年夏天突然火起来的一个新概念。它的核心主张——把你从“操作员”变成“监督员”，让 Agent 自己按循环自动运转。这一节我们从故事讲起，逐步拆解它的六个积木块、三个核心文件、八个 CLI 工具，以及它和 Goal Engineering、Shell Engineering 的关系。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "1.1 先讲一个故事"
+    },
+    {
+      "anchor": "section-1",
+      "text": "回想一下你平时怎么用 AI 的。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "“帮我把这些截图转成 WebP。”“帮我把这个 issue 分类一下。”“看看 npm 依赖有没有更新。”"
+    },
+    {
+      "anchor": "section-1",
+      "text": "你有没有发现，你在做一件事：你发现问题，然后告诉 AI 去解决。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "你发现截图要转格式，你告诉 AI。你发现 issue 没人处理，你告诉 AI。你发现依赖该更新了，你告诉AI。你像是一个“问题搬运工”——把现实世界里的问题，一条条搬进对话框里。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "这个模式有个隐藏的成本：你得一直在场。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "你不在，AI 不会自己发现“哦，今天有新 issue 了”。你没想到，AI 不会主动说“哎，依赖该升了”。你跟 AI 的关系，本质上是你在驱动它——你发现问题，它解决问题。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "那能不能反过来？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "不是“你发现问题，告诉 AI 去解决”，而是让 AI 自己去发现问题、决定优先级、动手解决、最后告诉你结果。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "你给它一个角色，而不是一个任务："
+    },
+    {
+      "anchor": "section-1",
+      "text": "> 你的工作是维护这个项目的健康度。"
+    },
+    {
+      "anchor": "section-1",
+      "text": ">"
+    },
+    {
+      "anchor": "section-1",
+      "text": "> 每天早上 9 点，你自己去看 GitHub 上有没有新 issue，判断要不要处理。"
+    },
+    {
+      "anchor": "section-1",
+      "text": ">"
+    },
+    {
+      "anchor": "section-1",
+      "text": "> 每 4 小时，检查依赖有没有更新，小版本补丁自己升，大版本升之前问我。"
+    },
+    {
+      "anchor": "section-1",
+      "text": ">"
+    },
+    {
+      "anchor": "section-1",
+      "text": "> 每次有人提 PR，你自己去跑测试，过不了就打回去，过了就告诉我一声。"
+    },
+    {
+      "anchor": "section-1",
+      "text": ">"
+    },
+    {
+      "anchor": "section-1",
+      "text": "> 你不确定的事，记在日志里，我每天看一次。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "看到了吗？区别在于——你没有告诉它“今天要干什么”，而是告诉它“你的工作是什么”。 它自己决定今天该干什么。你不需要发现问题了再告诉它，因为发现问题本来就是它的工作。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "Loop Engineering 就是给 AI 定义“岗位职责”，而不是给它下“任务指令”。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "1.2 谁点燃了这把火"
+    },
+    {
+      "anchor": "section-22",
+      "text": "2026 年 6 月，两个背景完全不同的人，几乎同时说了同一件事。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Peter Steinberger，奥地利开发者，PSPDFKit 创始人（2021 年出售），2026 年初加入 OpenAI。他在 X 上发了一条帖子："
+    },
+    {
+      "anchor": "section-22",
+      "text": "“你不应该再亲自给 coding agent 写 prompt 了。你应该设计 loop，让 loop 去 prompt agent。”"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这条帖子迅速引爆了开发者社区。来源：Addy Osmani 博客引用。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "Boris Cherny，Anthropic 公司 Claude Code 的负责人，在同一周接受采访时说了类似的话："
+    },
+    {
+      "anchor": "section-22",
+      "text": "“我已经不亲自 prompt Claude 了。我有一堆 loop 在跑，它们自己 prompt Claude，自己决定要干什么。我的工作是写 loop。”"
+    },
+    {
+      "anchor": "section-22",
+      "text": "\\[来源同上]"
+    },
+    {
+      "anchor": "section-22",
+      "text": "两个人，一个在 OpenAI，一个在 Anthropic，做的产品不同，却得出了同一个结论——最会用 Agent的人，已经不跟 Agent 直接对话了。 他们写“脚本”，Agent 按脚本自己演。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "这个想法很快有了工程实现。就在同一时期，Cobus Greyling 在 GitHub 上创建了 loop-\nengineering 仓库，把这套理念变成了可用的 CLI 工具。而 Addy Osmani（Google Chrome 工程"
+    },
+    {
+      "anchor": "section-22",
+      "text": "总监，后任 Google Cloud AI 总监）也写了博客详细介绍了这个思路，让 Loop Engineering 进入了更多开发者的视野。"
+    },
+    {
+      "anchor": "section-22",
+      "text": "但听完这些来龙去脉，你可能更关心一个实际的问题：它到底能解决什么？"
+    },
+    {
+      "anchor": "section-34",
+      "text": "1.3 它在解决什么问题"
+    },
+    {
+      "anchor": "section-35",
+      "text": "现在的用法有什么问题"
+    },
+    {
+      "anchor": "section-35",
+      "text": "现在大多数人用 AI Agent 还是这样的："
+    },
+    {
+      "anchor": "section-35",
+      "text": "代码块"
+    },
+    {
+      "anchor": "section-35",
+      "text": "1\n你：\"帮我看一下这个 GitHub issue，分类一下\"\n2\nAgent：看了，是个 bug 报告，优先级 P1\n3\n4\n你：\"检查一下 npm 依赖有没有更新\"\n5\nAgent：检查了，lodash 有一个安全更新\n6\n7\n你：\"PR #42 的测试跑过了吗？帮我 review 一下\"\n8\n9\n..."
+    }
+  ]
+}

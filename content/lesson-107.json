@@ -1,0 +1,590 @@
+{
+  "id": "lesson-107",
+  "title": "Function Calling的本质与角色",
+  "code": "1-2",
+  "stage": 3,
+  "week": 6,
+  "week_title": "Function Calling：工具调用机制",
+  "module": "Function Calling的本质",
+  "type": "article",
+  "repo_path": "003-阶段三 【工具与协议】让AI连接世界/001-第6周 Function Calling：工具调用机制/001-Function Calling的本质/107-图文-1-2-Function Calling的本质与角色.pdf",
+  "sha256": "0472ea48ed8fc69c8af3ecefb9f9c1f659fd3f44110a9a045beb9dbc30075be8",
+  "pdf": "sources/pdf/lesson-107.pdf",
+  "pages": 8,
+  "source_url": "https://class.imooc.com/lesson/5275#mid=104926",
+  "minutes": 9,
+  "excerpt": "上一节了解了 Function Calling 能让 AI 从\"只会说\"变成\"能做事\"。这一节深入它的技术原理——LLM 如何判断该调用哪个函数、怎么提取参数，先从核心概念讲起：LLM 需要解决什么问题、谁在调用函数、三方角色如何分工。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节了解了 Function Calling 能让 AI 从\"只会说\"变成\"能做事\"。这一节深入它的技术原理——LLM 如何判断该调用哪个函数、怎么提取参数，先从核心概念讲起：LLM 需要解决什么问题、谁在调用函数、三方角色如何分工。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "2.1 LLM需要解决的三个问题",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "让 LLM 调用函数时，它需要解决三个关键问题：",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "问题1：我需要调用工具吗？\n- 判断用户的请求是否需要外部工具\n- 示例：\n    \"今天天气真好\" → 不需要工具（闲聊）\n    \"今天天气怎么样？\" → 需要工具（查询）\n\n问题2：调用哪个工具？\n- 从可用工具列表中选择合适的\n- 理解每个工具的功能描述\n- 示例：\n    可用工具：[get_weather, send_email, set_reminder]\n    用户：\"明天会下雨吗？\" → 选择：get_weather\n\n问题3：传什么参数？\n- 从用户输入中提取参数\n- 转换为正确的数据类型\n- 处理缺失的参数\n- 示例：\n    用户：\"明天上海天气\"\n    提取：city=\"上海\", date=\"明天\"",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "h2",
+      "text": "2.2 不同视角理解Function Calling",
+      "page": 3,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "从AI的角度看",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Function Calling是一个分类+信息抽取任务：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "分类+信息抽取",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 步骤1：分类任务\n用户输入 → 判断意图 → [需要工具] or [不需要工具]\n\n# 或者：多分类任务（如果需要工具）\n用户输入 → 判断意图 -> 工具列表 → 选择工具 → [工具A] or [工具B] or [工具C]\n\n# 步骤3：信息抽取任务\n用户输入 + 工具定义 → 提取参数 → {param1: value1, param2: value2}",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "从开发者的角度看",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Function Calling是LLM阅读工具的说明书，然后LLM告诉你该调用哪个：",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# ═══════════════════════════════════════\n#  你给LLM一份\"工具说明书\"\n# ═══════════════════════════════════════\n\ntools = [\n    {\n        \"name\": \"get_weather\",\n        \"description\": \"获取指定城市的天气\",  # ← LLM靠这个判断\n        \"parameters\": {\n            \"city\": {\"type\": \"string\", \"description\": \"城市名\"},\n            \"date\": {\"type\": \"string\", \"description\": \"日期\"}\n        }\n    },\n    {\n        \"name\": \"send_email\",\n        \"description\": \"发送邮件\",\n        \"parameters\": {...}\n    }\n]\n\n# ═══════════════════════════════════════\n#  LLM看完说明书，告诉你调用哪个\n# ═══════════════════════════════════════\n\n用户问：\"明天上海天气怎么样？\"\n\n# LLM的思考过程：\n# 1. 用户在问天气\n# 2. get_weather的描述是\"获取天气\" ✓ 匹配\n# 3. send_email是\"发送邮件\" ✗ 不匹配\n# 4. 决定：调用get_weather\n# 5. 提取参数：city=\"上海\", date=\"明天\"\n\n# LLM输出：\n{\n    \"tool\": \"get_weather\",\n    \"arguments\": {\"city\": \"上海\", \"date\": \"明天\"}\n}\n\n# ═══════════════════════════════════════\n#  你拿到LLM的决定后，真正执行\n# ═══════════════════════════════════════\nresult = get_weather(city=\"上海\", date=\"明天\")",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "从系统的角度看",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "Function Calling是一个多轮对话流程：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "多轮对话",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "2.3 到底是谁在调用函数",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "一个常见的误解",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "很多人第一次接触Function Calling时，会有这样的误解：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "错误：AI自己调用函数\n用户 → LLM → LLM自己调用天气API ← 不是这样！\n\n1\n2",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是不对的！ LLM并不会真正执行函数调用。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是不对的！",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "谁才是执行者",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "✓ 正确理解：AI告诉你调用哪个函数，你来执行\n用户 → LLM → LLM说\"你去调get_weather\"\n      → 你的代码执行get_weather\n      → 你把结果给LLM\n      → LLM生成回答",
+      "page": 5,
+      "size": 9.75,
+      "end_page": 5,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "归结起来就是三句话：LLM 做决策（判断调用哪个工具、提取参数），代码做执行（真正调用函数），LLM 再做整合（基于结果生成回答）。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "h2",
+      "text": "2.4 角色分工",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM的工作",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# LLM只做两件事：\n\n1. 判断：分析用户意图，决定该调用哪个函数\n   用户：\"明天上海天气\"\n   LLM：需要调用get_weather\n\n2. 抽取：从用户输入中提取参数\n   LLM：city=\"上海\", date=\"明天\"",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "代码的工作",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 你的代码负责：\n\n1. 定义有哪些工具可用\n   tools = [{\"name\": \"get_weather\", ...}]\n\n2. 接收LLM的决定\n   tool_name = response.tool_calls[0].function.name\n   arguments = response.tool_calls[0].function.arguments\n\n3. 真正执行函数调用（重点！）\n   result = get_weather(**arguments)  # ← 这是你调用的！\n\n4. 把结果返回给LLM\n   final_answer = llm.chat(tool_result=result)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "h3",
+      "text": "为什么这样设计",
+      "page": 6,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "安全性",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果LLM能直接调用函数，风险太大：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 危险场景\ndef delete_all_data():\n    \"\"\"删除所有数据\"\"\"\n    db.execute(\"DROP DATABASE production\")\n\n# 如果LLM误判 → 直接删库 → 灾难！",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "交给代码来调用，就有了控制权——加确认机制、做权限检查、记录每次操作日志、遇到危险命令直接拒绝。每一步都有兜底。",
+      "page": 6,
+      "size": 11.25,
+      "end_page": 6
+    },
+    {
+      "kind": "paragraph",
+      "text": "灵活性",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际执行还可以根据情况灵活调整：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# LLM说调用get_weather\n# 但你可以根据情况灵活处理：\n\nif user.is_vip:\n    result = call_premium_weather_api()  # VIP用高级API\nelse:\n    result = call_free_weather_api()     # 普通用户用免费API\n\n# 或者加缓存\nif cache.has(city, date):\n    result = cache.get(city, date)  # 命中缓存\nelse:\n    result = call_weather_api()     # 真正调用\n    cache.set(city, date, result)   # 保存缓存",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "技术限制",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "LLM运行在云端（OpenAI/阿里云的服务器），它的物理位置决定了边界——访问不到本地文件，调用不了内网API，更操作不了数据库和硬件设备。这些它都够不着。",
+      "page": 7,
+      "size": 11.25,
+      "end_page": 7
+    },
+    {
+      "kind": "paragraph",
+      "text": "这就是为什么叫\"Function Calling\"而不是\"Function Execution\"：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Calling = 呼叫/请求（LLM的角色）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "Execution = 执行（你的代码的角色）",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "理解了这一点，后面的内容就清晰多了。",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "2.5 ■ 学点英语",
+      "page": 7,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n函数描述 | Function Description | /ˈfʌŋkʃn dɪˈskrɪpʃn/ | 工具定义中的description字段，LLM靠它判断是否调用该工具\n参数提取 | Parameter Extraction | /pəˈræmɪtər ɪk ˈstrækʃn/ | LLM从用户输入中识别并提取函数参数的子任务\n决策与执行分离 | Decision-Execution Separation | /dɪˈsɪʒn ɪɡˈzekjuːʃn sepəˈreɪʃn/ ˌ | LLM做决策、代码做执行的核心架构原则",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "函数描述",
+          "Function Description",
+          "/ˈfʌŋkʃn dɪˈskrɪpʃn/",
+          "工具定义中的description字段，LLM靠它判断是否调用该工具"
+        ],
+        [
+          "参数提取",
+          "Parameter Extraction",
+          "/pəˈræmɪtər ɪk ˈstrækʃn/",
+          "LLM从用户输入中识别并提取函数参数的子任务"
+        ],
+        [
+          "决策与执行分离",
+          "Decision-Execution Separation",
+          "/dɪˈsɪʒn ɪɡˈzekjuːʃn sepəˈreɪʃn/ ˌ",
+          "LLM做决策、代码做执行的核心架构原则"
+        ]
+      ],
+      "page": 7
+    },
+    {
+      "kind": "h2",
+      "text": "图片",
+      "page": 8,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "![](107-图文-1-2-Function Calling的本质与角色.assets/img-001.png)",
+      "page": 8,
+      "size": 11.25
+    }
+  ],
+  "accounting": {
+    "source_chars": 3785,
+    "represented_chars": 3507,
+    "removed_chars": 278,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 189,
+      "repeated_title": 56,
+      "code_line_number_artifact": 33
+    }
+  },
+  "videos": [],
+  "order": 108,
+  "headings": [
+    {
+      "title": "2.1 LLM需要解决的三个问题",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "2.2 不同视角理解Function Calling",
+      "id": "section-4",
+      "level": 2
+    },
+    {
+      "title": "2.3 到底是谁在调用函数",
+      "id": "section-15",
+      "level": 2
+    },
+    {
+      "title": "2.4 角色分工",
+      "id": "section-24",
+      "level": 2
+    },
+    {
+      "title": "为什么这样设计",
+      "id": "section-29",
+      "level": 3
+    },
+    {
+      "title": "2.5 ■ 学点英语",
+      "id": "section-43",
+      "level": 2
+    },
+    {
+      "title": "图片",
+      "id": "section-45",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节了解了 Function Calling 能让 AI 从\"只会说\"变成\"能做事\"。这一节深入它的技术原理——LLM 如何判断该调用哪个函数、怎么提取参数，先从核心概念讲起：LLM 需要解决什么问题、谁在调用函数、三方角色如何分工。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "2.1 LLM需要解决的三个问题"
+    },
+    {
+      "anchor": "section-1",
+      "text": "让 LLM 调用函数时，它需要解决三个关键问题："
+    },
+    {
+      "anchor": "section-1",
+      "text": "问题1：我需要调用工具吗？\n- 判断用户的请求是否需要外部工具\n- 示例：\n    \"今天天气真好\" → 不需要工具（闲聊）\n    \"今天天气怎么样？\" → 需要工具（查询）\n\n问题2：调用哪个工具？\n- 从可用工具列表中选择合适的\n- 理解每个工具的功能描述\n- 示例：\n    可用工具：[get_weather, send_email, set_reminder]\n    用户：\"明天会下雨吗？\" → 选择：get_weather\n\n问题3：传什么参数？\n- 从用户输入中提取参数\n- 转换为正确的数据类型\n- 处理缺失的参数\n- 示例：\n    用户：\"明天上海天气\"\n    提取：city=\"上海\", date=\"明天\""
+    },
+    {
+      "anchor": "section-4",
+      "text": "2.2 不同视角理解Function Calling"
+    },
+    {
+      "anchor": "section-4",
+      "text": "从AI的角度看"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Function Calling是一个分类+信息抽取任务："
+    },
+    {
+      "anchor": "section-4",
+      "text": "分类+信息抽取"
+    },
+    {
+      "anchor": "section-4",
+      "text": "# 步骤1：分类任务\n用户输入 → 判断意图 → [需要工具] or [不需要工具]\n\n# 或者：多分类任务（如果需要工具）\n用户输入 → 判断意图 -> 工具列表 → 选择工具 → [工具A] or [工具B] or [工具C]\n\n# 步骤3：信息抽取任务\n用户输入 + 工具定义 → 提取参数 → {param1: value1, param2: value2}"
+    },
+    {
+      "anchor": "section-4",
+      "text": "从开发者的角度看"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Function Calling是LLM阅读工具的说明书，然后LLM告诉你该调用哪个："
+    },
+    {
+      "anchor": "section-4",
+      "text": "# ═══════════════════════════════════════\n#  你给LLM一份\"工具说明书\"\n# ═══════════════════════════════════════\n\ntools = [\n    {\n        \"name\": \"get_weather\",\n        \"description\": \"获取指定城市的天气\",  # ← LLM靠这个判断\n        \"parameters\": {\n            \"city\": {\"type\": \"string\", \"description\": \"城市名\"},\n            \"date\": {\"type\": \"string\", \"description\": \"日期\"}\n        }\n    },\n    {\n        \"name\": \"send_email\",\n        \"description\": \"发送邮件\",\n        \"parameters\": {...}\n    }\n]\n\n# ═══════════════════════════════════════\n#  LLM看完说明书，告诉你调用哪个\n# ═══════════════════════════════════════\n\n用户问：\"明天上海天气怎么样？\"\n\n# LLM的思考过程：\n# 1. 用户在问天气\n# 2. get_weather的描述是\"获取天气\" ✓ 匹配\n# 3. send_email是\"发送邮件\" ✗ 不匹配\n# 4. 决定：调用get_weather\n# 5. 提取参数：city=\"上海\", date=\"明天\"\n\n# LLM输出：\n{\n    \"tool\": \"get_weather\",\n    \"arguments\": {\"city\": \"上海\", \"date\": \"明天\"}\n}\n\n# ═══════════════════════════════════════\n#  你拿到LLM的决定后，真正执行\n# ═══════════════════════════════════════\nresult = get_weather(city=\"上海\", date=\"明天\")"
+    },
+    {
+      "anchor": "section-4",
+      "text": "从系统的角度看"
+    },
+    {
+      "anchor": "section-4",
+      "text": "Function Calling是一个多轮对话流程："
+    },
+    {
+      "anchor": "section-4",
+      "text": "多轮对话"
+    },
+    {
+      "anchor": "section-15",
+      "text": "2.3 到底是谁在调用函数"
+    },
+    {
+      "anchor": "section-15",
+      "text": "一个常见的误解"
+    },
+    {
+      "anchor": "section-15",
+      "text": "很多人第一次接触Function Calling时，会有这样的误解："
+    },
+    {
+      "anchor": "section-15",
+      "text": "错误：AI自己调用函数\n用户 → LLM → LLM自己调用天气API ← 不是这样！\n\n1\n2"
+    },
+    {
+      "anchor": "section-15",
+      "text": "这是不对的！ LLM并不会真正执行函数调用。"
+    },
+    {
+      "anchor": "section-15",
+      "text": "这是不对的！"
+    },
+    {
+      "anchor": "section-15",
+      "text": "谁才是执行者"
+    },
+    {
+      "anchor": "section-15",
+      "text": "✓ 正确理解：AI告诉你调用哪个函数，你来执行\n用户 → LLM → LLM说\"你去调get_weather\"\n      → 你的代码执行get_weather\n      → 你把结果给LLM\n      → LLM生成回答"
+    },
+    {
+      "anchor": "section-15",
+      "text": "归结起来就是三句话：LLM 做决策（判断调用哪个工具、提取参数），代码做执行（真正调用函数），LLM 再做整合（基于结果生成回答）。"
+    },
+    {
+      "anchor": "section-24",
+      "text": "2.4 角色分工"
+    },
+    {
+      "anchor": "section-24",
+      "text": "LLM的工作"
+    },
+    {
+      "anchor": "section-24",
+      "text": "# LLM只做两件事：\n\n1. 判断：分析用户意图，决定该调用哪个函数\n   用户：\"明天上海天气\"\n   LLM：需要调用get_weather\n\n2. 抽取：从用户输入中提取参数\n   LLM：city=\"上海\", date=\"明天\""
+    },
+    {
+      "anchor": "section-24",
+      "text": "代码的工作"
+    },
+    {
+      "anchor": "section-24",
+      "text": "# 你的代码负责：\n\n1. 定义有哪些工具可用\n   tools = [{\"name\": \"get_weather\", ...}]\n\n2. 接收LLM的决定\n   tool_name = response.tool_calls[0].function.name\n   arguments = response.tool_calls[0].function.arguments\n\n3. 真正执行函数调用（重点！）\n   result = get_weather(**arguments)  # ← 这是你调用的！\n\n4. 把结果返回给LLM\n   final_answer = llm.chat(tool_result=result)"
+    },
+    {
+      "anchor": "section-29",
+      "text": "为什么这样设计"
+    },
+    {
+      "anchor": "section-29",
+      "text": "安全性"
+    },
+    {
+      "anchor": "section-29",
+      "text": "如果LLM能直接调用函数，风险太大："
+    },
+    {
+      "anchor": "section-29",
+      "text": "# 危险场景\ndef delete_all_data():\n    \"\"\"删除所有数据\"\"\"\n    db.execute(\"DROP DATABASE production\")\n\n# 如果LLM误判 → 直接删库 → 灾难！"
+    },
+    {
+      "anchor": "section-29",
+      "text": "交给代码来调用，就有了控制权——加确认机制、做权限检查、记录每次操作日志、遇到危险命令直接拒绝。每一步都有兜底。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "灵活性"
+    },
+    {
+      "anchor": "section-29",
+      "text": "实际执行还可以根据情况灵活调整："
+    },
+    {
+      "anchor": "section-29",
+      "text": "# LLM说调用get_weather\n# 但你可以根据情况灵活处理：\n\nif user.is_vip:\n    result = call_premium_weather_api()  # VIP用高级API\nelse:\n    result = call_free_weather_api()     # 普通用户用免费API\n\n# 或者加缓存\nif cache.has(city, date):\n    result = cache.get(city, date)  # 命中缓存\nelse:\n    result = call_weather_api()     # 真正调用\n    cache.set(city, date, result)   # 保存缓存"
+    },
+    {
+      "anchor": "section-29",
+      "text": "技术限制"
+    },
+    {
+      "anchor": "section-29",
+      "text": "LLM运行在云端（OpenAI/阿里云的服务器），它的物理位置决定了边界——访问不到本地文件，调用不了内网API，更操作不了数据库和硬件设备。这些它都够不着。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "这就是为什么叫\"Function Calling\"而不是\"Function Execution\"："
+    },
+    {
+      "anchor": "section-29",
+      "text": "Calling = 呼叫/请求（LLM的角色）"
+    },
+    {
+      "anchor": "section-29",
+      "text": "Execution = 执行（你的代码的角色）"
+    },
+    {
+      "anchor": "section-29",
+      "text": "理解了这一点，后面的内容就清晰多了。"
+    },
+    {
+      "anchor": "section-43",
+      "text": "2.5 ■ 学点英语"
+    },
+    {
+      "anchor": "section-43",
+      "text": "中文 | English | 音标 | 说明\n函数描述 | Function Description | /ˈfʌŋkʃn dɪˈskrɪpʃn/ | 工具定义中的description字段，LLM靠它判断是否调用该工具\n参数提取 | Parameter Extraction | /pəˈræmɪtər ɪk ˈstrækʃn/ | LLM从用户输入中识别并提取函数参数的子任务\n决策与执行分离 | Decision-Execution Separation | /dɪˈsɪʒn ɪɡˈzekjuːʃn sepəˈreɪʃn/ ˌ | LLM做决策、代码做执行的核心架构原则"
+    },
+    {
+      "anchor": "section-45",
+      "text": "图片"
+    },
+    {
+      "anchor": "section-45",
+      "text": "![](107-图文-1-2-Function Calling的本质与角色.assets/img-001.png)"
+    }
+  ]
+}

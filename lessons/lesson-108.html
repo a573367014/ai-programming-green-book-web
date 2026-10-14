@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark"><meta name="description" content="程序员 AI 编程绿皮书完整在线阅读版：7 个阶段、13 周，全文搜索与连续阅读。">
+  <title>一次完整的调用流程 · AI 编程绿皮书</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <script>try{let p=JSON.parse(localStorage.getItem('greenbook.preferences')||'{}');document.documentElement.dataset.theme=p.theme||'light';document.documentElement.style.setProperty('--reading-size',(p.size||18)+'px');}catch(e){}</script>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script defer src="../assets/catalog.js"></script><script defer src="../assets/vendor/prism.js"></script><script defer src="../assets/app.js"></script>
+</head>
+<body class="lesson-page" data-root="../" data-lesson="lesson-108">
+<a class="skip-link" href="#main">跳至正文</a>
+<header class="site-header">
+  <div class="header-brand"><button class="icon-button mobile-menu" aria-label="打开章节导航" aria-expanded="false" aria-controls="sidebar"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><a class="brand" href="../index.html"><span class="brand-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg></span><span>AI 编程绿皮书<small>THE GREEN BOOK</small></span></a></div>
+  <div class="header-path"><span>在线阅读版</span><span class="header-dot"></span><span>从原理走向实践</span></div>
+  <div class="header-tools"><button class="search-trigger" aria-label="搜索完整教程"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索教程</span><kbd>⌘ K</kbd></button><button class="icon-button theme-button" aria-label="切换深色模式" title="切换深色模式"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.2A8.5 8.5 0 0 1 8.8 4 8.5 8.5 0 1 0 20 15.2Z"/></svg></button></div>
+</header>
+<div class="sidebar-backdrop" hidden></div>
+<aside id="sidebar" class="sidebar" aria-label="全书章节导航">
+ <div class="sidebar-heading"><span>学习目录</span><span class="small-label">7 STAGES</span><button class="icon-button sidebar-close" aria-label="关闭章节导航"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+ <a class="overview-link " href="../index.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg><span>全书概览</span></a>
+ <nav id="chapter-nav" aria-label="章节"><noscript><a href="../index.html#library">浏览完整目录</a></noscript></nav>
+ <div class="sidebar-bottom"><div class="study-progress-label"><span>已读课节</span><b id="read-count">0 / 160</b></div><div class="study-progress-track"><span id="study-progress"></span></div><a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">查看来源仓库 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></div>
+</aside>
+<div class="reading-progress-bar"><span id="reading-progress"></span></div>
+<div class="reader-layout"><main id="main" class="reader-main">
+<div class="breadcrumb"><a href="../index.html#stage-3">工具与协议</a><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>第 6 周</span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg><span>Function Calling的本质</span></div>
+<div class="lesson-kicker"><span class="type-badge article">图文课程</span><span>LESSON 109</span></div>
+<h1 class="lesson-title">一次完整的调用流程</h1>
+<div class="lesson-meta"><span><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4zM20 4h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3z"/></svg>11 页原文</span><span>约 13 分钟阅读</span><span class="module-name">Function Calling的本质</span></div>
+<div class="reader-toolbar"><div><a class="quiet-button" href="../sources/pdf/lesson-108.pdf" target="_blank"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>原始 PDF</a><a class="quiet-button" href="../content/lesson-108.txt" download><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H5v18h14V8zM14 3v5h5M8 13h8M8 17h6"/></svg>正文文本</a></div><div><button id="bookmark-button" class="quiet-button" aria-pressed="false"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg><span>收藏</span></button><button id="reading-settings-button" class="quiet-button" aria-expanded="false" aria-controls="reading-settings"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg><span>阅读设置</span></button></div></div>
+<div id="reading-settings" class="reading-settings" hidden><label>正文字号 <input id="font-size" type="range" min="16" max="24" step="1" value="18"><output id="font-size-value">18 px</output></label><label class="check-setting"><input type="checkbox" id="focus-mode">专注模式</label><button class="quiet-button print-button">打印本节</button></div>
+<div class="resume-reading" id="resume-reading" hidden><span>已记住上次的阅读位置</span><button>继续阅读 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button></div>
+<article class="article-content" id="article-start"><span class="source-page-anchor" id="pdf-page-1"></span>
+<aside class="callout" data-source-page="1"><b>阅读指南</b><p>上一节理清了 Function Calling 的角色分工。现在深入实际运行机制——从头到尾走一遍 LLM 怎么判断、怎么调用、怎么把工具结果整合成最终回答。</p></aside>
+<h2 id="section-1" data-source-page="1">3.1 一次完整的调用流程<a class="heading-link" href="#section-1" aria-label="链接至本节">#</a></h2>
+<p data-source-page="1">完整流程示例</p>
+<p data-source-page="1">用一个具体例子走一遍全程。假设用户问&quot;明天成都会下雪吗？&quot;。</p>
+<p data-source-page="1">工具定义</p>
+<span class="source-page-anchor" id="pdf-page-2"></span>
+<div class="code-block" data-source-page="2"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 你定义可用的工具
+tools = [
+    {
+        &quot;type&quot;: &quot;function&quot;,
+        &quot;function&quot;: {
+            &quot;name&quot;: &quot;get_weather&quot;,
+            &quot;description&quot;: &quot;获取指定城市和日期的天气信息，支持查询温度、天气状况、降水等&quot;,
+            &quot;parameters&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                    &quot;city&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;城市名称，如：成都、上海、深圳&quot;
+                    },
+                    &quot;date&quot;: {
+                        &quot;type&quot;: &quot;string&quot;,
+                        &quot;description&quot;: &quot;日期，支持格式：今天、明天、后天、2026-01-20&quot;
+                    }
+                },
+                &quot;required&quot;: [&quot;city&quot;, &quot;date&quot;]
+            }
+        }
+    }
+]</code></pre></div>
+<p data-source-page="2">参数解析：</p>
+<p class="list-item" data-source-page="2">name：函数名称，LLM会看到这个名字</p>
+<p class="list-item" data-source-page="2">description：功能描述，非常重要，LLM主要靠这个判断该用哪个工具函数</p>
+<p class="list-item" data-source-page="2">parameters：参数定义，遵循 JSON Schema 规范</p>
+<p data-source-page="2">首次调用LLM</p>
+<span class="source-page-anchor" id="pdf-page-3"></span>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 构造请求
+messages = [
+    {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;明天成都会下雪吗？&quot;}
+]
+
+# 调用LLM（提供工具列表）
+response = client.chat.completions.create(
+    model=&quot;qwen3.6-plus&quot;,
+    messages=messages,
+    tools=tools  # ← 关键：tools参数是激活Function Calling的开关
+)
+
+# LLM的内部思考过程（简化）
+# 1. 分析用户意图：查询天气
+# 2. 检查工具列表：有get_weather可用
+# 3. 判断：需要调用工具
+# 4. 提取参数：city=&quot;成都&quot;, date=&quot;明天&quot;</code></pre></div>
+<p data-source-page="3">LLM 返回的结构如下：</p>
+<div class="code-block" data-source-page="3"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># response的结构
+{
+    &quot;id&quot;: &quot;chatcmpl-xxx&quot;,
+    &quot;choices&quot;: [{
+        &quot;message&quot;: {
+            &quot;role&quot;: &quot;assistant&quot;,
+            &quot;content&quot;: null,  # ← 没有文本回答
+            &quot;tool_calls&quot;: [   # ← 有工具调用
+                {
+                    &quot;id&quot;: &quot;call_abc123&quot;,
+                    &quot;type&quot;: &quot;function&quot;,
+                    &quot;function&quot;: {
+                        &quot;name&quot;: &quot;get_weather&quot;,
+                        &quot;arguments&quot;: &#x27;{&quot;city&quot;: &quot;成都&quot;, &quot;date&quot;: &quot;明天&quot;}&#x27;
+                    }
+                }
+            ]
+        },
+        &quot;finish_reason&quot;: &quot;tool_calls&quot;  # ← 表示需要调用工具
+    }]
+}</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-4"></span>
+<p data-source-page="4">其中 content 为 null 说明 LLM 没有直接回答，而是要求调用工具；tool_calls 包含要调用的工具信息；arguments 是 JSON 字符串，需要解析。</p>
+<p data-source-page="4">执行函数</p>
+<div class="code-block" data-source-page="4"><div class="code-toolbar"><span>PYTHON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-python">import json
+
+# 从LLM的回复提取工具调用信息
+tool_call = response.choices[0].message.tool_calls[0]
+function_name = tool_call.function.name  # &quot;get_weather&quot;
+arguments = json.loads(tool_call.function.arguments)  # {&quot;city&quot;: &quot;成都&quot;, &quot;date&quot;: &quot;明天&quot;}
+
+# 实际执行函数
+def get_weather(city, date):
+    &quot;&quot;&quot;
+    这里是你的实现
+    可以调用真实的天气API
+    &quot;&quot;&quot;
+    # 示例：调用天气API
+    api_result = weather_api.query(
+        city=city,
+        date=date
+    )
+    return {
+        &quot;city&quot;: city,
+        &quot;date&quot;: &quot;2026-01-16&quot;,
+        &quot;weather&quot;: &quot;多云&quot;,
+        &quot;temperature&quot;: &quot;-5℃ ~ 3℃&quot;,
+        &quot;precipitation&quot;: &quot;降雪概率：80%&quot;,
+        &quot;tips&quot;: &quot;明天可能有小雪，注意保暖&quot;
+    }
+
+# 执行调用
+function_result = get_weather(**arguments)
+
+# function_result = {
+#     &quot;city&quot;: &quot;成都&quot;,
+#     &quot;date&quot;: &quot;2026-01-16&quot;,
+#     &quot;weather&quot;: &quot;多云&quot;,
+#     &quot;temperature&quot;: &quot;-5℃ ~ 3℃&quot;,
+#     &quot;precipitation&quot;: &quot;降雪概率：80%&quot;,
+#     &quot;tips&quot;: &quot;明天可能有小雪，注意保暖&quot;
+# }</code></pre></div>
+<span class="source-page-anchor" id="pdf-page-5"></span>
+<p data-source-page="5">二次调用LLM</p>
+<div class="code-block" data-source-page="5"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 把函数结果添加到对话历史
+messages.append(response.choices[0].message)  # LLM的工具调用消息
+messages.append({
+    &quot;role&quot;: &quot;tool&quot;,  # ← 表示这是工具返回的结果，不是LLM的回答
+    &quot;tool_call_id&quot;: tool_call.id,
+    &quot;content&quot;: json.dumps(function_result)
+})
+
+# 现在messages的结构：
+# [
+#     {&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;明天成都会下雪吗？&quot;},
+#     {&quot;role&quot;: &quot;assistant&quot;, &quot;tool_calls&quot;: [...]},  # LLM说要调用工具
+#     {&quot;role&quot;: &quot;tool&quot;, &quot;content&quot;: &quot;{...}&quot;}  # 工具返回的结果
+# ]
+
+# 再次调用LLM，让它整合结果生成回答
+final_response = client.chat.completions.create(
+    model=&quot;qwen3-max&quot;,
+    messages=messages  # LLM会看到工具的返回结果
+)
+
+# LLM基于函数结果生成回答
+print(final_response.choices[0].message.content)
+# &quot;明天成都可能会下雪，降雪概率达到80%。
+#  气温在-5℃到3℃之间，天气多云转雪。
+#  建议您出行时注意保暖，穿上厚外套，带好围巾手套。&quot;</code></pre></div>
+<p data-source-page="5">完整流程图</p>
+<h2 id="section-20" data-source-page="5">3.2 工具描述是成败关键<a class="heading-link" href="#section-20" aria-label="链接至本节">#</a></h2>
+<p data-source-page="5">工具描述的重要性</p>
+<p data-source-page="5">LLM主要靠description来判断该不该用这个工具。</p>
+<p data-source-page="5">写得好和写得差的区别很大，对比一下：</p>
+<span class="source-page-anchor" id="pdf-page-6"></span>
+<div class="code-block" data-source-page="6"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># Bad： 描述不清晰
+{
+    &quot;name&quot;: &quot;query&quot;,
+    &quot;description&quot;: &quot;查询&quot;,  # 太笼统，LLM不知道能查什么
+    &quot;parameters&quot;: {...}
+}
+
+# Good：描述清晰
+{
+    &quot;name&quot;: &quot;query_weather&quot;,
+    &quot;description&quot;: &quot;查询指定城市和日期的天气信息，包括温度、天气状况、风力、降水等。支持查询
+最近7天的天气预报。&quot;,
+    &quot;parameters&quot;: {...}
+}</code></pre></div>
+<p data-source-page="6">好的描述有几个要点：</p>
+<p class="list-item" data-source-page="6">说明工具的具体功能</p>
+<p data-source-page="6">具体功能</p>
+<p class="list-item" data-source-page="6">说明工具的适用场景</p>
+<p data-source-page="6">适用场景</p>
+<p class="list-item" data-source-page="6">说明工具的限制（如时间范围）</p>
+<p data-source-page="6">限制</p>
+<p class="list-item" data-source-page="6">给出示例用法（可选）</p>
+<p data-source-page="6">示例用法</p>
+<h3 id="section-34" data-source-page="6">参数设计<a class="heading-link" href="#section-34" aria-label="链接至本节">#</a></h3>
+<p data-source-page="6">遵循JSON Schema规范</p>
+<span class="source-page-anchor" id="pdf-page-7"></span>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>JSON</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-json">{
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+        &quot;city&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;城市名称&quot;,
+            &quot;enum&quot;: [&quot;成都&quot;, &quot;上海&quot;, &quot;深圳&quot;]  # 可选：限定可选值
+        },
+        &quot;date&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;日期，格式：YYYY-MM-DD或今天/明天/后天&quot;
+        },
+        &quot;units&quot;: {
+            &quot;type&quot;: &quot;string&quot;,
+            &quot;description&quot;: &quot;温度单位&quot;,
+            &quot;enum&quot;: [&quot;celsius&quot;, &quot;fahrenheit&quot;],
+            &quot;default&quot;: &quot;celsius&quot;  # 默认值
+        }
+    },
+    &quot;required&quot;: [&quot;city&quot;, &quot;date&quot;]  # 必填参数
+}</code></pre></div>
+<h3 id="section-37" data-source-page="7">错误处理<a class="heading-link" href="#section-37" aria-label="链接至本节">#</a></h3>
+<p data-source-page="7">LLM可能会犯错：</p>
+<p data-source-page="7">选错工具</p>
+<div class="code-block" data-source-page="7"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text">用户：&quot;帮我发邮件&quot;
+LLM误选：get_weather（错误）
+
+解决：完善工具描述，明确适用场景</code></pre></div>
+<p data-source-page="7">参数提取错误</p>
+<span class="source-page-anchor" id="pdf-page-8"></span>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 用户：&quot;查查魔都明天天气&quot;
+# LLM提取：city=&quot;魔都&quot;（错误，应该是&quot;上海&quot;）
+
+# 解决：在description中说明城市名称格式
+{
+    &quot;city&quot;: {
+        &quot;type&quot;: &quot;string&quot;,
+        &quot;description&quot;: &quot;城市标准名称，如：成都、上海（不要用别称）&quot;
+    }
+}</code></pre></div>
+<p data-source-page="8">缺失必填参数</p>
+<div class="code-block" data-source-page="8"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 用户：&quot;明天天气&quot;（没说城市）
+# LLM可能无法提取city参数
+
+# 解决1：让LLM反问用户
+if 参数缺失:
+    return &quot;请问您要查询哪个城市的天气？&quot;
+
+# 解决2：设置默认值
+{
+    &quot;city&quot;: {
+        &quot;type&quot;: &quot;string&quot;,
+        &quot;description&quot;: &quot;城市名称，默认成都&quot;,
+        &quot;default&quot;: &quot;成都&quot;
+    }
+}</code></pre></div>
+<h3 id="section-45" data-source-page="8">多轮工具调用<a class="heading-link" href="#section-45" aria-label="链接至本节">#</a></h3>
+<p data-source-page="8">有些任务需要调用多次工具：</p>
+<p data-source-page="8">“帮我查明天成都天气，如果会下雨就提醒我带伞”</p>
+<span class="source-page-anchor" id="pdf-page-9"></span>
+<div class="code-block" data-source-page="9"><div class="code-toolbar"><span>代码 / 文本</span><div><button class="wrap-code" aria-label="切换代码自动换行">换行</button><button class="copy-code"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制</span></button></div></div><pre><code class="language-text"># 流程：
+1. 第1次LLM调用 → 决定调用get_weather
+2. 执行get_weather → 获取天气数据
+3. 第2次LLM调用 → 判断是否下雨
+4. 如果下雨 → 决定调用set_reminder
+5. 执行set_reminder → 设置提醒
+6. 第3次LLM调用 → 生成最终回答</code></pre></div>
+<h2 id="section-49" data-source-page="9">3.3 ■ 学点英语<a class="heading-link" href="#section-49" aria-label="链接至本节">#</a></h2>
+<div class="table-scroll" tabindex="0" role="region" aria-label="可横向滚动的表格" data-source-page="9"><table><thead><tr><th scope="col">中文</th><th scope="col">English</th><th scope="col">音标</th><th scope="col">说明</th></tr></thead><tbody><tr><td>工具调用字段</td><td>tool calls _</td><td>/tuːl kɔːlz/</td><td>LLM返回的结构化字段，指示代码需要执行哪些工具函数</td></tr><tr><td>完成原因</td><td>finish reason _</td><td>/ˈfɪnɪʃ rɪˈziːzən/</td><td>LLM响应中的标志位，tool calls表示需要调用工具 _ 而非直接回答</td></tr><tr><td>JSON模式</td><td>JSON Schema</td><td>/ˈdʒeɪsɒn ˈskiːmə/</td><td>定义工具参数结构的规范，包括类型、必填、枚举等约束</td></tr><tr><td>多轮工具调用</td><td>Multi-turn Tool Calling</td><td>/ˈmʌlti tɜːn tuːl ˈkɔːlɪŋ/</td><td>依赖上一步结果逐步执行多次工具调用的流程模式</td></tr></tbody></table></div>
+<span class="source-page-anchor" id="pdf-page-10"></span>
+<h2 id="section-51" data-source-page="10">图片<a class="heading-link" href="#section-51" aria-label="链接至本节">#</a></h2>
+<span class="source-page-anchor" id="pdf-page-11"></span>
+<figure data-source-page="11"><button class="figure-open" aria-label="放大查看第 11 页图示"><img src="../assets/figures/384ee38d3be2c110501c40e3843aca3b.png" width="1102" height="1578" loading="lazy" alt="一次完整的调用流程 · 原 PDF 第 11 页图示"></button><figcaption>原文图示 · 点击放大</figcaption></figure></article>
+<div class="lesson-end"><div><span class="end-mark"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><strong>本节阅读完成</strong><p>把知识留住，再继续下一节。</p></div></div><button id="mark-read" class="primary-button"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>标记为已读</span></button></div>
+<nav class="chapter-pagination" aria-label="前后课节"><a class="chapter-neighbor prev" href="lesson-107.html"><span>上一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>Function Calling的本质与角色</strong><small>Function Calling的本质</small></a><a class="chapter-neighbor next" href="lesson-109.html"><span>下一节 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></span><strong>实战：游戏装备查询</strong><small>实战：游戏装备查询</small></a></nav>
+<details class="source-note"><summary>内容来源与版本</summary><p>原文来自 <a href="https://github.com/a573367014/ai-programming-green-book" target="_blank" rel="noopener">来源仓库</a>，版本 457ac44。本页保留教程内容，调整 PDF 导出产生的断行、重复标题与代码行号；原始 PDF 可随时对照。</p><p><a href="https://class.imooc.com/lesson/5275#mid=104927" target="_blank" rel="noopener">原课程链接</a></p></details>
+<footer class="site-footer"><span>程序员 AI 编程绿皮书</span><a href="../index.html">全书概览 <svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></a></footer>
+</main><aside class="page-toc" aria-label="本节目录"><div class="toc-title">本节目录 <span id="percent-read">0%</span></div><nav><a href="#section-1" class="toc-level-2">3.1 一次完整的调用流程</a><a href="#section-20" class="toc-level-2">3.2 工具描述是成败关键</a><a href="#section-34" class="toc-level-3">参数设计</a><a href="#section-37" class="toc-level-3">错误处理</a><a href="#section-45" class="toc-level-3">多轮工具调用</a><a href="#section-49" class="toc-level-2">3.3 ■ 学点英语</a><a href="#section-51" class="toc-level-2">图片</a></nav><div class="toc-tip">按 <kbd>⌘ K</kbd> 随时搜索<br>阅读进度自动保存在此浏览器</div></aside></div>
+<dialog id="search-dialog" class="search-dialog" aria-label="全文搜索"><form method="dialog" class="search-top"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input id="search-input" type="search" placeholder="搜索概念、代码或章节…" autocomplete="off" aria-label="全文搜索关键词"><button class="icon-button" aria-label="关闭搜索"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><div class="search-filters" role="group" aria-label="搜索内容类型"><button data-filter="all" class="selected">全部</button><button data-filter="article">图文</button><button data-filter="exercise">练习</button><button data-filter="video">视频</button><button data-filter="saved">已收藏</button></div><p id="search-status" class="search-status" role="status">输入关键词，搜索整本教程</p><div id="search-results" class="search-results"></div><div class="search-footer"><span>正文、标题与代码均可搜索</span><kbd>ESC 关闭</kbd></div></dialog>
+<dialog id="image-dialog" class="image-dialog" aria-label="查看完整图示"><form method="dialog"><button class="icon-button" aria-label="关闭图示"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></form><img alt="完整图示"></dialog>
+<div class="toast" id="toast" role="status"></div>
+<button class="back-top icon-button" aria-label="回到顶部" title="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="application/json" id="page-data">{"id": "lesson-108", "title": "一次完整的调用流程", "stage": 3, "week": 6, "module": "Function Calling的本质", "minutes": 13, "pages": 11, "type": "article"}</script>
+</body></html>

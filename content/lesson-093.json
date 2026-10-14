@@ -1,0 +1,724 @@
+{
+  "id": "lesson-093",
+  "title": "结构化输出与常用模板",
+  "code": "1-3",
+  "stage": 2,
+  "week": 4,
+  "week_title": "理解大模型开发",
+  "module": "Prompt基础与必要场景",
+  "type": "article",
+  "repo_path": "002-阶段二 【实战入门】大模型开发与知识接入/001-第4周 理解大模型开发/004-Prompt基础与必要场景/093-图文-1-3-结构化输出与常用模板.pdf",
+  "sha256": "1be51137428117954efbbb92044c9a86dcba421a945c0d9ddd467f8c605b72fa",
+  "pdf": "sources/pdf/lesson-093.pdf",
+  "pages": 10,
+  "source_url": "https://class.imooc.com/lesson/5270#mid=104912",
+  "minutes": 11,
+  "excerpt": "上一节学习了Prompt五要素。现在进一步——如何让AI输出精确的JSON格式以便程序处理？有哪些现成的Prompt模板可以直接参考？本节给出答案。",
+  "items": [
+    {
+      "kind": "quote",
+      "text": "[!TIP] 阅读指南 上一节学习了Prompt五要素。现在进一步——如何让AI输出精确的JSON格式以便程序处理？有哪些现成的Prompt模板可以直接参考？本节给出答案。",
+      "page": 1,
+      "size": 11.25,
+      "end_page": 1
+    },
+    {
+      "kind": "h2",
+      "text": "11.1 结构化输出",
+      "page": 1,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "强制AI按照特定的数据结构输出，便于程序处理。",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "方法1 只在Prompt中要求AI返回JSON",
+      "page": 1,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "# 仅通过Prompt要求，AI输出JSON格式的回答\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\"\n    messages=[\n        {\n            \"role\": \"system\",\n            \"content\": \"\"\"请分析代码并返回JSON格式的结果。\n\n输出格式示例：\n{\n  \"complexity\": \"高/中/低\",\n  \"issues\": [...],\n  \"suggestions\": [...]\n}\n\"\"\"\n        },\n        {\"role\": \"user\", \"content\": \"分析这段代码：[your code]\"}\n    ]\n)",
+      "page": 2,
+      "size": 9.75,
+      "end_page": 2,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI实际可能输出：",
+      "page": 2,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "\"好的，我来分析一下这段代码：\n\n`\\`\\`json\n\n{\"complexity\": \"中\", ...}\n\n`\\`\\`\n\n从分析结果看，代码质量还不错。..\"",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "这里的问题是什么？",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "问题在于，其实只需要那段JSON数据（{ }内的内容），而不需要AI的那些\"自言自语\"。但AI很难精确控制。这个时候，需要手动清洗，提取出JSON数据：",
+      "page": 3,
+      "size": 11.25,
+      "end_page": 3
+    },
+    {
+      "kind": "code",
+      "text": "import json\ncontent = response.choices[0].message.content\nif \"`\\`\\`json\" in content:\n    content = content.split(\"`\\`\\`json\")[1].split(\"`\\`\\`\")[0]\nresult = json.loads(content.strip())  # 可能报错！",
+      "page": 3,
+      "size": 9.75,
+      "end_page": 3,
+      "language": "python"
+    },
+    {
+      "kind": "paragraph",
+      "text": "方法2 使用API强制JSON模式",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "用API参数强制约束，AI无法\"自由发挥\"",
+      "page": 3,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\"\n    messages=[\n        {\n            \"role\": \"system\",\n            \"content\": \"\"\"请分析以下代码，以JSON格式返回结果：\n\n{\n  \"complexity\": \"复杂度等级（高/中/低）\",\n  \"issues\": [...],\n  \"suggestions\": [...]\n}\n\"\"\"\n        },\n        {\"role\": \"user\", \"content\": \"分析这段代码：[your code]\"}\n    ],\n    response_format={\"type\": \"json_object\"}  # 关键区别在这里！\n)\n\n# AI实际输出：\n# {\"complexity\": \"中\", \"issues\": [...], \"suggestions\": [...]}\n# 纯JSON，没有任何额外文字！\n\n# 直接解析，不需要任何清洗\nimport json\nresult = json.loads(response.choices[0].message.content)  # 100%成功！\nprint(result[\"complexity\"])\nprint(result[\"issues\"])",
+      "page": 4,
+      "size": 9.75,
+      "end_page": 4,
+      "language": "python"
+    },
+    {
+      "kind": "h3",
+      "text": "两种方法的本质区别",
+      "page": 4,
+      "size": 14.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这两种方法看起来差不多——都是让AI输出JSON，到底有什么不同？",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "关键在于约束力度。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "约束力度",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "方法1就像口头跟AI说\"请给我JSON格式\"。",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "方法1",
+      "page": 4,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "AI大部分时候会照做，但它可能会\"热心\"地额外多给一些东西——比如在JSON前面加一句\"好的，分析结果如下：\"，或者用json代码块把JSON包起来，甚至在后面再解释一遍。这些\"好心\"在人看来挺友好，但对程序来说就是灾难：json.loads()一遇到这些额外的文字就报错。",
+      "page": 4,
+      "size": 11.25,
+      "end_page": 4
+    },
+    {
+      "kind": "paragraph",
+      "text": "需要手动写代码去\"清洗\"这些输出：去掉前面的说明文字、去掉代码块标记、去掉后面的解释……这在批量处理时特别麻烦，因为AI每次\"热心\"的方式还不太一样，清洗逻辑很难覆盖所有情况。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "方法2就不一样了。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "方法2",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "它通过API的response_format={\"type\": \"json_object\"}参数，在底层直接锁死了输出格式——AI想\"热心\"都不行，它只能输出纯粹的JSON字符串，一个多余的字都不会有。这就像给AI套上了一个严格的模板，保证输出的东西可以直接喂给json.loads()，不需要任何预处理。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "使用场景选择",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "如果是在写一个工具、做批量处理、或者构建生产系统，那必须用方法2。稳定性是第一位的，不能让程序因为解析失败就崩掉。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "但如果只是临时用一下，或者希望AI在给出JSON的同时还能解释一下结果（比如给人看的报告），那方法1反而更合适——它允许AI\"说人话\"。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "简单说：机器读的用方法2，人读的用方法1。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "机器读的用方法2，人读的用方法1",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.2 常用Prompt模板",
+      "page": 5,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "学完了Prompt设计的五要素，自然会想到一个问题：有没有现成的模板可以直接拿来用？",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "确实有现成的模板，但别照搬。",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "下面这些模板是我在实际项目中总结出来的，覆盖了大部分常见场景。但记住，它们只是启发性的参考——你的业务场景、数据特点、输出要求都不一样，照抄模板往往效果不佳。真正好用的Prompt，都是在这些模板基础上，根据具体情况调整出来的。",
+      "page": 5,
+      "size": 11.25,
+      "end_page": 5
+    },
+    {
+      "kind": "paragraph",
+      "text": "通用五要素模板",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "这是最基础的结构，适合任何场景：",
+      "page": 5,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "BASE_PROMPT = \"\"\"你是{role}。\n\n任务：{task}\n\n背景信息：\n{context}\n\n输出要求：\n{format}\n\n约束条件：\n{constraints}\n\"\"\"",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "使用示例",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "prompt = BASE_PROMPT.format(\n    role=\"Python后端工程师，熟悉FastAPI和SQLAlchemy\",\n    task=\"审查这段API代码，找出性能问题\",\n    context=\"这是一个用户查询接口，日访问量10万次\",\n    format=\"列出问题清单，每项包含：行号、问题、影响、建议\",\n    constraints=\"只分析性能，不关注代码风格\"\n)",
+      "page": 6,
+      "size": 9.75,
+      "end_page": 6,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "代码生成模板",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "适合让AI写代码的场景：",
+      "page": 6,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "CODE_GEN_PROMPT = \"\"\"你是{language}开发专家。\n\n需求：{requirement}\n\n技术约束：\n- 语言/框架：{tech_stack}\n- 代码风格：{style}\n\n输出格式：\n1. 完整可运行的代码\n2. 关键部分的注释\n3. 简单的使用示例\n\n注意事项：\n- 包含异常处理\n- 遵循最佳实践\n- 不使用废弃API\n\"\"\"",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "prompt = CODE_GEN_PROMPT.format(\n    language=\"Python\",\n    requirement=\"实现一个异步的Redis缓存装饰器\",\n    tech_stack=\"aioredis 2.0\",\n    style=\"符合PEP 8规范\"\n)",
+      "page": 7,
+      "size": 9.75,
+      "end_page": 7,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际调整示例 如果你的项目有特殊要求，可以这样调整：",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "实际调整示例",
+      "page": 7,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "prompt = \"\"\"你是Python开发专家，熟悉异步编程。\n\n需求：实现一个异步的Redis缓存装饰器\n\n技术约束：\n- 使用aioredis 2.0\n- 支持设置过期时间\n- 缓存key自动生成（函数名+参数hash）\n\n输出格式：\n1. 装饰器完整代码\n2. 使用示例（包含FastAPI路由）\n\n注意事项：\n- 必须处理Redis连接失败的情况\n- 参数序列化要支持复杂对象\n- 添加日志记录缓存命中率\n\"\"\"\n# 根据实际需求加了很多细节",
+      "page": 8,
+      "size": 9.75,
+      "end_page": 8,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "文本处理模板",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "摘要、改写、提取等场景：",
+      "page": 8,
+      "size": 11.25
+    },
+    {
+      "kind": "code",
+      "text": "TEXT_PROCESS_PROMPT = \"\"\"你是{role}。\n\n任务：{task}\n\n输入文本的特点：\n{text_info}\n\n输出要求：\n- 长度：{length}\n- 风格：{style}\n- 受众：{audience}\n\n约束：\n- 不添加原文没有的信息\n- 保持客观中立\n- {specific_constraint}\n\n文本：\n{text}\n\"\"\"",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "code",
+      "text": "# 场景1：技术文档摘要\nprompt1 = TEXT_PROCESS_PROMPT.format(\n    role=\"技术文档编辑\",\n    task=\"将这篇API文档总结为200字的开发者指南\",\n    text_info=\"官方API文档，包含大量技术细节\",\n    length=\"200字左右\",\n    style=\"简洁、技术化\",\n    audience=\"有经验的开发者\",\n    specific_constraint=\"保留所有代码示例的关键部分\",\n    text=\"[文档内容]\"\n)",
+      "page": 9,
+      "size": 9.75,
+      "end_page": 9,
+      "language": "text"
+    },
+    {
+      "kind": "paragraph",
+      "text": "细心的读者可能已经注意到了：当 Prompt 比较复杂时，大多数情况下我们都会用\"Markdown\"的语法来组织它——用标题分区、用有序或无序列表列要求、用代码块包示例。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "paragraph",
+      "text": "这样组织有三个好处：",
+      "page": 9,
+      "size": 11.25
+    },
+    {
+      "kind": "list",
+      "text": "模型更容易理解。模型在训练时看过海量的 Markdown 文档（技术文档、GitHub README、代码注释），对这种结构非常熟悉，能快速识别重点并按结构生成内容。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "list",
+      "text": "边界更清晰。用代码块包住示例，模型就知道\"这是例子\"；用列表列出约束，模型就知道\"这些必须满足\"。歧义少了，输出自然更稳定。",
+      "page": 9,
+      "size": 11.25,
+      "end_page": 9
+    },
+    {
+      "kind": "list",
+      "text": "协作更高效。别人一看就懂哪些是硬性规则、哪些是风格偏好，修改和复用都方便。",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.3 下一节预告",
+      "page": 10,
+      "size": 17.25
+    },
+    {
+      "kind": "paragraph",
+      "text": "现在已经掌握了大模型应用开发的基础：API调用、参数控制、Prompt设计。但在实际应用中，可能会遇到这样的问题：AI的回答总是基于训练数据，如何让它回答我们自己的私有知识？比如公司内部文档、项目代码库、业务规则？",
+      "page": 10,
+      "size": 11.25,
+      "end_page": 10
+    },
+    {
+      "kind": "paragraph",
+      "text": "下一章将学习 RAG（检索增强生成），让AI能够访问专属知识库，回答它原本\"不知道\"的问题。",
+      "page": 10,
+      "size": 11.25
+    },
+    {
+      "kind": "h2",
+      "text": "11.4 ■ 学点英语",
+      "page": 10,
+      "size": 17.25
+    },
+    {
+      "kind": "table",
+      "text": "中文 | English | 音标 | 说明\n结构化输出 | Structured Output | /ˈstrʌktʃərd ˈaʊtpʊt/ | 让AI按特定数据结构（如JSON）返回结果\nJSON模式 | JSON Mode | /ˈdʒeɪsɑːn moʊd/ | 通过response format参数强制AI输出纯 _ JSON\n响应格式 | Response Format | /rɪˈspɑːns ˈfɔːrmæt/ | API参数，指定AI返回内容的格式要求\n提示词模板 | Prompt Template | /prɑːmpt ˈtemplət/ | 可复用的提示词结构框架\nMarkdown语法 | Markdown Syntax | /ˈmɑːrkdaʊn ˈsɪntæks/ | 用于组织复杂Prompt的轻量级标记语言",
+      "rows": [
+        [
+          "中文",
+          "English",
+          "音标",
+          "说明"
+        ],
+        [
+          "结构化输出",
+          "Structured Output",
+          "/ˈstrʌktʃərd ˈaʊtpʊt/",
+          "让AI按特定数据结构（如JSON）返回结果"
+        ],
+        [
+          "JSON模式",
+          "JSON Mode",
+          "/ˈdʒeɪsɑːn moʊd/",
+          "通过response format参数强制AI输出纯 _ JSON"
+        ],
+        [
+          "响应格式",
+          "Response Format",
+          "/rɪˈspɑːns ˈfɔːrmæt/",
+          "API参数，指定AI返回内容的格式要求"
+        ],
+        [
+          "提示词模板",
+          "Prompt Template",
+          "/prɑːmpt ˈtemplət/",
+          "可复用的提示词结构框架"
+        ],
+        [
+          "Markdown语法",
+          "Markdown Syntax",
+          "/ˈmɑːrkdaʊn ˈsɪntæks/",
+          "用于组织复杂Prompt的轻量级标记语言"
+        ]
+      ],
+      "page": 10
+    }
+  ],
+  "accounting": {
+    "source_chars": 4573,
+    "represented_chars": 4363,
+    "removed_chars": 210,
+    "tables": 1,
+    "images": 0,
+    "image_occurrences": 0,
+    "removals": {
+      "export_metadata": 146,
+      "repeated_title": 33,
+      "code_line_number_artifact": 31
+    }
+  },
+  "videos": [],
+  "order": 94,
+  "headings": [
+    {
+      "title": "11.1 结构化输出",
+      "id": "section-1",
+      "level": 2
+    },
+    {
+      "title": "两种方法的本质区别",
+      "id": "section-13",
+      "level": 3
+    },
+    {
+      "title": "11.2 常用Prompt模板",
+      "id": "section-29",
+      "level": 2
+    },
+    {
+      "title": "11.3 下一节预告",
+      "id": "section-54",
+      "level": 2
+    },
+    {
+      "title": "11.4 ■ 学点英语",
+      "id": "section-57",
+      "level": 2
+    }
+  ],
+  "search_sections": [
+    {
+      "anchor": "article-start",
+      "text": "上一节学习了Prompt五要素。现在进一步——如何让AI输出精确的JSON格式以便程序处理？有哪些现成的Prompt模板可以直接参考？本节给出答案。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "11.1 结构化输出"
+    },
+    {
+      "anchor": "section-1",
+      "text": "强制AI按照特定的数据结构输出，便于程序处理。"
+    },
+    {
+      "anchor": "section-1",
+      "text": "方法1 只在Prompt中要求AI返回JSON"
+    },
+    {
+      "anchor": "section-1",
+      "text": "# 仅通过Prompt要求，AI输出JSON格式的回答\nresponse = client.chat.completions.create(\n    model=\"qwen3.6-plus\"\n    messages=[\n        {\n            \"role\": \"system\",\n            \"content\": \"\"\"请分析代码并返回JSON格式的结果。\n\n输出格式示例：\n{\n  \"complexity\": \"高/中/低\",\n  \"issues\": [...],\n  \"suggestions\": [...]\n}\n\"\"\"\n        },\n        {\"role\": \"user\", \"content\": \"分析这段代码：[your code]\"}\n    ]\n)"
+    },
+    {
+      "anchor": "section-1",
+      "text": "AI实际可能输出："
+    },
+    {
+      "anchor": "section-1",
+      "text": "\"好的，我来分析一下这段代码：\n\n`\\`\\`json\n\n{\"complexity\": \"中\", ...}\n\n`\\`\\`\n\n从分析结果看，代码质量还不错。..\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "这里的问题是什么？"
+    },
+    {
+      "anchor": "section-1",
+      "text": "问题在于，其实只需要那段JSON数据（{ }内的内容），而不需要AI的那些\"自言自语\"。但AI很难精确控制。这个时候，需要手动清洗，提取出JSON数据："
+    },
+    {
+      "anchor": "section-1",
+      "text": "import json\ncontent = response.choices[0].message.content\nif \"`\\`\\`json\" in content:\n    content = content.split(\"`\\`\\`json\")[1].split(\"`\\`\\`\")[0]\nresult = json.loads(content.strip())  # 可能报错！"
+    },
+    {
+      "anchor": "section-1",
+      "text": "方法2 使用API强制JSON模式"
+    },
+    {
+      "anchor": "section-1",
+      "text": "用API参数强制约束，AI无法\"自由发挥\""
+    },
+    {
+      "anchor": "section-1",
+      "text": "response = client.chat.completions.create(\n    model=\"qwen3.6-plus\"\n    messages=[\n        {\n            \"role\": \"system\",\n            \"content\": \"\"\"请分析以下代码，以JSON格式返回结果：\n\n{\n  \"complexity\": \"复杂度等级（高/中/低）\",\n  \"issues\": [...],\n  \"suggestions\": [...]\n}\n\"\"\"\n        },\n        {\"role\": \"user\", \"content\": \"分析这段代码：[your code]\"}\n    ],\n    response_format={\"type\": \"json_object\"}  # 关键区别在这里！\n)\n\n# AI实际输出：\n# {\"complexity\": \"中\", \"issues\": [...], \"suggestions\": [...]}\n# 纯JSON，没有任何额外文字！\n\n# 直接解析，不需要任何清洗\nimport json\nresult = json.loads(response.choices[0].message.content)  # 100%成功！\nprint(result[\"complexity\"])\nprint(result[\"issues\"])"
+    },
+    {
+      "anchor": "section-13",
+      "text": "两种方法的本质区别"
+    },
+    {
+      "anchor": "section-13",
+      "text": "这两种方法看起来差不多——都是让AI输出JSON，到底有什么不同？"
+    },
+    {
+      "anchor": "section-13",
+      "text": "关键在于约束力度。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "约束力度"
+    },
+    {
+      "anchor": "section-13",
+      "text": "方法1就像口头跟AI说\"请给我JSON格式\"。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "方法1"
+    },
+    {
+      "anchor": "section-13",
+      "text": "AI大部分时候会照做，但它可能会\"热心\"地额外多给一些东西——比如在JSON前面加一句\"好的，分析结果如下：\"，或者用json代码块把JSON包起来，甚至在后面再解释一遍。这些\"好心\"在人看来挺友好，但对程序来说就是灾难：json.loads()一遇到这些额外的文字就报错。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "需要手动写代码去\"清洗\"这些输出：去掉前面的说明文字、去掉代码块标记、去掉后面的解释……这在批量处理时特别麻烦，因为AI每次\"热心\"的方式还不太一样，清洗逻辑很难覆盖所有情况。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "方法2就不一样了。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "方法2"
+    },
+    {
+      "anchor": "section-13",
+      "text": "它通过API的response_format={\"type\": \"json_object\"}参数，在底层直接锁死了输出格式——AI想\"热心\"都不行，它只能输出纯粹的JSON字符串，一个多余的字都不会有。这就像给AI套上了一个严格的模板，保证输出的东西可以直接喂给json.loads()，不需要任何预处理。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "使用场景选择"
+    },
+    {
+      "anchor": "section-13",
+      "text": "如果是在写一个工具、做批量处理、或者构建生产系统，那必须用方法2。稳定性是第一位的，不能让程序因为解析失败就崩掉。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "但如果只是临时用一下，或者希望AI在给出JSON的同时还能解释一下结果（比如给人看的报告），那方法1反而更合适——它允许AI\"说人话\"。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "简单说：机器读的用方法2，人读的用方法1。"
+    },
+    {
+      "anchor": "section-13",
+      "text": "机器读的用方法2，人读的用方法1"
+    },
+    {
+      "anchor": "section-29",
+      "text": "11.2 常用Prompt模板"
+    },
+    {
+      "anchor": "section-29",
+      "text": "学完了Prompt设计的五要素，自然会想到一个问题：有没有现成的模板可以直接拿来用？"
+    },
+    {
+      "anchor": "section-29",
+      "text": "确实有现成的模板，但别照搬。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "下面这些模板是我在实际项目中总结出来的，覆盖了大部分常见场景。但记住，它们只是启发性的参考——你的业务场景、数据特点、输出要求都不一样，照抄模板往往效果不佳。真正好用的Prompt，都是在这些模板基础上，根据具体情况调整出来的。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "通用五要素模板"
+    },
+    {
+      "anchor": "section-29",
+      "text": "这是最基础的结构，适合任何场景："
+    },
+    {
+      "anchor": "section-29",
+      "text": "BASE_PROMPT = \"\"\"你是{role}。\n\n任务：{task}\n\n背景信息：\n{context}\n\n输出要求：\n{format}\n\n约束条件：\n{constraints}\n\"\"\""
+    },
+    {
+      "anchor": "section-29",
+      "text": "使用示例"
+    },
+    {
+      "anchor": "section-29",
+      "text": "prompt = BASE_PROMPT.format(\n    role=\"Python后端工程师，熟悉FastAPI和SQLAlchemy\",\n    task=\"审查这段API代码，找出性能问题\",\n    context=\"这是一个用户查询接口，日访问量10万次\",\n    format=\"列出问题清单，每项包含：行号、问题、影响、建议\",\n    constraints=\"只分析性能，不关注代码风格\"\n)"
+    },
+    {
+      "anchor": "section-29",
+      "text": "代码生成模板"
+    },
+    {
+      "anchor": "section-29",
+      "text": "适合让AI写代码的场景："
+    },
+    {
+      "anchor": "section-29",
+      "text": "CODE_GEN_PROMPT = \"\"\"你是{language}开发专家。\n\n需求：{requirement}\n\n技术约束：\n- 语言/框架：{tech_stack}\n- 代码风格：{style}\n\n输出格式：\n1. 完整可运行的代码\n2. 关键部分的注释\n3. 简单的使用示例\n\n注意事项：\n- 包含异常处理\n- 遵循最佳实践\n- 不使用废弃API\n\"\"\""
+    },
+    {
+      "anchor": "section-29",
+      "text": "prompt = CODE_GEN_PROMPT.format(\n    language=\"Python\",\n    requirement=\"实现一个异步的Redis缓存装饰器\",\n    tech_stack=\"aioredis 2.0\",\n    style=\"符合PEP 8规范\"\n)"
+    },
+    {
+      "anchor": "section-29",
+      "text": "实际调整示例 如果你的项目有特殊要求，可以这样调整："
+    },
+    {
+      "anchor": "section-29",
+      "text": "实际调整示例"
+    },
+    {
+      "anchor": "section-29",
+      "text": "prompt = \"\"\"你是Python开发专家，熟悉异步编程。\n\n需求：实现一个异步的Redis缓存装饰器\n\n技术约束：\n- 使用aioredis 2.0\n- 支持设置过期时间\n- 缓存key自动生成（函数名+参数hash）\n\n输出格式：\n1. 装饰器完整代码\n2. 使用示例（包含FastAPI路由）\n\n注意事项：\n- 必须处理Redis连接失败的情况\n- 参数序列化要支持复杂对象\n- 添加日志记录缓存命中率\n\"\"\"\n# 根据实际需求加了很多细节"
+    },
+    {
+      "anchor": "section-29",
+      "text": "文本处理模板"
+    },
+    {
+      "anchor": "section-29",
+      "text": "摘要、改写、提取等场景："
+    },
+    {
+      "anchor": "section-29",
+      "text": "TEXT_PROCESS_PROMPT = \"\"\"你是{role}。\n\n任务：{task}\n\n输入文本的特点：\n{text_info}\n\n输出要求：\n- 长度：{length}\n- 风格：{style}\n- 受众：{audience}\n\n约束：\n- 不添加原文没有的信息\n- 保持客观中立\n- {specific_constraint}\n\n文本：\n{text}\n\"\"\""
+    },
+    {
+      "anchor": "section-29",
+      "text": "# 场景1：技术文档摘要\nprompt1 = TEXT_PROCESS_PROMPT.format(\n    role=\"技术文档编辑\",\n    task=\"将这篇API文档总结为200字的开发者指南\",\n    text_info=\"官方API文档，包含大量技术细节\",\n    length=\"200字左右\",\n    style=\"简洁、技术化\",\n    audience=\"有经验的开发者\",\n    specific_constraint=\"保留所有代码示例的关键部分\",\n    text=\"[文档内容]\"\n)"
+    },
+    {
+      "anchor": "section-29",
+      "text": "细心的读者可能已经注意到了：当 Prompt 比较复杂时，大多数情况下我们都会用\"Markdown\"的语法来组织它——用标题分区、用有序或无序列表列要求、用代码块包示例。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "这样组织有三个好处："
+    },
+    {
+      "anchor": "section-29",
+      "text": "模型更容易理解。模型在训练时看过海量的 Markdown 文档（技术文档、GitHub README、代码注释），对这种结构非常熟悉，能快速识别重点并按结构生成内容。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "边界更清晰。用代码块包住示例，模型就知道\"这是例子\"；用列表列出约束，模型就知道\"这些必须满足\"。歧义少了，输出自然更稳定。"
+    },
+    {
+      "anchor": "section-29",
+      "text": "协作更高效。别人一看就懂哪些是硬性规则、哪些是风格偏好，修改和复用都方便。"
+    },
+    {
+      "anchor": "section-54",
+      "text": "11.3 下一节预告"
+    },
+    {
+      "anchor": "section-54",
+      "text": "现在已经掌握了大模型应用开发的基础：API调用、参数控制、Prompt设计。但在实际应用中，可能会遇到这样的问题：AI的回答总是基于训练数据，如何让它回答我们自己的私有知识？比如公司内部文档、项目代码库、业务规则？"
+    },
+    {
+      "anchor": "section-54",
+      "text": "下一章将学习 RAG（检索增强生成），让AI能够访问专属知识库，回答它原本\"不知道\"的问题。"
+    },
+    {
+      "anchor": "section-57",
+      "text": "11.4 ■ 学点英语"
+    },
+    {
+      "anchor": "section-57",
+      "text": "中文 | English | 音标 | 说明\n结构化输出 | Structured Output | /ˈstrʌktʃərd ˈaʊtpʊt/ | 让AI按特定数据结构（如JSON）返回结果\nJSON模式 | JSON Mode | /ˈdʒeɪsɑːn moʊd/ | 通过response format参数强制AI输出纯 _ JSON\n响应格式 | Response Format | /rɪˈspɑːns ˈfɔːrmæt/ | API参数，指定AI返回内容的格式要求\n提示词模板 | Prompt Template | /prɑːmpt ˈtemplət/ | 可复用的提示词结构框架\nMarkdown语法 | Markdown Syntax | /ˈmɑːrkdaʊn ˈsɪntæks/ | 用于组织复杂Prompt的轻量级标记语言"
+    }
+  ]
+}
